@@ -1,0 +1,831 @@
+
+
+
+
+
+
+
+  /* ---------- MAIN ---------- */
+  
+  .main-container {
+    grid-area: main;
+    overflow-y: auto;
+    padding: 20px 20px;
+  }
+  
+  
+  
+  /* ---------- MEDIA QUERIES ---------- */
+  
+  
+  /* Medium <= 992px */
+  @media screen and (max-width: 992px) {
+    .grid-container {
+      grid-template-columns: 1fr;
+      grid-template-rows: 0.2fr 3fr;
+      grid-template-areas:
+        "header"
+        "main";
+    }
+  
+    #sidebar {
+      display: none;
+    }
+  
+    .menu-icon {
+      display: inline;
+    }
+  
+    .sidebar-title > span {
+      display: inline;
+    }
+  }
+
+
+
+  @import url('https://fonts.googleapis.com/css?family=Poppins:600&display=swap');
+
+  /* ----- VARIABLES ----- */
+  :root {
+      --body-color: rgb(250, 250, 250);
+      --color-white: rgb(255, 255, 255);
+      --text-color-second: rgb(68, 68, 68);
+      --text-color-third: rgb(30, 159, 171);
+      --first-color: rgb(110, 87, 224);
+      --first-color-hover: rgb(40, 91, 212);
+      --second-color: rgb(0, 201, 255);
+      --third-color: rgb(192, 166, 49);
+      --first-shadow-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ----- BASE ----- */
+  * {
+    
+      
+    font-family: "Montserrat", sans-serif;
+  }
+  
+  /* ----- SMOOTH SCROLL ----- */
+  html {
+      scroll-behavior: smooth;
+  }
+  
+  /* ----- CHANGE THE SCROLL BAR DESIGN ----- */
+  ::-webkit-scrollbar {
+      width: 10px;
+      border-radius: 25px;
+  }
+  
+  ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 30px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+      background: #bbb;
+  }
+  
+  /* ---##-- REUSABLE CSS --##--- */
+  
+  /* ----- GLOBAL BUTTON DESIGN ----- */
+  .btn {
+      display: inline-block;
+      width: calc(25% - 10px); /* Adjust width to fit beside each other with a small gap */
+      height: 30px; /* Adjust height as needed */
+      line-height: 30px; /* Center text vertically */
+      border-radius: 15px; /* Adjust border radius as needed */
+      outline: none;
+      border: none;
+      font-size: 0.9rem; /* Adjust font size as needed */
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      text-transform: uppercase;
+      margin: 1rem 5px; /* Adjust margin to create space between buttons */
+      cursor: pointer;
+      transition: .5s;
+  }
+  
+  
+  
+  .btn-delete {
+      background-image: linear-gradient(to right, #FF0000, #FF0000, #FF0000);
+  }
+  
+  .btn:hover {
+      background-position: right;
+  }
+  
+  .btn>i {
+      margin-left: 10px;
+  }
+  
+  /* ----- GLOBAL ICONS DESIGN ----- */
+  i {
+      font-size: 16px;
+  }
+  
+  /* ------- BASE -------- */
+  body {
+      background: var(--body-color);
+  }
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* ----- WRAPPER DESIGN ----- */
+  .wrapper {
+    grid-area: main;
+   
+    padding: 20px 20px;
+   
+  }
+ 
+
+
+
+
+
+
+
+
+
+
+
+  
+   /* Dropdown button */
+   .dropbtn {
+    background-color: transparent;
+      color: black;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      margin-right: 50px;
+      cursor: pointer;
+      margin-right: 150px;
+      width: 100%;
+  }
+  
+  /* Dropdown container (hidden by default) */
+  .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+     left: 30px;
+  }
+  
+  /* Links inside the dropdown */
+  .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+  }
+  
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+      background-color: #007FFF;
+      color: white;
+  }
+  
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+      display: block;
+  }
+  
+  /* Style the dropdown button on hover */
+  .dropdown:hover .dropbtn {
+      background-color: #007FFF;
+  }
+  
+  
+  
+  
+  
+  /* Small <= 768px */
+  @media screen and (max-width: 768px) {
+
+  
+    .section {
+      grid-template-columns: 1fr;
+      margin-top: 30px;
+
+    }
+
+    .table-container {
+        grid-template-columns: 1fr;
+        margin-top: 30px;
+      }
+    }
+  
+  
+  @media screen and (max-width: 600px) {
+      .nav-name {
+          font-size: 24px;
+      }
+  
+      .nav-logo span {
+          font-size: 3em;
+      }
+  
+      .addentry form {
+          width: 300px;
+      }
+  
+      .img img {
+          width: 300px;
+      }
+  
+      .addentry h2 {
+          font-size: 2.5rem;
+      }
+  }
+  
+  @media screen and (max-width: 480px) {
+      .nav-menu {
+          padding-inline: 5vw;
+      }
+  
+      .nav-menu .nav_list {
+          flex-direction: column;
+          align-items: center;
+      }
+  
+      .nav-menu .nav_list .nav-link {
+          margin: 10px 0;
+      }
+  
+      .scroll-btn {
+          width: 120px;
+          height: 40px;
+      }
+  
+      .scroll-btn i {
+          font-size: 18px;
+      }
+  
+      .table-container {
+          max-height: calc(100vh - 150px);
+      }
+  }
+  
+  
+  
+  
+
+
+
+
+
+
+
+  
+
+
+
+  
+.wave{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	height: 100%;
+	z-index: -1;
+}
+
+.container {
+    position: absolute;
+    margin-top: 25%; /* Adjusted to center vertically */
+  
+   margin-left: 32%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 7rem;
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.img{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.login-content{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	text-align: center;
+}
+
+.img img{
+	width: 400px;
+}
+
+form{
+	width: 360px;
+}
+
+.login-content img{
+    height: 100px;
+}
+
+.login-content h2{
+	margin: 15px 0;
+	color: #333;
+	text-transform: uppercase;
+	font-size: 2.9rem;
+}
+
+.login-content .input-div{
+	position: relative;
+    display: grid;
+    grid-template-columns: 7% 93%;
+    margin: 25px 0;
+    padding: 5px 0;
+    border-bottom: 2px solid #d9d9d9;
+}
+
+.login-content .input-div.one{
+	margin-top: 0;
+}
+
+.i{
+	color: #d9d9d9;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.i i{
+	transition: .3s;
+}
+
+.input-div > div{
+    position: relative;
+	height: 45px;
+}
+
+.input-div > div > h5{
+	position: absolute;
+	left: 10px;
+	top: 10%;
+	transform: translateY(-50%);
+	color: #999;
+	font-size: 18px;
+	transition: .3s;
+}
+
+.input-div:before, .input-div:after{
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	width: 0%;
+	height: 2px;
+	background-color: #007FFF;
+	transition: .4s;
+}
+
+.input-div:before{
+	right: 50%;
+}
+
+.input-div:after{
+	left: 50%;
+}
+
+.input-div.focus:before, .input-div.focus:after{
+	width: 50%;
+}
+
+.input-div.focus > div > h5{
+	top: -5px;
+	font-size: 15px;
+}
+
+.input-div.focus > .i > i{
+	color: #007FFF;
+}
+
+.input-div > div > input{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+	outline: none;
+	background: none;
+	padding: 0.5rem 0.7rem;
+	font-size: 1.2rem;
+	color: #555;
+	font-family: 'poppins', sans-serif;
+}
+
+.input-div.pass{
+	margin-bottom: 4px;
+}
+
+a{
+	display: block;
+	
+	text-decoration: none;
+	color: #999;
+	font-size: 0.9rem;
+	transition: .3s;
+}
+
+a:hover{
+	color: #007FFF;
+}
+
+.btn{
+	display: block;
+	width: 100%;
+	height: 50px;
+	border-radius: 25px;
+	outline: none;
+	border: none;
+	background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
+	background-size: 200%;
+	font-size: 1.2rem;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	margin: 1rem 0;
+	cursor: pointer;
+	transition: .5s;
+}
+.btn:hover{
+	background-position: right;
+}
+
+
+@media screen and (max-width: 1050px){
+	.container{
+		grid-gap: 5rem;
+	}
+}
+
+@media screen and (max-width: 1000px){
+	form{
+		width: 290px;
+	}
+
+	.login-content h2{
+        font-size: 2.4rem;
+        margin: 8px 0;
+	}
+
+	.img img{
+		width: 400px;
+	}
+}
+
+@media screen and (max-width: 900px){
+	.container{
+		grid-template-columns: 1fr;
+	}
+
+	.img{
+		display: none;
+	}
+
+	.wave{
+		display: none;
+	}
+
+	.login-content{
+		justify-content: center;
+	}
+}
+/* Add this style to hide the initial option */
+.select-hidden {
+    display: none;
+    visibility: hidden;
+}
+
+/* Add this style for dropdown arrow icon */
+.drop {
+    position: relative;
+  }
+  
+  .drop .fa-chevron-down {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+
+#departmentInput {
+    padding-right: 30px; /* Leave space for the arrow icon */
+}
+
+#dropdownArrow {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.content {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position the dropdown below the input */
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d9d9d9;
+    z-index: 1;
+}
+
+.content.show {
+    display: block;
+}
+
+.content li {
+    padding: 10px;
+    list-style-type: none;
+    cursor: pointer;
+}
+
+.content li:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #e6e8ed;
+  color: #666666;
+  font-family: "Montserrat", sans-serif;
+}
+
+.material-icons-outlined {
+  vertical-align: middle;
+  line-height: 1px;
+}
+
+.text-primary {
+  color: #666666;
+}
+
+.text-blue {
+  color: #246dec;
+}
+
+.text-red {
+  color: #cc3c43;
+}
+
+.text-green {
+  color: #367952;
+}
+
+.text-orange {
+  color: #f5b74f;
+}
+
+.font-weight-bold {
+  font-weight: 600;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 260px 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 3fr;
+  grid-template-areas:
+    "sidebar header header header"
+    "sidebar main main main";
+  height: 100vh;
+}
+
+
+/* ---------- HEADER ---------- */
+
+.header {
+  grid-area: header;
+
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px 0 30px;
+ 
+}
+
+.menu-icon {
+  display: none;
+}
+
+
+/* ---------- SIDEBAR ---------- */
+  
+#sidebar {
+  grid-area: sidebar;
+  height: 100%;
+  background-color: #21232d;
+ 
+  color: #9799ab;
+  overflow-y: auto;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.sidebar-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 20px 20px;
+  margin-bottom: 30px;
+}
+.sidebar-title img {
+  height: 30%;
+  width: 30%;
+  background-color: white;
+  border-radius: 50%; /* Make the image circular */
+}
+
+.sidebar-title > span {
+  display: none;
+}
+
+.sidebar-brand {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sidebar-list {
+  padding: 0;
+  margin-top: 15px;
+  list-style-type: none;
+}
+
+.sidebar-list-item {
+  padding: 20px 20px 20px 20px;
+}
+
+.sidebar-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+
+#active{
+  background-color: #f9f9f9;
+}
+
+
+#active > a {
+
+  color: black;
+}
+#activea {
+  background-color: #f9f9f9;
+
+  color: black;
+}
+
+
+
+
+.sidebar-list-item > a {
+  text-decoration: none;
+  color: #9799ab;
+}
+
+.sidebar-responsive {
+  display: inline !important;
+  position: absolute;
+  /*
+    the z-index of the ApexCharts is 11
+    we want the z-index of the sidebar higher so that
+    the charts are not showing over the sidebar 
+    on small screens
+  */
+  z-index: 12 !important;
+}
+
+
+
+.dropdown-toggle::after {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: .255em;
+  vertical-align: .255em;
+  content: "";
+  border-top: .3em solid;
+  border-right: .3em solid transparent;
+  border-bottom: 0;
+  border-left: .3em solid transparent;
+}
+
+
+.dropdown-menu {
+  display: none;
+  position: relative; /* Change position to relative */
+  background-color: #21232d;
+  border: 1px solid #9799ab;
+  z-index: 1;
+}
+
+
+
+/* Adjust dropdown menu position when navbar is scrolled */
+.scrolled .dropdown-menu {
+  top: auto; /* Reset top position */
+}
+
+
+.dropdown-menu a {
+ 
+  color: #9799ab;
+  padding: 10px;
+  display: block;
+  text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

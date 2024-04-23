@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/base.css' %}">
+  </head>
+  <body>
+    <div class="grid-container">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </div>
+        
+      </header>
+      <!-- End Header -->
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-title">
+            <div class="sidebar-brand">
+                Kwentas Klaras
+            </div>
+            <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+        </div>
+    
+        <ul class="sidebar-list">
+
+          <li class="sidebar-list-item" id="active">
+            <a href="{% url 'home' %}">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+          </li>
+
+          <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">diversity_3</span> Program Projects and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Activities 
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                <a class="dropdown-item" href="{% url 'activities' %}">Activities</a>
+                <a class="dropdown-item" href="{% url 'ongoing' %}">Ongoing Projects</a>
+                <a class="dropdown-item" href="{% url 'finished' %}">Finished Projects</a>
+            </div>
+        </li>
+        
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">payments</span> Obligations and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disbursements
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+                <a class="dropdown-item" href="{% url 'obligations' %}">Obligations</a>
+              
+                <a class="dropdown-item" href="{% url 'disbursements' %}">Disbursements</a>
+            </div>
+        </li>
+
+
+        <li class="sidebar-list-item">
+          <a href="{% url 'procurements' %}" >
+            <span class="material-icons-outlined">shopping_cart</span> Procurements
+          </a>
+        </li>
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+          <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-symbols-outlined">payments</span> Monitoring and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Evaluation
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <a class="dropdown-item" href="{% url 'monitoring' %}">Monitoring</a>
+            
+              <a class="dropdown-item" href="{% url 'evaluation' %}">Evaluation</a>
+          </div>
+      </li>
+      <li class="sidebar-list-item">
+        <a href="{% url 'reports' %}" >
+          <span class="material-icons-outlined">poll</span> Reports
+        </a>
+      </li>
+        <li class="sidebar-list-item">
+          <a href="{% url 'register' %}" target="_blank">
+            <span class="material-icons-outlined">savings</span> Revenue Streams
+          </a>
+        </li>
+       
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+          <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-symbols-outlined">person</span> Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+            
+              <a class="dropdown-item" href="{% url 'admin:index' %}">Django Admin</a>
+          </div>
+      </li>
+
+
+
+      
+
+      
+
+      
+      <li class="sidebar-list-item">
+        <a href="{% url 'logout' %}" >
+          <span class="material-icons-outlined">logout</span> Logout
+        </a>
+      </li>
+     
+      </ul>
+    </aside>
+      <!-- End Sidebar -->
+
+      <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+          <p class="font-weight-bold">DASHBOARD</p>
+        </div>
+
+        <div class="main-cards">
+
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">TOTAL COMPONENTS</p>
+              <span class="material-icons-outlined text-blue">inventory</span>
+            </div>
+            <span class="text-primary font-weight-bold">249</span>
+          </div>
+
+
+
+
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">PROJECTS</p>
+              <span class="material-icons-outlined text-blue">inventory_2</span>
+            </div>
+            <span class="text-primary font-weight-bold">12</span>
+          </div>
+
+
+
+
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">PROCUREMENTS</p>
+              <span class="material-icons-outlined text-orange">add_shopping_cart</span>
+            </div>
+            <span class="text-primary font-weight-bold">83</span>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">OBLIGATIONS</p>
+              <span class="material-icons-outlined text-green">shopping_cart</span>
+            </div>
+            <span class="text-primary font-weight-bold">79</span>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <p class="text-primary">DISBURSEMENTS</p>
+              <span class="material-icons-outlined text-red">notification_important</span>
+            </div>
+            <span class="text-primary font-weight-bold">56</span>
+          </div>
+
+        </div>
+        <div class="charts">
+          <div class="charts-card">
+              <p class="chart-title">Overall Utilization Rate</p>
+              <div id="pie-chart"></div>
+              <p class="chart-title">Utilization Rate: 60%</p>
+          </div>
+          <div class="charts-card">
+            <p class="chart-title">Utilization Rate of Each Project</p>
+            <div id="utilization-chart"></div>
+          </div>
+          
+          <div class="charts-card">
+              <p class="chart-title">Projects by each Department</p>
+              <div id="area-chart"></div>
+          </div>
+
+
+
+          <div class="charts-card">
+            <p class="chart-title">Distribution of LDF</p>
+            <div id="pie-charts"></div>
+          </div>
+      </div>
+      </main>
+      <!-- End Main -->
+
+    </div>
+
+ <!-- Scripts -->
+<!-- ApexCharts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+<!-- Custom JS -->
+<script src="{% static 'KwentasApp/js/script.js' %}"></script>
+
+<script>
+
+
+
+
+
+
+</script>
+
+
+
+
+
+  
+    
+  </body>
+</html>

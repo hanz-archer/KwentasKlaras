@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/reports.css' %}">
+  </head>
+  <body>
+    <div class="grid-container">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </div>
+        
+      </header>
+      <!-- End Header -->
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-title">
+            <div class="sidebar-brand">
+                <span class="material-icons-outlined">query_stats</span> 
+                Kwentas Klaras
+            </div>
+            <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+        </div>
+    
+        <ul class="sidebar-list">
+
+          <li class="sidebar-list-item">
+            <a href="{% url 'home' %}">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+          </li>
+
+          <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">diversity_3</span> Program Projects and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Activities 
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                <a class="dropdown-item" href="#">Activities</a>
+                <a class="dropdown-item" href="{% url 'ongoing' %}">Ongoing Projects</a>
+                <a class="dropdown-item" href="#">Finished Projects</a>
+            </div>
+        </li>
+        
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">payments</span> Obligations and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disbursements
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+                <a class="dropdown-item" href="#">Obligations</a>
+              
+                <a class="dropdown-item" href="#">Disbursements</a>
+            </div>
+        </li>
+
+
+        <li class="sidebar-list-item">
+          <a href="#" target="_blank">
+            <span class="material-icons-outlined">shopping_cart</span> Procurements
+          </a>
+        </li>
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+          <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-symbols-outlined">payments</span> Monitoring and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Evaluation
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <a class="dropdown-item" href="{% url 'monitoring' %}">Monitoring</a>
+            
+              <a class="dropdown-item" href="{% url 'evaluation' %}">Evaluation</a>
+          </div>
+      </li>
+        
+        <li class="sidebar-list-item">
+          <a href="#">
+            <span class="material-icons-outlined">savings</span> Revenue Streams
+          </a>
+        </li>
+
+
+
+
+
+        <li class="sidebar-list-item" id="active">
+          <a href="#" >
+            <span class="material-icons-outlined">poll</span> Reports
+          </a>
+        </li>
+
+
+
+        <li class="sidebar-list-item">
+          <a href="{% url 'register' %}" target="_blank">
+            <span class="material-icons-outlined">person</span> Account
+          </a>
+        </li>
+      </ul>
+    </aside>
+      <!-- End Sidebar -->
+
+      <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+            <p class="font-weight-bold">BUDGET REPORT SUMMARY</p>
+        </div>
+    
+        <div class="charts">
+            <!-- Chart 1: Budget Allocation by Department -->
+            <div class="charts-card">
+                <p class="chart-title">Budget Allocation by Department</p>
+                <div id="budget-allocation-chart"></div>
+            </div>
+    
+            <!-- Chart 2: Revenue vs. Expenditure -->
+            <div class="charts-card">
+                <p class="chart-title">Revenue vs. Expenditure</p>
+                <div id="revenue-expenditure-chart"></div>
+            </div>
+    
+            <!-- Chart 3: Budget Utilization Rate -->
+            <div class="charts-card">
+                <p class="chart-title">Budget Utilization Rate</p>
+                <div id="utilization-rate-chart"></div>
+                <p class="chart-subtitle">Utilization Rate: 60%</p>
+            </div>
+    
+            <!-- Chart 4: Comparison of Actual vs. Budgeted Expenditure -->
+            <div class="charts-card">
+                <p class="chart-title">Comparison of Actual vs. Budgeted Expenditure</p>
+                <div id="actual-vs-budget-chart"></div>
+            </div>
+        </div>
+    </main>
+
+
+         
+    </div>
+
+ <!-- Scripts -->
+<!-- ApexCharts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+<!-- Custom JS -->
+
+<script>
+  // ApexCharts Initialization
+  // Chart 1: Budget Allocation by Department
+  var budgetAllocationOptions = {
+      chart: {
+          type: 'pie',
+      },
+      series: [44, 55, 13, 43, 22],
+      labels: ['Department A', 'Department B', 'Department C', 'Department D', 'Department E'],
+  };
+  var budgetAllocationChart = new ApexCharts(document.querySelector("#budget-allocation-chart"), budgetAllocationOptions);
+  budgetAllocationChart.render();
+
+  // Chart 2: Revenue vs. Expenditure
+  var revenueExpenditureOptions = {
+      chart: {
+          type: 'bar',
+      },
+      series: [{
+          name: 'Revenue',
+          data: [30, 40, 45, 50, 49, 60, 70, 91],
+      }, {
+          name: 'Expenditure',
+          data: [20, 35, 35, 40, 60, 65, 75, 80],
+      }],
+      xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+      },
+  };
+  var revenueExpenditureChart = new ApexCharts(document.querySelector("#revenue-expenditure-chart"), revenueExpenditureOptions);
+  revenueExpenditureChart.render();
+
+  // Chart 3: Budget Utilization Rate
+  var utilizationRateOptions = {
+      chart: {
+          type: 'radialBar',
+      },
+      series: [60],
+      labels: ['Utilization Rate'],
+  };
+  var utilizationRateChart = new ApexCharts(document.querySelector("#utilization-rate-chart"), utilizationRateOptions);
+  utilizationRateChart.render();
+
+  // Chart 4: Comparison of Actual vs. Budgeted Expenditure
+  var actualVsBudgetOptions = {
+      chart: {
+          type: 'line',
+      },
+      series: [{
+          name: 'Actual',
+          data: [30, 40, 35, 50, 49, 60, 70, 91],
+      }, {
+          name: 'Budgeted',
+          data: [20, 35, 25, 40, 60, 65, 75, 80],
+      }],
+      xaxis: {
+          categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+      },
+  };
+  var actualVsBudgetChart = new ApexCharts(document.querySelector("#actual-vs-budget-chart"), actualVsBudgetOptions);
+  actualVsBudgetChart.render();
+</script>
+
+
+
+
+
+
+  
+    
+  </body>
+</html>

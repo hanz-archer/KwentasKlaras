@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwentas Klaras - Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="img">
+            <img src="{% static 'KwentasApp/img/logo.png' %}" alt="Kwentas Klaras Logo">
+        </div>
+        <div class="login-content">
+            <form action="{% url 'login' %}" method="post">
+				{% csrf_token %}
+                <img src="{% static 'KwentasApp/img/avatar.png' %}" alt="User Avatar">
+                <h2 class="title">Welcome</h2>
+				{% if error %}
+                <p class="error-message">{{ error }}</p>
+            	{% endif %}
+                <div class="input-div one">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Username</h5>
+                        <input type="text" class="input" name="username" required>
+                    </div>
+                </div>
+                <div class="input-div pass">
+                    <div class="i clickable" id="show-password">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Password</h5>
+                        <input type="password" class="input" id="password-input" name="password" required>
+                    </div>
+                </div>
+                <input type="submit" class="btn" value="User Login">
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+    <script>
+        document.getElementById('show-password').addEventListener('click', function () {
+            var passwordInput = document.getElementById('password-input');
+            var icon = document.querySelector('#show-password i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-lock');
+                icon.classList.add('fa-unlock-alt');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-unlock-alt');
+                icon.classList.add('fa-lock');
+            }
+        });
+    </script>
+</body>
+</html>

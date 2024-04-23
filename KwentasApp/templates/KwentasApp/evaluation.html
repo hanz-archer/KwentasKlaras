@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/base.css' %}">
+  </head>
+  <body>
+    <div class="grid-container">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </div>
+        
+      </header>
+      <!-- End Header -->
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-title">
+            <div class="sidebar-brand">
+                <span class="material-icons-outlined">query_stats</span> 
+                Kwentas Klaras
+            </div>
+            <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+        </div>
+    
+        <ul class="sidebar-list">
+
+          <li class="sidebar-list-item">
+            <a href="{% url 'home' %}">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+          </li>
+
+          <li class="sidebar-list-item dropdown"  > <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">diversity_3</span> Program Projects and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Activities 
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                <a class="dropdown-item" href="{% url 'activities' %}" >Activities</a>
+                <a class="dropdown-item" href="{% url 'ongoing' %}">Ongoing Projects</a>
+                <a class="dropdown-item" href="{% url 'finished' %}">Finished Projects</a>
+            </div>
+        </li>
+        
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">payments</span> Obligations and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disbursements
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+                <a class="dropdown-item" href="{% url 'obligations' %}">Obligations</a>
+              
+                <a class="dropdown-item" href="{% url 'disbursements' %}" >Disbursements</a>
+            </div>
+        </li>
+
+
+        <li class="sidebar-list-item">
+          <a href="{% url 'procurements' %}" >
+            <span class="material-icons-outlined">shopping_cart</span> Procurements
+          </a>
+        </li>
+        <li class="sidebar-list-item dropdown"  id="active"> <!-- Added dropdown class -->
+          <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-symbols-outlined">payments</span> Monitoring and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Evaluation
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <a class="dropdown-item" href="{% url 'monitoring' %}" >Monitoring</a>
+            
+              <a class="dropdown-item" href="{% url 'evaluation' %}" id="activea">Evaluation</a>
+          </div>
+      </li>
+      <li class="sidebar-list-item">
+        <a href="{% url 'reports' %}" >
+          <span class="material-icons-outlined">poll</span> Reports
+        </a>
+      </li>
+        <li class="sidebar-list-item">
+          <a href="{% url 'register' %}" target="_blank">
+            <span class="material-icons-outlined">savings</span> Revenue Streams
+          </a>
+        </li>
+       
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+          <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-symbols-outlined">person</span> Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+            
+              <a class="dropdown-item" href="{% url 'admin:index' %}">Django Admin</a>
+          </div>
+      </li>
+
+
+
+      
+
+      
+
+      
+      <li class="sidebar-list-item">
+        <a href="{% url 'logout' %}" >
+          <span class="material-icons-outlined">logout</span> Logout
+        </a>
+      </li>
+     
+      </ul>
+    </aside>
+      <!-- End Sidebar -->
+
+      <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+          <p class="font-weight-bold">EVALUATION</p>
+        </div>
+        <div class="main-cards">
+
+
+            <div class="card">
+              <div class="card-inner">
+                
+                <p class="text-primary font-weight-bold">Department <br>Utlization Rate below 50%</p>
+                
+              </div>
+              <p class="text-primary">Dpeartment E: 16.7%</p>
+              <p class="text-primary">Department B: 14.8%</p>
+            </div>
+  
+  
+  
+  
+  
+            <div class="card">
+                <div class="card-inner">
+                  <p class="text-primary font-weight-bold">Components <br>Utlization Rate below 50%</p>
+                  
+                </div>
+                <p class="text-primary">Procurements: 32.4%</p>
+              
+              </div>
+  
+  
+  
+  
+  
+          
+           
+  
+          </div>
+        
+       
+          <div class="charts">
+            <div class="charts-card">
+              <p class="chart-title">Budget Utilization Over Time</p>
+              <div id="line-chart"></div>
+            </div>
+          
+            <div class="charts-card">
+              <p class="chart-title">Budget Allocation vs Expenditure</p>
+              <div id="bar-chart"></div>
+            </div>
+          </div>
+     
+        
+        
+        
+          
+      </main>
+      <!-- End Main -->
+
+    </div>
+
+ <!-- Scripts -->
+<!-- ApexCharts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+<!-- Custom JS -->
+<!-- ApexCharts JavaScript Library -->
+
+
+<script>
+
+
+
+
+
+  // Budget Utilization Over Time - Line Chart
+const lineChartOptions = {
+series: [{
+  name: 'Budget Utilization',
+  data: [31, 40, 28, 51, 42, 109, 100], // Sample data for budget utilization over time
+}],
+chart: {
+  height: 350,
+  type: 'line',
+  toolbar: {
+    show: false,
+  },
+},
+colors: ['#4f35a1'],
+dataLabels: {
+  enabled: false,
+},
+stroke: {
+  curve: 'smooth',
+},
+xaxis: {
+  categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // Sample months
+},
+yaxis: {
+  title: {
+    text: 'Budget Utilization',
+  },
+},
+};
+
+const lineChart = new ApexCharts(
+document.querySelector('#line-chart'),
+lineChartOptions
+);
+lineChart.render();
+
+
+// Budget Allocation vs Expenditure - Bar Chart
+const barChartOptions = {
+series: [{
+    name: 'Budget Allocation',
+    data: [100], // Total budget allocation
+  },
+  {
+    name: 'Expenditure',
+    data: [80], // Total expenditure
+  },
+],
+chart: {
+  height: 350,
+  type: 'bar',
+  toolbar: {
+    show: false,
+  },
+},
+plotOptions: {
+  bar: {
+    horizontal: false,
+    columnWidth: '55%',
+    endingShape: 'rounded',
+  },
+},
+colors: ['#4f35a1', '#246dec'],
+dataLabels: {
+  enabled: false,
+},
+stroke: {
+  show: true,
+  width: 2,
+  colors: ['transparent'],
+},
+xaxis: {
+  categories: ['Overall'], // Represents the overall budget
+},
+yaxis: {
+  title: {
+    text: 'Amount (in Php)',
+  },
+},
+};
+
+const barChart = new ApexCharts(
+document.querySelector('#bar-chart'),
+barChartOptions
+);
+barChart.render();
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+  </body>
+</html>

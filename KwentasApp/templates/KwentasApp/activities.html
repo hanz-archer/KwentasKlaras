@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/ongoing.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  </head>
+  <body>
+    <div class="grid-container">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </div>
+        
+      </header>
+      <!-- End Header -->
+
+      <aside id="sidebar">
+        <div class="sidebar-title">
+            <div class="sidebar-brand">
+                <span class="material-icons-outlined">query_stats</span> 
+                Kwentas Klaras
+            </div>
+            <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+        </div>
+    
+        <ul class="sidebar-list">
+
+          <li class="sidebar-list-item">
+            <a href="{% url 'home' %}">
+              <span class="material-icons-outlined">dashboard</span> Dashboard
+            </a>
+          </li>
+
+          <li class="sidebar-list-item dropdown"  id="active"> <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">diversity_3</span> Program Projects and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Activities 
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                <a class="dropdown-item" href="{% url 'activities' %}" id="activea">Activities</a>
+                <a class="dropdown-item" href="{% url 'ongoing' %}">Ongoing Projects</a>
+                <a class="dropdown-item" href="{% url 'finished' %}">Finished Projects</a>
+            </div>
+        </li>
+        
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+            <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="material-symbols-outlined">payments</span> Obligations and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disbursements
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+                <a class="dropdown-item" href="{% url 'obligations' %}">Obligations</a>
+              
+                <a class="dropdown-item" href="{% url 'disbursements' %}" id="activea">Disbursements</a>
+            </div>
+        </li>
+
+
+        <li class="sidebar-list-item">
+          <a href="{% url 'procurements' %}" >
+            <span class="material-icons-outlined">shopping_cart</span> Procurements
+          </a>
+        </li>
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+          <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-symbols-outlined">payments</span> Monitoring and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Evaluation
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <a class="dropdown-item" href="{% url 'monitoring' %}">Monitoring</a>
+            
+              <a class="dropdown-item" href="{% url 'evaluation' %}">Evaluation</a>
+          </div>
+      </li>
+      <li class="sidebar-list-item">
+        <a href="{% url 'reports' %}" >
+          <span class="material-icons-outlined">poll</span> Reports
+        </a>
+      </li>
+        <li class="sidebar-list-item">
+          <a href="{% url 'register' %}" target="_blank">
+            <span class="material-icons-outlined">savings</span> Revenue Streams
+          </a>
+        </li>
+       
+        <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+          <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="material-symbols-outlined">person</span> Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+            
+              <a class="dropdown-item" href="{% url 'admin:index' %}">Django Admin</a>
+          </div>
+      </li>
+
+
+
+      
+
+      
+
+      
+      <li class="sidebar-list-item">
+        <a href="{% url 'logout' %}" >
+          <span class="material-icons-outlined">logout</span> Logout
+        </a>
+      </li>
+     
+      </ul>
+    </aside>
+    <!-- End Sidebar -->
+
+    <!-- Main -->
+    
+    <main class="wrapper" id="wrapper">
+
+
+   
+      <section class="section" id="projects">
+          <h1 class="page-title"></h1>
+          <div class="div">
+             <h2> <a href="{% url 'procurements' %}" >Activities</a></h2>
+
+              {% if user.is_superuser %}
+              <input type="submit" onClick="toggleAddForm()" class="btn-submitreport" value="Add new entry">
+              {% endif %}
+
+              <input type="submit" onClick="dashboard()" style="background-color: red;"class="btn btn-submitreport" id="dashboardButton" value="View Dashboard">
+          </div>
+
+          <div class="table-container">
+          </div>
+          <div class="content">
+    
+            <main class="table" id="customers_table">
+              <section class="table__header">
+                  <h1>Customer's Orders {% if user.is_superuser %}
+                    <input type="submit" onClick="toggleAddForm()" class="btn-submitreport" value="Add new entry">
+                    {% endif %}</h1>
+                  <div class="input-group">
+                      <input type="search" placeholder="Search Data...">
+                      
+                  </div>
+                  <div class="export__file">
+                      <label for="export-file" class="export__file-btn" title="Export File"></label>
+                      <input type="checkbox" id="export-file">
+                      <div class="export__file-options">
+                          <label>Export As &nbsp; &#10140;</label>
+                          <label for="export-file" id="toPDF">PDF <img src="images/pdf.png" alt=""></label>
+                          <label for="export-file" id="toJSON">JSON <img src="images/json.png" alt=""></label>
+                          <label for="export-file" id="toCSV">CSV <img src="images/csv.png" alt=""></label>
+                          <label for="export-file" id="toEXCEL">EXCEL <img src="images/excel.png" alt=""></label>
+                      </div>
+                  </div>
+              </section>
+              <section class="table__body">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th> Id <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Customer <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Location <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Order Date <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Status <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Amount <span class="icon-arrow">&UpArrow;</span></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td> 1 </td>
+                              <td> <img src="images/Zinzu Chan Lee.jpg" alt="">Zinzu Chan Lee</td>
+                              <td> Seoul </td>
+                              <td> 17 Dec, 2022 </td>
+                              <td>
+                                  <p class="status delivered">Delivered</p>
+                              </td>
+                              <td> <strong> $128.90 </strong></td>
+                          </tr>
+                          <tr>
+                              <td> 2 </td>
+                              <td><img src="images/Jeet Saru.png" alt=""> Jeet Saru </td>
+                              <td> Kathmandu </td>
+                              <td> 27 Aug, 2023 </td>
+                              <td>
+                                  <p class="status cancelled">Cancelled</p>
+                              </td>
+                              <td> <strong>$5350.50</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 3</td>
+                              <td><img src="images/Sonal Gharti.jpg" alt=""> Sonal Gharti </td>
+                              <td> Tokyo </td>
+                              <td> 14 Mar, 2023 </td>
+                              <td>
+                                  <p class="status shipped">Shipped</p>
+                              </td>
+                              <td> <strong>$210.40</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 4</td>
+                              <td><img src="images/Alson GC.jpg" alt=""> Alson GC </td>
+                              <td> New Delhi </td>
+                              <td> 25 May, 2023 </td>
+                              <td>
+                                  <p class="status delivered">Delivered</p>
+                              </td>
+                              <td> <strong>$149.70</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 5</td>
+                              <td><img src="images/Sarita Limbu.jpg" alt=""> Sarita Limbu </td>
+                              <td> Paris </td>
+                              <td> 23 Apr, 2023 </td>
+                              <td>
+                                  <p class="status pending">Pending</p>
+                              </td>
+                              <td> <strong>$399.99</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 6</td>
+                              <td><img src="images/Alex Gonley.jpg" alt=""> Alex Gonley </td>
+                              <td> London </td>
+                              <td> 23 Apr, 2023 </td>
+                              <td>
+                                  <p class="status cancelled">Cancelled</p>
+                              </td>
+                              <td> <strong>$399.99</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 7</td>
+                              <td><img src="images/Alson GC.jpg" alt=""> Jeet Saru </td>
+                              <td> New York </td>
+                              <td> 20 May, 2023 </td>
+                              <td>
+                                  <p class="status delivered">Delivered</p>
+                              </td>
+                              <td> <strong>$399.99</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 8</td>
+                              <td><img src="images/Sarita Limbu.jpg" alt=""> Aayat Ali Khan </td>
+                              <td> Islamabad </td>
+                              <td> 30 Feb, 2023 </td>
+                              <td>
+                                  <p class="status pending">Pending</p>
+                              </td>
+                              <td> <strong>$149.70</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 9</td>
+                              <td><img src="images/Alex Gonley.jpg" alt=""> Alson GC </td>
+                              <td> Dhaka </td>
+                              <td> 22 Dec, 2023 </td>
+                              <td>
+                                  <p class="status cancelled">Cancelled</p>
+                              </td>
+                              <td> <strong>$249.99</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 9</td>
+                              <td><img src="images/Alex Gonley.jpg" alt=""> Alson GC </td>
+                              <td> Dhaka </td>
+                              <td> 22 Dec, 2023 </td>
+                              <td>
+                                  <p class="status cancelled">Cancelled</p>
+                              </td>
+                              <td> <strong>$249.99</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 9</td>
+                              <td><img src="images/Alex Gonley.jpg" alt=""> Alson GC </td>
+                              <td> Dhaka </td>
+                              <td> 22 Dec, 2023 </td>
+                              <td>
+                                  <p class="status cancelled">Cancelled</p>
+                              </td>
+                              <td> <strong>$249.99</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 9</td>
+                              <td><img src="images/Alex Gonley.jpg" alt=""> Alson GC </td>
+                              <td> Dhaka </td>
+                              <td> 22 Dec, 2023 </td>
+                              <td>
+                                  <p class="status cancelled">Cancelled</p>
+                              </td>
+                              <td> <strong>$249.99</strong> </td>
+                          </tr>
+                          <tr>
+                              <td> 9</td>
+                              <td><img src="images/Alex Gonley.jpg" alt=""> Alson GC </td>
+                              <td> Dhaka </td>
+                              <td> 22 Dec, 2023 </td>
+                              <td>
+                                  <p class="status cancelled">Cancelled</p>
+                              </td>
+                              <td> <strong>$249.99</strong> </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </section>
+          </main>
+        
+          </div>
+
+
+              <div class="pie-card">
+                  <p class="pie-title" class="h2">UTILIZATION RATE</p>
+                  <div id="pie-chart" class="canvas-container"></div>
+                  <br>
+                  <h2>Utilization Rate: 75%</h2>
+              </div>
+
+
+
+
+
+
+
+            
+          </div>
+          
+         
+          
+
+            <!-- --------------- ADD--------------- -->
+            <div class="addentry" id="add_form" style="display: none;">
+              <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                  <h3 class="addentry-title">Add new Entry</h3>
+                  {% if error %}
+                  <p class="addentry-error-message">{{ error }}</p>
+                  {% endif %}
+                  <div class="addentry-input-div one">
+                      <div class="addentry-i">
+                          <i class="fas fa-user"></i>
+                      </div>
+                      <div class="addentry-div">
+                          <h5>Name:</h5>
+                          <input type="text" class="addentry-input" name="name" required>
+                      </div>
+                  </div>
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-dollar-sign"></i>
+                      </div>
+                      <div class="addentry-div">
+                          <h5>Budget:</h5>
+                          <input type="text" class="addentry-input" name="budget" required>
+                      </div>
+                  </div>
+
+                
+
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-dollar-sign"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>Budget Source:</h5>
+                          <input type="text" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+
+
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-user"></i>
+                      </div>
+                      <div class="addentry-div">
+                          <h5>Title:</h5>
+                          <input type="Text class="addentry-input" name="start_date" placeholder="" required>
+                      </div>
+                  </div>
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>Start Date:</h5>
+                          <input type="date" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>End Date:</h5>
+                          <input type="date" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+
+                  <input type="submit" class="addentry-btn" value="Save">
+              </form>
+          </div>
+          <!-- ----------
+            
+            
+            
+            ----- Edit--------------- -->
+          <div class="addentry" id="edit_form" style="display: none;">
+            
+              <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                  <h3 class="addentry-title">Edit Entry</h3>
+                  {% if error %}
+                  <p class="addentry-error-message">{{ error }}</p>
+                  {% endif %}
+
+
+                 
+                  <div class="addentry-input-div one">
+                      <div class="addentry-i">
+                          <i class="fas fa-user"></i>
+                      </div>
+                      <div class="addentry-div">
+                          <h5>Name:</h5>
+                          <input type="text" class="addentry-input" name="name" required>
+                      </div>
+                  </div>
+
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>Start Date:</h5>
+                          <input type="date" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-calendar"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>End Date:</h5>
+                          <input type="date" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+                  <div class="addentry-input-div" id="dd">
+                      <div class="addentry-i">
+                          <i class="fas fa-dollar-sign"></i>
+                      </div>
+                      <div>
+                          <h5>Budget Source:</h5>
+                          <div class="dropdown">
+                              <button class="dropbtn">Select Budget Source</button>
+                              <div class="dropdown-content">
+                                  <a href="#">Source 1</a>
+                                  <a href="#">Source 2</a>
+                                  <a href="#">Source 3</a>
+                                  <!-- Add more options as needed -->
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  
+                  
+
+
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-dollar-sign"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>Budget:</h5>
+                          <input type="text" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+
+
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-dollar-sign"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>Spent:</h5>
+                          <input type="text" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+                  <div class="addentry-input-div">
+                      <div class="addentry-i">
+                          <i class="fas fa-user"></i>
+                      </div>
+                      
+                      <div class="addentry-div">
+                          <h5>Implementing Department</h5>
+                          <input type="text" class="addentry-input" name="end_date" placeholder="" required>
+                      </div>
+                  </div>
+                
+
+               
+
+
+
+
+                  <input type="submit" class="addentry-btn" value="Update">
+              </form>
+          </div>
+          
+
+      
+
+<!-- --------------- delete--------------- -->
+
+          <div class="addentry" id="delete_form" style="display: none;">
+              <form action="{% url 'login' %}" method="post">
+              <h3 class="addentry-title">Are you sure you want to delete 'Entry'?</h3>
+                 
+                  <input type="submit" class="addentry-btn" id="delete"value="Delete">
+              </form>
+          </div>
+          
+      </section>
+
+
+      <main class="dashboard" id="dashboard">
+        <div class="main-title">
+            <p class="font-weight-bold"> ACTIVITIES DASHBOARD</p>
+          </div>
+  
+          <div class="main-cards">
+  
+          
+  
+            
+  
+            <div class="card">
+              <div class="card-inner">
+                <p class="text-primary">Activities </p>
+                <span class="material-icons-outlined text-green">hardware</span>
+              </div>
+              <span class="text-primary font-weight-bold">9</span>
+            </div>
+  
+         
+  
+          </div>
+  
+          <div class="charts">
+  
+            <div class="charts-card">
+                <p class="chart-title">Activities Utilization Rate</p>
+                
+                <div id="pie"></div>
+                <p class="util">Utilization Rate: 75%</p>
+            </div>
+            
+  
+            <div class="charts-card">
+              <p class="chart-title">Utilization Rate for Activities</p>
+              <div id="area"></div>
+            </div>
+  
+          </div>
+        </main>
+  </main>
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- End Main -->
+
+  </div>
+
+  <!-- Scripts -->
+  <!-- ApexCharts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+  <!-- Custom JS -->
+  <script>
+    // SIDEBAR TOGGLE
+
+let sidebarOpen = false;
+const sidebar = document.getElementById('sidebar');
+
+function openSidebar() {
+if (!sidebarOpen) {
+  sidebar.classList.add('sidebar-responsive');
+  sidebarOpen = true;
+}
+}
+
+function closeSidebar() {
+if (sidebarOpen) {
+  sidebar.classList.remove('sidebar-responsive');
+  sidebarOpen = false;
+}
+}
+
+
+
+// AREA CHART
+const areaChartOptions = {
+  series: [
+      { name: 'Project 1', data: [31, 40, 28, 51, 42, 109, 100] },
+      { name: 'Project 2', data: [11, 32, 45, 32, 34, 52, 41] },
+      { name: 'Project 3', data: [25, 18, 45, 23, 36, 70, 65] },
+      { name: 'Project 4', data: [45, 55, 48, 52, 61, 80, 75] },
+      { name: 'Project 5', data: [60, 65, 70, 68, 72, 85, 90] },
+      { name: 'Project 6', data: [20, 30, 25, 40, 35, 50, 55] }
+  ],
+  chart: {
+      height: 350,
+      type: 'area',
+      toolbar: { show: false },
+  },
+  colors: ['#4f35a1', '#246dec', '#ff9800', '#9c27b0', '#009688', '#ff5722'],
+  dataLabels: { enabled: false },
+  stroke: { curve: 'smooth' },
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+  markers: { size: 0 },
+  yaxis: [
+      { title: { text: '' } }, // Empty title to remove text on the sides
+      { opposite: true, title: { text: '' } } // Empty title to remove text on the sides
+  ],
+  tooltip: { shared: true, intersect: false },
+};
+
+const areaChart = new ApexCharts(
+  document.querySelector('#area-chart'),
+  areaChartOptions
+);
+areaChart.render();
+
+
+  </script>
+
+
+<!-- ----- TYPING JS Link ----- -->
+<script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+<!-- ----- SCROLL REVEAL JS Link----- -->
+<script src="https://unpkg.com/scrollreveal"></script>
+<!-- ----- MAIN JS ----- -->
+<script src="assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
+<script>
+function toggleAddForm() {
+    var add_form = document.getElementById('add_form');
+    var table = document.getElementById('table_form');
+var edit_form = document.getElementById('edit_form');
+
+
+    if (add_form.style.display === 'none') {
+        add_form.style.display = '';
+      
+        table.style.display = 'none'; // Hide the table
+    } else {
+        add_form.style.display = 'none';
+        
+        table.style.display = ''; // Show the table
+    }
+}
+
+
+function toggleEditForm() {
+    var edit_form = document.getElementById('edit_form');
+    var table = document.getElementById('table_form');
+
+    if (edit_form.style.display === 'none') {
+        edit_form.style.display = '';
+        table.style.display = 'none'; // Hide the table
+    } else {
+        edit_form.style.display = 'none';
+        table.style.display = ''; // Show the table
+    }
+}
+
+// Get all elements with the class "btn-edit"
+var editButtons = document.querySelectorAll('.edit');
+
+// Loop through each edit button and assign the onclick event
+editButtons.forEach(function(button) {
+    button.onclick = toggleEditForm;
+});
+
+
+
+
+
+function toggleDeleteForm() {
+    var delete_form = document.getElementById('delete_form');
+    var table = document.getElementById('table_form');
+    var add = document.getElementById('add_form');
+    var edit = document.getElementById('edit_form');
+
+    if (delete_form.style.display === 'none') {
+    delete_form.style.display = '';
+        table.style.display = 'none'; // Hide the table
+        edit.style.display = 'none'; // Hide the table
+        add.style.display = 'none'; // Hide the table
+    } else {
+        delete_form.style.display = 'none';
+        table.style.display = '';
+    }
+}
+
+// Get all elements with the class "btn-edit"
+var editButtons = document.querySelectorAll('.btn-delete');
+
+// Loop through each edit button and assign the onclick event
+editButtons.forEach(function(button) {
+    button.onclick = toggleDeleteForm;
+});
+
+
+
+
+
+function toggleUpdateForm() {
+    var delete_form = document.getElementById('update_form');
+    var table = document.getElementById('table_form');
+    var add = document.getElementById('add_form');
+    var edit = document.getElementById('edit_form');
+
+    if (delete_form.style.display === 'none') {
+    delete_form.style.display = '';
+        table.style.display = 'none'; // Hide the table
+        edit.style.display = 'none'; // Hide the table
+        add.style.display = 'none'; // Hide the table
+    } else {
+        delete_form.style.display = 'none';
+        table.style.display = '';
+    }
+}
+
+// Get all elements with the class "btn-edit"
+var editButtons = document.querySelectorAll('.update');
+
+// Loop through each edit button and assign the onclick event
+editButtons.forEach(function(button) {
+    button.onclick = toggleDeleteForm;
+});
+
+
+
+</script>
+
+
+
+
+<script>
+
+function details() {
+    var add_form = document.getElementById('details');
+    var table = document.getElementById('table_form');
+
+
+
+    if (add_form.style.display === 'none') {
+        add_form.style.display = 'flex';
+      
+        table.style.display = 'none'; // Hide the table
+    } else {
+        add_form.style.display = 'none';
+        
+        table.style.display = ''; // Show the table
+    }
+}
+
+
+</script>
+
+
+<script>
+// PIE CHART
+const budget = 10000; // Example total budget amount
+const totalSpent = 7500; // Example total spent amount
+const remainingBudget = budget - totalSpent;
+
+const utilizationRateData = {
+  series: [totalSpent, remainingBudget],
+  labels: ['Spent', 'Remaining Budget'],
+  colors: ['#4f35a1', '#246dec'], // You can adjust colors as needed
+};
+
+const pieChartOptions = {
+  series: utilizationRateData.series,
+  chart: {
+    type: 'pie',
+    height: 350,
+  },
+  labels: utilizationRateData.labels,
+  colors: utilizationRateData.colors,
+  legend: {
+    position: 'bottom',
+    horizontalAlign: 'center',
+    fontSize: '14px',
+  },
+  dataLabels: {
+    enabled: true,
+    enabledOnSeries: undefined,
+    formatter: function (val, opts) {
+      return opts.w.globals.labels[opts.seriesIndex] + ": " + val.toFixed(2) + '%';
+    },
+  },
+  responsive: [
+    {
+      breakpoint: 480,
+      options: {
+        chart: {
+          width: 300,
+        },
+        legend: {
+          position: 'bottom',
+        },
+      },
+    },
+  ],
+};
+
+const pieChart = new ApexCharts(document.querySelector('#pie-chart'), pieChartOptions);
+pieChart.render();
+</script>
+
+
+<script>
+// AREA CHART
+const spentPerMonthData = {
+  series: [
+    {
+      name: 'Spent per Month',
+      data: [2000, 2500, 3000, 3500, 4000, 4500, 5000], // Example data, replace with your actual data
+    },
+  ],
+  chart: {
+    height: 350,
+    type: 'area',
+    toolbar: {
+      show: false,
+    },
+  },
+  colors: ['#4f35a1'],
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    curve: 'smooth',
+  },
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'], // Replace with your actual month labels
+  markers: {
+    size: 0,
+  },
+  yaxis: [
+    {
+      title: {
+        text: 'Spent (in $)', // Y-axis title
+      },
+    },
+  ],
+  tooltip: {
+    shared: true,
+    intersect: false,
+  },
+};
+
+const spentPerMonthChart = new ApexCharts(
+  document.querySelector('#area-chart'),
+  spentPerMonthData
+);
+spentPerMonthChart.render();
+
+
+</script>
+
+
+
+<script>
+
+function details() {
+            var add_form = document.getElementById('details');
+            var table = document.getElementById('table_form');
+   
+
+
+            if (add_form.style.display === 'none') {
+                add_form.style.display = 'flex';
+              
+                table.style.display = 'none'; // Hide the table
+            } else {
+                add_form.style.display = 'none';
+                
+                table.style.display = ''; // Show the table
+            }
+        }
+
+        function dashboard() {
+    var add_form = document.getElementById('dashboard');
+    var table = document.getElementById('table_form');
+    var button = document.getElementById('dashboardButton');
+
+    if (add_form.style.display === 'none') {
+        add_form.style.display = 'block';
+        table.style.display = 'none'; // Hide the table
+        button.value = 'View Table'; // Change button text
+    } else {
+        add_form.style.display = 'none';
+        table.style.display = ''; // Show the table
+        button.value = 'View Dashboard'; // Change button text
+    }
+}
+
+    </script>
+
+
+
+
+
+<script>
+  
+// ---------- CHARTS ----------
+// PIE CHART
+const pieCharts = {
+  series: [75, 25], // Overall utilization rate values (for example)
+  chart: {
+    type: 'pie',
+    height: 350,
+    toolbar: {
+      show: false,
+    },
+  },
+  colors: ['#246dec', '#cc3c43', '#367952', '#f5b74f', '#4f35a1'],
+  plotOptions: {
+    pie: {
+      customScale: 0.8, // Adjust this value as needed
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  legend: {
+    show: false,
+  },
+  labels: ['Budget', 'Spent'], // Updated labels
+};
+
+const pie = new ApexCharts(
+  document.querySelector('#pie'),
+  pieChartOptions
+);
+pie.render();
+
+
+
+// AREA CHART
+const ChartOptions = {
+  series: [
+      {
+          name: 'Project A',
+          data: [31, 40, 28, 51, 42, 109, 100],
+      },
+      {
+          name: 'Project B',
+          data: [11, 32, 45, 32, 34, 52, 41],
+      },
+  ],
+  chart: {
+      height: 350,
+      type: 'area',
+      toolbar: {
+          show: false,
+      },
+  },
+  colors: ['#4f35a1', '#246dec'],
+  dataLabels: {
+      enabled: false,
+  },
+  stroke: {
+      curve: 'smooth',
+  },
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+  markers: {
+      size: 0,
+  },
+  yaxis: [
+      {
+          title: {
+              text: 'Project A',
+          },
+      },
+      {
+          opposite: true,
+          title: {
+              text: 'Project B',
+          },
+      },
+  ],
+  tooltip: {
+      shared: true,
+      intersect: false,
+  },
+};
+
+const areas = new ApexCharts(
+  document.querySelector('#area'),
+  areaChartOptions
+);
+areas.render();
+
+
+
+
+
+
+
+</script>
+
+
+
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+
+
+
+
+
+
+</body>
+</html>
