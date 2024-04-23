@@ -38,7 +38,7 @@
               </div>
               <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
           </div>
-      
+  
           <ul class="sidebar-list">
   
             <li class="sidebar-list-item">
@@ -56,71 +56,63 @@
                   <a class="dropdown-item" href="{% url 'ongoing' %}" id="activea">Ongoing Projects</a>
                   <a class="dropdown-item" href="{% url 'finished' %}">Finished Projects</a>
               </div>
-          </li>
-          
-          <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+            </li>
+  
+            <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+                <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="material-symbols-outlined">payments</span> Obligations and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disbursements
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+                    <a class="dropdown-item" href="{% url 'obligations' %}">Obligations</a>
+                    <a class="dropdown-item" href="{% url 'disbursements' %}" id="activea">Disbursements</a>
+                </div>
+            </li>
+  
+            <li class="sidebar-list-item">
+              <a href="{% url 'procurements' %}" >
+                <span class="material-icons-outlined">shopping_cart</span> Procurements
+              </a>
+            </li>
+  
+            <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
               <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="material-symbols-outlined">payments</span> Obligations and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Disbursements
+                  <span class="material-symbols-outlined">payments</span> Monitoring and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Evaluation
               </a>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
-                  <a class="dropdown-item" href="{% url 'obligations' %}">Obligations</a>
-                
-                  <a class="dropdown-item" href="{% url 'disbursements' %}" id="activea">Disbursements</a>
+                  <a class="dropdown-item" href="{% url 'monitoring' %}">Monitoring</a>
+                  <a class="dropdown-item" href="{% url 'evaluation' %}">Evaluation</a>
               </div>
-          </li>
+            </li>
   
+            <li class="sidebar-list-item">
+              <a href="{% url 'reports' %}" >
+                <span class="material-icons-outlined">poll</span> Reports
+              </a>
+            </li>
   
-          <li class="sidebar-list-item">
-            <a href="{% url 'procurements' %}" >
-              <span class="material-icons-outlined">shopping_cart</span> Procurements
-            </a>
-          </li>
-          <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
-            <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="material-symbols-outlined">payments</span> Monitoring and <br><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Evaluation
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
-                <a class="dropdown-item" href="{% url 'monitoring' %}">Monitoring</a>
-              
-                <a class="dropdown-item" href="{% url 'evaluation' %}">Evaluation</a>
-            </div>
-        </li>
-        <li class="sidebar-list-item">
-          <a href="{% url 'reports' %}" >
-            <span class="material-icons-outlined">poll</span> Reports
-          </a>
-        </li>
-          <li class="sidebar-list-item">
-            <a href="{% url 'register' %}" target="_blank">
-              <span class="material-icons-outlined">savings</span> Revenue Streams
-            </a>
-          </li>
-         
-          <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
-            <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="material-symbols-outlined">person</span> Account
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
-                <a class="dropdown-item" href="{% url 'register' %}">Register</a>
-              
-                <a class="dropdown-item" href="{% url 'admin:index' %}">Django Admin</a>
-            </div>
-        </li>
+            <li class="sidebar-list-item">
+              <a href="{% url 'register' %}" target="_blank">
+                <span class="material-icons-outlined">savings</span> Revenue Streams
+              </a>
+            </li>
   
+            <li class="sidebar-list-item dropdown" > <!-- Added dropdown class -->
+              <a href="#" class="dropdown-toggle" id="dropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="material-symbols-outlined">person</span> Account
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+                  <a class="dropdown-item" href="{% url 'register' %}">Register</a>
+                  <a class="dropdown-item" href="{% url 'admin:index' %}">Django Admin</a>
+              </div>
+            </li>
   
+            <li class="sidebar-list-item">
+              <a href="{% url 'logout' %}" >
+                <span class="material-icons-outlined">logout</span> Logout
+              </a>
+            </li>
   
-        
-  
-        
-  
-        
-        <li class="sidebar-list-item">
-          <a href="{% url 'logout' %}" >
-            <span class="material-icons-outlined">logout</span> Logout
-          </a>
-        </li>
-       
-        </ul>
+          </ul>
       </aside>
       <!-- End Sidebar -->
 
@@ -134,81 +126,79 @@
             <h1 class="page-title"></h1>
             <div class="div">
                <h2> <a href="{% url 'ongoing' %}" >Ongoing Projects</a></h2>
-                <input type="text" class="input" name="username" placeholder="Search by Project Name" required><input type="submit" class="searchreport" value="Search">
-
-                {% if user.is_superuser %}
-                <input type="submit" onClick="toggleAddForm()" class="btn-submitreport" value="Add new entry">
-                {% endif %}
-
-                <input type="submit" onClick="dashboard()" style="background-color: red;"class="btn btn-submitreport" id="dashboardButton" value="View Dashboard">
             </div>
             <div class="table-container">
             </div>
-            <table class="content-table" id="table_form">
-                <thead>
-                    <tr>
-                        <th>Project Name</th>
-                        <th>Budget</th>
-                        <th>Implementing<br> Department</th>
-                        <th>Action</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                 
-                    <tr>
-                        <td onclick="details()">Sample</td>
-                        <td>Sample</td>
-                        <td>Sample</td>
+            <<div class="pie-card2">
+              <section class="table__header">
+                  <h1>Acitivies Table {% if user.is_superuser %}
+                    <input type="submit" onClick="toggleAddForm()" class="btn-submitreport" value="Add new entry">
+                    {% endif %}<input type="submit" onClick="dashboard()" style="background-color: red;"class="btn btn-submitreport" id="dashboardButton" value="View Dashboard"></h1>
+                  <div class="input-group">
+                      <input type="search" placeholder="Search Data...">
                       
-                        {% if user.is_superuser %}     
-                        <td><input type="submit" class="btn btn-edit" style="background-color: navy; "onclick="toggleUpdateForm() "    value="Update">
-                            <input type="submit" class="btn btn-edit"  style="background-color: green;"         onclick="toggleEditForm() " value="Edit">
-                            <input type="submit" class="btn btn-delete" value="Delete"></td>  {% endif %}
-                    </tr>
-                 
-                   
-                  
-                </tbody>
-            </table>
-            <div id="details">
-                <div class="section" id="data">
-                    <h2 class="h2">PROJECT DETAILS</h2>
-                    <br>
-                    <h3><b>Name: </b><span class="sample"> Project 1</span></h3>
-                    <h3><b>Start Date: </b><span class="sample">01/02/2024</span></h3>
-                    <h3><b>End Date: </b><span class="sample">12/23/2024</span></h3>
-                    <h3><b>Budget: </b><span class="sample">500000000</span></h3>
-                    <h3><b>Budget Source: </b><span class="sample">LDF 1</span></h3>
-                    <h3><b>Total Spent: </b><span class="sample">99999</span></h3>
-                    <h3><b>Implementing Department: </b><span class="sample">IT Department</span></h3><br>
-                    <h2 class="h2">SPENT UPDATES</h2><br>
-                    <table class="tabled">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Spent</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>Data 2</td>
-                                <td>Data 3</td>
-                            </tr>
-                            <!-- Add more rows as needed -->
-                        </tbody>
-                    </table>
-                </div>
+                  </div>
+              </section>
+              <section class="table__body">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th> Project ID <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Project Name <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Budget <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Department Date <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Status <span class="icon-arrow">&UpArrow;</span></th>
+                              <th> Action <span class="icon-arrow">&UpArrow;</span></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td> 1 </td>
+                              <td>Road Concreting Project</td>
+                              <td> P40,000,000.00 </td>
+                              <td> Engineering Office </td>
+                              <td>
+                                  <p class="status delivered">Finished</p>
+                              </td>
+                              <td> <strong> WHATTT </strong></td>
+                          </tr>
+                          <tr>
+                              <td> 2 </td>
+                              <td>Seawall Repair </td>
+                              <td> P65,000.00 </td>
+                              <td> MCWD </td>
+                              <td>
+                                  <p class="status cancelled">Ongoing</p>
+                              </td>
+                              <td> <strong>$WHATT.50</strong> </td>
+                          </tr>
+                          <tr>
+                            <td> 2 </td>
+                            <td>Seawall Repair </td>
+                            <td> P65,000.00 </td>
+                            <td> MCWD </td>
+                            <td>
+                                <p class="status cancelled">Ongoing</p>
+                            </td>
+                            <td> <strong>$WHATT.50</strong> </td>
+                        </tr>
+                      </tbody>
+                  </table>
+              </section>
+
+                  <p class="pie-title" class="h2">UTILIZATION RATE</p>
+                  <div id="pie-chart" class="canvas-container"></div>
+                  <br>
+                  <h2>Utilization Rate: 75%</h2>
+          
 
 
-                <div class="pie-card">
-                    <p class="pie-title" class="h2">UTILIZATION RATE</p>
-                    <div id="pie-chart" class="canvas-container"></div>
-                    <br>
-                    <h2>Utilization Rate: 75%</h2>
-                </div>
+
+
+
+
+            
+          </div>
 
 
 

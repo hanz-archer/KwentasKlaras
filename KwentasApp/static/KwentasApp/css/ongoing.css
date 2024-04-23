@@ -68,14 +68,18 @@ body {
 /* ---------- SIDEBAR ---------- */
   
 #sidebar {
-  grid-area: sidebar;
-  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
   background-color: #21232d;
- 
-  color: #9799ab;
-  overflow-y: auto;
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
+  overflow-y: auto; /* Enable scrolling if content exceeds height */
+}
+
+.main-content {
+  margin-left: 250px; /* Adjust this value to match the width of your sidebar */
+  padding: 20px;
 }
 
 .sidebar-title {
@@ -407,12 +411,12 @@ body {
 
 
   .section {
+    margin-bottom: 3px;
     width:auto;
     max-width: 1200px; /* Set a max-width for the section */
     margin: 0 auto; /* Center the section */
     padding: 20px;
-   
-    margin-top: -6%;
+  
 }
 
 .container {
@@ -437,6 +441,7 @@ body {
 
 .table-container {
     overflow-x: auto;
+    margin-bottom: 100px;
 }
 
 .content-table {
@@ -575,6 +580,7 @@ h3 {
 .div h2 a {
   text-decoration: none;
   color: #000;
+  margin-bottom: 50px;
 }
 
 
@@ -1078,9 +1084,23 @@ margin-left: 110%;
   
     .pie-card{
       margin-right: 100px;
-  height: auto;
+      height: auto;
       background-color: #ffffff;
-      margin-bottom: 170px;
+      margin-bottom: 100px;
+      padding: 25px;
+      box-sizing: border-box;
+      -webkit-column-break-inside: avoid;
+      border: 1px solid #d2d2d3;
+      border-radius: 5px;
+      box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
+      
+    }
+
+    .pie-card2{
+      margin-right: 100px;
+      height: auto;
+      background-color: #ffffff;
+      margin-bottom: 390px;
       padding: 25px;
       box-sizing: border-box;
       -webkit-column-break-inside: avoid;
@@ -1092,12 +1112,7 @@ margin-left: 110%;
   
   .pie-card h2{
   margin-left: 40px;
-  
     }
-
-
-
-
 
     
 /* ---------- MAIN ---------- */

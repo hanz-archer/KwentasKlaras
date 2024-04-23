@@ -145,8 +145,8 @@
 
           <div class="table-container">
           </div>
-    
-            <main class="table" id="customers_table">
+
+          <div class="pie-card2">
               <section class="table__header">
                   <h1>Acitivies Table {% if user.is_superuser %}
                     <input type="submit" onClick="toggleAddForm()" class="btn-submitreport" value="Add new entry">
@@ -189,21 +189,25 @@
                               </td>
                               <td> <strong>$WHATT.50</strong> </td>
                           </tr>
+                          <tr>
+                            <td> 2 </td>
+                            <td>Seawall Repair </td>
+                            <td> P65,000.00 </td>
+                            <td> MCWD </td>
+                            <td>
+                                <p class="status cancelled">Ongoing</p>
+                            </td>
+                            <td> <strong>$WHATT.50</strong> </td>
+                        </tr>
                       </tbody>
                   </table>
               </section>
-          </main>
-        
-          </div>
 
-
-              <div class="pie-card">
                   <p class="pie-title" class="h2">UTILIZATION RATE</p>
                   <div id="pie-chart" class="canvas-container"></div>
                   <br>
                   <h2>Utilization Rate: 75%</h2>
-              </div>
-
+          
 
 
 
