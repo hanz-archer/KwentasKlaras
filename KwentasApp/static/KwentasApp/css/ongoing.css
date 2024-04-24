@@ -1,4 +1,5 @@
 body {
+  font-size: 16px;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -37,8 +38,9 @@ body {
 }
 
 .grid-container {
+
   display: grid;
-  grid-template-columns: 260px 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-template-rows: 0.2fr 3fr;
   grid-template-areas:
     "sidebar header header header"
@@ -318,7 +320,8 @@ body {
   /* ----- GLOBAL BUTTON DESIGN ----- */
   .btn {
       display: inline-block;
-      width: calc(25% - 10px); /* Adjust width to fit beside each other with a small gap */
+      width: 100%; /* Full width */
+      margin: 10px 0; /* Add some vertical spacing */ /* Adjust width to fit beside each other with a small gap */
       height: 30px; /* Adjust height as needed */
       line-height: 30px; /* Center text vertically */
       border-radius: 15px; /* Adjust border radius as needed */
@@ -328,7 +331,6 @@ body {
       color: #fff;
       font-family: 'Poppins', sans-serif;
       text-transform: uppercase;
-      margin: 1rem 5px; /* Adjust margin to create space between buttons */
       cursor: pointer;
       transition: .5s;
   }
@@ -411,13 +413,12 @@ body {
 
 
   .section {
-    margin-bottom: 3px;
-    width:auto;
-    max-width: 1200px; /* Set a max-width for the section */
-    margin: 0 auto; /* Center the section */
+    max-width: 1200px;
     padding: 20px;
-  
+    width: 90%; /* Adjust width of sections */
+    margin: 10px auto;
 }
+
 
 .container {
    
@@ -439,10 +440,102 @@ body {
     padding: 10px 20px;
 }
 
-.table-container {
-    overflow-x: auto;
-    margin-bottom: 100px;
+.table-container table,
+.pie-card2 table {
+    width: 100%;
+    border-collapse: collapse;
 }
+.table-container,
+.pie-card2 {
+    width: 100%; /* ensures containers take full available width */
+    padding: 0 15px; /* adds padding on the sides */
+}
+
+th, td {
+  text-align: left;
+  padding: 8px; /* Adjust padding as needed */
+  overflow: hidden; /* prevents text spillover */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .table__header h1 {
+      font-size: 16px;
+  }
+
+  .table-container table,
+  .pie-card2 table {
+      font-size: 14px;
+  }
+
+  .input-group input[type="search"] {
+    width: 100%; /* full-width search box */
+}
+
+  .btn-submitreport {
+      padding: 10px;
+      font-size: 12px;
+  }
+  .btn-submitreport, .input-group input[type="search"] {
+    margin-top: 10px;
+    width: 100%; /* full width for mobile */
+}
+
+.canvas-container {
+  width: 100%; /* Ensure the canvas container fits in view */
+  height: auto; /* Maintain aspect ratio */
+  display: flex;
+  justify-content: center; /* Centers the pie chart if smaller than container */
+}
+}
+
+@media (max-width: 480px) {
+  .table__header h1 {
+      flex-direction: column;
+  }
+
+
+  .input-group,
+  .btn-submitreport {
+      width: 100%;
+  }
+
+  .status {
+      padding: 5px;
+      display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-container, .pie-card2 .table__body {
+      overflow-x: auto;
+  }
+}
+
+
+@media (max-width: 480px) {
+  th, td {
+      font-size: 0.8em; /* smaller font size for table contents */
+  }
+}
+
+
+@media (max-width: 768px) {
+  .grid-container {
+      grid-template-columns: 1fr; /* switch to single column layout */
+  }
+
+  .table__header, .table__body, .pie-card2 {
+      margin-top: 20px;
+  }
+
+  h1, h2 {
+      font-size: 1.5em; /* smaller headings for small screens */
+  }
+}
+
+
 
 .content-table {
     width: 100%;
@@ -585,7 +678,7 @@ h3 {
 
 
 .input[type="text"] {
-    width: 20%;
+    width: 100%;
     height: 40px;
     padding: 5px;
     border: 1px solid #d9d9d9;
@@ -1359,6 +1452,10 @@ margin-top: -5%;
     overflow: auto;
     overflow: overlay;
 }
+.table__body table,
+.table__header h1 {
+    width: 100%; /* responsive table width */
+}
 
 
 .table__body::-webkit-scrollbar{
@@ -1378,7 +1475,8 @@ margin-top: -5%;
 
 
 table {
-    width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* helps in managing text overflow in cells */
 }
 
 td img {

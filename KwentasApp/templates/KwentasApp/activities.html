@@ -138,25 +138,27 @@
 
    
       <section class="section" id="projects">
-          <h1 class="page-title"></h1>
-          <div class="div">
+        <h1 class="page-title">Projects</h1>
+        <div class="link-container">
             <h2><a href="{% url 'procurements' %}">Activities</a></h2>
-          </div>
+        </div>
 
           <div class="table-container">
           </div>
 
           <div class="pie-card2">
-              <section class="table__header">
-                  <h1>Acitivies Table {% if user.is_superuser %}
+            <section class="table__header">
+                <h1>Activities Table
+                    {% if user.is_superuser %}
                     <input type="submit" onClick="toggleAddForm()" class="btn-submitreport" value="Add new entry">
-                    {% endif %}<input type="submit" onClick="dashboard()" style="background-color: red;"class="btn btn-submitreport" id="dashboardButton" value="View Dashboard"></h1>
-                  <div class="input-group">
-                      <input type="search" placeholder="Search Data...">
-                      
-                  </div>
-              </section>
-              <section class="table__body">
+                    {% endif %}
+                    <input type="submit" onClick="dashboard()" style="background-color: red;" class="btn btn-submitreport" id="dashboardButton" value="View Dashboard">
+                </h1>
+                <div class="input-group">
+                    <input type="search" placeholder="Search Data...">
+                </div>
+            </section>
+            <section class="table__body">
                   <table>
                       <thead>
                           <tr>
@@ -203,24 +205,12 @@
                   </table>
               </section>
 
-                  <p class="pie-title" class="h2">UTILIZATION RATE</p>
-                  <div id="pie-chart" class="canvas-container"></div>
-                  <br>
-                  <h2>Utilization Rate: 75%</h2>
-          
-
-
-
-
-
-
-            
+              <p class="pie-title">UTILIZATION RATE</p>
+              <div id="pie-chart" class="canvas-container"></div>
+              <h2>Utilization Rate: 75%</h2>
           </div>
-          
-         
-          
+      </section>
 
-            <!-- --------------- ADD--------------- -->
             <div class="addentry" id="add_form" style="display: none;">
               <form action="{% url 'login' %}" method="post">
                   {% csrf_token %}
@@ -395,22 +385,9 @@
                           <input type="text" class="addentry-input" name="end_date" placeholder="" required>
                       </div>
                   </div>
-                
-
-               
-
-
-
-
                   <input type="submit" class="addentry-btn" value="Update">
               </form>
           </div>
-          
-
-      
-
-<!-- --------------- delete--------------- -->
-
           <div class="addentry" id="delete_form" style="display: none;">
               <form action="{% url 'login' %}" method="post">
               <h3 class="addentry-title">Are you sure you want to delete 'Entry'?</h3>
@@ -428,11 +405,6 @@
           </div>
   
           <div class="main-cards">
-  
-          
-  
-            
-  
             <div class="card">
               <div class="card-inner">
                 <p class="text-primary">Activities </p>
