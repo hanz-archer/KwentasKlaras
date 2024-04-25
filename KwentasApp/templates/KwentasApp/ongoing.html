@@ -190,32 +190,12 @@
                   <div id="pie-chart" class="canvas-container"></div>
                   <br>
                   <h2>Utilization Rate: 75%</h2>
-          
-
-
-
-
-
-
-            
           </div>
-
-
-
-
-
-
-
                 <div class="charts-card">
                     <p class="chart-title"  class="h2">SPENT UPDATES</p>
                     <div id="area-chart" class="canvas-container"></div>
                 </div>
             </div>
-            
-           
-            
-
-              <!-- --------------- ADD--------------- -->
               <div class="addentry" id="add_form" style="display: none;">
                 <form action="{% url 'login' %}" method="post">
                     {% csrf_token %}
@@ -241,9 +221,6 @@
                             <input type="text" class="addentry-input" name="budget" required>
                         </div>
                     </div>
-
-                  
-
                     <div class="addentry-input-div">
                         <div class="addentry-i">
                             <i class="fas fa-dollar-sign"></i>
@@ -290,11 +267,7 @@
                     <input type="submit" class="addentry-btn" value="Save">
                 </form>
             </div>
-            <!-- ----------
-              
-              
-              
-              ----- Edit--------------- -->
+
             <div class="addentry" id="edit_form" style="display: none;">
               
                 <form action="{% url 'login' %}" method="post">
@@ -354,10 +327,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
-
-
                     <div class="addentry-input-div">
                         <div class="addentry-i">
                             <i class="fas fa-dollar-sign"></i>
@@ -437,10 +406,6 @@
                     </div>
 
                   </div>
-
-
-
-
                     <input type="submit" class="addentry-btn" id="updatebtn" value="Update">
                 </form>
             </div>
@@ -552,29 +517,6 @@
             </div>
           </main>
     </main>
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
       <!-- End Main -->
 
