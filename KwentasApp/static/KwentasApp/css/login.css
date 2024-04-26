@@ -22,8 +22,8 @@ body{
 
 .container {
     position: absolute;
-    top: 60%; /* Adjusted to center vertically */
-    left: 50%; /* Center horizontally */
+    top: 50%; /* Adjusted to center vertically */
+    left: 49%; /* Center horizontally */
     transform: translate(-50%, -50%);
     display: grid;
     grid-template-columns: repeat(2, 1fr);

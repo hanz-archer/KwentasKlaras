@@ -18,7 +18,7 @@
             <form action="{% url 'login' %}" method="post">
 				{% csrf_token %}
                 <img src="{% static 'KwentasApp/img/avatar.png' %}" alt="User Avatar">
-                <h2 class="title">Welcome to Kwentas Klaras</h2>
+                <h2 class="title">Kwentas Klaras</h2>
 				{% if error %}
                 <p class="error-message">{{ error }}</p>
             	{% endif %}
