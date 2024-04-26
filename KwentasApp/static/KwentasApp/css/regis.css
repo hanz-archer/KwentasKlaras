@@ -166,9 +166,6 @@ a{
 	transition: .3s;
 }
 
-a:hover{
-	color: #007FFF;
-}
 
 .btn{
 	display: block;

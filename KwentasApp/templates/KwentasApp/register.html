@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwentas Klaras Admin Registration</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/regis.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="img">
+            <img src="{% static 'KwentasApp/img/logo.png' %}">
+        </div>
+        <div class="login-content">
+            <form action="#" method="post">
+                {% csrf_token %}
+                <h2 class="title">Registration</h2>
+                {% if messages %}
+                <div class="messages" id="validation-messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <script>
+                    setTimeout(function() {
+                      var messagesDiv = document.querySelector('.messages');
+                      if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                      }
+                    }, 3000);
+                  </script>
+                {% endif %}
+                   <div class="input-div">
+                      <div class="i">
+                              <i class="fas fa-user"></i>
+                      </div>
+                      <div class="div">
+                              <h5>Account Username</h5>
+                              <input type="text" name="username" class="input">
+                      </div>
+                   </div>
+
+                   <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Name of Department Head</h5>
+                        <input type="text" name="name" class="input">
+                    </div>
+                </div>
+                   
+                   <div class="input-div">
+                      <div class="i">
+                              <i class="fas fa-envelope"></i>
+                      </div>
+                      <div class="div">
+                              <h5>Employee Email</h5>
+                              <input type="email" name="email" class="input">
+                      </div>
+                   </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="drop">
+                        <input type="text" name="department" placeholder="Department" onclick="toggleDropdown()" id="departmentInput" readonly>
+                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
+                        <ul class="content" id="departmentOptions">
+                            <li onclick="selectOption('IT Office')">IT Office</li>
+                            <li onclick="selectOption('Engineering Office')">Engineering Office</li>
+                            <li onclick="selectOption('Treasurers Office')">Treasurers Office</li>
+                            <li onclick="selectOption('Tourism Office')">Tourism Office</li>
+                            <li onclick="selectOption('Mayor Office')">Mayor Office</li>
+                        </ul>
+                    </div>
+                </div>
+                  
+                <div class="input-div">
+                    <div class="i clickable show-password" id="show-password-1">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Password</h5>
+                        <input type="password" class="input password-input" name="password1" required>
+                    </div>
+                </div>
+                
+                <div class="input-div">
+                    <div class="i clickable show-password" id="show-password-2">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Enter password again</h5>
+                        <input type="password" class="input password-input" name="password2" required>
+                    </div>
+                </div>
+
+                <input type="submit" class="btn">
+                <a href="{% url 'home' %}" class="btn-cancel">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+    <script>
+        document.getElementById('show-password').addEventListener('click', function () {
+            var passwordInput = document.getElementById('password-input');
+            var icon = document.querySelector('#show-password i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-lock');
+                icon.classList.add('fa-unlock-alt');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-unlock-alt');
+                icon.classList.add('fa-lock');
+            }
+        });
+    </script>
+    <script>
+        const inputs = document.querySelectorAll(".input");
+
+
+function addcl(){
+	let parent = this.parentNode.parentNode;
+	parent.classList.add("focus");
+}
+
+function remcl(){
+	let parent = this.parentNode.parentNode;
+	if(this.value == ""){
+		parent.classList.remove("focus");
+	}
+}
+
+
+inputs.forEach(input => {
+	input.addEventListener("focus", addcl);
+	input.addEventListener("blur", remcl);
+});
+    </script>
+
+<script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+<script>
+    function toggleDropdown() {
+        const departmentOptions = document.getElementById("departmentOptions");
+        departmentOptions.classList.toggle("show");
+    }
+
+    function selectOption(option) {
+        const departmentInput = document.getElementById("departmentInput");
+        departmentInput.value = option;
+        toggleDropdown();
+    }
+
+    // Close dropdown when clicking outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.fas.fa-chevron-down')) {
+            const departmentOptions = document.getElementById("departmentOptions");
+            if (departmentOptions.classList.contains('show')) {
+                departmentOptions.classList.remove('show');
+            }
+        }
+    }
+</script>
+<script>
+    document.querySelectorAll('.show-password').forEach(function (element) {
+        element.addEventListener('click', function () {
+            var passwordInput = element.nextElementSibling.querySelector('.password-input');
+            var icon = element.querySelector('i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-lock');
+                icon.classList.add('fa-unlock-alt');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-unlock-alt');
+                icon.classList.add('fa-lock');
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

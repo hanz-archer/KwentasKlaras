@@ -65,7 +65,7 @@ def registration_view(request):
     else:
         form = RegistrationForm()
 
-    return render(request, 'KwentasApp/reg.html', {'form': form})
+    return render(request, 'KwentasApp/register.html', {'form': form})
 
 def procurements(request):
     return render(request, 'KwentasApp/procurements.html')

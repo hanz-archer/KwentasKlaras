@@ -10,7 +10,7 @@
   .main-container {
     grid-area: main;
     overflow-y: auto;
-    padding: 20px 20px;
+    padding: 20px;
   }
   
   
@@ -22,7 +22,7 @@
   @media screen and (max-width: 992px) {
     .grid-container {
       grid-template-columns: 1fr;
-      grid-template-rows: 0.2fr 3fr;
+      grid-template-rows: auto auto; /* Adjusted for responsiveness */
       grid-template-areas:
         "header"
         "main";
@@ -205,71 +205,47 @@
   
   /* Small <= 768px */
   @media screen and (max-width: 768px) {
-
-  
-    .section {
+    .section,
+    .table-container {
       grid-template-columns: 1fr;
       margin-top: 30px;
-
     }
-
-    .table-container {
-        grid-template-columns: 1fr;
-        margin-top: 30px;
-      }
-    }
+  }
   
   
   @media screen and (max-width: 600px) {
-      .nav-name {
-          font-size: 24px;
-      }
-  
-      .nav-logo span {
-          font-size: 3em;
-      }
-  
-      .addentry form {
-          width: 300px;
-      }
-  
-      .img img {
-          width: 300px;
-      }
-  
-      .addentry h2 {
-          font-size: 2.5rem;
-      }
+    .nav-name {
+      font-size: 24px;
+    }
   }
   
   @media screen and (max-width: 480px) {
-      .nav-menu {
-          padding-inline: 5vw;
-      }
+    .nav-menu {
+      padding-inline: 5vw;
+    }
   
-      .nav-menu .nav_list {
-          flex-direction: column;
-          align-items: center;
-      }
+    .nav-menu .nav_list {
+      flex-direction: column;
+      align-items: center;
+    }
   
-      .nav-menu .nav_list .nav-link {
-          margin: 10px 0;
-      }
+    .nav-menu .nav_list .nav-link {
+      margin: 10px 0;
+    }
   
-      .scroll-btn {
-          width: 120px;
-          height: 40px;
-      }
+    .scroll-btn {
+      width: 120px;
+      height: 40px;
+    }
   
-      .scroll-btn i {
-          font-size: 18px;
-      }
+    .scroll-btn i {
+      font-size: 18px;
+    }
   
-      .table-container {
-          max-height: calc(100vh - 150px);
-      }
+    .table-container {
+      max-height: calc(100vh - 150px);
+    }
   }
-  
   
   
   
