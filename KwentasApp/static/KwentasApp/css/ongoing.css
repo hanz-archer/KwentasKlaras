@@ -1380,10 +1380,6 @@ margin-top: -5%;
 
 
 
-  
-
-
-
   main.table {
     width: 57.5vw;
     height: 90vh;
@@ -1452,6 +1448,8 @@ margin-top: -5%;
     overflow: auto;
     overflow: overlay;
 }
+
+
 .table__body table,
 .table__header h1 {
     width: 100%; /* responsive table width */
@@ -1680,4 +1678,166 @@ thead th.active,tbody td.active {
 .export__file .export__file-options img{
     width: 2rem;
     height: auto;
+}
+
+
+
+
+
+.table__body table {
+  width: 100%; /* Make the table fill its container */
+  border-collapse: collapse; /* Collapse table borders */
+}
+.table__body table th,
+.table__body table td {
+  padding: 8px; /* Add padding to table cells */
+  text-align: left; /* Align text to the left */
+}
+
+.table__body table th {
+  background-color: #f2f2f2; /* Light gray background for table header */
+}
+
+/* Display table headers as stacked rows on small screens */
+.table__body table td::before {
+  content: attr(data-label); /* Use the data-label attribute for header labels */
+  font-weight: bold; /* Bold text for header labels */
+  display: block; /* Display header labels as blocks */
+}
+
+/* Media query for mobile view */
+@media screen and (max-width: 600px) {
+  .card {
+    overflow-x: auto; /* Enable horizontal scrolling on small screens */
+  }
+  
+  .table__body table th,
+  .table__body table td {
+    padding: 4px; /* Reduce padding for smaller screens */
+    font-size: 14px; /* Reduce font size for smaller screens */
+  }
+}
+
+/* Media query for mobile view */
+@media screen and (max-width: 600px) {
+  .table__body table td {
+    padding: 8px; /* Add padding to table cells */
+    font-size: 14px; /* Reduce font size for smaller screens */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  }
+}
+
+.table__body table td.expanded {
+  width: 100%;
+}
+
+.table__body table td {
+  padding: 8px; /* Add padding to table cells */
+  font-size: 14px; /* Reduce font size for smaller screens */
+  white-space: nowrap; /* Prevent text wrapping */
+  overflow: hidden; /* Hide overflow */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+@media screen and (max-width: 600px) {
+  .table__body table {
+    width: 100%; /* Make the table fill its container */
+    border-collapse: collapse; /* Collapse table borders */
+    table-layout: auto; /* Reset table layout to default */
+  }
+
+  .table__body table th,
+  .table__body table td {
+    padding: 4px; /* Reduce padding for smaller screens */
+    font-size: 14px; /* Reduce font size for smaller screens */
+  }
+}
+
+.table__body table.expanded th,
+.table__body table.expanded td {
+  width: 100%; /* Expand both th and td to full width on mobile */
+}
+
+
+
+
+
+
+.main-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust minmax values as needed */
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.card {
+  padding: 25px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  border: 1px solid #d2d2d3;
+  border-radius: 5px;
+  box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+}
+
+.card:first-child {
+  border-left: 7px solid #246dec;
+}
+
+.card:nth-child(2) {
+  border-left: 7px solid #f5b74f;
+}
+
+.card:nth-child(3) {
+  border-left: 7px solid #367952;
+}
+
+.card:nth-child(4) {
+  border-left: 7px solid #cc3c43;
+}
+
+.card > span {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-inner > p {
+  font-size: 18px;
+}
+
+.card-inner > span {
+  font-size: 35px;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.charts-card {
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  padding: 25px;
+  box-sizing: border-box;
+  -webkit-column-break-inside: avoid;
+  border: 1px solid #d2d2d3;
+  border-radius: 5px;
+  box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
+}
+
+.chart-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 600;
 }

@@ -150,18 +150,6 @@
     padding: 20px 20px;
    
   }
- 
-
-
-
-
-
-
-
-
-
-
-
   
    /* Dropdown button */
    .dropbtn {
@@ -513,7 +501,7 @@ a:hover{
 	}
 }
 /* Add this style to hide the initial option */
-.select-hidden {
+.select-hidden {  
     display: none;
     visibility: hidden;
 }

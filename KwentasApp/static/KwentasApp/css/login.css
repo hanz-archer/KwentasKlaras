@@ -61,7 +61,7 @@ form{
 	margin: 15px 0;
 	color: #333;
 	text-transform: uppercase;
-	font-size: 2.9rem;
+	font-size:2.0rem;
 }
 
 .login-content .input-div{
@@ -121,13 +121,17 @@ form{
 	left: 50%;
 }
 
-.input-div.focus:before, .input-div.focus:after{
-	width: 50%;
+.input-div.focus:before, .input-div.focus:after {
+    content: "";  /* This is necessary for the pseudo-elements to be visible */
+    width: 50%;
 }
 
 .input-div.focus > div > h5{
 	top: -5px;
 	font-size: 15px;
+}
+.input-div .div {
+    position: relative;  /* Add this if necessary */
 }
 
 .input-div.focus > .i > i{

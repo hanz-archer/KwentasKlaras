@@ -18,7 +18,7 @@
             <form action="{% url 'login' %}" method="post">
 				{% csrf_token %}
                 <img src="{% static 'KwentasApp/img/avatar.png' %}" alt="User Avatar">
-                <h2 class="title">Welcome</h2>
+                <h2 class="title">Welcome to Kwentas Klaras</h2>
 				{% if error %}
                 <p class="error-message">{{ error }}</p>
             	{% endif %}
@@ -61,5 +61,28 @@
             }
         });
     </script>
+    <script>
+        const inputs = document.querySelectorAll(".input");
+
+
+function addcl(){
+	let parent = this.parentNode.parentNode;
+	parent.classList.add("focus");
+}
+
+function remcl(){
+	let parent = this.parentNode.parentNode;
+	if(this.value == ""){
+		parent.classList.remove("focus");
+	}
+}
+
+
+inputs.forEach(input => {
+	input.addEventListener("focus", addcl);
+	input.addEventListener("blur", remcl);
+});
+    </script>
+    
 </body>
 </html>
