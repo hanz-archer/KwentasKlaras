@@ -31,10 +31,11 @@ def base_view(request):
     logout(request)
     return redirect(reverse('login'))
 
+@login_required
 def reports_view(request):
     return render(request, 'KwentasApp/reports.html')
 
-
+@login_required
 def current_view(request):
     return render(request, 'KwentasApp/currentproject.html')
 
@@ -46,6 +47,8 @@ def home_view(request):
 
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
+
+
 
 @user_passes_test(is_superuser, login_url='login')
 def registration_view(request):
@@ -59,7 +62,7 @@ def registration_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Account created successfully. You can now log in.')
-            return redirect('login')
+            return redirect('home')
         else:
             messages.error(request, 'Error creating account. Please check the form data.')
     else:
@@ -67,10 +70,13 @@ def registration_view(request):
 
     return render(request, 'KwentasApp/register.html', {'form': form})
 
+
+
+@login_required
 def procurements(request):
     return render(request, 'KwentasApp/procurements.html')
 
-
+@login_required
 def ongoing(request):
     return render(request, 'KwentasApp/ongoing.html')
 
@@ -80,24 +86,29 @@ def logout_view(request):
     return redirect(reverse('login'))
 
 
-
+@login_required
 def monitoring(request):
     return render(request,'KwentasApp/monitoring.html')
 
-
+@login_required
 def evaluation(request):
     return render(request,'KwentasApp/evaluation.html')
 
+
+@login_required
 def activities(request):
     return render(request,'KwentasApp/activities.html')
 
+
+@login_required
 def obligations(request):
     return render(request,'KwentasApp/obligations.html')
 
 
+@login_required
 def disbursements(request):
     return render(request,'KwentasApp/disbursements.html')
 
-
+@login_required
 def finished(request):
     return render(request,'KwentasApp/finished.html')
