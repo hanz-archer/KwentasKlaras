@@ -132,9 +132,6 @@ body {
   color: black;
 }
 
-
-
-
 .sidebar-list-item > a {
   text-decoration: none;
   color: #9799ab;
@@ -186,20 +183,14 @@ body {
       transform: translateY(0);
   }
 }
-
-
-
 /* Adjust dropdown menu position when navbar is scrolled */
 .scrolled .dropdown-menu {
   top: auto; /* Reset top position */
 }
 
-
-
 .dropdown-menu a {
- 
   color: #9799ab;
-  padding: 10px;
+  padding: 8px;
   display: block;
   text-decoration: none;
 }
@@ -587,15 +578,15 @@ thead th span.icon-arrow {
 }
 
 thead th:hover span.icon-arrow{
-    border: 1.4px solid #6c00bd;
+    border: 1.4px solid #007FFF;
 }
 
 thead th:hover {
-    color: #6c00bd;
+    color: #007FFF;
 }
 
 thead th.active span.icon-arrow{
-    background-color: #6c00bd;
+    background-color: #007FFF;
     color: #fff;
 }
 
@@ -604,7 +595,7 @@ thead th.asc span.icon-arrow{
 }
 
 thead th.active,tbody td.active {
-    color: #6c00bd;
+    color: #007FFF;
 }
 
 .export__file {
@@ -682,11 +673,6 @@ thead th.active,tbody td.active {
     width: 2rem;
     height: auto;
 }
-
-
-
-
-
 .table__body table {
   width: 100%; /* Make the table fill its container */
   border-collapse: collapse; /* Collapse table borders */
