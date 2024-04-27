@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,6 +139,12 @@ AUTH_USER_MODEL = 'KwentasApp.CustomUser'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 1209600 
+
+
+JAZZMIN_SETTINGS = {
+    'site_header': "BOLJOON",
+    'site_brand': "LGU BOLJOON",
+}
 
 
 
