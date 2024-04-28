@@ -772,7 +772,6 @@ thead th.active,tbody td.active {
 .select-menu .select-btn {
   display: flex;
   height: 5px; /* Reduced height */
-  background: #fff;
   padding: 12px; /* Increased padding */
   font-size: 18px;
   font-weight: 400;
@@ -780,7 +779,6 @@ thead th.active,tbody td.active {
   align-items: center;
   cursor: pointer;
   justify-content: space-between;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .select-btn i {
