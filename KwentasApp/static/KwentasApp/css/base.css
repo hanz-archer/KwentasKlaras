@@ -833,3 +833,27 @@ thead th.active,tbody td.active {
 }
 
 
+@media only screen and (max-width: 768px) {
+  .main-title {
+    margin-bottom: 20px; /* Add space between "ACTIVITIES" and select menu button */
+  }
+
+  .select-menu {
+    display: flex;
+    justify-content: flex-end; /* Aligns the select menu to the right */
+    width: calc(100% - 30px); /* Make the select menu full width with some spacing */
+    margin-top: 10px; /* Add space between main title and select menu */
+    margin-right: 15px; /* Add space from the right side */
+  }
+
+  .select-menu .select-btn {
+    padding: 10px 15px; /* Adjust padding for better mobile display */
+  }
+
+  .options .option {
+    padding: 10px 16px; /* Adjust padding for better mobile display */
+  }
+}
+
+
+
