@@ -834,3 +834,10 @@ thead th.active,tbody td.active {
   color: #333;
 }
 
+
+@media only screen and (max-width: 768px) {
+  .main-title {
+    margin-bottom: 20px; /* Add space between "ACTIVITIES" and select menu button */
+  }
+}
+
