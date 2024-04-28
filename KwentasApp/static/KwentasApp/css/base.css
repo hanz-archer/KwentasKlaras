@@ -838,10 +838,16 @@ thead th.active,tbody td.active {
     margin-bottom: 20px; /* Add space between "ACTIVITIES" and select menu button */
   }
 
+  .main-title-container {
+    display: flex;
+    justify-content: space-between; /* Ensures space between title and select menu */
+    align-items: center; /* Aligns items vertically */
+  }
+
   .select-menu {
     display: flex;
     justify-content: flex-end; /* Aligns the select menu to the right */
-    width: calc(100% - 30px); /* Make the select menu full width with some spacing */
+    width: auto; /* Set width to auto */
     margin-top: 10px; /* Add space between main title and select menu */
     margin-right: 15px; /* Add space from the right side */
   }
