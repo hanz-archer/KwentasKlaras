@@ -764,7 +764,7 @@ thead th.active,tbody td.active {
 
 .select-menu {
   position: relative;
-  width: 175px;
+  width: 200px;
   margin: 0;
   z-index: 100;
 }
@@ -772,7 +772,7 @@ thead th.active,tbody td.active {
 .select-menu .select-btn {
   display: flex;
   height: 5px; /* Reduced height */
-  padding: 12px; /* Increased padding */
+  padding: 10px; /* Increased padding */
   font-size: 18px;
   font-weight: 400;
   border-radius: 8px;
@@ -830,35 +830,6 @@ thead th.active,tbody td.active {
 .option .option-text {
   font-size: 18px;
   color: #333;
-}
-
-
-@media only screen and (max-width: 768px) {
-  .main-title {
-    margin-bottom: 20px; /* Add space between "ACTIVITIES" and select menu button */
-  }
-
-  .main-title-container {
-    display: flex;
-    justify-content: space-between; /* Ensures space between title and select menu */
-    align-items: center; /* Aligns items vertically */
-  }
-
-  .select-menu {
-    display: flex;
-    justify-content: flex-end; /* Aligns the select menu to the right */
-    width: auto; /* Set width to auto */
-    margin-top: 10px; /* Add space between main title and select menu */
-    margin-right: 15px; /* Add space from the right side */
-  }
-
-  .select-menu .select-btn {
-    padding: 10px 15px; /* Adjust padding for better mobile display */
-  }
-
-  .options .option {
-    padding: 10px 16px; /* Adjust padding for better mobile display */
-  }
 }
 
 
