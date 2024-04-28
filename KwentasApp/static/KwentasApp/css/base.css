@@ -764,7 +764,7 @@ thead th.active,tbody td.active {
 
 .select-menu {
   position: relative;
-  width: 200px;
+  width: 175px;
   margin: 0;
   z-index: 100;
 }
@@ -773,7 +773,7 @@ thead th.active,tbody td.active {
   display: flex;
   height: 5px; /* Reduced height */
   background: #fff;
-  padding: 15px; /* Increased padding */
+  padding: 12px; /* Increased padding */
   font-size: 18px;
   font-weight: 400;
   border-radius: 8px;
@@ -834,10 +834,4 @@ thead th.active,tbody td.active {
   color: #333;
 }
 
-
-@media only screen and (max-width: 768px) {
-  .main-title {
-    margin-bottom: 20px; /* Add space between "ACTIVITIES" and select menu button */
-  }
-}
 
