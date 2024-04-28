@@ -124,13 +124,33 @@
 
       <!-- Main -->
       <main class="main-container">
-        <div class="main-title">
-          <p class="font-weight-bold">ONGOING ACTIVITIES</p>
+        <div class="main-title-container"> <!-- New flex container for title and select menu -->
+            <div class="main-title">
+                <p class="font-weight-bold">ACTIVITIES</p>
+            </div>
+            <div class="select-menu">
+                <div class="select-btn">
+                    <span class="sBtn-text">Table Actions</span>
+                    <i class="bx bx-chevron-down"></i>
+                </div>
+                <ul class="options">
+                    <li class="option">
+                        <i class="bx bxl-github" style="color: #171515;"></i>
+                        <span class="option-text">Add Data</span>
+                    </li>
+                    <li class="option">
+                        <i class="bx bxl-instagram-alt" style="color: #E1306C;"></i>
+                        <span class="option-text">Update Data</span>
+                    </li>
+                    <li class="option">
+                        <i class="bx bxl-linkedin-square" style="color: #0E76A8;"></i>
+                        <span class="option-text">Delete Data</span>
+                    </li>
+                    
+                </ul>
+            </div>
         </div>
-
         <div class="main-cards">
-
-
           <div class="card">
             <div class="card-inner">
               <section class="table__body">
@@ -140,7 +160,8 @@
                             <th> Project ID <span class="icon-arrow">&UpArrow;</span></th>
                             <th> Project Name <span class="icon-arrow">&UpArrow;</span></th>
                             <th> Budget <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Department Date <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Department <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Date <span class="icon-arrow">&UpArrow;</span></th>
                             <th> Status <span class="icon-arrow">&UpArrow;</span></th>
                             <th> Action <span class="icon-arrow">&UpArrow;</span></th>
                         </tr>
@@ -151,6 +172,7 @@
                             <td>Road Concreting Project</td>
                             <td> P40,000,000.00 </td>
                             <td> Engineering Office </td>
+                            <td> 4/14/24 </td>
                             <td>
                                 <p class="status delivered">Finished</p>
                             </td>
@@ -161,6 +183,7 @@
                             <td>Seawall Repair </td>
                             <td> P65,000.00 </td>
                             <td> MCWD </td>
+                            <td> 4/14/24 </td>
                             <td>
                                 <p class="status cancelled">Ongoing</p>
                             </td>
@@ -171,6 +194,7 @@
                           <td>Seawall Repair </td>
                           <td> P65,000.00 </td>
                           <td> MCWD </td>
+                          <td> 4/14/24 </td>
                           <td>
                               <p class="status cancelled">Ongoing</p>
                           </td>
@@ -189,9 +213,6 @@
               <div id="pie-chart"></div>
               <p class="chart-title">Utilization Rate: 60%</p>
           </div>
-
-          
-    
       </div>
       </main>
       <!-- End Main -->
@@ -212,21 +233,19 @@ $(document).ready(function() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
 <!-- Custom JS -->
 <script src="{% static 'KwentasApp/js/script.js' %}"></script>
-
 <script>
-
-
-
-
-
-
-</script>
-
-
-
-
-
-  
-    
+  const optionMenu = document.querySelector(".select-menu"),
+         selectBtn = optionMenu.querySelector(".select-btn"),
+         options = optionMenu.querySelectorAll(".option"),
+         sBtn_text = optionMenu.querySelector(".sBtn-text");
+  selectBtn.addEventListener("click", () => optionMenu.classList.toggle("active"));       
+  options.forEach(option =>{
+      option.addEventListener("click", ()=>{
+          let selectedOption = option.querySelector(".option-text").innerText;
+          sBtn_text.innerText = selectedOption;
+          optionMenu.classList.remove("active");
+      });
+  });
+  </script>   
   </body>
 </html>

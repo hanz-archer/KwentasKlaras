@@ -210,6 +210,12 @@ body {
 
 
 /* ---------- MAIN ---------- */
+.main-title-container {
+  display: flex;
+  justify-content: space-between; /* Adjust this as necessary to space elements */
+  align-items: center;
+  padding: 0 20px; /* Adds padding around the elements */
+}
 
 .main-container {
   grid-area: main;
@@ -244,6 +250,9 @@ body {
 }
 
 .card:first-child {
+  border-left: 7px solid #246dec;
+}
+.charts-card:first-child {
   border-left: 7px solid #246dec;
 }
 
@@ -747,5 +756,81 @@ thead th.active,tbody td.active {
 .table__body table.expanded th,
 .table__body table.expanded td {
   width: 100%; /* Expand both th and td to full width on mobile */
+}
+
+
+
+
+
+.select-menu {
+  position: relative;
+  width: 200px;
+  margin: 0;
+  z-index: 100;
+}
+
+.select-menu .select-btn {
+  display: flex;
+  height: 5px; /* Reduced height */
+  background: #fff;
+  padding: 15px; /* Increased padding */
+  font-size: 18px;
+  font-weight: 400;
+  border-radius: 8px;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.select-btn i {
+  font-size: 25px;
+  transition: 0.3s;
+}
+
+.select-menu.active .select-btn i {
+  transform: rotate(-180deg);
+}
+
+.select-menu .options {
+  position: absolute;
+  top: 100%; /* Dropdown content appears below the button */
+  left: 0;
+  width: 80%;
+  padding: 20px;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 100;
+}
+
+.select-menu.active .options {
+  display: block;
+}
+
+.options .option {
+  display: flex;
+  height: 55px;
+  cursor: pointer;
+  padding: 0 16px;
+  border-radius: 8px;
+  align-items: center;
+  background: #fff;
+}
+
+.options .option:hover {
+  background: #f2f2f2;
+}
+
+.option i {
+  font-size: 25px;
+  margin-right: 12px;
+}
+
+.option .option-text {
+  font-size: 18px;
+  color: #333;
 }
 
