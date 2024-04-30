@@ -23,7 +23,7 @@ body{
 .container {
     position: absolute;
     top: 50%; /* Adjusted to center vertically */
-    left: 49%; /* Center horizontally */
+    left: 58%; /* Center horizontally */
     transform: translate(-50%, -50%);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -40,10 +40,13 @@ body{
 
 .login-content{
 	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	text-align: center;
-	width: 105%;
+    justify-content: center; /* Center horizontally */
+    align-items: center;
+    text-align: center;
+    width: 100%; /* Adjusted to take full width */
+    max-width: 400px; /* Added for responsive design */
+    margin: 0 auto; /* Center horizontally */
+    padding: 0 2rem; /* Added padding for better appearance */
 }
 
 .img img{
@@ -51,19 +54,26 @@ body{
 }
 
 form{
-	width: 360px;
+	width: 100%; /* Adjusted for responsiveness */
+    max-width: 400px; /* Added for responsive design */
 }
 
-.login-content img{
-    height: 100px;
+.login-content img {
+    height: 200px; /* Increase the height of the image */
+    width: auto; /* Let the width adjust proportionally */
 }
 
-.login-content h2{
-	margin: 15px 0;
-	color: #333;
-	text-transform: uppercase;
-	font-size:2.0rem;
+
+.login-content h2.title {
+    margin: 15px 0 15px -60%; /* Adjust the negative left margin */
+    color: #333;
+    text-transform: uppercase;
+    font-size: 2.0rem;
+    white-space: nowrap; /* Prevent wrapping */
+    text-align: left; /* Left-align the text */
 }
+
+
 
 .login-content .input-div{
 	position: relative;
@@ -251,6 +261,23 @@ a:hover{
 	.login-content{
 		justify-content: center;
 	}
+}
+@media screen and (max-width: 768px) {
+    .container {
+        left: 50%; /* Center horizontally */
+    }
+
+    .login-content {
+        padding: 0 1rem; /* Adjusted padding for smaller screens */
+    }
+}
+/* Media Query for Mobile View */
+@media screen and (max-width: 768px) {
+    .login-content h2.title {
+        margin: 15px auto; /* Center the text horizontally */
+        text-align: center; /* Center the text vertically */
+		white-space: wrap;
+    }
 }
 /* Add this style to hide the initial option */
 .select-hidden {
