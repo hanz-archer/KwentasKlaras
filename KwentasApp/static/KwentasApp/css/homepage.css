@@ -19,6 +19,7 @@ section {
   padding: 0 1em 1em 1em;
   text-align: center;
 }
+
 .card {
   width: 100%;
   min-height: 350px;
@@ -77,7 +78,11 @@ p {
     flex: 0 50%;
     max-width: 50%;
   }
+  h3{
+    white-space: nowrap;
+  }
 }
+
 @media screen and (min-width: 992px) {
   section {
     padding: 1em 3em;
@@ -95,7 +100,7 @@ p {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF); /* Updated */
+  background-image: linear-gradient(to right, #04AA6D, #04AA6D, #04AA6D); /* Updated */
   background-size: 200%;
   font-size: 1.2rem;
   color: #ffffff; /* Updated */
@@ -106,17 +111,27 @@ p {
   transition: .5s;
 }
 
+.btn-bottom-right{
+	display: block;
+	width: 120%;
+	height: 50px;
+	border-radius: 25px;
+	outline: none;
+	border: none;
+	background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
+	background-size: 200%;
+	font-size: 1.2rem;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	margin: 1rem 0;
+	cursor: pointer;
+	transition: .5s;
+  z-index: 9999; /* Ensure it's above other content */
+}
+
 .btn:hover {
   background-position: right center; /* Updated */
-}
-
-.card:hover ~ .btn {
-  color: #ffffff; /* Change button text color */
-  background-image: linear-gradient(to right, #ffffff, #ffffff, #ffffff); /* Change button background to white */
-}
-
-.card:hover ~ .btn:hover {
-  background-image: linear-gradient(to right, #ffffff, #ffffff, #ffffff); /* Ensure button background stays white on hover */
 }
 
 
