@@ -19,7 +19,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect(reverse('home'))  # Use reverse to get the URL by name
+            return redirect(reverse('homepage'))  # Use reverse to get the URL by name
         else:
             error = 'Invalid credentials. Please try again.'
             return render(request, 'KwentasApp/login.html', {'error': error})
@@ -103,6 +103,9 @@ def activities(request):
 @login_required
 def obligations(request):
     return render(request,'KwentasApp/obligations.html')
+
+def homepage(request):
+    return render(request, 'KwentasApp/homepage.html')
 
 
 @login_required

@@ -12,18 +12,15 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('home/', views.home_view, name='home'),
     path('reports/', views.reports_view, name='reports'),
-     path('procurements/', views.procurements, name='procurements'),
-      path('ongoing/', views.ongoing, name='ongoing'),
-       path('monitoring/', views.monitoring, name='monitoring'),                        
-         path('evaluation/', views.evaluation, name='evaluation'),                                                                                                                                    
-
-                                                                                         path('evaluation/', views.evaluation, name='evaluation'),
-
- path('activities/', views.activities, name='activities'),     
+    path('procurements/', views.procurements, name='procurements'),
+    path('ongoing/', views.ongoing, name='ongoing'),
+    path('monitoring/', views.monitoring, name='monitoring'),                        
+    path('evaluation/', views.evaluation, name='evaluation'),                                                                                                                                    
+    path('evaluation/', views.evaluation, name='evaluation'),
+    path('activities/', views.activities, name='activities'),     
     path('obligations/', views.obligations, name='obligations'),  
     path('disbursements/', views.disbursements, name='disbursements'),  
     path('finished/', views.finished, name='finished'), 
-
     path('currentproject', views.current_view, name='currentprojects'),
-   
+    path('homepage/', views.homepage, name='homepage'),
 ]
