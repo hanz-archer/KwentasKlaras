@@ -95,12 +95,12 @@ p {
 
 .btn {
   display: block;
-  width: 50%;
+  width: 59%;
   height: 30px;
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #04AA6D, #04AA6D, #04AA6D); /* Updated */
+  background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF); /* Updated */
   background-size: 200%;
   font-size: 1.2rem;
   color: #ffffff; /* Updated */
@@ -110,6 +110,13 @@ p {
   cursor: pointer;
   transition: .5s;
 }
+
+.btn:hover {
+  background-position: right center;
+  background-image: linear-gradient(to right, #ffffff, #ffffff, #ffffff); /* Updated */
+  color: #007FFF; /* Updated */
+}
+
 
 .btn-bottom-right{
 	display: block;
@@ -130,8 +137,6 @@ p {
   z-index: 9999; /* Ensure it's above other content */
 }
 
-.btn:hover {
-  background-position: right center; /* Updated */
-}
+
 
 
