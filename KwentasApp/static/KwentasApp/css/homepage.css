@@ -96,6 +96,7 @@ p {
 .btn {
   display: block;
   width: 59%;
+  position: relative;
   height: 30px;
   border-radius: 25px;
   outline: none;
