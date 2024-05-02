@@ -30,8 +30,10 @@
             </div>
             <h3>Programs Projects & Activities under 20% LDF</h3>
             <p>
-              <input type="submit" class="btn" value="Continuing">
-              
+              <form action="{% url 'ongoing' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn" value="Ongoing">
+              </form>       
               <input type="submit" class="btn" value="Current">
               <input type="submit" class="btn" value="Continuing">
             </p>
@@ -81,6 +83,21 @@
             <h3>REPORTS</h3>
             <p>
               View Reports
+            </p>
+          </div>
+        </div>
+        <div class="column">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fas fa-person"></i>
+            </div>
+            <h3>ACCOUNT</h3>
+            <p>
+              <input type="submit" class="btn" value="Register Account">
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <input type="submit" class="btn" value="Logout">
+            </form>            
             </p>
           </div>
         </div>

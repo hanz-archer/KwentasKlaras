@@ -104,6 +104,8 @@ def activities(request):
 def obligations(request):
     return render(request,'KwentasApp/obligations.html')
 
+
+@login_required
 def homepage(request):
     return render(request, 'KwentasApp/homepage.html')
 
