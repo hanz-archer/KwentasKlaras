@@ -26,6 +26,10 @@ def login_view(request):
 
     return render(request, 'KwentasApp/login.html')
 
+
+def admin_view(request):
+    return render(request, 'KwentasApp/admin')
+
 @login_required
 def base_view(request):
     logout(request)

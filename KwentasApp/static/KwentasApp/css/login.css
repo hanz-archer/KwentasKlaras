@@ -1,4 +1,3 @@
-
 *{
 	padding: 0;
 	margin: 0;
@@ -10,7 +9,7 @@ body{
     overflow: hidden;
 	padding-top: 50px; /* Adjust the value as needed */
 
-}                                                      
+}
 
 .wave{
 	position: fixed;
@@ -18,7 +17,7 @@ body{
 	left: 0;
 	height: 100%;
 	z-index: -1;
-}                                
+}
 
 .container {
     position: absolute;
@@ -28,7 +27,7 @@ body{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 7rem;
-    max-width: 900px;
+    max-width: 800px;
     padding: 0 2rem;
 }
 
@@ -44,31 +43,31 @@ body{
     align-items: center;
     text-align: center;
     width: 100%; /* Adjusted to take full width */
-    max-width: 500px; /* Added for responsive design */
+    max-width: 400px; /* Added for responsive design */
     margin: 0 auto; /* Center horizontally */
     padding: 0 2rem; /* Added padding for better appearance */
 }
 
 .img img{
-	width: 450px;
+	width: 400px;
 }
 
 form{
 	width: 100%; /* Adjusted for responsiveness */
-    max-width: 500px; /* Added for responsive design */
+    max-width: 400px; /* Added for responsive design */
 }
 
 .login-content img {
-    height: 250px; /* Increase the height of the image */
+    height: 200px; /* Increase the height of the image */
     width: auto; /* Let the width adjust proportionally */
 }
 
 
 .login-content h2.title {
-	margin: 15px 0 15px -60%; /* Centered the title */
+    margin: 15px 0 15px -60%; /* Adjust the negative left margin */
     color: #333;
     text-transform: uppercase;
-    font-size: 2.4rem; /* Increased font size */
+    font-size: 2.0rem;
     white-space: nowrap; /* Prevent wrapping */
     text-align: left; /* Left-align the text */
 }
@@ -158,8 +157,8 @@ form{
 	border: none;
 	outline: none;
 	background: none;
-	padding: 0.7rem 0.7rem;
-	font-size: 1.4rem;
+	padding: 0.5rem 0.7rem;
+	font-size: 1.2rem;
 	color: #555;
 	font-family: 'poppins', sans-serif;
 }
@@ -202,13 +201,13 @@ a:hover{
 .btn-cancel{
 	display: block;
 	width: 100%;
-	height: 60px; /* Increased button height */
+	height: 50px;
 	border-radius: 25px;
 	outline: none;
 	border: none;
 	background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
 	background-size: 200%;
-	font-size: 1.4rem; /* Increased font size */
+	font-size: 1.2rem;
 	color: #fff;
 	font-family: 'Poppins', sans-serif;
 	text-transform: uppercase;

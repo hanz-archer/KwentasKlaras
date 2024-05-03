@@ -42,7 +42,7 @@
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">
-              <i class="fas fa-brush"></i>
+              <i class="fas fa-money-bill-alt"></i>
             </div>
             <h3>PROCUREMENTS</h3>
             <p>
@@ -55,7 +55,7 @@
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">
-              <i class="fas fa-wrench"></i>
+              <i class="fas fa-money-check-alt"></i>
             </div>
             <h3>OBLIGATIONS / DISBURSEMENTS</h3>
             <p>
@@ -67,7 +67,7 @@
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">
-              <i class="fas fa-truck-pickup"></i>
+              <i class="fas fa-eye"></i>
             </div>
             <h3>MONITORING & EVALUATION</h3>
             <p>
@@ -78,7 +78,7 @@
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">
-              <i class="fas fa-broom"></i>
+              <i class="fas fa-chart-line"></i>
             </div>
             <h3>REPORTS</h3>
             <p>
@@ -86,7 +86,29 @@
             </p>
           </div>
         </div>
-      
+        <div class="column">
+          <div class="card">
+            <div class="icon-wrapper">
+              <i class="fas fa-person"></i>
+            </div>
+            <h3>ACCOUNT</h3>
+            <p>
+              <form action="{% url 'admin:index' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn"><i class="fas fa-person"></i> Admin</button>
+              </form>
+              <form action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn"><i class="fas fa-add"></i> Add Account</button>
+              </form>
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+              </form>
+            </p>
+            
+          </div>
+        </div>
         </div>
       </div>
     </section>

@@ -5,6 +5,7 @@ from django.contrib import admin
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', RedirectView.as_view(pattern_name='login', permanent=False)),
     path('login/', views.login_view, name='login'),
     path('base/', views.base_view, name='base'),
