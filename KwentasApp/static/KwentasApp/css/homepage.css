@@ -33,14 +33,14 @@ section {
   transition: 0.5s;
 }
 h3 {
-  font-size: 20px;
+  font-size: 1.25rem; /* using rem for scaling */
   font-weight: 600;
   color: #1f194c;
   margin: 1em 0;
 }
 p {
   color: #575a7b;
-  font-size: 15px;
+  font-size: 0.9375rem; /* using rem for scaling */
   line-height: 1.6;
   letter-spacing: 0.03em;
 }
@@ -78,8 +78,22 @@ p {
     flex: 0 50%;
     max-width: 50%;
   }
-  h3{
+  .btn, .btn-bottom-right {
+    width: 78%; /* Make buttons full width on smaller screens */
+    padding: 0.1rem 0rem; /* Adjust padding */
+    font-size: 1rem; /* Adjust font size for smaller displays */
+  }
+  h3 {
     white-space: nowrap;
+  }
+  .btn{
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  h3 {
+    white-space: wrap;
   }
 }
 
@@ -91,11 +105,15 @@ p {
     flex: 0 0 33.33%;
     max-width: 33.33%;
   }
+  h3 {
+    white-space: wrap;
+  }
 }
 
 .btn {
   display: block;
-  width: 59%;
+  width: 70%;
+  min-width: 60%; /* Ensure minimum width to fit text */
   position: relative;
   height: 30px;
   border-radius: 25px;
@@ -121,7 +139,8 @@ p {
 
 .btn-bottom-right{
 	display: block;
-	width: 120%;
+  width: auto; /* Changed to auto */
+  padding: 0.75rem 2rem; /* Padding instead of fixed height */
 	height: 50px;
 	border-radius: 25px;
 	outline: none;

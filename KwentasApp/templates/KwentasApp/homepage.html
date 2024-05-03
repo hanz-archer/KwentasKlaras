@@ -86,21 +86,7 @@
             </p>
           </div>
         </div>
-        <div class="column">
-          <div class="card">
-            <div class="icon-wrapper">
-              <i class="fas fa-person"></i>
-            </div>
-            <h3>ACCOUNT</h3>
-            <p>
-              <input type="submit" class="btn" value="Register Account">
-              <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <input type="submit" class="btn" value="Logout">
-            </form>            
-            </p>
-          </div>
-        </div>
+      
         </div>
       </div>
     </section>
