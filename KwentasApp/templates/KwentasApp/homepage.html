@@ -32,10 +32,10 @@
             <p>
               <form action="{% url 'ongoing' %}" method="post">
                 {% csrf_token %}
-                <input type="submit" class="btn" value="Ongoing">
+                <button type="submit" class="btn"><i class="fas fa-search"></i>  Ongoing</button>
               </form>       
-              <input type="submit" class="btn" value="Current">
-              <input type="submit" class="btn" value="Continuing">
+              <button type="submit" class="btn"><i class="fas fa-search"></i>  Current</button>
+              <button type="submit" class="btn"><i class="fas fa-search"></i> Continuing</button>
             </p>
           </div>
         </div>
@@ -57,7 +57,7 @@
             <div class="icon-wrapper">
               <i class="fas fa-wrench"></i>
             </div>
-            <h3>OBLIGATIONS</h3>
+            <h3>OBLIGATIONS / DISBURSEMENTS</h3>
             <p>
               <input type="submit" class="btn" value="Disbursements">
               <input type="submit" class="btn" value="Check Payment">

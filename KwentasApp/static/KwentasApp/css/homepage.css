@@ -79,9 +79,9 @@ p {
     max-width: 50%;
   }
   .btn, .btn-bottom-right {
-    width: 78%; /* Make buttons full width on smaller screens */
-    padding: 0.1rem 0rem; /* Adjust padding */
-    font-size: 1rem; /* Adjust font size for smaller displays */
+    width: auto; /* Allow button to expand as needed */
+    padding: 0.1rem 1rem; /* Adjust padding */
+    font-size: 0.8rem; /* Adjust font size for smaller displays */
   }
   h3 {
     white-space: nowrap;
@@ -90,6 +90,7 @@ p {
     width: 70%;
   }
 }
+
 
 @media screen and (max-width: 991px) {
   h3 {
@@ -110,9 +111,10 @@ p {
   }
 }
 
+
 .btn {
   display: block;
-  width: 70%;
+  width: auto; /* Allow button to expand as needed */
   min-width: 60%; /* Ensure minimum width to fit text */
   position: relative;
   height: 30px;
@@ -121,13 +123,14 @@ p {
   border: none;
   background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF); /* Updated */
   background-size: 200%;
-  font-size: 1.2rem;
+  font-size: 1.0rem; /* Adjust font size for smaller displays */
   color: #ffffff; /* Updated */
   font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
   margin: 1rem auto;
   cursor: pointer;
   transition: .5s;
+  
 }
 
 .btn:hover {

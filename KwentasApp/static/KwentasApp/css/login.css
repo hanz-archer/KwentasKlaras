@@ -65,7 +65,7 @@ form{
 
 
 .login-content h2.title {
-	margin: 15px 0 15px 0; /* Centered the title */
+	margin: 15px 0 15px -60%; /* Centered the title */
     color: #333;
     text-transform: uppercase;
     font-size: 2.4rem; /* Increased font size */
