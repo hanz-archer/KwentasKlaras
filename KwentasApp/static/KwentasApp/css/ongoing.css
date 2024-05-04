@@ -38,7 +38,6 @@ body {
 }
 
 .grid-container {
-
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.2fr 3fr;
@@ -65,183 +64,6 @@ body {
 .menu-icon {
   display: none;
 }
-
-
-/* ---------- SIDEBAR ---------- */
-  
-#sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 250px;
-  background-color: #21232d;
-  overflow-y: auto; /* Enable scrolling if content exceeds height */
-}
-
-.main-content {
-  margin-left: 250px; /* Adjust this value to match the width of your sidebar */
-  padding: 20px;
-}
-
-.sidebar-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 20px 20px 20px;
-  margin-bottom: 30px;
-}
-.sidebar-title img {
-  height: 30%;
-  width: 30%;
-  background-color: white;
-  border-radius: 50%; /* Make the image circular */
-}
-
-.sidebar-title > span {
-  display: none;
-}
-
-.sidebar-brand {
-  margin-top: 15px;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.sidebar-list {
-  padding: 0;
-  margin-top: 15px;
-  list-style-type: none;
-}
-
-.sidebar-list-item {
-  padding: 20px 20px 20px 20px;
-}
-
-.sidebar-list-item:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-}
-
-
-#active{
-  background-color: #f9f9f9;
-}
-
-
-#active > a {
-
-  color: black;
-}
-#activea {
-  background-color: #f9f9f9;
-
-  color: black;
-}
-
-
-
-
-.sidebar-list-item > a {
-  text-decoration: none;
-  color: #9799ab;
-}
-
-.sidebar-responsive {
-  display: inline !important;
-  position: absolute;
-  /*
-    the z-index of the ApexCharts is 11
-    we want the z-index of the sidebar higher so that
-    the charts are not showing over the sidebar 
-    on small screens
-  */
-  z-index: 12 !important;
-}
-
-
-
-.dropdown-toggle::after {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: .255em;
-  vertical-align: .255em;
-  content: "";
-  border-top: .3em solid;
-  border-right: .3em solid transparent;
-  border-bottom: 0;
-  border-left: .3em solid transparent;
-}
-
-
-.dropdown-menu {
-  display: none;
-  position: relative; /* Change position to relative */
-  background-color: #21232d;
-  border: 1px solid #9799ab;
-  z-index: 1;
-}
-
-
-
-/* Adjust dropdown menu position when navbar is scrolled */
-.scrolled .dropdown-menu {
-  top: auto; /* Reset top position */
-}
-
-
-.dropdown-menu a {
- 
-  color: #9799ab;
-  padding: 10px;
-  display: block;
-  text-decoration: none;
-}
-
-.dropdown-menu a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /* ---------- MAIN ---------- */
-  
-  .main-container {
-    grid-area: main;
-    overflow-y: auto;
-    padding: 20px 20px;
-    margin-top: 20px; /* Add margin to the top */
-}
-  
-  
-  
-  /* ---------- MEDIA QUERIES ---------- */
   
   
   /* Medium <= 992px */
@@ -266,8 +88,6 @@ body {
       display: inline;
     }
   }
-
-
 
   @import url('https://fonts.googleapis.com/css?family=Poppins:600&display=swap');
 
@@ -358,18 +178,6 @@ body {
   body {
       background: var(--body-color);
   }
-  
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  /* ----- WRAPPER DESIGN ----- */
   .wrapper {
     grid-area: main;
    
@@ -406,12 +214,6 @@ body {
   .scroll-btn i {
       font-size: 20px;
   }
-  
-
-
-
-
-
   .section {
     max-width: 1200px;
     padding: 20px;
@@ -696,14 +498,6 @@ h3 {
 .input[type="text"]::placeholder {
     color: #999;
 }
-
-
-
-
-
-
-
-  
   .btn-submitreport {
       /* Retain properties from the .btn class */
       display: inline-block;
@@ -1207,109 +1001,6 @@ margin-left: 110%;
   margin-left: 40px;
     }
 
-    
-/* ---------- MAIN ---------- */
-
-.dashboard{
-    display: none;
-    grid-area: main;
-    overflow-y: auto;
-    padding: 20px 20px;
-margin-top: -5%;
-  }
-  
-  .main-title {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .main-title > p {
-    font-size: 20px;
-  }
-  
-  .main-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 20px;
-    margin: 20px 0;
-  }
-  
-  .card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 25px;
-    background-color: #ffffff;
-    box-sizing: border-box;
-    border: 1px solid #d2d2d3;
-    border-radius: 5px;
-    box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
-    margin-bottom: 5%;
-  }
-  
-  .card:first-child {
-    border-left: 7px solid #246dec;
-  }
-  
-  .card:nth-child(2) {
-    border-left: 7px solid #f5b74f;
-  }
-  
-  .card:nth-child(3) {
-    border-left: 7px solid #367952;
-  }
-  
-  .card:nth-child(4) {
-    border-left: 7px solid #cc3c43;
-  }
-  
-  .card > span {
-    font-size: 20px;
-    font-weight: 600;
-  }
-  
-  .card-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .card-inner > p {
-    font-size: 18px;
-  }
-  
-  .card-inner > span {
-    font-size: 35px;
-  }
-  
-  .charts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 6%;
-  }
-  
-  .charts-card {
-    background-color: #ffffff;
-    margin-bottom: 20px;
-    padding: 25px;
-    box-sizing: border-box;
-    -webkit-column-break-inside: avoid;
-    border: 1px solid #d2d2d3;
-    border-radius: 5px;
-    box-shadow: 0 6px 7px -4px rgba(0, 0, 0, 0.2);
-  }
-  
-  .chart-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: 600;
-  }
-  
-  
-  /* ---------- SCROLLBARS ---------- */
   
   ::-webkit-scrollbar {
     width: 5px;
@@ -1377,9 +1068,6 @@ margin-top: -5%;
       display: none;
     }
   }
-
-
-
   main.table {
     width: 57.5vw;
     height: 90vh;
@@ -1679,11 +1367,6 @@ thead th.active,tbody td.active {
     width: 2rem;
     height: auto;
 }
-
-
-
-
-
 .table__body table {
   width: 100%; /* Make the table fill its container */
   border-collapse: collapse; /* Collapse table borders */
@@ -1759,12 +1442,6 @@ thead th.active,tbody td.active {
 .table__body table.expanded td {
   width: 100%; /* Expand both th and td to full width on mobile */
 }
-
-
-
-
-
-
 .main-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust minmax values as needed */
@@ -1816,13 +1493,11 @@ thead th.active,tbody td.active {
 .card-inner > span {
   font-size: 35px;
 }
-
 .charts {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
-
 .charts-card {
   background-color: #ffffff;
   margin-bottom: 20px;
