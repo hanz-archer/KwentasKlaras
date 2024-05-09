@@ -59,7 +59,10 @@
             </div>
             <h3>OBLIGATIONS / DISBURSEMENTS</h3>
             <p>
-              <input type="submit" class="btn" value="Disbursements">
+              <form action="{% url 'disbursements' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Disbursement</button>
+              </form>   
               <input type="submit" class="btn" value="Check Payment">
             </p>
           </div>
