@@ -961,43 +961,56 @@ right: 110%;
      padding: 0 15px; /* Add padding to adjust button width */
 }
 
+.button-container {
+  position: relative; /* Ensure the container is positioned */
+  margin-top: -110px;
+}
+
 .button {
-	display: flex;
-	height: 50px;
-	padding: 0;
-	background: #009578;
-	border: none;
-	outline: none;
-	border-radius: 30px;
-	overflow: hidden;
-	font-family: "Quicksand", sans-serif;
-	font-size: 16px;
-	font-weight: 500;
-	cursor: pointer;
+  position: absolute; /* Position the button */
+  top: 0; /* Align to the top */
+  right: 0; /* Align to the right */
+  height: 50px;
+  padding: 0 24px;
+  margin-bottom: 100px;
+  margin-right: 44px;
+  background: #007FFF;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  overflow: hidden;
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #fff;
 }
 
 .button:hover {
-	background: #008168;
+  background: #007FFF;
 }
 
 .button:active {
-	background: #006e58;
-}
-
-.button__text,
-.button__icon {
-	display: inline-flex;
-	align-items: center;
-	padding: 0 24px;
-	color: #fff;
-	height: 100%;
+  background: #007FFF;
 }
 
 .button__icon {
-	font-size: 1.5em;
-	background: rgba(0, 0, 0, 0.08);
+  margin-left: 10px; /* Add some space between text and icon */
+  font-size: 1.5em;
+  background: rgba(0, 0, 0, 0.08);
 }
 
+@media screen and (max-width: 992px) {
+  .button{
+    margin-bottom: 100px;
+    margin-right: 100px;
+  }
+  .button-container{
+    margin-top: -30px;
+  }
+}
 
 
 
