@@ -1,83 +1,162 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Admin Dashboard</title>
-
-    <!-- Montserrat Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/base.css' %}">
-  </head>
-  <body>
-    <div class="grid-container">
-
-      <!-- Header -->
-      <header class="header">
-        <div class="menu-icon" onclick="openSidebar()">
-          <span class="material-icons-outlined">menu</span>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwentas Klaras Add Data</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/Obligations.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="img">
+            <img src="{% static 'KwentasApp/img/logo.png' %}">
         </div>
-        
-      </header>
-      <!-- Main -->
-      <main class="main-container">
-        <div class="main-title">
-          <p class="font-weight-bold">OBLIGATIONS</p>
-        </div>
-        <div class="main-cards">
-          <div class="card">
-            <div class="card-inner">
+        <div class="login-content">
+            <form action="#" method="post">
+                {% csrf_token %}
+                <h2 class="title">Projects</h2>
+                {% if messages %}
+                <div class="messages" id="validation-messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <script>
+                    setTimeout(function() {
+                      var messagesDiv = document.querySelector('.messages');
+                      if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                      }
+                    }, 3000);
+                  </script>
+                {% endif %}
+                   <div class="input-div">
+                      <div class="i">
+                              <i class="fas fa-user"></i>
+                      </div>
+                      <div class="div">
+                              <h5>Project Name</h5>
+                              <input type="text" name="username" class="input">
+                      </div>
+                   </div>
+
+                   <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                          
+                            <input type="date" name="username" class="input">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                  <div class="i">
+                          <i class="fas fa-user"></i>
+                  </div>
+                  <div class="div">
+                          <h5>Spent</h5>
+                          <input type="text" name="username" class="input">
+                  </div>
+               </div>
               
-            </div>
-          </div>
 
+
+
+                <a href="{% url 'homepage' %}" class="btn-add">Add Obligation</a>
+                <a href="{% url 'homepage' %}" class="btn-cancel">Cancel</a>
+            </form>
         </div>
-
-        
-          
-    
-      </div>
-      </main>
-      <!-- End Main -->
-
     </div>
 
- <!-- Scripts -->
-<!-- ApexCharts -->
-<script>
-$(document).ready(function() {
-  // Add click event listener to table header th elements
-  $("#myTable th").click(function() {
-    // Toggle class on table to indicate expanded state
-    $("#myTable").toggleClass("expanded");
-  });
+    <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+    <script>
+        document.getElementById('show-password').addEventListener('click', function () {
+            var passwordInput = document.getElementById('password-input');
+            var icon = document.querySelector('#show-password i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-lock');
+                icon.classList.add('fa-unlock-alt');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-unlock-alt');
+                icon.classList.add('fa-lock');
+            }
+        });
+    </script>
+    <script>
+        const inputs = document.querySelectorAll(".input");
+
+
+function addcl(){
+	let parent = this.parentNode.parentNode;
+	parent.classList.add("focus");
+}
+
+function remcl(){
+	let parent = this.parentNode.parentNode;
+	if(this.value == ""){
+		parent.classList.remove("focus");
+	}
+}
+
+
+inputs.forEach(input => {
+	input.addEventListener("focus", addcl);
+	input.addEventListener("blur", remcl);
 });
+    </script>
+
+<script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+<script>
+    function toggleDropdown1() {
+        const servicesOptions = document.getElementById("servicesOptions");
+        servicesOptions.classList.toggle("show");
+    }
+
+    function selectOption1(option) {
+        const servicesInput = document.getElementById("servicesInput");
+        servicesInput.value = option;
+        toggleDropdown();
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.fas.fa-chevron-down')) {
+            const servicesOptions = document.getElementById("departmentOptions");
+            if (servicesOptions.classList.contains('show')) {
+                servicesOptions.classList.remove('show');
+            }
+        }
+    }
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
-<!-- Custom JS -->
-<script src="{% static 'KwentasApp/js/script.js' %}"></script>
 
 <script>
+    function toggleDropdown() {
+        const serOptions = document.getElementById("departmentOptions");
+        departmentOptions.classList.toggle("show");
+    }
 
+    function selectOption(option) {
+        const departmentInput = document.getElementById("departmentInput");
+        departmentInput.value = option;
+        toggleDropdown();
+    }
 
-
-
-
-
+    // Close dropdown when clicking outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.fas.fa-chevron-down')) {
+            const departmentOptions = document.getElementById("departmentOptions");
+            if (departmentOptions.classList.contains('show')) {
+                departmentOptions.classList.remove('show');
+            }
+        }
+    }
 </script>
 
 
 
-
-
-  
-    
-  </body>
+</body>
 </html>
