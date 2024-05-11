@@ -7,88 +7,172 @@
     <title>Admin Dashboard</title>
 
     <!-- Montserrat Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
 
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/base.css' %}">
   </head>
   <body>
     <div class="grid-container">
-
-      <!-- End Sidebar -->
-
+        
       <!-- Main -->
-      <main class="main-container">
-        <div class="main-title">
-          <p class="font-weight-bold">DISBURSEMENTS</p>
-        </div>
-        <div class="main-cards">
-          <div class="card">
-            <div class="card-inner">
-              <section class="table__body">
-                <table id="myTable">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Convert | Export html Table to CSV & EXCEL File</title>
+    </head>
+    
+    <body>
+        <main class="table" id="customers_table">
+            <section class="table__header">
+                <h1>Ongoing Projects Data</h1>
+                
+                <div class="input-group">
+                    <input type="search" placeholder="Search">
+                </div>
+                <div class="export__file">
+                    <label for="export-file" class="export__file-btn" title="Export File"></label>
+                    <input type="checkbox" id="export-file">
+                    <div class="export__file-options">
+                        <label>Export As &nbsp; &#10140;</label>
+                        <label for="export-file" id="toPDF">PDF <img src="images/pdf.png" alt=""></label>
+                        <label for="export-file" id="toJSON">JSON <img src="images/json.png" alt=""></label>
+                        <label for="export-file" id="toCSV">CSV <img src="images/csv.png" alt=""></label>
+                        <label for="export-file" id="toEXCEL">EXCEL <img src="images/excel.png" alt=""></label>
+                    </div>
+                </div>
+            </section>
+            <section class="table__body">
+                <table>
                     <thead>
                         <tr>
-                            <th> Project ID <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Project Name <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Budget <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Department Date <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Status <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Action <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> P/P/A <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Appropriation <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Obligation <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Disbursement <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Balance <span class="icon-arrow">&UpArrow;</span></th>
+                            <th> Amount <span class="icon-arrow">&UpArrow;</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td> 1 </td>
-                            <td>Road Concreting Project</td>
-                            <td> P40,000,000.00 </td>
-                            <td> Engineering Office </td>
+                            <td>Zinzu Chan Lee</td>
+                            <td> Seoul </td>
+                            <td> 17 Dec, 2022 </td>
                             <td>
-                                <p class="status delivered">Finished</p>
+                                <p class="status delivered">Delivered</p>
                             </td>
-                            <td> <strong> WHATTT </strong></td>
+                            <td> <strong> $128.90 </strong></td>
                         </tr>
                         <tr>
-                            <td> 2 </td>
-                            <td>Seawall Repair </td>
-                            <td> P65,000.00 </td>
-                            <td> MCWD </td>
-                            <td>
-                                <p class="status cancelled">Ongoing</p>
-                            </td>
-                            <td> <strong>$WHATT.50</strong> </td>
-                        </tr>
-                        <tr>
-                          <td> 2 </td>
-                          <td>Seawall Repair </td>
-                          <td> P65,000.00 </td>
-                          <td> MCWD </td>
+                          <td> 1 </td>
+                          <td>Zinzu Chan Lee</td>
+                          <td> Seoul </td>
+                          <td> 17 Dec, 2022 </td>
                           <td>
-                              <p class="status cancelled">Ongoing</p>
+                              <p class="status delivered">Delivered</p>
                           </td>
-                          <td> <strong>$WHATT.50</strong> </td>
+                          <td> <strong> $128.90 </strong></td>
                       </tr>
+                      <tr>
+                        <td> 1 </td>
+                        <td>Zinzu Chan Lee</td>
+                        <td> Seoul </td>
+                        <td> 17 Dec, 2022 </td>
+                        <td>
+                            <p class="status delivered">Delivered</p>
+                        </td>
+                        <td> <strong> $128.90 </strong></td>
+                    </tr>
+                    <tr>
+                      <td> 1 </td>
+                      <td>Zinzu Chan Lee</td>
+                      <td> Seoul </td>
+                      <td> 17 Dec, 2022 </td>
+                      <td>
+                          <p class="status delivered">Delivered</p>
+                      </td>
+                      <td> <strong> $128.90 </strong></td>
+                  </tr>
+                  <tr>
+                    <td> 1 </td>
+                    <td>Zinzu Chan Lee</td>
+                    <td> Seoul </td>
+                    <td> 17 Dec, 2022 </td>
+                    <td>
+                        <p class="status delivered">Delivered</p>
+                    </td>
+                    <td> <strong> $128.90 </strong></td>
+                </tr>
+                <tr>
+                  <td> 1 </td>
+                  <td>Zinzu Chan Lee</td>
+                  <td> Seoul </td>
+                  <td> 17 Dec, 2022 </td>
+                  <td>
+                      <p class="status delivered">Delivered</p>
+                  </td>
+                  <td> <strong> $128.90 </strong></td>
+              </tr>
+              <tr>
+                <td> 1 </td>
+                <td>Zinzu Chan Lee</td>
+                <td> Seoul </td>
+                <td> 17 Dec, 2022 </td>
+                <td>
+                    <p class="status delivered">Delivered</p>
+                </td>
+                <td> <strong> $128.90 </strong></td>
+            </tr>
+            <tr>
+              <td> 1 </td>
+              <td>Zinzu Chan Lee</td>
+              <td> Seoul </td>
+              <td> 17 Dec, 2022 </td>
+              <td>
+                  <p class="status delivered">Delivered</p>
+              </td>
+              <td> <strong> $128.90 </strong></td>
+          </tr>
+          <tr>
+            <td> 1 </td>
+            <td>Zinzu Chan Lee</td>
+            <td> Seoul </td>
+            <td> 17 Dec, 2022 </td>
+            <td>
+                <p class="status delivered">Delivered</p>
+            </td>
+            <td> <strong> $128.90 </strong></td>
+        </tr>
+        <tr>
+          <td> 1 </td>
+          <td>Zinzu Chan Lee</td>
+          <td> Seoul </td>
+          <td> 17 Dec, 2022 </td>
+          <td>
+              <p class="status delivered">Delivered</p>
+          </td>
+          <td> <strong> $128.90 </strong></td>
+      </tr>
                     </tbody>
                 </table>
             </section>
-            </div>
-          </div>
-
-        </div>
-
-        
-          
-    
-      </div>
-      </main>
-      <!-- End Main -->
-
+        </main>
     </div>
-
+    <div class="button-container">
+        <form action="{% url 'homepage' %}" method="post">
+            {% csrf_token %}
+      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i> Back</button>
+      </form>
+    </div>    
+    
  <!-- Scripts -->
 <!-- ApexCharts -->
 <script>
@@ -103,21 +187,19 @@ $(document).ready(function() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
 <!-- Custom JS -->
 <script src="{% static 'KwentasApp/js/script.js' %}"></script>
-
 <script>
-
-
-
-
-
-
-</script>
-
-
-
-
-
-  
-    
+  const optionMenu = document.querySelector(".select-menu"),
+         selectBtn = optionMenu.querySelector(".select-btn"),
+         options = optionMenu.querySelectorAll(".option"),
+         sBtn_text = optionMenu.querySelector(".sBtn-text");
+  selectBtn.addEventListener("click", () => optionMenu.classList.toggle("active"));       
+  options.forEach(option =>{
+      option.addEventListener("click", ()=>{
+          let selectedOption = option.querySelector(".option-text").innerText;
+          sBtn_text.innerText = selectedOption;
+          optionMenu.classList.remove("active");
+      });
+  });
+  </script>   
   </body>
 </html>
