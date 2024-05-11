@@ -19,6 +19,7 @@
   </head>
   <body>
     <div class="grid-container">
+        
       <!-- Main -->
       <head>
         <meta charset="UTF-8">
@@ -31,6 +32,7 @@
         <main class="table" id="customers_table">
             <section class="table__header">
                 <h1>Ongoing Projects Data</h1>
+                
                 <div class="input-group">
                     <input type="search" placeholder="Search">
                 </div>
@@ -165,7 +167,10 @@
         </main>
     </div>
     <div class="button-container">
+        <form action="{% url 'homepage' %}" method="post">
+            {% csrf_token %}
       <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i> Back</button>
+      </form>
     </div>    
     
  <!-- Scripts -->

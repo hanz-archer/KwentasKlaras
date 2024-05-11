@@ -23,13 +23,13 @@ body{
 .container {
     position: absolute;
     top: 50%; /* Adjusted to center vertically */
-    left: 49%; /* Center horizontally */
+    left: 39%; /* Center horizontally */
     transform: translate(-50%, -50%);
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 7rem;
-    max-width: 800px;
-    padding: 0 2rem;
+    max-width: 600px;
+    padding: 0 -5rem;
 }
 
 .img{
@@ -43,6 +43,18 @@ body{
 	justify-content: flex-start;
 	align-items: center;
 	text-align: center;
+    
+    
+}
+
+input[type="date"]::before{
+    color: #999;
+    content: attr(placeholder);
+    margin-right: 10px; 
+}
+input[type="date"]:focus::before {
+    content: "" !important;
+    display: none;
 }
 
 .img img{
@@ -68,8 +80,9 @@ form{
 	position: relative;
     display: grid;
     grid-template-columns: 7% 93%;
-    margin: 25px 0;
+    margin: 7px 0;
     padding: 5px 0;
+    width: 100%;
     border-bottom: 2px solid #d9d9d9;
 }
 
@@ -142,7 +155,7 @@ form{
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 100%;
+	width: calc(100% - 20px); /* Decrease the width of inputs */
 	height: 100%;
 	border: none;
 	outline: none;
@@ -192,6 +205,26 @@ a{
 	outline: none;
 	border: none;
 	background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
+	background-size: 200%;
+	font-size: 1.2rem;
+	color: #fff;
+	font-family: 'Poppins', sans-serif;
+	text-transform: uppercase;
+	margin: 1rem 0;
+	cursor: pointer;
+	transition: .5s;
+	text-align: center;
+	line-height: 50px;
+}
+
+.btn-add{
+	display: block;
+	width: 100%;
+	height: 50px;
+	border-radius: 25px;
+	outline: none;
+	border: none;
+	background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
 	background-size: 200%;
 	font-size: 1.2rem;
 	color: #fff;
@@ -336,5 +369,3 @@ a{
 .navbar-nav li a:hover {
 	color: #f0f0f0;
 }
-
-

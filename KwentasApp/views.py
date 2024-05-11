@@ -121,3 +121,7 @@ def disbursements(request):
 @login_required
 def finished(request):
     return render(request,'KwentasApp/finished.html')
+
+@login_required
+def adddata(request):
+    return render(request, 'KwentasApp/adddata.html')

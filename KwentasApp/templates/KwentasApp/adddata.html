@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwentas Klaras Add Data</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/adddata.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="img">
+            <img src="{% static 'KwentasApp/img/logo.png' %}">
+        </div>
+        <div class="login-content">
+            <form action="#" method="post">
+                {% csrf_token %}
+                <h2 class="title">Add Data Form</h2>
+                {% if messages %}
+                <div class="messages" id="validation-messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <script>
+                    setTimeout(function() {
+                      var messagesDiv = document.querySelector('.messages');
+                      if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                      }
+                    }, 3000);
+                  </script>
+                {% endif %}
+                   <div class="input-div">
+                      <div class="i">
+                              <i class="fas fa-user"></i>
+                      </div>
+                      <div class="div">
+                              <h5>PPA</h5>
+                              <input type="text" name="username" class="input">
+                      </div>
+                   </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="drop">
+                        <input type="text" name="department" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly>
+                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
+                        <ul class="content" id="departmentOptions">
+                            <li onclick="selectOption('IT Office')">IT Office</li>
+                            <li onclick="selectOption('Engineering Office')">Engineering Office</li>
+                            <li onclick="selectOption('Treasurers Office')">Treasurers Office</li>
+                            <li onclick="selectOption('Tourism Office')">Tourism Office</li>
+                            <li onclick="selectOption('Mayor Office')">Mayor Office</li>
+                        </ul>
+                    </div>
+                </div>
+                   
+                   <div class="input-div">
+                      <div class="i">
+                              <i class="fas fa-envelope"></i>
+                      </div>
+                      <div class="div">
+                              <h5>Location</h5>
+                              <input type="text" name="email" class="input">
+                      </div>
+                   </div>
+
+                   <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Appropriation</h5>
+                            <input type="text" name="email" class="input">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Remarks</h5>
+                            <input type="text" name="email" class="input">
+                    </div>
+                 </div>
+
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Start Date</h5>
+                            <input type="date" name="email" class="input" placeholder="&#8203">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                            <h5>End Date</h5>
+                            <input type="date" name="email" class="input" placeholder="">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Code</h5>
+                            <input type="number" name="email" class="input">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="drop">
+                        <input type="text" name="services" placeholder="Services" onclick="toggleDropdown1()" id="servicesInput" readonly>
+                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown1()"></i>
+                        <ul class="content" id="servicesOptions">
+                            <li onclick="selectOption1('Service 1')">Service 2</li>
+                            <li onclick="selectOption1('Service 2')">Service 2</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Year</h5>
+                            <input type="number" name="email" class="input">
+                    </div>
+                 </div>
+
+
+
+                <a href="{% url 'homepage' %}" class="btn-add">Add Data</a>
+                <a href="{% url 'homepage' %}" class="btn-cancel">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+    <script>
+        document.getElementById('show-password').addEventListener('click', function () {
+            var passwordInput = document.getElementById('password-input');
+            var icon = document.querySelector('#show-password i');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-lock');
+                icon.classList.add('fa-unlock-alt');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-unlock-alt');
+                icon.classList.add('fa-lock');
+            }
+        });
+    </script>
+    <script>
+        const inputs = document.querySelectorAll(".input");
+
+
+function addcl(){
+	let parent = this.parentNode.parentNode;
+	parent.classList.add("focus");
+}
+
+function remcl(){
+	let parent = this.parentNode.parentNode;
+	if(this.value == ""){
+		parent.classList.remove("focus");
+	}
+}
+
+
+inputs.forEach(input => {
+	input.addEventListener("focus", addcl);
+	input.addEventListener("blur", remcl);
+});
+    </script>
+
+<script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+<script>
+    function toggleDropdown1() {
+        const servicesOptions = document.getElementById("servicesOptions");
+        servicesOptions.classList.toggle("show");
+    }
+
+    function selectOption1(option) {
+        const servicesInput = document.getElementById("servicesInput");
+        servicesInput.value = option;
+        toggleDropdown();
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.fas.fa-chevron-down')) {
+            const servicesOptions = document.getElementById("departmentOptions");
+            if (servicesOptions.classList.contains('show')) {
+                servicesOptions.classList.remove('show');
+            }
+        }
+    }
+</script>
+
+<script>
+    function toggleDropdown() {
+        const serOptions = document.getElementById("departmentOptions");
+        departmentOptions.classList.toggle("show");
+    }
+
+    function selectOption(option) {
+        const departmentInput = document.getElementById("departmentInput");
+        departmentInput.value = option;
+        toggleDropdown();
+    }
+
+    // Close dropdown when clicking outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.fas.fa-chevron-down')) {
+            const departmentOptions = document.getElementById("departmentOptions");
+            if (departmentOptions.classList.contains('show')) {
+                departmentOptions.classList.remove('show');
+            }
+        }
+    }
+</script>
+
+
+
+</body>
+</html>

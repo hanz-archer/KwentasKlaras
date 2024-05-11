@@ -32,10 +32,13 @@
             <p>
               <form action="{% url 'ongoing' %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn"><i class="fas fa-search"></i>  Ongoing</button>
+                <button type="submit" class="btn"><i class="fas fa-search"></i>  Continuing</button>
               </form>       
               <button type="submit" class="btn"><i class="fas fa-search"></i>  Current</button>
-              <button type="submit" class="btn"><i class="fas fa-search"></i> Continuing</button>
+              <form action="{% url 'adddata' %}" method="post">
+                {% csrf_token %}
+              <button type="submit" class="btn"><i class="fas fa-search"></i> Add Data</button>
+              </form>
             </p>
           </div>
         </div>
