@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwentas Klaras - Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+</head>
+<body>
+        <div class="container">
+            <div class="login-content">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <img src="{% static 'KwentasApp/img/logo.png' %}" alt="User Avatar">
+                    <h1 class="title">We're sorry you cannot access with wrong credentials 3 times. Please try again later.</h1>
+                    <p>Please contact the administrator for assistance.</p>
+                </form>
+            </div>
+        </div>
+
+    <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>    
+</body>
+</html>

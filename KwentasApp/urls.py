@@ -24,5 +24,6 @@ urlpatterns = [
     path('finished/', views.finished, name='finished'), 
     path('currentproject', views.current_view, name='currentprojects'),
     path('homepage/', views.homepage, name='homepage'),
-    path('adddata/', views.adddata, name='adddata')
+    path('adddata/', views.adddata, name='adddata'),
+    path('loginFailed/', views.loginFailed, name='loginFailed'),
 ]

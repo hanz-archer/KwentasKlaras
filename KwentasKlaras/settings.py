@@ -146,6 +146,25 @@ AUTH_USER_MODEL = 'KwentasApp.CustomUser'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 1209600 
 
+AXES_TEMPLATE = 'KwentasKlaras\KwentasApp\templates\KwentasApp\loginFailed.html'
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.template': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 
 
 
