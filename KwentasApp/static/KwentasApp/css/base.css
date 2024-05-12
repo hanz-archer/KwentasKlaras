@@ -702,7 +702,7 @@ thead th.active,tbody td.active {
   --color-summary-1: #FFF6EE;
   --color-summary-1-highlight: #FFC48B;
   --color-summary-2: #FAFAFF;
-  --color-summary-2-highlight: #0a8f4d;
+  --color-summary-2-highlight: #06b153;
   --color-summary-3: #FFF0F3;
   --color-summary-3-highlight: #FFB3C0;
   
@@ -718,10 +718,6 @@ thead th.active,tbody td.active {
   box-shadow: 0 8px 10px rgba(0, 0, 0, .1);
   max-width: 30em;
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three columns */
-  grid-template-rows: repeat(3, auto); /* Three rows */
-  gap: 1px; /* Gap between items */
   
   h1 {
     font-family: var(--font-ibm-plex-sans);
