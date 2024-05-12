@@ -27,4 +27,6 @@ urlpatterns = [
     path('adddata/', views.adddata, name='adddata'),
     path('loginFailed/', views.loginFailed, name='loginFailed'),
     path('continuing', views.continuing, name='continuing'),
+    path('ppa', views.ppa, name='ppa'),
+    path('addbudget', views.addbudget, name='addbudget'),
 ]

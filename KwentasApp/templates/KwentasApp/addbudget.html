@@ -17,7 +17,7 @@
         <div class="login-content">
             <form action="#" method="post">
                 {% csrf_token %}
-                <h2 class="title">Add Obligation</h2>
+                <h2 class="title">Add Budget</h2>
                 {% if messages %}
                 <div class="messages" id="validation-messages">
                     {% for message in messages %}
@@ -58,7 +58,7 @@
                           <i class="fas fa-user"></i>
                   </div>
                   <div class="div">
-                          <h5>Spent</h5>
+                          <h5>Budget</h5>
                           <input type="text" name="username" class="input">
                   </div>
                </div>

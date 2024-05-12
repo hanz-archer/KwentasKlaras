@@ -130,5 +130,14 @@ def adddata(request):
 def loginFailed(request):
     return render(request, 'KwentasApp/loginFailed.html')
 
+@login_required
 def continuing(request):
     return render(request, 'KwentasApp/continuing.html')
+
+@login_required
+def ppa(request):
+    return render(request, 'KwentasApp/ppa.html')
+
+@login_required
+def addbudget(request):
+    return render(request, 'KwentasApp/addbudget.html')
