@@ -27,11 +27,14 @@
             </div>
             <h3>Programs Projects & Activities under 20% LDF</h3>
             <p>
-              <form action="{% url 'ongoing' %}" method="post">
+              <form action="{% url 'continuing' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn"><i class="fas fa-search"></i>  Continuing</button>
-              </form>       
+              </form>
+              <form action="{% url 'ongoing' %}" method="post">
+                {% csrf_token %}
               <button type="submit" class="btn"><i class="fas fa-search"></i>  Current</button>
+              </form>
               <form action="{% url 'adddata' %}" method="post">
                 {% csrf_token %}
               <button type="submit" class="btn"><i class="fas fa-search"></i> Add Data</button>

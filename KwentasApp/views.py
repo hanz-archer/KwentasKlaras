@@ -129,3 +129,6 @@ def adddata(request):
 
 def loginFailed(request):
     return render(request, 'KwentasApp/loginFailed.html')
+
+def continuing(request):
+    return render(request, 'KwentasApp/continuing.html')

@@ -26,4 +26,5 @@ urlpatterns = [
     path('homepage/', views.homepage, name='homepage'),
     path('adddata/', views.adddata, name='adddata'),
     path('loginFailed/', views.loginFailed, name='loginFailed'),
+    path('continuing', views.continuing, name='continuing'),
 ]
