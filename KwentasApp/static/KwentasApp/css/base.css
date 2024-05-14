@@ -4,7 +4,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   background-color: #ffffff;
-  color: #666666;
+  color: black;
   font-family: "Montserrat", sans-serif;
 }
 
@@ -229,7 +229,6 @@ body {
   width: 95%;
   max-height: calc(89% - 1.6rem);
   background-color: #fffb;
-
   margin: .8rem auto;
   border-radius: .6rem;
 
@@ -320,11 +319,17 @@ tbody tr.hide td img {
 }
 
 .status {
-  padding: .2rem 0;
-  border-radius: 6rem;
+  padding: 0.5rem 1rem; /* Increased padding for button-like appearance */
+  border-radius: 1.5rem; /* Border-radius for rounded corners */
   text-align: center;
   margin-right: 50px;
+  margin-left: 20px;
   margin-top: 5px;
+  display: inline-block; /* Ensure it behaves like a button */
+  cursor: pointer; /* Pointer cursor to indicate it's clickable */
+  border: none; /* Remove default border */
+  font-weight: bold; /* Make the text bold */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
 }
 
 .status.delivered {
@@ -332,15 +337,28 @@ tbody tr.hide td img {
   color: #fff;
 }
 
+.status.delivered:hover {
+  background-color: #005bb5; /* Darker shade on hover */
+}
+
 .status.update {
   background-color: green;
-  color: green;
+  color: #fff; /* Updated to white for better readability */
+}
+
+.status.update:hover {
+  background-color: darkgreen; /* Darker shade on hover */
 }
 
 .status.cancelled {
   background-color: #d893a3;
   color: #b30021;
 }
+
+.status.cancelled:hover {
+  background-color: #b36c82; /* Darker shade on hover */
+}
+
 
 .status.pending {
   background-color: #ebc474;
@@ -841,6 +859,336 @@ thead th.active,tbody td.active {
 
 
 
+
+
+
+/* Parent container to center the card */
+.container {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 800px; /* Adjusted max-width */
+  padding: 0 2rem; /* Adjusted padding */
+  text-align: center; /* Center the content */
+}
+
+.card {
+  width: 100%; /* Adjusted width */
+  max-width: 800px; /* Adjusted max-width */
+  background: rgb(255, 255, 255);
+  border-radius: 0.4em;
+  box-shadow: 0.3em 0.3em 0.7em #00000015;
+  transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: rgb(250, 250, 250) 0.2em solid;
+  overflow: hidden; /* Prevents overflowing content */
+  margin-bottom: auto; /* Pushes the card upwards */
+  margin-top: 2em; /* Adjusted margin-top */
+ 
+  margin-right: auto; /* Adjusted margin-right */
+  margin-left: auto;
+}
+
+.card-content {
+  padding: 2rem; /* Adjusted padding */
+  overflow-y: auto; /* Allows vertical scroll if content overflows */
+}
+
+.login-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 6rem; /* Adjusted padding */
+}
+
+@media screen and (max-width: 1000px) {
+  form {
+      width: 100%; /* Adjusted width */
+  }
+
+  .login-content h2 {
+      font-size: 2.5rem; /* Adjusted font-size */
+      margin: 1rem 0; /* Adjusted margin */
+  }
+
+  .img img {
+      width: 100%; /* Adjusted width */
+      max-width: 400px; /* Limited max-width */
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+      grid-template-columns: 1fr;
+  }
+
+  .img {
+      display: none;
+  }
+
+  .wave {
+      display: none;
+  }
+
+  .login-content {
+      justify-content: center;
+  }
+}
+.card:hover {
+  border: #006fff 0.2em solid;
+}
+
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 800px; /* Adjusted max-width */
+  padding: 0 1rem; /* Adjusted padding */
+  text-align: center; /* Center the content */
+}
+.login-content{
+display: flex;
+justify-content: flex-start;
+align-items: center;
+text-align: center;
+margin-left: 12px;
+}
+form{
+width: 500px;
+}
+
+.login-content img{
+  height: 100px;
+}
+
+.login-content h2{
+margin: 10px 0;
+color: #333;
+text-transform: uppercase;
+font-size:2.0rem;
+}
+
+.login-content .input-div{
+position: relative;
+  display: grid;
+  grid-template-columns: 7% 93%;
+  margin: 25px 0;
+  padding: 5px 0;
+  width: 100%;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.login-content .input-div.one{
+margin-top: 0;
+}
+
+.i{
+color: #d9d9d9;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.i i{
+transition: .3s;
+}
+
+.input-div > div{
+  position: relative;
+height: 45px;
+}
+
+.input-div > div > h5{
+position: absolute;
+left: 10px;
+top: -90%;
+transform: translateY(-50%);
+color: #999;
+font-size: 18px;
+transition: .3s;
+}
+
+.input-div:before, .input-div:after{
+content: '';
+position: absolute;
+bottom: -2px;
+width: 0%;
+height: 2px;
+background-color: #007FFF;
+transition: .4s;
+}
+
+.input-div:before{
+right: 50%;
+}
+
+.input-div:after{
+left: 50%;
+}
+
+.input-div.focus:before, .input-div.focus:after {
+  content: "";  /* This is necessary for the pseudo-elements to be visible */
+  width: 50%;
+}
+
+
+.input-div.focus > div > h5{
+top: -5px;
+font-size: 15px;
+}
+.input-div .div {
+  position: relative;  /* Add this if necessary */
+}
+
+.input-div.focus > .i > i{
+color: #007FFF;
+}
+
+.input-div > div > input{
+position: absolute;
+left: 0;
+top: 0;
+width: calc(100% - 20px); /* Decrease the width of inputs */
+height: 100%;
+border: none;
+outline: none;
+background: none;
+padding: 0.5rem 0.7rem;
+font-size: 1.2rem;
+color: #555;
+font-family: 'poppins', sans-serif;
+}
+
+.input-div.pass{
+margin-bottom: 4px;
+}
+.btn-add,
+.btn-cancel {
+    display: block;
+    width: 100%;
+    height: 46px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-size: 200%;
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: .5s;
+    text-align: center;
+    line-height: 46px; /* Ensure consistent vertical alignment */
+}
+
+.btn-add {
+    background-image: linear-gradient(to right, #246dec, #246dec, #246dec);
+}
+
+.btn-cancel {
+    background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
+}
+
+.btn:hover{
+background-position: right;
+}
+
+
+@media screen and (max-width: 1050px){
+.container{
+  grid-gap: 5rem;
+}
+}
+
+@media screen and (max-width: 1000px){
+form{
+  width: 290px;
+}
+
+.login-content h2{
+      font-size: 2.4rem;
+      margin: 8px 0;
+}
+
+.img img{
+  width: 400px;
+}
+}
+
+@media screen and (max-width: 900px){
+.container{
+  grid-template-columns: 1fr;
+}
+
+.img{
+  display: none;
+}
+
+.wave{
+  display: none;
+}
+
+.login-content{
+  justify-content: center;
+}
+}
+/* Add this style to hide the initial option */
+.select-hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.drop {
+  position: relative;
+  display: inline-block;
+}
+
+#departmentInput {
+  padding-right: 30px; /* Leave space for the arrow icon */
+}
+
+#dropdownArrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.content {
+  display: none;
+  position: absolute;
+  top: 100%; /* Position the dropdown below the input */
+  left: 0;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d9d9d9;
+  z-index: 1;
+}
+
+.content.show {
+  display: block;
+}
+
+.content li {
+  padding: 10px;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.content li:hover {
+  background-color: #f0f0f0;
+}
+
+#update{
+margin-top: 3%;
+  
+}
 
 
 

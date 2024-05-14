@@ -12,6 +12,9 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
 
+
+
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -123,9 +126,8 @@ def disbursements(request):
 def finished(request):
     return render(request,'KwentasApp/finished.html')
 
-@login_required
-def adddata(request):
-    return render(request, 'KwentasApp/adddata.html')
+
+
 
 def loginFailed(request):
     return render(request, 'KwentasApp/loginFailed.html')

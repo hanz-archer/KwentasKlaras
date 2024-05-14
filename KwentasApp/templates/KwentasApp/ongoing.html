@@ -8,10 +8,12 @@
 
     <!-- Montserrat Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-REkIOwLjNfkdczJxZtWKJ68Scw8rtr1HQ1nlWzww99fTVd1dMqA9Xn4e+eNm/TZNPpiQNB6q7BsYRKj7hlLqdw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
 
 
     <!-- Custom CSS -->
@@ -49,6 +51,10 @@
                 </div>
             </section>
             <section class="table__body">
+
+
+
+
                 <table>
                     <thead>
                         <tr>
@@ -61,22 +67,124 @@
                         </tr>
                     </thead>
                     <tbody>
+
+
+                        {% if matched_entries_2024_and_above %}
+                        {% for entry in matched_entries_2024_and_above %}
                         <tr>
-                            <td><a href="">Seawall Repair</a></td>
-                            <td>MCWD </td>
-                            <td> 1 </td>
-                            <td> 2024 </td>
+                            <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                             <td class="implementing-unit">{{ entry.implementing_unit }}</td>
+                              <td class="code">{{ entry.code }}</td>
+                            <td class="code">{{ entry.year }}</td>
                             <td>
-                                <p class="status delivered"><a href="{% url 'obligations' %}" style="text-decoration: none; color: white;" >Obligation</a></p>
-                                <p class="status delivered"><a href="{% url 'addbudget' %}" style="text-decoration: none; color: white;">Budget</a></p>
+                                <button class="status delivered"><a href="" id="obligation-link"  style="text-decoration: none; color: white;">Obligation</a></button>
+                                <button class="status delivered"><a href="" id="budget-link"  style="text-decoration: none; color: white;">Budget</a></button>
                             </td>
-                            <td> <p class="status update"><a href="" style="text-decoration: none; color: white;">Update</a></p></td>
+                            <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; color: white;">Update</a></button>
+                                </td>
                         </tr>
+                        {% endfor %}
+                        {% else %}
+
+                        {% for entry in entries_2024_and_above %}
+                        <tr>
+                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                         <td class="implementing-unit">{{ entry.implementing_unit }}</td>
+                          <td class="code">{{ entry.code }}</td>
+                        <td class="code">{{ entry.year }}</td>
+                        <td>
+                            <button class="status delivered"><a href="" id="obligation-link"  style="text-decoration: none; color: white;">Obligation</a></button>
+                            <button class="status delivered"><a href="" id="budget-link"  style="text-decoration: none; color: white;">Budget</a></button>
+                        </td>
+                        <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; color: white;">Update</a></button>
+                            </td>
+                    </tr>
+                    {% endfor %}
+            {% endif %}
+
                     </tbody>
                 </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
             </section>
         </main>
     </div>
+
+
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+            <div class="login-container">
+                <div class="login-content">
+
+
+
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <h2 class="title">Add Obligation</h2>
+                    {% if messages %}
+                    <div class="messages" id="validation-messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                    <script>
+                    setTimeout(function() {
+                        var messagesDiv = document.querySelector('.messages');
+                        if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                        }
+                    }, 3000);
+                    </script>
+                    {% endif %}
+                    <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Project Name</h5>
+                        <input type="text" name="username" class="input">
+                    </div>
+                    </div>
+
+                    <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Date</h5>
+                        <input type="date" name="username" class="input">
+                    </div>
+                    </div>
+
+                    <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Spent</h5>
+                        <input type="text" name="username" class="input">
+                    </div>
+                    </div>
+                    <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
+                    <a href="{% url 'homepage' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
     <div class="button-container">
         <form action="{% url 'homepage' %}" method="post">
             {% csrf_token %}
@@ -84,8 +192,370 @@
       </form>
     </div>    
     
+
+    
+    <div class="container" id="budget">
+        <div class="card">
+            <div class="card-content">
+            <div class="login-container">
+                <div class="login-content">
+
+
+                    
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <h2 class="title">Add Budget</h2>
+                    {% if messages %}
+                    <div class="messages" id="validation-messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                    <script>
+                    setTimeout(function() {
+                        var messagesDiv = document.querySelector('.messages');
+                        if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                        }
+                    }, 3000);
+                    </script>
+                    {% endif %}
+                    <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Project Name</h5>
+                        <input type="text" name="username" class="input">
+                    </div>
+                    </div>
+
+                    <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Date</h5>
+                        <input type="date" name="username" class="input">
+                    </div>
+                    </div>
+
+                    <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Spent</h5>
+                        <input type="text" name="username" class="input">
+                    </div>
+                    </div>
+                    <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
+                    <a href="{% url 'ongoing' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    <div class="button-container">
+        <form action="{% url 'homepage' %}" method="post">
+            {% csrf_token %}
+      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i> Back</button>
+      </form>
+    </div>    
+    
+
+
+
+    
+    <div class="container" id="update">
+        <div class="card">
+            <div class="card-content">
+            <div class="login-container">
+                <div class="login-content">
+                     <form action="#" method="post">
+                {% csrf_token %}
+                <h2 class="title">Add Data Form</h2>
+                {% if messages %}
+                <div class="messages" id="validation-messages">
+                    {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                <script>
+                    setTimeout(function() {
+                      var messagesDiv = document.querySelector('.messages');
+                      if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                      }
+                    }, 3000);
+                  </script>
+                {% endif %}
+                   <div class="input-div">
+                      <div class="i">
+                              <i class="fas fa-info"></i>
+                      </div>
+                      <div class="div">
+                              <h5>PPA</h5>
+                              <input type="text" name="username" class="input">
+                      </div>
+                   </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="drop">
+                        <input type="text" name="department" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly>
+                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
+                        <ul class="content" id="departmentOptions">
+                            <li onclick="selectOption('IT Office')">IT Office</li>
+                            <li onclick="selectOption('Engineering Office')">Engineering Office</li>
+                            <li onclick="selectOption('Treasurers Office')">Treasurers Office</li>
+                            <li onclick="selectOption('Tourism Office')">Tourism Office</li>
+                            <li onclick="selectOption('Mayor Office')">Mayor Office</li>
+                        </ul>
+                    </div>
+                </div>
+                   
+                   <div class="input-div">
+                      <div class="i">
+                              <i class="fas fa-location-arrow"></i>
+                      </div>
+                      <div class="div">
+                              <h5>Location</h5>
+                              <input type="text" name="email" class="input">
+                      </div>
+                   </div>
+
+                   
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-registered"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Remarks</h5>
+                            <input type="text" name="email" class="input">
+                    </div>
+                 </div>
+
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-calendar-times"></i>
+                    </div>
+                    <div class="div">
+       
+                            <input type="date" name="email" class="input" placeholder="&#8203">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="div">
+        
+                            <input type="date" name="email" class="input" placeholder="">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Code</h5>
+                            <input type="number" name="email" class="input">
+                    </div>
+                 </div>
+
+                 <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <div class="drop">
+                        <input type="text" name="services" placeholder="Services" onclick="toggleDropdown1()" id="servicesInput" readonly>
+                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown1()"></i>
+                        <ul class="content" id="servicesOptions">
+                            <li onclick="selectOption1('Service 1')">Service 2</li>
+                            <li onclick="selectOption1('Service 2')">Service 2</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                            <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="div">
+                            <h5>Year</h5>
+                            <input type="number" name="email" class="input">
+                    </div>
+                 </div>
+
+
+
+                 <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
+                 <a href="{% url 'ongoing' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+            </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+
+
+
+
+
+
+
+        
+    <div class="button-container">
+        <a href="{% url 'homepage'%}" style="text-decoration: none;">
+        <form action="{% url 'homepage' %}" method="post">
+            {% csrf_token %}
+      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i>Back</button>
+      </form>
+    </a>
+    </div>    
+
+
+
+
+
+
+
+
+
+
+
  <!-- Scripts -->
 <!-- ApexCharts -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const obligationLink = document.getElementById('obligation-link');
+        const container = document.querySelector('.container');
+        const mainTable = document.getElementById('customers_table');
+        const exitLink = document.querySelector('.btn-cancel');
+
+        obligationLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            container.style.display = 'block'; // Show the container
+            mainTable.style.display = 'none'; 
+        });
+
+        exitLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            container.style.display = 'none'; // Hide the container
+            mainTable.style.display = 'block'; // Show the main table
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const obligationLink = document.getElementById('budget-link');
+        const container = document.querySelector('#budget');
+        const mainTable = document.getElementById('customers_table');
+        const exitLink = document.querySelector('.btn-cancel');
+
+        obligationLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            container.style.display = 'block'; // Show the container
+            mainTable.style.display = 'none'; 
+        });
+
+        exitLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            container.style.display = 'none'; // Hide the container
+            mainTable.style.display = 'block'; // Show the main table
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const obligationLink = document.getElementById('update-link');
+        const container = document.querySelector('#update');
+        const mainTable = document.getElementById('customers_table');
+        const exitLink = document.querySelector('.btn-cancel');
+
+        obligationLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            container.style.display = 'block'; // Show the container
+            mainTable.style.display = 'none'; 
+        });
+
+        exitLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            container.style.display = 'none'; // Hide the container
+            mainTable.style.display = 'block'; // Show the main table
+        });
+    });
+</script>
+
+
+<script>
+    function toggleDropdown() {
+        const serOptions = document.getElementById("departmentOptions");
+        departmentOptions.classList.toggle("show");
+    }
+
+    function selectOption(option) {
+        const departmentInput = document.getElementById("departmentInput");
+        departmentInput.value = option;
+        toggleDropdown();
+    }
+
+    // Close dropdown when clicking outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.fas.fa-chevron-down')) {
+            const departmentOptions = document.getElementById("departmentOptions");
+            if (departmentOptions.classList.contains('show')) {
+                departmentOptions.classList.remove('show');
+            }
+        }
+    }
+</script>
+
+
+<script>
+    function toggleDropdown1() {
+        const servicesOptions = document.getElementById("servicesOptions");
+        servicesOptions.classList.toggle("show");
+    }
+
+    function selectOption1(option) {
+        const servicesInput = document.getElementById("servicesInput");
+        servicesInput.value = option;
+        toggleDropdown();
+    }
+    window.onclick = function(event) {
+        if (!event.target.matches('.fas.fa-chevron-down')) {
+            const servicesOptions = document.getElementById("departmentOptions");
+            if (servicesOptions.classList.contains('show')) {
+                servicesOptions.classList.remove('show');
+            }
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
 <script>
 $(document).ready(function() {
   // Add click event listener to table header th elements

@@ -15,31 +15,22 @@
             <img src="{% static 'KwentasApp/img/logo.png' %}">
         </div>
         <div class="login-content">
-            <form action="#" method="post">
+
+
+
+
+
+            <form action="{% url 'create_entry' %}" method="post">
                 {% csrf_token %}
                 <h2 class="title">Add Data Form</h2>
-                {% if messages %}
-                <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                </div>
-                <script>
-                    setTimeout(function() {
-                      var messagesDiv = document.querySelector('.messages');
-                      if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                      }
-                    }, 3000);
-                  </script>
-                {% endif %}
+               
                    <div class="input-div">
                       <div class="i">
                               <i class="fas fa-info"></i>
                       </div>
                       <div class="div">
                               <h5>PPA</h5>
-                              <input type="text" name="username" class="input">
+                              <input type="text" name="ppa" class="input">
                       </div>
                    </div>
 
@@ -48,7 +39,7 @@
                         <i class="fas fa-building"></i>
                     </div>
                     <div class="drop">
-                        <input type="text" name="department" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly>
+                        <input type="text" name="implementing_unit" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly>
                         <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
                         <ul class="content" id="departmentOptions">
                             <li onclick="selectOption('IT Office')">IT Office</li>
@@ -66,7 +57,7 @@
                       </div>
                       <div class="div">
                               <h5>Location</h5>
-                              <input type="text" name="email" class="input">
+                              <input type="text" name="location" class="input">
                       </div>
                    </div>
 
@@ -76,7 +67,7 @@
                     </div>
                     <div class="div">
                             <h5>Appropriation</h5>
-                            <input type="text" name="email" class="input">
+                            <input type="text" name="appropriation" class="input">
                     </div>
                  </div>
 
@@ -86,7 +77,7 @@
                     </div>
                     <div class="div">
                             <h5>Remarks</h5>
-                            <input type="text" name="email" class="input">
+                            <input type="text" name="remarks" class="input">
                     </div>
                  </div>
 
@@ -97,7 +88,7 @@
                     </div>
                     <div class="div">
        
-                            <input type="date" name="email" class="input" placeholder="&#8203">
+                            <input type="date" name="start_date" class="input" placeholder="&#8203">
                     </div>
                  </div>
 
@@ -107,7 +98,7 @@
                     </div>
                     <div class="div">
         
-                            <input type="date" name="email" class="input" placeholder="">
+                            <input type="date" name="end_date" class="input" placeholder="">
                     </div>
                  </div>
 
@@ -117,7 +108,7 @@
                     </div>
                     <div class="div">
                             <h5>Code</h5>
-                            <input type="number" name="email" class="input">
+                            <input type="number" name="code" class="input">
                     </div>
                  </div>
 
@@ -141,56 +132,23 @@
                     </div>
                     <div class="div">
                             <h5>Year</h5>
-                            <input type="number" name="email" class="input">
+                            <input type="number" name="year" class="input">
                     </div>
                  </div>
-
-
-
-                <a href="{% url 'homepage' %}" class="btn-add">Add Data</a>
-                <a href="{% url 'homepage' %}" class="btn-cancel">Cancel</a>
+                 <form action="{% url 'homepage' %}" method="post">
+                    <button type="submit" class="btn-add" value="Submit">Submit</button>
+                    <form action="{% url 'homepage' %}" method="post">
+                        <button type="" class="btn-cancel" value="Submit">Cancel</button>
+                    </form>
+                </form>
+                
             </form>
         </div>
     </div>
 
     <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
-    <script>
-        document.getElementById('show-password').addEventListener('click', function () {
-            var passwordInput = document.getElementById('password-input');
-            var icon = document.querySelector('#show-password i');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-lock');
-                icon.classList.add('fa-unlock-alt');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-unlock-alt');
-                icon.classList.add('fa-lock');
-            }
-        });
-    </script>
-    <script>
-        const inputs = document.querySelectorAll(".input");
 
-
-function addcl(){
-	let parent = this.parentNode.parentNode;
-	parent.classList.add("focus");
-}
-
-function remcl(){
-	let parent = this.parentNode.parentNode;
-	if(this.value == ""){
-		parent.classList.remove("focus");
-	}
-}
-
-
-inputs.forEach(input => {
-	input.addEventListener("focus", addcl);
-	input.addEventListener("blur", remcl);
-});
-    </script>
+ 
 
 <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
 <script>
@@ -235,6 +193,29 @@ inputs.forEach(input => {
             }
         }
     }
+</script>
+
+<script>
+    const inputs = document.querySelectorAll(".input");
+
+
+function addcl(){
+let parent = this.parentNode.parentNode;
+parent.classList.add("focus");
+}
+
+function remcl(){
+let parent = this.parentNode.parentNode;
+if(this.value == ""){
+    parent.classList.remove("focus");
+}
+}
+
+
+inputs.forEach(input => {
+input.addEventListener("focus", addcl);
+input.addEventListener("blur", remcl);
+});
 </script>
 
 

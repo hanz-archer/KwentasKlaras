@@ -31,13 +31,6 @@ body{
     max-width: 600px;
     padding: 0 -5rem;
 }
-
-.img{
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-}
-
 .login-content{
 	display: flex;
 	justify-content: flex-start;

@@ -2,12 +2,18 @@ from django.urls import path
 from . import views
 from django.views.generic import RedirectView
 from django.contrib import admin
-
+from .projects import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(pattern_name='login', permanent=False)),
-    path('login/', views.login_view, name='login'),
+        path('login/', views.login_view, name='login'),
+
+    path('create_entry/', create_entry, name='create_entry'),
+
+
+    path('ongoing_projects', ongoing_projects, name='ongoing_projects'),
+   
     path('base/', views.base_view, name='base'),
     path('register/', views.registration_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
@@ -24,7 +30,7 @@ urlpatterns = [
     path('finished/', views.finished, name='finished'), 
     path('currentproject', views.current_view, name='currentprojects'),
     path('homepage/', views.homepage, name='homepage'),
-    path('adddata/', views.adddata, name='adddata'),
+    path('adddata/', adddata, name='adddata'),
     path('loginFailed/', views.loginFailed, name='loginFailed'),
     path('continuing', views.continuing, name='continuing'),
     path('ppa', views.ppa, name='ppa'),
