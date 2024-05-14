@@ -11,9 +11,15 @@ urlpatterns = [
 
     path('create_entry/', create_entry, name='create_entry'),
 
-
+path('continuing_projects', continuing_projects, name='continuing_projects'),
     path('ongoing_projects', ongoing_projects, name='ongoing_projects'),
-   
+   path('search/ongoing/', search_ongoing_projects, name='search_ongoing_projects'),
+   path('search/ongoing/', search_ongoing_projects, name='search_ongoing_projects'),
+ path('search/continuing/', search_continuing_projects, name='search_continuing_projects'),
+   path('add_obligation', add_obligation, name='add_obligation'),
+ path('add_budget/', add_budget, name='add_budget'),
+
+
     path('base/', views.base_view, name='base'),
     path('register/', views.registration_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
@@ -32,7 +38,7 @@ urlpatterns = [
     path('homepage/', views.homepage, name='homepage'),
     path('adddata/', adddata, name='adddata'),
     path('loginFailed/', views.loginFailed, name='loginFailed'),
-    path('continuing', views.continuing, name='continuing'),
+  
     path('ppa', views.ppa, name='ppa'),
     path('addbudget', views.addbudget, name='addbudget'),
 ]

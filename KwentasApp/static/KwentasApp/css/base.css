@@ -194,7 +194,7 @@ body {
 
 .table__header .input-group {
   width: 35%;
-  height: 100%;
+  height: 120%;
   background-color: #fff5;
   padding: 0 .8rem;
   border-radius: 2rem;
@@ -223,6 +223,7 @@ body {
   background-color: transparent;
   border: none;
   outline: none;
+  font-size: 20px;
 }
 
 .table__body {

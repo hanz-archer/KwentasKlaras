@@ -14,6 +14,11 @@ from firebase_admin import credentials, db
 import datetime
 import re
 
+import re
+import datetime
+from django.http import HttpResponse
+from django.shortcuts import render
+
 def create_entry(request):
     if request.method == 'POST':
         # Extract data from the form submission
@@ -30,49 +35,47 @@ def create_entry(request):
         
         # Validate required fields
         if not (ppa and implementing_unit and location and appropriation_str and start_date_str and end_date_str and code and services and year_str):
-            return HttpResponse("All fields are required.", status=400)
+            return HttpResponse('<script>alert("All fields are required."); window.location.href = "/adddata";</script>', status=400)
 
         # Validate appropriation amount
         try:
             appropriation = float(appropriation_str)
             if appropriation <= 0:
-                return HttpResponse("Appropriation amount must be a positive number.", status=400)
+                return HttpResponse('<script>alert("Appropriation amount must be a positive number."); window.location.href = "/adddata";</script>', status=400)
         except ValueError:
-            return HttpResponse("Invalid appropriation amount.", status=400)
+            return HttpResponse('<script>alert("Invalid appropriation amount."); window.location.href = "/adddata";</script>', status=400)
 
         # Validate date format
         date_format = r'\d{4}-\d{2}-\d{2}'  # YYYY-MM-DD
         if not (re.match(date_format, start_date_str) and re.match(date_format, end_date_str)):
-            return HttpResponse("Invalid date format. Please use YYYY-MM-DD.", status=400)
+            return HttpResponse('<script>alert("Invalid date format. Please use YYYY-MM-DD."); window.location.href = "/adddata";</script>', status=400)
 
         # Convert dates to datetime objects for further validation
         try:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
         except ValueError:
-            return HttpResponse("Invalid date.", status=400)
+            return HttpResponse('<script>alert("Invalid date."); window.location.href = "/adddata";</script>', status=400)
 
         # Validate start date is before end date
         if start_date >= end_date:
-            return HttpResponse("Start date must be before end date.", status=400)
+            return HttpResponse('<script>alert("Start date must be before end date."); window.location.href = "/adddata";</script>', status=400)
 
         # Validate code format
         if not re.match(r'^[\w\d\s-]+$', code):
-            return HttpResponse("Invalid code format. Only letters, numbers, spaces, and hyphens are allowed.", status=400)
+            return HttpResponse('<script>alert("Invalid code format. Only letters, numbers, spaces, and hyphens are allowed."); window.location.href = "/adddata";</script>', status=400)
 
         # Validate code uniqueness
         if database.child('Data').child(code).get().val() is not None:
-            return HttpResponse("Code already exists.", status=400)
+            return HttpResponse('<script>alert("Code already exists."); window.location.href = "/adddata";</script>', status=400)
 
         # Validate year format
         if not re.match(r'\d{4}', year_str):
-            return HttpResponse("Invalid year format. Please use YYYY.", status=400)
+            return HttpResponse('<script>alert("Invalid year format. Please use YYYY."); window.location.href = "/adddata";</script>', status=400)
 
         # Set remaining balance equal to appropriation
-
         total_budget = appropriation
         remaining_balance = total_budget
-        
 
         try:
             # Save project entry with code as the key
@@ -96,14 +99,16 @@ def create_entry(request):
             return HttpResponse('<script>alert("Successfully added"); window.location.href = "/adddata";</script>')
           
         except Exception as e:
-            return HttpResponse(f"Error: {str(e)}", status=500)
+            return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/adddata";</script>', status=500)
     else:
         # Render the form for GET requests
         return render(request, 'KwentasApp/adddata.html')
 
 
+
 def adddata(request):
     return render(request, 'KwentasApp/adddata.html')
+
 
 
 
@@ -144,7 +149,8 @@ def add_obligation(request):
             # Update remaining balance under the entry
             database.child('Data').child(entry_key) .update({"remaining_balance": remaining_balance})
 
-            return redirect('projects')  # Redirect back to the main projects page after successful addition
+            # Redirect back to the previous page
+            return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
             return HttpResponse(f"Error: {str(e)}", status=500)
     else:
@@ -153,6 +159,8 @@ def add_obligation(request):
 
 
 from django.shortcuts import render, redirect, HttpResponse
+
+
 
 def add_budget(request):
     if request.method == 'POST':
@@ -197,7 +205,7 @@ def add_budget(request):
                 "remaining_balance": remaining_balance
             })
 
-            return redirect('projects')  # Redirect back to the main projects page after successful addition
+            return redirect(request.META.get('HTTP_REFERER', '/')) # Redirect back to the main projects page after successful addition
         except Exception as e:
             return HttpResponse(f"Error: {str(e)}", status=500)
     else:
@@ -272,7 +280,7 @@ def get_project_entries():
 
 def continuing_projects(request):
     entries_below_2024, _ = get_project_entries()
-    return render(request, 'continuing.html', {'entries_below_2024': entries_below_2024})
+    return render(request, 'KwentasApp/continuing.html', {'entries_below_2024': entries_below_2024})
 
 
 
@@ -289,7 +297,7 @@ def ongoing_projects(request):
 
 
 
-def search_ongoing_projects(request):
+def search_continuing_projects(request):
     query = request.GET.get('query')
     entries_below_2024 = []
 
@@ -337,11 +345,11 @@ def search_ongoing_projects(request):
                 if entry.get('year') is not None and int(entry['year']) < 2024:
                     entries_below_2024.append(entry)
 
-    return render(request, 'projects.html', {'matched_entries_below_2024': entries_below_2024, 'query': query})
+    return render(request, 'KwentasApp/continuing.html', {'matched_entries_below_2024': entries_below_2024, 'query': query})
 
 
 
-def search_current_projects(request):
+def search_ongoing_projects(request):
     query = request.GET.get('query')
     entries_2024_and_above = []
 
@@ -389,7 +397,7 @@ def search_current_projects(request):
                 if entry.get('year') is not None and int(entry['year']) >= 2024:
                     entries_2024_and_above.append(entry)
 
-    return render(request, 'projects.html', {'matched_entries_2024_and_above': entries_2024_and_above, 'query': query})
+    return render(request, 'KwentasApp/ongoing.html', {'matched_entries_2024_and_above': entries_2024_and_above, 'query': query})
 
 
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% load static %}
+    {% csrf_token %}
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -33,11 +34,23 @@
     <body>
         <main class="table" id="customers_table">
             <section class="table__header">
-                <h1>Ongoing Projects Data</h1>
+                <h1><a href="{% url 'ongoing_projects'%}" style="text-decoration: none;color: initial;"> Ongoing Projects Data</a></h1>
                 
                 <div class="input-group">
-                    <input type="search" placeholder="Search">
-                </div>
+                    <form method="GET" action="{% url 'search_ongoing_projects' %}" >
+                        <input type="text" name="query" placeholder="Search Ongoing Projects...">
+
+                    </div>
+
+
+                        <button type="submit" class="status delivered" style="width: 10%;font-size: 20px;">Search</button>
+
+                    </form>
+                    
+                
+             
+
+
                 <div class="export__file">
                     <label for="export-file" class="export__file-btn" title="Export File"></label>
                     <input type="checkbox" id="export-file">
@@ -77,10 +90,10 @@
                               <td class="code">{{ entry.code }}</td>
                             <td class="code">{{ entry.year }}</td>
                             <td>
-                                <button class="status delivered"><a href="" id="obligation-link"  style="text-decoration: none; color: white;">Obligation</a></button>
-                                <button class="status delivered"><a href="" id="budget-link"  style="text-decoration: none; color: white;">Budget</a></button>
+                                <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')"><a href="" id="obligation-link"  style="text-decoration: none;font-size: 20px; color: white;">Obligation</a></button>
+                                <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')"> <a href="" id="budget-link"  style="text-decoration: none;font-size: 20px;  color: white;">Budget</a></button>
                             </td>
-                            <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; color: white;">Update</a></button>
+                            <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; font-size: 20px; color: white;">Update</a></button>
                                 </td>
                         </tr>
                         {% endfor %}
@@ -93,10 +106,10 @@
                           <td class="code">{{ entry.code }}</td>
                         <td class="code">{{ entry.year }}</td>
                         <td>
-                            <button class="status delivered"><a href="" id="obligation-link"  style="text-decoration: none; color: white;">Obligation</a></button>
-                            <button class="status delivered"><a href="" id="budget-link"  style="text-decoration: none; color: white;">Budget</a></button>
-                        </td>
-                        <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; color: white;">Update</a></button>
+                            <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')"><a href="" id="obligation-link"  style="text-decoration: none;font-size: 20px; color: white;">Obligation</a></button>
+                                <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')"><a href="" id="budget-link"  style="text-decoration: none;font-size: 20px;  color: white;">Budget</a></button>
+                            </td>
+                            <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; font-size: 20px; color: white;">Update</a></button>
                             </td>
                     </tr>
                     {% endfor %}
@@ -130,31 +143,21 @@
 
 
 
-                <form action="#" method="post">
+                <form id="add-obligation-form" action="{% url 'add_obligation' %}" method="post">
                     {% csrf_token %}
-                    <h2 class="title">Add Obligation</h2>
-                    {% if messages %}
-                    <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                    </div>
-                    <script>
-                    setTimeout(function() {
-                        var messagesDiv = document.querySelector('.messages');
-                        if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                        }
-                    }, 3000);
-                    </script>
-                    {% endif %}
+                    <h2 class="title">Add Obligation Form</h2>
+                    <br>
+                    <input type="hidden" name="entry-code" id="obligation-code">
+
+
+
                     <div class="input-div">
                     <div class="i">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <h5>Project Name</h5>
-                        <input type="text" name="username" class="input">
+                        <h5>Name</h5>
+                        <input type="text" name="obligation_name" class="input">
                     </div>
                     </div>
 
@@ -164,7 +167,7 @@
                     </div>
                     <div class="div">
                         <h5>Date</h5>
-                        <input type="date" name="username" class="input">
+                        <input type="date" name="obligation_date" class="input">
                     </div>
                     </div>
 
@@ -174,11 +177,12 @@
                     </div>
                     <div class="div">
                         <h5>Spent</h5>
-                        <input type="text" name="username" class="input">
+                        <input type="text" name="obligation_spent" class="input">
                     </div>
                     </div>
-                    <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
-                    <a href="{% url 'homepage' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+
+                    <button type="submit" class="btn-add" value="Submit">Submit</button>
+                    <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
                 </form>
                 </div>
             </div>
@@ -202,31 +206,19 @@
 
 
                     
-                <form action="#" method="post">
-                    {% csrf_token %}
-                    <h2 class="title">Add Budget</h2>
-                    {% if messages %}
-                    <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                    </div>
-                    <script>
-                    setTimeout(function() {
-                        var messagesDiv = document.querySelector('.messages');
-                        if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                        }
-                    }, 3000);
-                    </script>
-                    {% endif %}
+                    <form id="add-budget-form" action="{% url 'add_budget' %}" method="post">
+                    
+                        {% csrf_token %}
+                        <h2 class="title">Add Budget Form</h2><br><br>
+                        <input type="hidden" name="entry_code" id="budget-code">
+
                     <div class="input-div">
                     <div class="i">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <h5>Project Name</h5>
-                        <input type="text" name="username" class="input">
+                        <h5>Budget Name</h5>
+                        <input type="text" name="budget_name" class="input">
                     </div>
                     </div>
 
@@ -236,7 +228,7 @@
                     </div>
                     <div class="div">
                         <h5>Date</h5>
-                        <input type="date" name="username" class="input">
+                        <input type="date" name="budget_date" class="input">
                     </div>
                     </div>
 
@@ -245,12 +237,12 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <h5>Spent</h5>
-                        <input type="text" name="username" class="input">
+                        <h5>Added Budget</h5>
+                        <input type="text" name="added_budget" class="input">
                     </div>
                     </div>
-                    <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
-                    <a href="{% url 'ongoing' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                    <button type="submit" class="btn-add" value="Submit">Submit</button>
+                    <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
                 </form>
                 </div>
             </div>
@@ -274,23 +266,7 @@
             <div class="login-container">
                 <div class="login-content">
                      <form action="#" method="post">
-                {% csrf_token %}
-                <h2 class="title">Add Data Form</h2>
-                {% if messages %}
-                <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                </div>
-                <script>
-                    setTimeout(function() {
-                      var messagesDiv = document.querySelector('.messages');
-                      if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                      }
-                    }, 3000);
-                  </script>
-                {% endif %}
+             
                    <div class="input-div">
                       <div class="i">
                               <i class="fas fa-info"></i>
@@ -429,10 +405,30 @@
 
 
 
+  <!-- budget js-->
+  <script>
+    function showAddBudget(budget_code) {
+      // Set the entry code value to the hidden input field
+      document.getElementById('budget-code').value = budget_code;
+      
+     
+  }
+  
+  </script>
 
 
+<!-- Obligation -->
 
-
+    <script>
+        function showAddObligationForm(entryCode) {
+          // Set the entry code value to the hidden input field
+          document.getElementById('obligation-code').value = entryCode;
+          
+          // Show the add obligation form
+         
+      }
+      
+      </script>
 
  <!-- Scripts -->
 <!-- ApexCharts -->

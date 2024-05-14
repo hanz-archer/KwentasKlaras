@@ -108,7 +108,7 @@
                     </div>
                     <div class="div">
                             <h5>Code</h5>
-                            <input type="number" name="code" class="input">
+                            <input type="text" name="code" class="input">
                     </div>
                  </div>
 
@@ -118,9 +118,9 @@
                     </div>
                     <div class="drop">
                         <input type="text" name="services" placeholder="Services" onclick="toggleDropdown1()" id="servicesInput" readonly>
-                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown1()"></i>
+                        <i class="fas fa-chevron-down dropdown-arrow" onclick="toggleDropdown1()"></i>
                         <ul class="content" id="servicesOptions">
-                            <li onclick="selectOption1('Service 1')">Service 2</li>
+                            <li onclick="selectOption1('Service 1')">Service 1</li>
                             <li onclick="selectOption1('Service 2')">Service 2</li>
                         </ul>
                     </div>
@@ -135,14 +135,13 @@
                             <input type="number" name="year" class="input">
                     </div>
                  </div>
-                 <form action="{% url 'homepage' %}" method="post">
-                    <button type="submit" class="btn-add" value="Submit">Submit</button>
-                    <form action="{% url 'homepage' %}" method="post">
-                        <button type="" class="btn-cancel" value="Submit">Cancel</button>
-                    </form>
-                </form>
                 
-            </form>
+                    <button type="submit" class="btn-add" value="Submit">Submit</button>
+               
+                    
+                    
+                <a href="{% url 'homepage'%}"><p class="btn-cancel">Cancel</p></a>
+            </form>     
         </div>
     </div>
 
@@ -160,11 +159,12 @@
     function selectOption1(option) {
         const servicesInput = document.getElementById("servicesInput");
         servicesInput.value = option;
-        toggleDropdown();
+        toggleDropdown1();
     }
+
     window.onclick = function(event) {
-        if (!event.target.matches('.fas.fa-chevron-down')) {
-            const servicesOptions = document.getElementById("departmentOptions");
+        if (!event.target.matches('.dropdown-arrow')) {
+            const servicesOptions = document.getElementById("servicesOptions");
             if (servicesOptions.classList.contains('show')) {
                 servicesOptions.classList.remove('show');
             }
