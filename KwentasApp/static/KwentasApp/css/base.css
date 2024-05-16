@@ -662,17 +662,6 @@ thead th.active,tbody td.active {
   color: #333;
 }
 
-.button-container {
-  position: fixed; /* Fix the button at a specific position relative to the viewport */
-  bottom: 40px; /* Position it 20px from the bottom */
-  right: 20px; /* Position it 20px from the right */
-  z-index: 10; /* Ensure it's on top of other elements */
-}
-.inline-form {
-  display: inline-block;
-  margin: 0;
-}
-
 .button {
   position: absolute; /* Position the button */
   top: 0; /* Align to the top */
@@ -929,6 +918,9 @@ thead th.active,tbody td.active {
   padding: 2rem; /* Adjusted padding */
   overflow-y: auto; /* Allows vertical scroll if content overflows */
 }
+.container.blur-background {
+  filter: blur(5px);
+}
 
 .login-content {
   display: flex;
@@ -971,9 +963,7 @@ thead th.active,tbody td.active {
       justify-content: center;
   }
 }
-.card:hover {
-  border: #006fff 0.2em solid;
-}
+
 
 
 .container {
@@ -1225,6 +1215,67 @@ margin-top: 3%;
   
 }
 
+
+
+.entry-list {
+  list-style: none;
+  padding: 0;
+}
+
+.entry-item {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  background-color: #f9f9f9;
+  padding: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 22px;
+}
+
+.entry-item h2 {
+  margin-top: 0;
+  font-size: 28px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.entry-item strong {
+  color: #555;
+}
+
+.entry-item table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+}
+
+.entry-item th, .entry-item td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.entry-item th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.entry-item table td:first-child {
+  width: 40%;
+}
+
+.entry-item table td:last-child {
+  width: 30%;
+}
+
+.entry-item h2 {
+  font-size: 24px;
+  color: #555;
+}
+
 .button-container {
   position: fixed; /* Fix the button at a specific position relative to the viewport */
   bottom: 46px; /* Position it 20px from the bottom */
@@ -1308,11 +1359,9 @@ margin-top: 3%;
   transform: translate(2px ,2px);
 }
 
-
-
-
-
-
+.entry-item {
+  text-align: left;
+}
 
 
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% load static %}
+    {% csrf_token %}
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -35,10 +36,9 @@
             <section class="table__header">
                 <h1><a href="{% url 'continuing_projects'%}" style="text-decoration: none;color: initial;"> Continuing Projects Data</a></h1>
                 
-                
                 <div class="input-group">
                     <form method="GET" action="{% url 'search_continuing_projects' %}" >
-                        <input type="text" name="query" placeholder="Search Ongoing Projects...">
+                        <input type="text" name="query" placeholder="Search Continuing Projects...">
 
                     </div>
 
@@ -47,6 +47,10 @@
 
                     </form>
                     
+                
+             
+
+
                 <div class="export__file">
                     <label for="export-file" class="export__file-btn" title="Export File"></label>
                     <input type="checkbox" id="export-file">
@@ -79,17 +83,17 @@
 
 
                         {% if matched_entries_below_2024 %}
-                {% for entry in matched_entries_below_2024 %}
+                        {% for entry in matched_entries_below_2024 %}
                         <tr>
                             <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                              <td class="implementing-unit">{{ entry.implementing_unit }}</td>
                               <td class="code">{{ entry.code }}</td>
                             <td class="code">{{ entry.year }}</td>
                             <td>
-                                <button class="status delivered"><a href="" id="obligation-link"  style="text-decoration: none; font-size: 20px;color: white;">Obligation</a></button>
-                                <button class="status delivered"><a href="" id="budget-link"  style="text-decoration: none;  font-size: 20px;color: white;">Budget</a></button>
+                                <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')"><id="obligation-link"  style="text-decoration: none;font-size: 20px; color: white;">Obligation</a></button>
+                                <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')"> <a id="budget-link"  style="text-decoration: none;font-size: 20px;  color: white;">Budget</a></button>
                             </td>
-                            <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; font-size: 20px;color: white;">Update</a></button>
+                            <td> <button class="status update" onclick="showUpdateForm('{{ entry.code }}')"><a href=""  id="update-link"  style="text-decoration: none; font-size: 20px; color: white;">Update</a></button>
                                 </td>
                         </tr>
                         {% endfor %}
@@ -102,10 +106,10 @@
                           <td class="code">{{ entry.code }}</td>
                         <td class="code">{{ entry.year }}</td>
                         <td>
-                            <button class="status delivered"><a href="" id="obligation-link"  style="text-decoration: none; font-size: 20px;color: white;">Obligation</a></button>
-                            <button class="status delivered"><a href="" id="budget-link"  style="text-decoration: none; font-size: 20px;color: white;">Budget</a></button>
-                        </td>
-                        <td> <button class="status update"><a href=""  id="update-link"  style="text-decoration: none; font-size: 20px;color: white;">Update</a></button>
+                            <button class="status delivered" id="obligation-link" onclick="showAddObligationForm('{{ entry.code }}')"><a style="text-decoration: none;font-size: 20px; color: white;">Obligation</a></button>
+                                <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')"><a id="budget-link"  style="text-decoration: none;font-size: 20px;  color: white;">Budget</a></button>
+                            </td>
+                            <td> <button class="status update" onclick="showUpdateForm('{{ entry.code }}')"><a id="update-link"  style="text-decoration: none; font-size: 20px; color: white;">Update</a></button>
                             </td>
                     </tr>
                     {% endfor %}
@@ -127,11 +131,27 @@
 
 
             </section>
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+            
         </main>
     </div>
 
 
-    <div class="container">
+    <div class="container" id="obligation">
         <div class="card">
             <div class="card-content">
             <div class="login-container">
@@ -139,31 +159,21 @@
 
 
 
-                <form action="#" method="post">
+                <form id="add-obligation-form" action="{% url 'add_obligation' %}" method="post">
                     {% csrf_token %}
-                    <h2 class="title">Add Obligation</h2>
-                    {% if messages %}
-                    <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                    </div>
-                    <script>
-                    setTimeout(function() {
-                        var messagesDiv = document.querySelector('.messages');
-                        if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                        }
-                    }, 3000);
-                    </script>
-                    {% endif %}
+                    <h2 class="title">Add Obligation Form</h2>
+                    <br>
+                    <input type="hidden" name="entry-code" id="obligation-code">
+
+
+
                     <div class="input-div">
                     <div class="i">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <h5>Project Name</h5>
-                        <input type="text" name="username" class="input">
+                        <h5>Name</h5>
+                        <input type="text" name="obligation_name" class="input">
                     </div>
                     </div>
 
@@ -173,7 +183,7 @@
                     </div>
                     <div class="div">
                         <h5>Date</h5>
-                        <input type="date" name="username" class="input">
+                        <input type="date" name="obligation_date" class="input">
                     </div>
                     </div>
 
@@ -183,17 +193,19 @@
                     </div>
                     <div class="div">
                         <h5>Spent</h5>
-                        <input type="text" name="username" class="input">
+                        <input type="text" name="obligation_spent" class="input">
                     </div>
                     </div>
-                    <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
-                    <a href="{% url 'homepage' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+
+                    <button type="submit" class="btn-add" value="Submit">Submit</button>
+                    <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
                 </form>
                 </div>
             </div>
             </div>
         </div>
-        </div>
+        </div> 
+
     <div class="button-container">
         <form action="{% url 'homepage' %}" method="post" class="inline-form">
         {% csrf_token %}
@@ -204,7 +216,7 @@
         </form>
     </div>    
     
-
+  <!-- Budget -->
     
     <div class="container" id="budget">
         <div class="card">
@@ -214,31 +226,19 @@
 
 
                     
-                <form action="#" method="post">
-                    {% csrf_token %}
-                    <h2 class="title">Add Budget</h2>
-                    {% if messages %}
-                    <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                    </div>
-                    <script>
-                    setTimeout(function() {
-                        var messagesDiv = document.querySelector('.messages');
-                        if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                        }
-                    }, 3000);
-                    </script>
-                    {% endif %}
+                    <form id="add-budget-form" action="{% url 'add_budget' %}" method="post">
+                    
+                        {% csrf_token %}
+                        <h2 class="title">Add Budget Form</h2><br><br>
+                        <input type="hidden" name="entry_code" id="budget-code">
+
                     <div class="input-div">
                     <div class="i">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <h5>Project Name</h5>
-                        <input type="text" name="username" class="input">
+                        <h5>Budget Name</h5>
+                        <input type="text" name="budget_name" class="input">
                     </div>
                     </div>
 
@@ -248,7 +248,7 @@
                     </div>
                     <div class="div">
                         <h5>Date</h5>
-                        <input type="date" name="username" class="input">
+                        <input type="date" name="budget_date" class="input">
                     </div>
                     </div>
 
@@ -257,12 +257,12 @@
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
-                        <h5>Spent</h5>
-                        <input type="text" name="username" class="input">
+                        <h5>Added Budget</h5>
+                        <input type="text" name="added_budget" class="input">
                     </div>
                     </div>
-                    <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
-                    <a href="{% url 'ongoing' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                    <button type="submit" class="btn-add" value="Submit">Submit</button>
+                    <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
                 </form>
                 </div>
             </div>
@@ -273,198 +273,312 @@
 
 
 
-    
-    <div class="container" id="update">
-        <div class="card">
-            <div class="card-content">
-            <div class="login-container">
-                <div class="login-content">
-                     <form action="#" method="post">
-                {% csrf_token %}
-                <h2 class="title">Add Data Form</h2>
-                {% if messages %}
-                <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
+
+<!-- Update-->
+<div class="container" id="update">
+    <div class="card">
+        <div class="card-content">
+        <div class="login-container">
+            <div class="login-content">
+                 <form action="#" method="post">
+            {% csrf_token %}
+            <h2 class="title">Add Data Form</h2>
+            {% if messages %}
+            <div class="messages" id="validation-messages">
+                {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+            <script>
+                setTimeout(function() {
+                  var messagesDiv = document.querySelector('.messages');
+                  if (messagesDiv) {
+                    messagesDiv.style.display = 'none';
+                  }
+                }, 3000);
+              </script>
+            {% endif %}
+               <div class="input-div">
+                  <div class="i">
+                          <i class="fas fa-info"></i>
+                  </div>
+                  <div class="div">
+                          <h5>PPA</h5>
+                          <input type="text" name="username" class="input">
+                  </div>
+               </div>
+
+            <div class="input-div">
+                <div class="i">
+                    <i class="fas fa-building"></i>
                 </div>
-                <script>
-                    setTimeout(function() {
-                      var messagesDiv = document.querySelector('.messages');
-                      if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                      }
-                    }, 3000);
-                  </script>
-                {% endif %}
-                   <div class="input-div">
-                      <div class="i">
-                              <i class="fas fa-info"></i>
-                      </div>
-                      <div class="div">
-                              <h5>PPA</h5>
-                              <input type="text" name="username" class="input">
-                      </div>
-                   </div>
-
-                <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="drop">
-                        <input type="text" name="department" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly>
-                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
-                        <ul class="content" id="departmentOptions">
-                            <li onclick="selectOption('IT Office')">IT Office</li>
-                            <li onclick="selectOption('Engineering Office')">Engineering Office</li>
-                            <li onclick="selectOption('Treasurers Office')">Treasurers Office</li>
-                            <li onclick="selectOption('Tourism Office')">Tourism Office</li>
-                            <li onclick="selectOption('Mayor Office')">Mayor Office</li>
-                        </ul>
-                    </div>
-                </div>
-                   
-                   <div class="input-div">
-                      <div class="i">
-                              <i class="fas fa-location-arrow"></i>
-                      </div>
-                      <div class="div">
-                              <h5>Location</h5>
-                              <input type="text" name="email" class="input">
-                      </div>
-                   </div>
-
-                   
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-registered"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Remarks</h5>
-                            <input type="text" name="email" class="input">
-                    </div>
-                 </div>
-
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-times"></i>
-                    </div>
-                    <div class="div">
-       
-                            <input type="date" name="email" class="input" placeholder="&#8203">
-                    </div>
-                 </div>
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="div">
-        
-                            <input type="date" name="email" class="input" placeholder="">
-                    </div>
-                 </div>
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-hashtag"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Code</h5>
-                            <input type="number" name="email" class="input">
-                    </div>
-                 </div>
-
-                 <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                    <div class="drop">
-                        <input type="text" name="services" placeholder="Services" onclick="toggleDropdown1()" id="servicesInput" readonly>
-                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown1()"></i>
-                        <ul class="content" id="servicesOptions">
-                            <li onclick="selectOption1('Service 1')">Service 2</li>
-                            <li onclick="selectOption1('Service 2')">Service 2</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-week"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Year</h5>
-                            <input type="number" name="email" class="input">
-                    </div>
-                 </div>
-
-
-
-                 <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
-                 <a href="{% url 'ongoing' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
-            </form>
+                <div class="drop">
+                    <input type="text" name="department" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly>
+                    <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
+                    <ul class="content" id="departmentOptions">
+                        <li onclick="selectOption('IT Office')">IT Office</li>
+                        <li onclick="selectOption('Engineering Office')">Engineering Office</li>
+                        <li onclick="selectOption('Treasurers Office')">Treasurers Office</li>
+                        <li onclick="selectOption('Tourism Office')">Tourism Office</li>
+                        <li onclick="selectOption('Mayor Office')">Mayor Office</li>
+                    </ul>
                 </div>
             </div>
+               
+               <div class="input-div">
+                  <div class="i">
+                          <i class="fas fa-location-arrow"></i>
+                  </div>
+                  <div class="div">
+                          <h5>Location</h5>
+                          <input type="text" name="email" class="input">
+                  </div>
+               </div>
+
+               
+
+             <div class="input-div">
+                <div class="i">
+                        <i class="fas fa-registered"></i>
+                </div>
+                <div class="div">
+                        <h5>Remarks</h5>
+                        <input type="text" name="email" class="input">
+                </div>
+             </div>
+
+
+             <div class="input-div">
+                <div class="i">
+                        <i class="fas fa-calendar-times"></i>
+                </div>
+                <div class="div">
+   
+                        <input type="date" name="email" class="input" placeholder="&#8203">
+                </div>
+             </div>
+
+             <div class="input-div">
+                <div class="i">
+                        <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="div">
+    
+                        <input type="date" name="email" class="input" placeholder="">
+                </div>
+             </div>
+
+             <div class="input-div">
+                <div class="i">
+                        <i class="fas fa-hashtag"></i>
+                </div>
+                <div class="div">
+                        <h5>Code</h5>
+                        <input type="number" name="email" class="input">
+                </div>
+             </div>
+
+             <div class="input-div">
+                <div class="i">
+                    <i class="fas fa-search-plus"></i>
+                </div>
+                <div class="drop">
+                    <input type="text" name="services" placeholder="Services" onclick="toggleDropdown1()" id="servicesInput" readonly>
+                    <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown1()"></i>
+                    <ul class="content" id="servicesOptions">
+                        <li onclick="selectOption1('Service 1')">Service 2</li>
+                        <li onclick="selectOption1('Service 2')">Service 2</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="input-div">
+                <div class="i">
+                        <i class="fas fa-calendar-week"></i>
+                </div>
+                <div class="div">
+                        <h5>Year</h5>
+                        <input type="number" name="email" class="input">
+                </div>
+             </div>
+
+             <a href="{% url 'homepage' %}" style="text-decoration: none;" class="btn-add">Add Data</a>
+             <a href="{% url 'ongoing' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+        </form>
             </div>
         </div>
         </div>
+    </div>
+    </div>
 
 
 
 
-
-
-
-
-
-
-
- <!-- Scripts -->
- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const overlay = document.createElement('div');
-        overlay.className = 'overlay';
-        document.body.appendChild(overlay);
-    
-        const exitLinks = document.querySelectorAll('.btn-cancel');
-        
-        function toggleContainer(linkId, containerId) {
-            const link = document.getElementById(linkId);
-            const container = document.querySelector(containerId);
+<!--Details-->
+<div class="container" id="details">
+    <div class="card">
+        <div class="card-content">  
+        <div class="login-container">
+            <div class="login-content">
+                <ul class="entry-list">
+                    {% for entry in all_entries %}
+                    <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
+                        <h2>Details</h2>
+                        <strong>PPA:</strong> {{ entry.ppa }}<br>
+                        <strong>Implementing Unit:</strong> {{ entry.implementing_unit }}<br>
+                        <strong>Location:</strong> {{ entry.location }}<br>
+                        <strong>Appropriation:</strong> {{ entry.appropriation }}<br>
+                        <strong>Remarks:</strong> {{ entry.remarks }}<br>
+                        <strong>Start Date:</strong> {{ entry.start_date }}<br>
+                        <strong>End Date:</strong> {{ entry.end_date }}<br>
+                        <strong>Code:</strong> {{ entry.code }}<br>
+                        <strong>Services:</strong> {{ entry.services }}<br>
+                        <strong>Year:</strong> {{ entry.year }}<br>
+                        <strong>Total Budget:</strong> {{ entry.total_budget }}<br>
+                        <strong>Total Added Budget:</strong> {{ entry.added_budget }}<br>
+                        <strong>Total Spent:</strong> {{ entry.total_spent }}<br>
+                        <strong>Remaining Balance</strong> {{ entry.remaining_balance }}<br><br><br>
             
-            link.addEventListener('click', function(event) {
-                event.preventDefault();
-                overlay.style.display = 'block';
-                container.classList.remove('fade-out');
-                container.classList.add('fade-in');
-                container.style.display = 'block';
-            });
-    
-            exitLinks.forEach(exitLink => {
-                exitLink.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    container.classList.remove('fade-in');
-                    container.classList.add('fade-out');
-                    setTimeout(() => {
-                        container.style.display = 'none';
-                        overlay.style.display = 'none';
-                    }, 500); // Match this duration with the CSS transition duration
-                });
-            });
-        }
-    
-        toggleContainer('obligation-link', '.container');
-        toggleContainer('budget-link', '#budget');
-        toggleContainer('update-link', '#update');
-    });
+                        <h2>Added Budgets</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Budget Name</th>
+                                    <th>Added Budget</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for budget in entry.budget_data %}
+                                <tr>
+                                    <td>{{ budget.name }}</td>
+                                    <td>{{ budget.added_budget }}</td>
+                                    <td>{{ budget.date }}</td><br><br><br>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+            
+                        <h2>Obligations</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Obligation Name</th>
+                                    <th>Spent</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obligation in entry.obligation %}
+                                <tr>
+                                    <td>{{ obligation.name }}</td>
+                                    <td>{{ obligation.spent }}</td>
+                                    <td>{{ obligation.date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </li>
+                    {% endfor %}
+                </ul>
+              
+            </div>
+            <a href="#" onclick="hideDetails()" class="btn-cancel" style="text-decoration: none;">Exit</a>
+        </div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+        
+    <div class="button-container">
+        <a href="{% url 'homepage'%}" style="text-decoration: none;">
+        <form action="{% url 'homepage' %}" method="post">
+            {% csrf_token %}
+      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i> Back</button>
+      </form>
+    </a>
+    </div>    
+
+    <script>
+
+
+
+function hideDetails() {
+  // Hide the container and remove the blur effect
+  var container = document.getElementById('details');
+  container.style.display = 'none';
+  
+  // Hide the overlay
+  var overlay = document.querySelector('.overlay');
+  overlay.style.display = 'none';
+}
+
+function showDetails(code) {
+  // Hide all details first
+  var details = document.getElementsByClassName('entry-item');
+  for (var i = 0; i < details.length; i++) {
+    details[i].style.display = 'none';
+  }
+
+  // Show details of the clicked PPA
+  var detailsElement = document.getElementById('details-' + code);
+  detailsElement.style.display = 'block';
+
+  // Show the container
+  var container = document.getElementById('details');
+  container.style.display = 'block';
+  
+  // Show the overlay to blur the background
+  var overlay = document.querySelector('.overlay');
+  overlay.style.display = 'block';
+}
+
     </script>
     
     
     
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            document.body.appendChild(overlay);
+        
+            const exitLinks = document.querySelectorAll('.btn-cancel');
+            
+            function toggleContainer(linkId, containerId) {
+                const link = document.getElementById(linkId);
+                const container = document.querySelector(containerId);
+                
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    overlay.style.display = 'block';
+                    container.classList.remove('fade-out');
+                    container.classList.add('fade-in');
+                    container.style.display = 'block';
+                });
+        
+                exitLinks.forEach(exitLink => {
+                    exitLink.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        container.classList.remove('fade-in');
+                        container.classList.add('fade-out');
+                        setTimeout(() => {
+                            container.style.display = 'none';
+                            overlay.style.display = 'none';
+                        }, 500); // Match this duration with the CSS transition duration
+                    });
+                });
+            }
+        
+            toggleContainer('obligation-link', '.container');
+            toggleContainer('budget-link', '#budget');
+            toggleContainer('update-link', '#update');
+        });
+        </script>
 
 <script>
     function toggleDropdown() {
@@ -534,7 +648,7 @@ $(document).ready(function() {
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
 <!-- Custom JS -->
-<script src="{% static 'KwentasApp/js/script.js' %}"></script>
+
 <script>
   const optionMenu = document.querySelector(".select-menu"),
          selectBtn = optionMenu.querySelector(".select-btn"),
