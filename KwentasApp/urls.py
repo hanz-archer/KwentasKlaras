@@ -32,13 +32,11 @@ path('continuing_projects', continuing_projects, name='continuing_projects'),
     path('evaluation/', views.evaluation, name='evaluation'),
     path('activities/', views.activities, name='activities'),     
     path('obligations/', views.obligations, name='obligations'),  
-    path('disbursements/', views.disbursements, name='disbursements'),  
     path('finished/', views.finished, name='finished'), 
     path('currentproject', views.current_view, name='currentprojects'),
     path('homepage/', views.homepage, name='homepage'),
     path('adddata/', adddata, name='adddata'),
     path('loginFailed/', views.loginFailed, name='loginFailed'),
-  
     path('ppa', views.ppa, name='ppa'),
     path('addbudget', views.addbudget, name='addbudget'),
 ]

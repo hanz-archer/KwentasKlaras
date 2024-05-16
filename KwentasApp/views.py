@@ -119,10 +119,6 @@ def homepage(request):
 
 
 @login_required
-def disbursements(request):
-    return render(request,'KwentasApp/disbursements.html')
-
-@login_required
 def finished(request):
     return render(request,'KwentasApp/finished.html')
 
