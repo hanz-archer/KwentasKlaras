@@ -195,10 +195,12 @@
         </div>
         </div>
     <div class="button-container">
-        <form action="{% url 'homepage' %}" method="post">
-            {% csrf_token %}
-      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i> Back</button>
-      </form>
+        <form action="{% url 'homepage' %}" method="post" class="inline-form">
+        <button class="Btn">
+            <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
+            <div class="text">Back</div>
+          </button>
+        </form>
     </div>    
     
 
@@ -266,12 +268,6 @@
             </div>
         </div>
         </div>
-    <div class="button-container">
-        <form action="{% url 'homepage' %}" method="post">
-            {% csrf_token %}
-      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i> Back</button>
-      </form>
-    </div>    
     
 
 
@@ -423,89 +419,50 @@
 
 
 
-        
-    <div class="button-container">
-        <a href="{% url 'homepage'%}" style="text-decoration: none;">
-        <form action="{% url 'homepage' %}" method="post">
-            {% csrf_token %}
-      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i>Back</button>
-      </form>
-    </a>
-    </div>    
-
-
-
-
-
-
-
-
-
 
 
  <!-- Scripts -->
-<!-- ApexCharts -->
-<script>
+ <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const obligationLink = document.getElementById('obligation-link');
-        const container = document.querySelector('.container');
-        const mainTable = document.getElementById('customers_table');
-        const exitLink = document.querySelector('.btn-cancel');
-
-        obligationLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            container.style.display = 'block'; // Show the container
-            mainTable.style.display = 'none'; 
-        });
-
-        exitLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            container.style.display = 'none'; // Hide the container
-            mainTable.style.display = 'block'; // Show the main table
-        });
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        document.body.appendChild(overlay);
+    
+        const exitLinks = document.querySelectorAll('.btn-cancel');
+        
+        function toggleContainer(linkId, containerId) {
+            const link = document.getElementById(linkId);
+            const container = document.querySelector(containerId);
+            
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                overlay.style.display = 'block';
+                container.classList.remove('fade-out');
+                container.classList.add('fade-in');
+                container.style.display = 'block';
+            });
+    
+            exitLinks.forEach(exitLink => {
+                exitLink.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    container.classList.remove('fade-in');
+                    container.classList.add('fade-out');
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                        overlay.style.display = 'none';
+                    }, 500); // Match this duration with the CSS transition duration
+                });
+            });
+        }
+    
+        toggleContainer('obligation-link', '.container');
+        toggleContainer('budget-link', '#budget');
+        toggleContainer('update-link', '#update');
     });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const obligationLink = document.getElementById('budget-link');
-        const container = document.querySelector('#budget');
-        const mainTable = document.getElementById('customers_table');
-        const exitLink = document.querySelector('.btn-cancel');
-
-        obligationLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            container.style.display = 'block'; // Show the container
-            mainTable.style.display = 'none'; 
-        });
-
-        exitLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            container.style.display = 'none'; // Hide the container
-            mainTable.style.display = 'block'; // Show the main table
-        });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const obligationLink = document.getElementById('update-link');
-        const container = document.querySelector('#update');
-        const mainTable = document.getElementById('customers_table');
-        const exitLink = document.querySelector('.btn-cancel');
-
-        obligationLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            container.style.display = 'block'; // Show the container
-            mainTable.style.display = 'none'; 
-        });
-
-        exitLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            container.style.display = 'none'; // Hide the container
-            mainTable.style.display = 'block'; // Show the main table
-        });
-    });
-</script>
+    </script>
+    
+    
+    
 
 
 <script>
