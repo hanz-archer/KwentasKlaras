@@ -379,9 +379,10 @@ def ongoing_projects(request):
 def search_continuing_projects(request):
     query = request.GET.get('query')
     entries_below_2024 = []
-
-    # Assuming you have a function to fetch ongoing projects from Firebase or database
+    entries_below_2024, _, all_entries = get_project_entries()
     result = database.child('Data').get()
+
+    matched_entries_below_2024 = []
 
     if result.val():
         for key, value in result.val().items():
@@ -400,9 +401,7 @@ def search_continuing_projects(request):
                 'total_spent': value.get('total_spent'),
                 'obligation': []  # Initialize obligation list
             }
-            # Check if obligation node exists
             if 'obligation' in value:
-                # Iterate over obligation items and append to entry's obligation list
                 for obligation_key, obligation_value in value['obligation'].items():
                     entry['obligation'].append({
                         'name': obligation_value.get('name'),
@@ -410,7 +409,6 @@ def search_continuing_projects(request):
                         'date': obligation_value.get('date')
                     })
 
-            # Check if the entry matches the search query
             if (query.lower() in str(entry['ppa']).lower() or
                 query.lower() in str(entry['implementing_unit']).lower() or
                 query.lower() in str(entry['location']).lower() or
@@ -422,18 +420,24 @@ def search_continuing_projects(request):
                 query.lower() in str(entry['services']).lower()):
                 
                 if entry.get('year') is not None and int(entry['year']) < 2024:
-                    entries_below_2024.append(entry)
+                    matched_entries_below_2024.append(entry)
 
-    return render(request, 'KwentasApp/continuing.html', {'matched_entries_below_2024': entries_below_2024, 'query': query})
+    return render(request, 'KwentasApp/continuing.html', {
+        'matched_entries_below_2024': matched_entries_below_2024,
+        'query': query,
+        'entries_below_2024': entries_below_2024,
+        'all_entries': all_entries
+    })
 
 
 
 def search_ongoing_projects(request):
     query = request.GET.get('query')
     entries_2024_and_above = []
-
-    # Assuming you have a function to fetch current projects from Firebase or database
+    _, entries_2024_and_above, all_entries = get_project_entries()
     result = database.child('Data').get()
+
+    matched_entries_2024_and_above = []
 
     if result.val():
         for key, value in result.val().items():
@@ -452,9 +456,7 @@ def search_ongoing_projects(request):
                 'total_spent': value.get('total_spent'),
                 'obligation': []  # Initialize obligation list
             }
-            # Check if obligation node exists
             if 'obligation' in value:
-                # Iterate over obligation items and append to entry's obligation list
                 for obligation_key, obligation_value in value['obligation'].items():
                     entry['obligation'].append({
                         'name': obligation_value.get('name'),
@@ -462,21 +464,25 @@ def search_ongoing_projects(request):
                         'date': obligation_value.get('date')
                     })
 
-                # Check if the entry matches the search query
             if (query.lower() in str(entry['ppa']).lower() or
-                    query.lower() in str(entry['implementing_unit']).lower() or
-                    query.lower() in str(entry['location']).lower() or
-                    query.lower() in str(entry['appropriation']).lower() or
-                    query.lower() in str(entry['remarks']).lower() or
-                    query.lower() in str(entry['start_date']).lower() or
-                    query.lower() in str(entry['end_date']).lower() or
-                    query.lower() in str(entry['code']).lower() or
-                    query.lower() in str(entry['services']).lower()):
+                query.lower() in str(entry['implementing_unit']).lower() or
+                query.lower() in str(entry['location']).lower() or
+                query.lower() in str(entry['appropriation']).lower() or
+                query.lower() in str(entry['remarks']).lower() or
+                query.lower() in str(entry['start_date']).lower() or
+                query.lower() in str(entry['end_date']).lower() or
+                query.lower() in str(entry['code']).lower() or
+                query.lower() in str(entry['services']).lower()):
                 
                 if entry.get('year') is not None and int(entry['year']) >= 2024:
-                    entries_2024_and_above.append(entry)
+                    matched_entries_2024_and_above.append(entry)
 
-    return render(request, 'KwentasApp/ongoing.html', {'matched_entries_2024_and_above': entries_2024_and_above, 'query': query})
+    return render(request, 'KwentasApp/ongoing.html', {
+        'matched_entries_2024_and_above': matched_entries_2024_and_above,
+        'query': query,
+        'entries_2024_and_above': entries_2024_and_above,
+        'all_entries': all_entries
+    })
 
 
 

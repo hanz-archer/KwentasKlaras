@@ -80,52 +80,59 @@
                         </tr>
                     </thead>
                     <tbody>
-
-
                         {% if matched_entries_below_2024 %}
-                        {% for entry in matched_entries_below_2024 %}
-                        <tr>
-                            <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                             <td class="implementing-unit">{{ entry.implementing_unit }}</td>
-                              <td class="code">{{ entry.code }}</td>
-                            <td class="code">{{ entry.year }}</td>
-                            <td>
-                                <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')"><id="obligation-link"  style="text-decoration: none;font-size: 20px; color: white;">Obligation</a></button>
-                                <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')"> <a id="budget-link"  style="text-decoration: none;font-size: 20px;  color: white;">Budget</a></button>
-                            </td>
-                            <td> <button class="status update" onclick="showUpdateForm('{{ entry.code }}')"><a href=""  id="update-link"  style="text-decoration: none; font-size: 20px; color: white;">Update</a></button>
-                               <td> <button class="status update" onclick="showDeleteForm('{{ entry.code }}')"><a href="" id="delete-link"  style="text-decoration: none; font-size: 20px; color: white;">Delete</a></button>
-
-                               </td>
-
-
-
-                                </td>
-                        </tr>
-                        {% endfor %}
+                            {% for entry in matched_entries_below_2024 %}
+                                <tr>
+                                    <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                                    <td class="implementing-unit">{{ entry.implementing_unit }}</td>
+                                    <td class="code">{{ entry.code }}</td>
+                                    <td class="year">{{ entry.year }}</td>
+                                    <td>
+                                        <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')">
+                                            <a id="obligation-link" style="text-decoration: none; font-size: 20px; color: white;">Obligation</a>
+                                        </button>
+                                        <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')">
+                                            <a id="budget-link" style="text-decoration: none; font-size: 20px; color: white;">Budget</a>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="status update" onclick="showUpdateForm('{{ entry.code }}')">
+                                            <a id="update-link" style="text-decoration: none; font-size: 20px; color: white;">Update</a>
+                                        </button>
+                                        <button class="status update" onclick="showDeleteForm('{{ entry.code }}')">
+                                            <a id="delete-link" style="text-decoration: none; font-size: 20px; color: white;">Delete</a>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         {% else %}
-
-                        {% for entry in entries_below_2024 %}
-                        <tr>
-                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                         <td class="implementing-unit">{{ entry.implementing_unit }}</td>
-                          <td class="code">{{ entry.code }}</td>
-                        <td class="code">{{ entry.year }}</td>
-                        <td>
-                            <button class="status delivered" id="obligation-link" onclick="showAddObligationForm('{{ entry.code }}')"><a style="text-decoration: none;font-size: 20px; color: white;">Obligation</a></button>
-                                <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')"><a id="budget-link"  style="text-decoration: none;font-size: 20px;  color: white;">Budget</a></button>
-                            </td>
-                            <td> <button class="status update" onclick="showUpdateForm('{{ entry.code }}')"><a id="update-link"  style="text-decoration: none; font-size: 20px; color: white;">Update</a></button>
-                                <button class="status update" onclick="showDeleteForm('{{ entry.code }}')"><a  style="text-decoration: none;font-size: 20px;  color: white;">Delete</a></button>
-
-                            </td>
-                    </tr>
-                    {% endfor %}
-            {% endif %}
-
+                            {% for entry in entries_below_2024 %}
+                                <tr>
+                                    <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                                    <td class="implementing-unit">{{ entry.implementing_unit }}</td>
+                                    <td class="code">{{ entry.code }}</td>
+                                    <td class="year">{{ entry.year }}</td>
+                                    <td>
+                                        <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')">
+                                            <a id="obligation-link" style="text-decoration: none; font-size: 20px; color: white;">Obligation</a>
+                                        </button>
+                                        <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')">
+                                            <a id="budget-link" style="text-decoration: none; font-size: 20px; color: white;">Budget</a>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button class="status update" onclick="showUpdateForm('{{ entry.code }}')">
+                                            <a id="update-link" style="text-decoration: none; font-size: 20px; color: white;">Update</a>
+                                        </button>
+                                        <button class="status update" onclick="showDeleteForm('{{ entry.code }}')">
+                                            <a id="delete-link" style="text-decoration: none; font-size: 20px; color: white;">Delete</a>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                     </tbody>
                 </table>
-
 
 
 
