@@ -1092,7 +1092,8 @@ font-family: 'poppins', sans-serif;
 margin-bottom: 4px;
 }
 .btn-add,
-.btn-cancel {
+.btn-cancel,
+.btn-signup{
     display: block;
     width: 100%;
     height: 46px;
@@ -1117,6 +1118,9 @@ margin-bottom: 4px;
 
 .btn-cancel {
     background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
+}
+.btn-signup{
+  background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
 }
 
 .btn:hover{

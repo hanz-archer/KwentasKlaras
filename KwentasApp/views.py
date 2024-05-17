@@ -58,6 +58,7 @@ def is_superuser(user):
 
 
 
+
 @user_passes_test(is_superuser, login_url='login')
 def registration_view(request):
 

@@ -105,3 +105,12 @@ virtualenv-clone==0.5.7
 xlrd==2.0.1
 xlwt==1.3.0
 yarl==1.9.4
+
+
+
+
+@user_passes_test(is_superuser, login_url='login')
+  <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                    <button class="btn-signup">Sign-Up</button>
+                </form>
