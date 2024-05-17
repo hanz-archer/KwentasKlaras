@@ -10,10 +10,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import firebase_admin
 from firebase_admin import credentials, db
-
 import datetime
 import re
-
 import re
 import datetime
 from django.http import HttpResponse
@@ -112,7 +110,7 @@ def adddata(request):
 
 
 
-def add_obligation(request):
+def continuing_add_obligation(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry-code')
         name = request.POST.get('obligation_name')
@@ -136,6 +134,8 @@ def add_obligation(request):
             total_budget = entry_data.get('total_budget', 0)
             remaining_balance = total_budget - total_spent
 
+            if remaining_balance < 0:
+                  return HttpResponse('<script>alert("Remaining Balance cant be negative. Add Budget if you wish to continue"); window.location.href = "/continuing_projects";</script>', status=404)
             # Push a new child node with a unique key for the obligation under the chosen entry
             new_obligation_ref = database.child('Data').child(entry_key) .child('obligation').push({
                 'name': name,
@@ -155,6 +155,78 @@ def add_obligation(request):
             return HttpResponse(f"Error: {str(e)}", status=500)
     else:
         return HttpResponse("Method not allowed", status=405)
+
+
+
+
+
+
+
+def ongoing_add_obligation(request):
+    if request.method == 'POST':
+        entry_key = request.POST.get('entry-code')
+        name = request.POST.get('obligation_name')
+        spent = float(request.POST.get('obligation_spent', 0))
+        date = request.POST.get('obligation_date')
+
+        try:
+            entry_ref = database.child('Data').child(entry_key)  # Assigning database child to entry_ref
+
+            # Get data for the entry
+            entry_data = entry_ref.get().val()
+
+            # Check if entry_data is None
+            if entry_data is None:
+                return HttpResponse('<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
+
+            # Update total spent for the entry
+            total_spent = entry_data.get('total_spent', 0) + spent
+
+            # Calculate remaining balance
+            total_budget = entry_data.get('total_budget', 0)
+            remaining_balance = total_budget - total_spent
+
+            if remaining_balance < 0:
+                  return HttpResponse('<script>alert("Remaining Balance cant be negative. Add Budget if you wish to continue"); window.location.href = "/ongoing_projects";</script>', status=404)
+            # Push a new child node with a unique key for the obligation under the chosen entry
+            new_obligation_ref = database.child('Data').child(entry_key) .child('obligation').push({
+                'name': name,
+                'spent': spent,
+                'date': date
+            })
+
+            # Update total spent under the entry
+            database.child('Data').child(entry_key) .update({"total_spent": total_spent})
+
+            # Update remaining balance under the entry
+            database.child('Data').child(entry_key) .update({"remaining_balance": remaining_balance})
+
+            # Redirect back to the previous page
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        except Exception as e:
+            return HttpResponse(f"Error: {str(e)}", status=500)
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -219,13 +291,14 @@ def add_budget(request):
 
 
 
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render
 
 def get_project_entries():
     result = database.child('Data').get()
 
     entries_below_2024 = []
     entries_2024_and_above = []
+    all_entries = []
 
     if result.val():
         for key, value in result.val().items():
@@ -269,6 +342,9 @@ def get_project_entries():
                         'date': budget_value.get('date')
                     })
             
+            # Add entry to all_entries list
+            all_entries.append(entry)
+
             # Check the year and add to the appropriate list
             if entry.get('year') is not None:
                 if int(entry['year']) < 2024:
@@ -276,18 +352,21 @@ def get_project_entries():
                 else:
                     entries_2024_and_above.append(entry)
     
-    return entries_below_2024, entries_2024_and_above
+    return entries_below_2024, entries_2024_and_above, all_entries
 
 def continuing_projects(request):
-    entries_below_2024, _ = get_project_entries()
-    return render(request, 'KwentasApp/continuing.html', {'entries_below_2024': entries_below_2024})
-
-
-
+    entries_below_2024, _, all_entries = get_project_entries()
+    return render(request, 'KwentasApp/continuing.html', {
+        'entries_below_2024': entries_below_2024,
+        'all_entries': all_entries
+    })
 
 def ongoing_projects(request):
-    _, entries_2024_and_above = get_project_entries()
-    return render(request, 'KwentasApp/ongoing.html', {'entries_2024_and_above': entries_2024_and_above})
+    _, entries_2024_and_above, all_entries = get_project_entries()
+    return render(request, 'KwentasApp/ongoing.html', {
+        'entries_2024_and_above': entries_2024_and_above,
+        'all_entries': all_entries
+    })
 
 
 
@@ -403,7 +482,11 @@ def search_ongoing_projects(request):
 
 
 
-def update_entry(request):
+import re
+import datetime
+from django.shortcuts import render, redirect, HttpResponse
+
+def ongoing_update_entry(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
         ppa = request.POST.get('ppa', '')  
@@ -412,28 +495,31 @@ def update_entry(request):
         end_date_str = request.POST.get('end_date', '') 
         year_str = request.POST.get('year', '') 
         code = request.POST.get('code', '')  # Added code field
+        services = request.POST.get('services', '')  # Added code field
+        remarks = request.POST.get('remarks', '')  # Added code field
+        location = request.POST.get('location', '')  # Added code field
 
         # Validate date format if not empty
         if start_date_str and end_date_str:
             date_format = r'\d{4}-\d{2}-\d{2}'  # YYYY-MM-DD
             if not (re.match(date_format, start_date_str) and re.match(date_format, end_date_str)):
-                return HttpResponse("Invalid date format. Please use YYYY-MM-DD.", status=400)
+                return HttpResponse('<script>alert("Invalid date format. Please use YYYY-MM-DD."); window.location.href = "/ongoing_projects";</script>', status=400)
 
             # Convert dates to datetime objects for further validation
             try:
                 start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
                 end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
             except ValueError:
-                return HttpResponse("Invalid date.", status=400)
+                return HttpResponse('<script>alert("Invalid date."); window.location.href = "/ongoing_projects";</script>', status=400)
 
             # Validate start date is before end date
             if start_date >= end_date:
-                return HttpResponse('<script>alert("Start date must be before end date."); window.location.href = "/";</script>', status=400)
+                return HttpResponse('<script>alert("Start date must be before end date."); window.location.href = "/ongoing_projects";</script>', status=400)
 
         # Validate year format if not empty
         if year_str:
             if not re.match(r'\d{4}', year_str):
-                return HttpResponse("Invalid year format. Please use YYYY.", status=400)
+                return HttpResponse('<script>alert("Invalid year format. Please use YYYY."); window.location.href = "/ongoing_projects";</script>', status=400)
 
         try:
             # Get data for the entry
@@ -441,11 +527,11 @@ def update_entry(request):
 
             # Check if entry_data is None
             if entry_data is None:
-                return HttpResponse('<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
+                return HttpResponse('<script>alert("Entry not found."); window.location.href = "/ongoing_projects";</script>', status=404)
 
             # Check if the code is being changed and if it already exists
             if code != entry_key and database.child('Data').child(code).get().val() is not None:
-                return HttpResponse('<script>alert("Code already exists."); window.location.href = "/";</script>', status=400)
+                return HttpResponse('<script>alert("Code already exists."); window.location.href = "/ongoing_projects";</script>', status=400)
 
             # Populate with previous values if fields are empty
             if not ppa:
@@ -466,16 +552,137 @@ def update_entry(request):
                 "start_date": start_date_str,
                 "end_date": end_date_str,
                 "year": year_str,
-                "code": code  # Update code if changed
+                "code": code,  
+                 "services": services,
+                 "location": location,
+                  "remarks": remarks
             })
 
-            return redirect('projects')  # Redirect back to the main projects page after successful update
+            return redirect(request.META.get('HTTP_REFERER', '/')) # Redirect back to the main projects page after successful addition
         except Exception as e:
-            return HttpResponse(f"Error: {str(e)}", status=500)
+            return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/ongoing_projects";</script>', status=500)
     else:
-        return HttpResponse("Method not allowed", status=405)
+        return HttpResponse('<script>alert("Method not allowed"); window.location.href = "/ongoing_projects";</script>', status=405)
 
 
 
 
 
+
+def continuing_update_entry(request):
+    if request.method == 'POST':
+        entry_key = request.POST.get('entry_code')
+        ppa = request.POST.get('ppa', '')  
+        implementing_unit = request.POST.get('implementing_unit', '')  
+        start_date_str = request.POST.get('start_date', '') 
+        end_date_str = request.POST.get('end_date', '') 
+        year_str = request.POST.get('year', '') 
+        code = request.POST.get('code', '')  # Added code field
+        services = request.POST.get('services', '')  # Added code field
+        remarks = request.POST.get('remarks', '')  # Added code field
+        location = request.POST.get('location', '')  # Added code field
+
+        # Validate date format if not empty
+        if start_date_str and end_date_str:
+            date_format = r'\d{4}-\d{2}-\d{2}'  # YYYY-MM-DD
+            if not (re.match(date_format, start_date_str) and re.match(date_format, end_date_str)):
+                return HttpResponse('<script>alert("Invalid date format. Please use YYYY-MM-DD."); window.location.href = "/ongoing_projects";</script>', status=400)
+
+            # Convert dates to datetime objects for further validation
+            try:
+                start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
+                end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+            except ValueError:
+                return HttpResponse('<script>alert("Invalid date."); window.location.href = "/continuing_projects";</script>', status=400)
+
+            # Validate start date is before end date
+            if start_date >= end_date:
+                return HttpResponse('<script>alert("Start date must be before end date."); window.location.href = "/continuing_projects";</script>', status=400)
+
+        # Validate year format if not empty
+        if year_str:
+            if not re.match(r'\d{4}', year_str):
+                return HttpResponse('<script>alert("Invalid year format. Please use YYYY."); window.location.href = "/continuing_projects";</script>', status=400)
+
+        try:
+            # Get data for the entry
+            entry_data = database.child('Data').child(entry_key).get().val()
+
+            # Check if entry_data is None
+            if entry_data is None:
+                return HttpResponse('<script>alert("Entry not found."); window.location.href = "/continuing_projects";</script>', status=404)
+
+            # Check if the code is being changed and if it already exists
+            if code != entry_key and database.child('Data').child(code).get().val() is not None:
+                return HttpResponse('<script>alert("Code already exists."); window.location.href = "/continuing_projects";</script>', status=400)
+
+            # Populate with previous values if fields are empty
+            if not ppa:
+                ppa = entry_data.get('ppa', '')
+            if not implementing_unit:
+                implementing_unit = entry_data.get('implementing_unit', '')
+            if not start_date_str:
+                start_date_str = entry_data.get('start_date', '')
+            if not end_date_str:
+                end_date_str = entry_data.get('end_date', '')
+            if not year_str:
+                year_str = entry_data.get('year', '')
+
+            # Update other fields if provided
+            database.child('Data').child(entry_key).update({
+                "ppa": ppa,
+                "implementing_unit": implementing_unit,
+                "start_date": start_date_str,
+                "end_date": end_date_str,
+                "year": year_str,
+                "code": code,  
+                 "services": services,
+                 "location": location,
+                  "remarks": remarks
+            })
+
+            return redirect(request.META.get('HTTP_REFERER', '/')) # Redirect back to the main projects page after successful addition
+        except Exception as e:
+            return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/continuing_projects";</script>', status=500)
+    else:
+        return HttpResponse('<script>alert("Method not allowed"); window.location.href = "/continuing_projects";</script>', status=405)
+
+
+
+
+
+def continuing_delete_entry(request):
+ 
+    if request.method == 'POST':
+        entry_key = request.POST.get('entry_code')
+
+        try:
+
+
+          database.child('Data').child(entry_key).remove()
+          return redirect(request.META.get('HTTP_REFERER', '/'))
+        except Exception as e:
+           return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/continuing_projects";</script>', status=500)
+    else:
+     return redirect('continuing_projects')  
+    
+
+
+
+
+
+
+def ongoing_delete_entry(request):
+ 
+    if request.method == 'POST':
+        entry_key = request.POST.get('entry_code')
+
+        try:
+
+
+          database.child('Data').child(entry_key).remove()
+          return redirect(request.META.get('HTTP_REFERER', '/'))
+        except Exception as e:
+           return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/ongoing_projects";</script>', status=500)
+    else:
+     return redirect('ongoing_projects')  
