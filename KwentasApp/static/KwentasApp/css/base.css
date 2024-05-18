@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #ffffff;
+  background-color: #f2f2f2; /* Change to a modern gray background */
   color: black;
   font-family: "Montserrat", sans-serif;
 }
@@ -320,7 +320,7 @@ tbody tr.hide td img {
 }
 
 .status {
-  padding: 0.5rem 1rem; /* Increased padding for button-like appearance */
+  padding: 0.2rem 2rem; /* Increased padding for button-like appearance */
   border-radius: 1.5rem; /* Border-radius for rounded corners */
   text-align: center;
   margin-right: 50px;
@@ -329,7 +329,7 @@ tbody tr.hide td img {
   display: inline-block; /* Ensure it behaves like a button */
   cursor: pointer; /* Pointer cursor to indicate it's clickable */
   border: none; /* Remove default border */
-  font-weight: bold; /* Make the text bold */
+  font-size: 5px;
   transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
 }
 
