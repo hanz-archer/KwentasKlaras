@@ -18,21 +18,6 @@
             <form action="#" method="post">
                 {% csrf_token %}
                 <h2 class="title">Registration</h2>
-                {% if messages %}
-                <div class="messages" id="validation-messages">
-                    {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                    {% endfor %}
-                </div>
-                <script>
-                    setTimeout(function() {
-                      var messagesDiv = document.querySelector('.messages');
-                      if (messagesDiv) {
-                        messagesDiv.style.display = 'none';
-                      }
-                    }, 3000);
-                  </script>
-                {% endif %}
                    <div class="input-div">
                       <div class="i">
                               <i class="fas fa-user"></i>

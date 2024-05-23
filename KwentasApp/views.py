@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
+from .forms import RegistrationForm
 
 
 
@@ -59,24 +60,20 @@ def is_superuser(user):
 
 
 
-@user_passes_test(is_superuser, login_url='login')
+@user_passes_test(lambda u: u.is_superuser, login_url='login')
 def registration_view(request):
-
-    if not is_superuser(request.user):
-        messages.warning(request, 'Only superusers can access the registration page.')
-        return redirect('login')
-    
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Account created successfully. You can now log in.')
-            return redirect('home')
+            return HttpResponse('<script>alert("Account Created."); window.location.href = "/login";</script>', status=200)
         else:
-            messages.error(request, 'Error creating account. Please check the form data.')
+            # If form is invalid, render the registration form again with errors
+            return render(request, 'KwentasApp/register.html', {'form': form})
     else:
         form = RegistrationForm()
 
+    # If it's a GET request or form submission fails, render the registration form
     return render(request, 'KwentasApp/register.html', {'form': form})
 
 

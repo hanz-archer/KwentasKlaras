@@ -255,46 +255,57 @@ a{
 
 .drop {
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    width: 100%;
 }
 
-#departmentInput {
-    padding-right: 30px; /* Leave space for the arrow icon */
+.drop input {
+    width: calc(100% - 30px); /* Adjust width to leave space for the icon */
+    border: none;
+    outline: none;
+    background: none;
+    padding: 10px;
+    padding-left: 0;
+    font-size: 1rem;
+    color: #555;
 }
 
-#dropdownArrow {
+.drop i {
     position: absolute;
-    top: 50%;
     right: 10px;
-    transform: translateY(-50%);
+    font-size: 1rem;
     cursor: pointer;
+    color: #555;
 }
 
-.content {
+.drop .content {
     display: none;
     position: absolute;
-    top: 100%; /* Position the dropdown below the input */
+    top: 100%;
     left: 0;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border: 1px solid #d9d9d9;
+    width: 100%;
+    max-height: 150px; /* Adjust max-height if needed */
+    overflow-y: auto;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     z-index: 1;
 }
 
-.content.show {
+.drop .content.show {
     display: block;
 }
 
-.content li {
+.drop .content li {
     padding: 10px;
-    list-style-type: none;
     cursor: pointer;
+    list-style: none;
+    transition: background 0.3s;
 }
 
-.content li:hover {
-    background-color: #f0f0f0;
+.drop .content li:hover {
+    background: #f0f0f0;
 }
-
 
 
 

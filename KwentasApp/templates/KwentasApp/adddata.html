@@ -15,210 +15,199 @@
             <img src="{% static 'KwentasApp/img/logo.png' %}">
         </div>
         <div class="login-content">
-
-
-
-
-
             <form action="{% url 'create_entry' %}" method="post">
                 {% csrf_token %}
                 <h2 class="title">Add Data Form</h2>
-               
-                   <div class="input-div">
-                      <div class="i">
-                              <i class="fas fa-info"></i>
-                      </div>
-                      <div class="div">
-                              <h5>PPA</h5>
-                              <input type="text" name="ppa" class="input">
-                      </div>
-                   </div>
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-info"></i>
+                    </div>
+                    <div class="div">
+                        <h5>PPA</h5>
+                        <input type="text" name="ppa" class="input">
+                    </div>
+                </div>
 
                 <div class="input-div">
                     <div class="i">
                         <i class="fas fa-building"></i>
                     </div>
                     <div class="drop">
-                        <input type="text" name="implementing_unit" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly>
-                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
+                        <input type="text" name="implementing_unit" placeholder="Implementing Department" onclick="toggleDepartmentDropdown()" id="departmentInput" readonly>
+                        <i class="fas fa-chevron-down" id="departmentDropdownArrow" onclick="toggleDepartmentDropdown()"></i>
                         <ul class="content" id="departmentOptions">
-                            <li onclick="selectOption('IT Office')">IT Office</li>
-                            <li onclick="selectOption('Engineering Office')">Engineering Office</li>
-                            <li onclick="selectOption('Treasurers Office')">Treasurers Office</li>
-                            <li onclick="selectOption('Tourism Office')">Tourism Office</li>
-                            <li onclick="selectOption('Mayor Office')">Mayor Office</li>
-                        </ul>
-                    </div>
-                </div>
-                   
-                   <div class="input-div">
-                      <div class="i">
-                              <i class="fas fa-location-arrow"></i>
-                      </div>
-                      <div class="div">
-                              <h5>Location</h5>
-                              <input type="text" name="location" class="input">
-                      </div>
-                   </div>
-
-                   <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-envelope"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Appropriation</h5>
-                            <input type="text" name="appropriation" class="input">
-                    </div>
-                 </div>
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-registered"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Remarks</h5>
-                            <input type="text" name="remarks" class="input">
-                    </div>
-                 </div>
-
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-times"></i>
-                    </div>
-                    <div class="div">
-       
-                            <input type="date" name="start_date" class="input" placeholder="&#8203">
-                    </div>
-                 </div>
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="div">
-        
-                            <input type="date" name="end_date" class="input" placeholder="">
-                    </div>
-                 </div>
-
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-hashtag"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Code</h5>
-                            <input type="text" name="code" class="input">
-                    </div>
-                 </div>
-
-                 <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                    <div class="drop">
-                        <input type="text" name="services" placeholder="Services" onclick="toggleDropdown1()" id="servicesInput" readonly>
-                        <i class="fas fa-chevron-down dropdown-arrow" onclick="toggleDropdown1()"></i>
-                        <ul class="content" id="servicesOptions">
-                            <li onclick="selectOption1('Service 1')">Service 1</li>
-                            <li onclick="selectOption1('Service 2')">Service 2</li>
+                            <li onclick="selectDepartmentOption('Mayors Office')">Mayor's Office</li>
+                            <li onclick="selectDepartmentOption('Tourism Office')">Tourism Office</li>
+                            <li onclick="selectDepartmentOption('PESO Office')">PESO Office</li>
+                            <li onclick="selectDepartmentOption('MDRRMO')">MDDRMO</li>
+                            <li onclick="selectDepartmentOption('Sanguniang Baranggay Office')">Sanguniang Barangay Office</li>
+                            <li onclick="selectDepartmentOption('MPDC Office')">MPDC</li>
+                            <li onclick="selectDepartmentOption('MCR Office')">MCR Office</li>
+                            <li onclick="selectDepartmentOption('MBO Office')">MBO Office</li>
+                            <li onclick="selectDepartmentOption('Accountant Office')">Accountant Office</li>
+                            <li onclick="selectDepartmentOption('Assessor Office')">Assessor's Office</li>
+                            <li onclick="selectDepartmentOption('MHO Office')">MHO Office</li>
+                            <li onclick="selectDepartmentOption('Parks & Plaza')">Parks & Plaza</li>
+                            <li onclick="selectDepartmentOption('MSWD Office')">MSWD Office</li>
+                            <li onclick="selectDepartmentOption('MENRO Office')">MENRO Office</li>
+                            <li onclick="selectDepartmentOption('MO')">MO</li>
+                            <li onclick="selectDepartmentOption('Streets & Bridges')">Streets & Bridges</li>
+                            <li onclick="selectDepartmentOption('LDF')">LDF</li>
+                            <li onclick="selectDepartmentOption('Waterworks')">Waterworks</li>
+                            <li onclick="selectDepartmentOption('Markets')">Markets</li>
+                            <li onclick="selectDepartmentOption('Zero Waste')">Zero Waste</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="input-div">
                     <div class="i">
-                            <i class="fas fa-calendar-week"></i>
+                        <i class="fas fa-location-arrow"></i>
                     </div>
                     <div class="div">
-                            <h5>Year</h5>
-                            <input type="number" name="year" class="input">
+                        <h5>Location</h5>
+                        <input type="text" name="location" class="input">
                     </div>
-                 </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Appropriation</h5>
+                        <input type="text" name="appropriation" class="input">
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-registered"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Remarks</h5>
+                        <input type="text" name="remarks" class="input">
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-calendar-times"></i>
+                    </div>
+                    <div class="div">
+                        <input type="date" name="start_date" class="input" placeholder="&#8203">
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="div">
+                        <input type="date" name="end_date" class="input" placeholder="">
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Code</h5>
+                        <input type="text" name="code" class="input">
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                    <div class="drop">
+                        <input type="text" name="services" placeholder="Services" onclick="toggleServicesDropdown()" id="servicesInput" readonly>
+                        <i class="fas fa-chevron-down" id="servicesDropdownArrow" onclick="toggleServicesDropdown()"></i>
+                        <ul class="content" id="servicesOptions">
+                            <li onclick="selectServicesOption('General')">General</li>
+                            <li onclick="selectServicesOption('Social')">Social</li>
+                            <li onclick="selectServicesOption('Economic')">Economic</li>
+                            <li onclick="selectServicesOption('Environmental')">Environmental</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Year</h5>
+                        <input type="number" name="year" class="input">
+                    </div>
+                </div>
                 
-                    <button type="submit" class="btn-add" value="Submit">Submit</button>
-               
-                    
-                    
+                <button type="submit" class="btn-add" value="Submit">Submit</button>
                 <a href="{% url 'homepage'%}"><p class="btn-cancel">Cancel</p></a>
             </form>     
         </div>
     </div>
 
     <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
-
- 
-
-<script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
-<script>
-    function toggleDropdown1() {
-        const servicesOptions = document.getElementById("servicesOptions");
-        servicesOptions.classList.toggle("show");
-    }
-
-    function selectOption1(option) {
-        const servicesInput = document.getElementById("servicesInput");
-        servicesInput.value = option;
-        toggleDropdown1();
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.matches('.dropdown-arrow')) {
+    <script>
+        function toggleServicesDropdown() {
             const servicesOptions = document.getElementById("servicesOptions");
-            if (servicesOptions.classList.contains('show')) {
-                servicesOptions.classList.remove('show');
-            }
+            servicesOptions.classList.toggle("show");
         }
-    }
-</script>
 
-<script>
-    function toggleDropdown() {
-        const serOptions = document.getElementById("departmentOptions");
-        departmentOptions.classList.toggle("show");
-    }
+        function selectServicesOption(option) {
+            const servicesInput = document.getElementById("servicesInput");
+            servicesInput.value = option;
+            toggleServicesDropdown();
+        }
 
-    function selectOption(option) {
-        const departmentInput = document.getElementById("departmentInput");
-        departmentInput.value = option;
-        toggleDropdown();
-    }
-
-    // Close dropdown when clicking outside of it
-    window.onclick = function(event) {
-        if (!event.target.matches('.fas.fa-chevron-down')) {
+        function toggleDepartmentDropdown() {
             const departmentOptions = document.getElementById("departmentOptions");
-            if (departmentOptions.classList.contains('show')) {
-                departmentOptions.classList.remove('show');
+            departmentOptions.classList.toggle("show");
+        }
+
+        function selectDepartmentOption(option) {
+            const departmentInput = document.getElementById("departmentInput");
+            departmentInput.value = option;
+            toggleDepartmentDropdown();
+        }
+
+        // Close dropdowns when clicking outside of them
+        window.onclick = function(event) {
+            if (!event.target.matches('.fas.fa-chevron-down') && !event.target.matches('#servicesInput') && !event.target.matches('#departmentInput')) {
+                const servicesOptions = document.getElementById("servicesOptions");
+                const departmentOptions = document.getElementById("departmentOptions");
+
+                if (servicesOptions.classList.contains('show')) {
+                    servicesOptions.classList.remove('show');
+                }
+                if (departmentOptions.classList.contains('show')) {
+                    departmentOptions.classList.remove('show');
+                }
             }
         }
-    }
-</script>
+    </script>
+    <script>
+        const inputs = document.querySelectorAll(".input");
 
-<script>
-    const inputs = document.querySelectorAll(".input");
+        function addcl(){
+            let parent = this.parentNode.parentNode;
+            parent.classList.add("focus");
+        }
 
+        function remcl(){
+            let parent = this.parentNode.parentNode;
+            if(this.value == ""){
+                parent.classList.remove("focus");
+            }
+        }
 
-function addcl(){
-let parent = this.parentNode.parentNode;
-parent.classList.add("focus");
-}
-
-function remcl(){
-let parent = this.parentNode.parentNode;
-if(this.value == ""){
-    parent.classList.remove("focus");
-}
-}
-
-
-inputs.forEach(input => {
-input.addEventListener("focus", addcl);
-input.addEventListener("blur", remcl);
-});
-</script>
-
-
-
+        inputs.forEach(input => {
+            input.addEventListener("focus", addcl);
+            input.addEventListener("blur", remcl);
+        });
+    </script>
 </body>
 </html>
