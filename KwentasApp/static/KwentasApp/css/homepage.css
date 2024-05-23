@@ -23,6 +23,7 @@ section {
 .card {
   width: 100%;
   min-height: 350px;
+  height: 360px;
   padding: 2em 1.5em;
   background: linear-gradient(#ffffff 50%, #007FFF 50%);
   background-size: 100% 200%;

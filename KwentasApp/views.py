@@ -69,11 +69,11 @@ def registration_view(request):
             return HttpResponse('<script>alert("Account Created."); window.location.href = "/login";</script>', status=200)
         else:
             # If form is invalid, render the registration form again with errors
+            return HttpResponse('<script>alert("Account creation error, Please enter informations again."); window.location.href = "/register";</script>', status=200)
             return render(request, 'KwentasApp/register.html', {'form': form})
     else:
         form = RegistrationForm()
 
-    # If it's a GET request or form submission fails, render the registration form
     return render(request, 'KwentasApp/register.html', {'form': form})
 
 
