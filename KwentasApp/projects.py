@@ -10,8 +10,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import firebase_admin
 from firebase_admin import credentials, db
+
 import datetime
 import re
+
 import re
 import datetime
 from django.http import HttpResponse
@@ -288,11 +290,6 @@ def add_budget(request):
 
 
 
-
-
-
-from django.shortcuts import render
-
 def get_project_entries():
     result = database.child('Data').get()
 
@@ -302,6 +299,8 @@ def get_project_entries():
 
     if result.val():
         for key, value in result.val().items():
+            if key == 'placeholder':
+                continue  # Skip the placeholder entry
             entry = {
                 'ppa': value.get('ppa'),
                 'implementing_unit': value.get('implementing_unit'),
@@ -354,6 +353,9 @@ def get_project_entries():
     
     return entries_below_2024, entries_2024_and_above, all_entries
 
+
+
+
 def continuing_projects(request):
     entries_below_2024, _, all_entries = get_project_entries()
     return render(request, 'KwentasApp/continuing.html', {
@@ -361,17 +363,14 @@ def continuing_projects(request):
         'all_entries': all_entries
     })
 
+
+
 def ongoing_projects(request):
     _, entries_2024_and_above, all_entries = get_project_entries()
     return render(request, 'KwentasApp/ongoing.html', {
         'entries_2024_and_above': entries_2024_and_above,
         'all_entries': all_entries
     })
-
-
-
-
-
 
 
 
@@ -386,6 +385,8 @@ def search_continuing_projects(request):
 
     if result.val():
         for key, value in result.val().items():
+            if key == 'placeholder':
+                continue  # Skip the placeholder entry
             entry = {
                 'ppa': value.get('ppa'),
                 'implementing_unit': value.get('implementing_unit'),
@@ -431,6 +432,7 @@ def search_continuing_projects(request):
 
 
 
+
 def search_ongoing_projects(request):
     query = request.GET.get('query')
     entries_2024_and_above = []
@@ -441,6 +443,8 @@ def search_ongoing_projects(request):
 
     if result.val():
         for key, value in result.val().items():
+            if key == 'placeholder':
+                continue  # Skip the placeholder entry
             entry = {
                 'ppa': value.get('ppa'),
                 'implementing_unit': value.get('implementing_unit'),
@@ -483,6 +487,7 @@ def search_ongoing_projects(request):
         'entries_2024_and_above': entries_2024_and_above,
         'all_entries': all_entries
     })
+
 
 
 
@@ -652,43 +657,50 @@ def continuing_update_entry(request):
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/continuing_projects";</script>', status=500)
     else:
         return HttpResponse('<script>alert("Method not allowed"); window.location.href = "/continuing_projects";</script>', status=405)
-
-
-
-
-
-def continuing_delete_entry(request):
- 
-    if request.method == 'POST':
-        entry_key = request.POST.get('entry_code')
-
-        try:
-
-
-          database.child('Data').child(entry_key).remove()
-          return redirect(request.META.get('HTTP_REFERER', '/'))
-        except Exception as e:
-           return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/continuing_projects";</script>', status=500)
-    else:
-     return redirect('continuing_projects')  
     
 
 
+# Function to ensure the placeholder exists
+def ensure_placeholder():
+    data = database.child('Data').get().val()
+    if 'placeholder' not in data:
+        database.child('Data').child('placeholder').set(True)
 
+# Add a placeholder initially
+def add_placeholder():
+    database.child('Data').child('placeholder').set(True)
 
+# Ensure the placeholder exists when the module is loaded
+add_placeholder()
 
-
-def ongoing_delete_entry(request):
- 
+# View to delete an entry in continuing projects
+def continuing_delete_entry(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
 
         try:
-
-
-          database.child('Data').child(entry_key).remove()
-          return redirect(request.META.get('HTTP_REFERER', '/'))
+            # Delete the specific entry
+            database.child('Data').child(entry_key).remove()
+            # Ensure placeholder remains
+            ensure_placeholder()
+            return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
-           return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/ongoing_projects";</script>', status=500)
+            return HttpResponse(f'<script>alert("Successfully Deleted"); window.location.href = "/continuing_projects";</script>', status=500)
     else:
-     return redirect('ongoing_projects')  
+        return redirect('continuing_projects')
+
+# View to delete an entry in ongoing projects
+def ongoing_delete_entry(request):
+    if request.method == 'POST':
+        entry_key = request.POST.get('entry_code')
+
+        try:
+            # Delete the specific entry
+            database.child('Data').child(entry_key).remove()
+            # Ensure placeholder remains
+            ensure_placeholder()
+            return HttpResponse(f'<script>alert("Successfully Deleted"); window.location.href = "/ongoing_projects";</script>', status=500)
+        except Exception as e:
+            return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/ongoing_projects";</script>', status=500)
+    else:
+        return redirect('ongoing_projects')
