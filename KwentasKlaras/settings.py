@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-622za#sv=0#-^^g10d%qqeb*7jy$@yx!wmw=ly&-ku7%#nke*m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['KwentasKlarasPMIS.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'KwentasApp',
-    'axes',
 ]
 
 MIDDLEWARE = [
@@ -46,7 +45,6 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'axes.middleware.AxesMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -56,12 +54,7 @@ ROOT_URLCONF = 'KwentasKlaras.urls'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'axes.backends.AxesStandaloneBackend',
 ]
-
-AXES_LOGIN_FAILURE_LIMIT = 3
-AXES_LOCK_OUT_AT_FAILURE = True
-AXES_COOLOFF_TIME = 1  # Lockout duration in hours
 
 
 TEMPLATES = [
@@ -146,8 +139,6 @@ AUTH_USER_MODEL = 'KwentasApp.CustomUser'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 1209600 
-
-AXES_TEMPLATE = 'KwentasKlaras\KwentasApp\templates\KwentasApp\loginFailed.html'
 
 LOGGING = {
     'version': 1,
