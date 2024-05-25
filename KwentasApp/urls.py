@@ -36,7 +36,6 @@ urlpatterns = [
     path('currentproject', views.current_view, name='currentprojects'),
     path('homepage/', views.homepage, name='homepage'),
     path('adddata/', adddata, name='adddata'),
-    path('loginFailed/', views.loginFailed, name='loginFailed'),
     path('ppa', views.ppa, name='ppa'),
     path('addbudget', views.addbudget, name='addbudget'),
 ]

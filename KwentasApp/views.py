@@ -121,13 +121,6 @@ def finished(request):
     return render(request,'KwentasApp/finished.html')
 
 
-
-
-def loginFailed(request):
-    return render(request, 'KwentasApp/loginFailed.html')
-
-
-
 @login_required
 def ppa(request):
     return render(request, 'KwentasApp/ppa.html')
