@@ -3,7 +3,6 @@ from . import views
 from django.views.generic import RedirectView
 from django.contrib import admin
 from .projects import *
-from django.conf.urls.static import static, settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,5 +40,3 @@ urlpatterns = [
     path('ppa', views.ppa, name='ppa'),
     path('addbudget', views.addbudget, name='addbudget'),
 ]
-
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
