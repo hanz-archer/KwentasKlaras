@@ -1,2 +1,5 @@
+# Install dependencies from requirements.txt
 pip install -r requirements.txt
-python manage.py collecstatic
+
+# Collect static files
+python manage.py collectstatic
