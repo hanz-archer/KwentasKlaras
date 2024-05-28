@@ -1153,7 +1153,7 @@ margin-bottom: 4px;
 }
 .btn-add,
 .btn-cancel,
-.btn-signup{
+.btn-signup {
     display: block;
     width: 100%;
     height: 46px;
@@ -1167,7 +1167,7 @@ margin-bottom: 4px;
     text-transform: uppercase;
     margin: 1rem 0;
     cursor: pointer;
-    transition: .5s;
+    transition: background-position 0.5s; /* Adjusted transition property */
     text-align: center;
     line-height: 46px; /* Ensure consistent vertical alignment */
 }
@@ -1179,13 +1179,18 @@ margin-bottom: 4px;
 .btn-cancel {
     background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
 }
-.btn-signup{
-  background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
+
+.btn-signup {
+    background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
 }
 
-.btn:hover{
-background-position: right;
+/* Added hover effect for all buttons */
+.btn-add:hover,
+.btn-cancel:hover,
+.btn-signup:hover {
+    background-position: right; /* Adjust background position on hover */
 }
+
 
 
 @media screen and (max-width: 1050px){
@@ -1417,6 +1422,7 @@ margin-top: 3%;
 .entry-item {
   text-align: left;
 }
+
 
 
 
