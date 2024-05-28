@@ -986,6 +986,7 @@ thead th.active,tbody td.active {
 @media screen and (max-width: 1000px) {
   form {
       width: 100%; /* Adjusted width */
+      margin-right: 100px;
   }
 
   .login-content h2 {
