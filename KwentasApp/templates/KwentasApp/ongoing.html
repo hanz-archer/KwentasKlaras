@@ -18,7 +18,7 @@
 
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/current.css' %}">
   </head>
   <body>
     <div class="grid-container">
@@ -173,7 +173,7 @@
 
                     <div class="input-div">
                     <div class="i">
-                        <i class="fas fa-project-diagram"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
                         <h5>Name</h5>
@@ -183,7 +183,7 @@
 
                     <div class="input-div">
                     <div class="i">
-                        <i class="fas fa-calendar"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
                         <h5>Date</h5>
@@ -193,7 +193,7 @@
 
                     <div class="input-div">
                     <div class="i">
-                        <i class="fas fa-money-bill"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
                         <h5>Spent</h5>
@@ -238,7 +238,7 @@
 
                     <div class="input-div">
                     <div class="i">
-                        <i class="fas fa-project-diagram"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
                         <h5>Budget Name</h5>
@@ -248,7 +248,7 @@
 
                     <div class="input-div">
                     <div class="i">
-                        <i class="fas fa-calendar"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
                         <h5>Date</h5>
@@ -258,7 +258,7 @@
 
                     <div class="input-div">
                     <div class="i">
-                        <i class="fas fa-money-bill"></i>
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="div">
                         <h5>Added Budget</h5>
@@ -285,12 +285,11 @@
 
 <!-- Update-->
     
-    <div class="container" id="update">
-        <div class="card">
-            <div class="card-content">
+<div class="container" id="update">
+    <div class="card">
+        <div class="card-content">
             <div class="login-container">
                 <div class="login-content">
-
 
                     {% for entry in all_entries %}
                     <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post">
@@ -299,121 +298,137 @@
                         <h2 class="title">Update Form</h2><br><br>
 
                         <input type="hidden" name="entry_code" value="{{ entry.code }}">
-                   <div class="input-div">
-                      <div class="i">
-                              <i class="fas fa-info"></i>
-                      </div>
-                      <div class="div">
-                              <h5>PPA</h5>
-                              <input type="text" name="ppa" class="input"  value="{{ entry.ppa }}">
-                      </div>
-                   </div>
 
-                <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="drop">
-                        <input type="text" name="implementing_unit" placeholder="Implementing Department" onclick="toggleDropdown()" id="departmentInput" readonly  value="{{ entry.implementing_unit }}">
-                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown()"></i>
-                        <ul class="content" id="departmentOptions">
-                            <li onclick="selectOption('IT Office')">IT Office</li>
-                            <li onclick="selectOption('Engineering Office')">Engineering Office</li>
-                            <li onclick="selectOption('Treasurers Office')">Treasurers Office</li>
-                            <li onclick="selectOption('Tourism Office')">Tourism Office</li>
-                            <li onclick="selectOption('Mayor Office')">Mayor Office</li>
-                        </ul>
-                    </div>
-                </div>
-                   
-                   <div class="input-div">
-                      <div class="i">
-                              <i class="fas fa-location-arrow"></i>
-                      </div>
-                      <div class="div">
-                              <h5>Location</h5>
-                              <input type="text" name="location" class="input" value="{{ entry.location }}">
-                      </div>
-                   </div>
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-info"></i>
+                            </div>
+                            <div class="div">
+                                <h5>PPA</h5>
+                                <input type="text" name="ppa" class="input" value="{{ entry.ppa }}">
+                            </div>
+                        </div>
 
-                   
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="drop">
+                                <input type="text" name="implementing_unit" placeholder="Implementing Department" onclick="toggleDropdown('departmentOptions_{{ entry.code }}')" id="departmentInput_{{ entry.code }}" readonly value="{{ entry.implementing_unit }}">
+                                <i class="fas fa-chevron-down" onclick="toggleDropdown('departmentOptions_{{ entry.code }}')"></i>
+                                <div class="dropdown-container">
+                                    <ul class="content" id="departmentOptions_{{ entry.code }}">
+                                        <li onclick="selectOption('Mayor\'s Office', 'departmentInput_{{ entry.code }}')">Mayor's Office</li>
+                                        <li onclick="selectOption('Tourism Office', 'departmentInput_{{ entry.code }}')">Tourism Office</li>
+                                        <li onclick="selectOption('PESO Office', 'departmentInput_{{ entry.code }}')">PESO Office</li>
+                                        <li onclick="selectOption('MDRRMO', 'departmentInput_{{ entry.code }}')">MDDRMO</li>
+                                        <li onclick="selectOption('Sanguniang Barangay Office', 'departmentInput_{{ entry.code }}')">Sanguniang Barangay Office</li>
+                                        <li onclick="selectOption('MPDC', 'departmentInput_{{ entry.code }}')">MPDC</li>
+                                        <li onclick="selectOption('MCR Office', 'departmentInput_{{ entry.code }}')">MCR Office</li>
+                                        <li onclick="selectOption('MBO Office', 'departmentInput_{{ entry.code }}')">MBO Office</li>
+                                        <li onclick="selectOption('Accountant Office', 'departmentInput_{{ entry.code }}')">Accountant Office</li>
+                                        <li onclick="selectOption('Assessor\'s Office', 'departmentInput_{{ entry.code }}')">Assessor's Office</li>
+                                        <li onclick="selectOption('MHO Office', 'departmentInput_{{ entry.code }}')">MHO Office</li>
+                                        <li onclick="selectOption('Parks & Plaza', 'departmentInput_{{ entry.code }}')">Parks & Plaza</li>
+                                        <li onclick="selectOption('MSWD Office', 'departmentInput_{{ entry.code }}')">MSWD Office</li>
+                                        <li onclick="selectOption('MENRO Office', 'departmentInput_{{ entry.code }}')">MENRO Office</li>
+                                        <li onclick="selectOption('MO', 'departmentInput_{{ entry.code }}')">MO</li>
+                                        <li onclick="selectOption('Streets & Bridges', 'departmentInput_{{ entry.code }}')">Streets & Bridges</li>
+                                        <li onclick="selectOption('LDF', 'departmentInput_{{ entry.code }}')">LDF</li>
+                                        <li onclick="selectOption('Waterworks', 'departmentInput_{{ entry.code }}')">Waterworks</li>
+                                        <li onclick="selectOption('Markets', 'departmentInput_{{ entry.code }}')">Markets</li>
+                                        <li onclick="selectOption('Zero Waste', 'departmentInput_{{ entry.code }}')">Zero Waste</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
 
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-registered"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Remarks</h5>
-                            <input type="text" name="remarks" class="input" value="{{ entry.remarks }}">
-                    </div>
-                 </div>
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-location-arrow"></i>
+                            </div>
+                            <div class="div">
+                                <h5>Location</h5>
+                                <input type="text" name="location" class="input" value="{{ entry.location }}">
+                            </div>
+                        </div>
 
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-registered"></i>
+                            </div>
+                            <div class="div">
+                                <h5>Remarks</h5>
+                                <input type="text" name="remarks" class="input" value="{{ entry.remarks }}">
+                            </div>
+                        </div>
 
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-times"></i>
-                    </div>
-                    <div class="div">
-                        <h5>Start Date</h5>
-                            <input type="date" name="start_date" class="input" placeholder="&#8203" value="{{ entry.start_date }}">
-                    </div>
-                 </div>
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-calendar-times"></i>
+                            </div>
+                            <div class="div">
+                                <h5>Start Date</h5>
+                                <input type="date" name="start_date" class="input" value="{{ entry.start_date }}">
+                            </div>
+                        </div>
 
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="div">
-                        <h5>End Date</h5>
-                            <input type="date" name="end_date" class="input" placeholder="" value="{{ entry.end_date }}">
-                    </div>
-                 </div>
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="div">
+                                <h5>End Date</h5>
+                                <input type="date" name="end_date" class="input" value="{{ entry.end_date }}">
+                            </div>
+                        </div>
 
-                 <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-hashtag"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Code</h5>
-                            <input type="text" name="code" class="input" value="{{ entry.code }}">
-                    </div>
-                 </div>
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-hashtag"></i>
+                            </div>
+                            <div class="div">
+                                <h5>Code</h5>
+                                <input type="text" name="code" class="input" value="{{ entry.code }}">
+                            </div>
+                        </div>
 
-                 <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-search-plus"></i>
-                    </div>
-                    <div class="drop">
-                        <input type="text" name="services" placeholder="Services" onclick="toggleDropdown1()" id="servicesInput" readonly value="{{ entry.services }}">
-                        <i class="fas fa-chevron-down" id="dropdownArrow" onclick="toggleDropdown1()"></i>
-                        <ul class="content" id="servicesOptions">
-                            <li onclick="selectOption1('Service 1')">Service 2</li>
-                            <li onclick="selectOption1('Service 2')">Service 2</li>
-                        </ul>
-                    </div>
-                </div>
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                            <div class="drop">
+                                <input type="text" name="services" placeholder="Services" onclick="toggleDropdown('servicesOptions_{{ entry.code }}')" id="servicesInput_{{ entry.code }}" readonly value="{{ entry.services }}">
+                                <i class="fas fa-chevron-down" onclick="toggleDropdown('servicesOptions_{{ entry.code }}')"></i>
+                                <ul class="content" id="servicesOptions_{{ entry.code }}">
+                                    <li onclick="selectOption('General', 'servicesInput_{{ entry.code }}')">General</li>
+                                    <li onclick="selectOption('Social', 'servicesInput_{{ entry.code }}')">Social</li>
+                                    <li onclick="selectOption('Economic', 'servicesInput_{{ entry.code }}')">Economic</li>
+                                    <li onclick="selectOption('Environmental', 'servicesInput_{{ entry.code }}')">Environmental</li>
+                                </ul>
+                            </div>
+                        </div>
 
-                <div class="input-div">
-                    <div class="i">
-                            <i class="fas fa-calendar-week"></i>
-                    </div>
-                    <div class="div">
-                            <h5>Year</h5>
-                            <input type="number" name="year" class="input" value="{{ entry.year }}">
-                    </div>
-                 </div>
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-calendar-week"></i>
+                            </div>
+                            <div class="div">
+                                <h5>Year</h5>
+                                <input type="number" name="year" class="input" value="{{ entry.year }}">
+                            </div>
+                        </div>
 
-
-                 <button type="submit" class="btn-add" value="Submit">Submit</button>
-                 <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
-            </form>
-            {% endfor %}
+                        <button type="submit" class="btn-add" value="Submit">Submit</button>
+                        <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                    </form>
+                    {% endfor %}
 
                 </div>
             </div>
-            </div>
         </div>
-        </div>
+    </div>
+</div>
 
 
 
@@ -681,30 +696,39 @@
     
 
  
-
 <script>
-    function toggleDropdown() {
-        const serOptions = document.getElementById("departmentOptions");
-        departmentOptions.classList.toggle("show");
-    }
-
-    function selectOption(option) {
-        const departmentInput = document.getElementById("departmentInput");
-        departmentInput.value = option;
-        toggleDropdown();
-    }
-
-    // Close dropdown when clicking outside of it
-    window.onclick = function(event) {
-        if (!event.target.matches('.fas.fa-chevron-down')) {
-            const departmentOptions = document.getElementById("departmentOptions");
-            if (departmentOptions.classList.contains('show')) {
-                departmentOptions.classList.remove('show');
-            }
-        }
-    }
-</script>
-
+    function toggleDropdown(id) {
+       const dropdown = document.getElementById(id);
+       dropdown.classList.toggle("show");
+   
+       // Make the dropdown scrollable if it has more than 5 items
+       if (dropdown.children.length > 5) {
+           dropdown.style.maxHeight = "150px";
+           dropdown.style.overflowY = "auto";
+       } else {
+           dropdown.style.maxHeight = "";
+           dropdown.style.overflowY = "";
+       }
+   }
+   
+   function selectOption(option, inputId) {
+       const input = document.getElementById(inputId);
+       input.value = option;
+       toggleDropdown(inputId.replace('Input', 'Options'));
+   }
+   
+   // Close dropdown when clicking outside of it
+   window.onclick = function(event) {
+       if (!event.target.matches('.fas.fa-chevron-down')) {
+           const dropdowns = document.querySelectorAll('.content.show');
+           dropdowns.forEach(dropdown => {
+               dropdown.classList.remove('show');
+           });
+       }
+   };
+   
+   
+   </script>
 
 <script>
     function toggleDropdown1() {

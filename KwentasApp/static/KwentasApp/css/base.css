@@ -1021,7 +1021,7 @@ thead th.active,tbody td.active {
 
 .container {
   position: absolute;
-  top: 50%;
+  top: 70%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 800px; /* Adjusted max-width */
@@ -1065,6 +1065,8 @@ position: relative;
   padding: 5px 0;
   width: 100%;
   border-bottom: 2px solid #d9d9d9;
+
+
 }
 
 .login-content .input-div.one{
@@ -1145,6 +1147,7 @@ background: none;
 padding: 0.5rem 0.7rem;
 font-size: 1.2rem;
 color: #555;
+font-weight: bolder;
 font-family: 'poppins', sans-serif;
 }
 
@@ -1153,7 +1156,7 @@ margin-bottom: 4px;
 }
 .btn-add,
 .btn-cancel,
-.btn-signup {
+.btn-signup{
     display: block;
     width: 100%;
     height: 46px;
@@ -1167,7 +1170,7 @@ margin-bottom: 4px;
     text-transform: uppercase;
     margin: 1rem 0;
     cursor: pointer;
-    transition: background-position 0.5s; /* Adjusted transition property */
+    transition: .5s;
     text-align: center;
     line-height: 46px; /* Ensure consistent vertical alignment */
 }
@@ -1179,18 +1182,13 @@ margin-bottom: 4px;
 .btn-cancel {
     background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
 }
-
-.btn-signup {
-    background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
+.btn-signup{
+  background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
 }
 
-/* Added hover effect for all buttons */
-.btn-add:hover,
-.btn-cancel:hover,
-.btn-signup:hover {
-    background-position: right; /* Adjust background position on hover */
+.btn:hover{
+background-position: right;
 }
-
 
 
 @media screen and (max-width: 1050px){
@@ -1240,6 +1238,7 @@ form{
 .drop {
   position: relative;
   display: inline-block;
+    text-align: center;
 }
 
 #departmentInput {
@@ -1263,6 +1262,7 @@ form{
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: 1px solid #d9d9d9;
   z-index: 1;
+  text-align: center;
 }
 
 .content.show {
@@ -1273,6 +1273,7 @@ form{
   padding: 10px;
   list-style-type: none;
   cursor: pointer;
+  text-align: center;
 }
 
 .content li:hover {
@@ -1422,7 +1423,6 @@ margin-top: 3%;
 .entry-item {
   text-align: left;
 }
-
 
 
 
