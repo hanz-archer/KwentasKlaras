@@ -1,4 +1,4 @@
-{% load static %}
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,75 +10,108 @@
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
 </head>
 <body>
-        <div class="container">
-            <div class="login-content">
-                <form action="{% url 'login' %}" method="post">
-                    {% csrf_token %}
-                    <img src="{% static 'KwentasApp/img/logo.png' %}" alt="User Avatar">
-                    <h2 class="title">Welcome to Kwentas Klaras (Digital PMIS) v1.0</h2>
-                    {% if error %}
-                    <p class="error-message">{{ error }}</p>
-                    {% endif %}
-                    <div class="input-div one">
-                        <div class="i">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="div">
-                            <h5>User ID</h5>
-                            <input type="text" class="input" name="username" required>
-                        </div>
-                    </div>
-                    <div class="input-div pass">
-                        <div class="i clickable" id="show-password">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="div">
-                            <h5>Password</h5>
-                            <input type="password" class="input" id="password-input" name="password" required>
-                        </div>
-                    </div>
-                    <input type="submit" class="btn" value="Login">
+<div class="container">
+    <div class="login-content">
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <img src="{% static 'KwentasApp/img/logo.png' %}" alt="User Avatar">
+            <h2 class="title">Welcome to Kwentas Klaras (Digital PMIS) v1.0</h2>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>User ID</h5>
+                    <input type="text" class="input" name="username" required>
+                </div>
             </div>
-        </div>
+            <div class="input-div pass">
+                <div class="i clickable" id="show-password">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Password</h5>
+                    <input type="password" class="input" id="password-input" name="password" required>
+                </div>
+            </div>
+            <input type="submit" class="btn" value="Login">
+        </form>
+    </div>
+</div>
 
-    <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
-    <script>
-        document.getElementById('show-password').addEventListener('click', function () {
-            var passwordInput = document.getElementById('password-input');
-            var icon = document.querySelector('#show-password i');
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-lock');
-                icon.classList.add('fa-unlock-alt');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-unlock-alt');
-                icon.classList.add('fa-lock');
-            }
-        });
-    </script>
-    <script>
-        const inputs = document.querySelectorAll(".input");
+<ul class="notifications"></ul>
 
+<script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
+<script>
+    document.getElementById('show-password').addEventListener('click', function () {
+        var passwordInput = document.getElementById('password-input');
+        var icon = document.querySelector('#show-password i');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-lock');
+            icon.classList.add('fa-unlock-alt');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-unlock-alt');
+            icon.classList.add('fa-lock');
+        }
+    });
+</script>
+<script>
+    const inputs = document.querySelectorAll(".input");
 
-function addcl(){
-	let parent = this.parentNode.parentNode;
-	parent.classList.add("focus");
-}
+    function addcl(){
+        let parent = this.parentNode.parentNode;
+        parent.classList.add("focus");
+    }
 
-function remcl(){
-	let parent = this.parentNode.parentNode;
-	if(this.value == ""){
-		parent.classList.remove("focus");
-	}
-}
+    function remcl(){
+        let parent = this.parentNode.parentNode;
+        if(this.value == ""){
+            parent.classList.remove("focus");
+        }
+    }
 
+    inputs.forEach(input => {
+        input.addEventListener("focus", addcl);
+        input.addEventListener("blur", remcl);
+    });
+</script>
 
-inputs.forEach(input => {
-	input.addEventListener("focus", addcl);
-	input.addEventListener("blur", remcl);
-});
-    </script>
-    
+<!-- Script for toast notifications -->
+{% if error %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const notifications = document.querySelector(".notifications");
+
+        const removeToast = (toast) => {
+            toast.classList.add("hide");
+            if (toast.timeoutId) clearTimeout(toast.timeoutId);
+            setTimeout(() => toast.remove(), 500);
+        }
+
+        const createToast = (id, message) => {
+            const toast = document.createElement("li");
+            toast.className = `toast ${id}`;
+            toast.innerHTML = `<div class="column">
+                                   <i class="fa-solid fa-circle-xmark"></i>
+                                   <i class="fas fa-lock"></i>
+                                   <span>${message}</span>
+                                </div>
+                                <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
+            notifications.appendChild(toast);
+            toast.timeoutId = setTimeout(() => removeToast(toast), 5000);
+        }
+
+        // Function to show a toast message for validation errors
+        const showErrorToast = (message) => {
+            createToast('error', message);
+        }
+
+        // Immediately call the function to show the toast if there's an error message
+        showErrorToast("{{ error }}");
+    });
+</script>
+{% endif %}
 </body>
 </html>

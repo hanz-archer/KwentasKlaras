@@ -113,7 +113,9 @@ def obligations(request):
 
 @login_required
 def homepage(request):
-    return render(request, 'KwentasApp/homepage.html')
+    name = request.user.name  # Assuming 'name' is a field in CustomUser model
+    context = {'user_name': name}
+    return render(request, 'KwentasApp/homepage.html', context)
 
 
 @login_required
