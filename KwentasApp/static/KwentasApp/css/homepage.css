@@ -10,6 +10,10 @@ section {
   display: grid;
   place-items: center;
 }
+.section-heading{
+  font-size: 25px;
+  font-style: bold;
+}
 .row {
   display:flex;
   flex-wrap: wrap;
@@ -111,7 +115,6 @@ p {
     white-space: wrap;
   }
 }
-
 
 .btn {
   display: block;
