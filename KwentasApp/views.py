@@ -17,19 +17,17 @@ from .forms import RegistrationForm
 
 
 def login_view(request):
-    if request.method == 'POST':
+    error = None
+    if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-
         if user is not None:
             login(request, user)
-            return redirect(reverse('homepage'))  # Use reverse to get the URL by name
+            return redirect('home')
         else:
-            error = 'Invalid credentials. Please try again.'
-            return render(request, 'KwentasApp/login.html', {'error': error})
-
-    return render(request, 'KwentasApp/login.html')
+            error = "Invalid username or password."
+    return render(request, 'KwentasApp/login.html', {'error': error})
 
 
 def admin_view(request):
