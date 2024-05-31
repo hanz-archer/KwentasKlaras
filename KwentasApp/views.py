@@ -28,7 +28,6 @@ def login_view(request):
         else:
             error = 'Invalid credentials. Please try again.'
             return render(request, 'KwentasApp/login.html', {'error': error})
-
     return render(request, 'KwentasApp/login.html')
 
 
