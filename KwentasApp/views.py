@@ -24,7 +24,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect(reverse('homepage'))  # Use reverse to get the URL by name
+            return redirect(reverse('homepage'))  # Redirect to homepage
         else:
             error = 'Invalid credentials. Please try again.'
             return render(request, 'KwentasApp/login.html', {'error': error})
@@ -47,17 +47,9 @@ def reports_view(request):
 def current_view(request):
     return render(request, 'KwentasApp/currentproject.html')
 
-@never_cache
-@login_required
-def home_view(request):
-    return render(request, 'KwentasApp/home.html')
-
 
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
-
-
-
 
 @user_passes_test(lambda u: u.is_superuser, login_url='login')
 def registration_view(request):
@@ -112,7 +104,7 @@ def obligations(request):
 
 @login_required
 def homepage(request):
-    user_name = request.user.name  # Assuming 'name' is the correct attribute to access the user's name
+    user_name = request.user.get_username()  # Using get_username to fetch the username
     context = {'user_name': user_name}
     return render(request, 'KwentasApp/homepage.html', context)
 
