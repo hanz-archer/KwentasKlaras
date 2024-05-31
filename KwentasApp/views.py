@@ -103,9 +103,10 @@ def obligations(request):
 
 
 @login_required
-def homepage(request):
-    user_name = request.user.get_username()  # Using get_username to fetch the username
-    context = {'user_name': user_name}
+def homepage_view(request):
+    context = {
+        'user_name': request.user.username,
+    }
     return render(request, 'KwentasApp/homepage.html', context)
 
 

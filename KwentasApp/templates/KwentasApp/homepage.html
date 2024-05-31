@@ -1,13 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Kwentas Klaras - Home</title>
     <!-- Font Awesome CDN-->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <!-- Stylesheet -->
@@ -26,17 +24,14 @@
             </div>
             <h3>Programs Projects & Activities under 20% LDF</h3>
             <p>
-              <form action="{% url 'continuing_projects' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn"><i class="fas fa-table"></i>  Continuing</button>
+              <form action="{% url 'continuing_projects' %}" method="get">
+                <button type="submit" class="btn"><i class="fas fa-table"></i> Continuing</button>
               </form>
-              <form action="{% url 'ongoing_projects' %}" method="post">
-                {% csrf_token %}
-              <button type="submit" class="btn"><i class="fas fa-table"></i> Current </button>
+              <form action="{% url 'ongoing_projects' %}" method="get">
+                <button type="submit" class="btn"><i class="fas fa-table"></i> Current </button>
               </form>
-              <form action="{% url 'adddata' %}" method="post">
-                {% csrf_token %}
-              <button type="submit" class="btn"><i class="fas fa-search"></i> Add Data</button>
+              <form action="{% url 'adddata' %}" method="get">
+                <button type="submit" class="btn"><i class="fas fa-search"></i> Add Data</button>
               </form>
             </p>
           </div>
@@ -48,9 +43,9 @@
             </div>
             <h3>PROCUREMENTS</h3>
             <p>
-              <input type="submit" class="btn" value="PPMP">
-              <input type="submit" class="btn" value="APP">
-              <input type="submit" class="btn" value="Procurement Timelines">
+              <button type="button" class="btn">PPMP</button>
+              <button type="button" class="btn">APP</button>
+              <button type="button" class="btn">Procurement Timelines</button>
             </p>
           </div>
         </div>
@@ -60,16 +55,14 @@
               <i class="fas fa-money-check-alt"></i>
             </div>
             <h3>OBLIGATIONS / DISBURSEMENTS</h3>
-            <form action="" method="post">
-              {% csrf_token %}
-            <button type="submit" class="btn">Obligations</button>
+            <form action="" method="get">
+              <button type="submit" class="btn">Obligations</button>
             </form>
             <p>
-              <form action="" method="post">
-                {% csrf_token %}
+              <form action="" method="get">
                 <button type="submit" class="btn">Disbursement</button>
-              </form>   
-              <input type="submit" class="btn" value="Check Payment">
+              </form>
+              <button type="button" class="btn">Check Payment</button>
             </p>
           </div>
         </div>
@@ -115,9 +108,7 @@
                 <button type="submit" class="btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
               </form>
             </p>
-            
           </div>
-        </div>
         </div>
       </div>
     </section>
@@ -136,7 +127,7 @@
     
       const removeToast = (toast) => {
           toast.classList.add("hide");
-          if(toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
+          if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
           setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
       }
     
