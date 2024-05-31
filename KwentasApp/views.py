@@ -17,17 +17,19 @@ from .forms import RegistrationForm
 
 
 def login_view(request):
-    error = None
-    if request.method == "POST":
+    if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect(reverse('homepage'))  # Use reverse to get the URL by name
         else:
-            error = "Invalid username or password."
-    return render(request, 'KwentasApp/login.html', {'error': error})
+            error = 'Invalid credentials. Please try again.'
+            return render(request, 'KwentasApp/login.html', {'error': error})
+
+    return render(request, 'KwentasApp/login.html')
 
 
 def admin_view(request):
@@ -111,8 +113,8 @@ def obligations(request):
 
 @login_required
 def homepage(request):
-    name = request.user.name  # Assuming 'name' is a field in CustomUser model
-    context = {'user_name': name}
+    user_name = request.user.name  # Assuming 'name' is the correct attribute to access the user's name
+    context = {'user_name': user_name}
     return render(request, 'KwentasApp/homepage.html', context)
 
 

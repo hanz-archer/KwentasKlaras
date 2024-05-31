@@ -107,6 +107,9 @@
         const showErrorToast = (message) => {
             createToast('error', message);
         }
+
+        // Immediately call the function to show the toast if there's an error message
+        showErrorToast("{{ error }}");
     });
 </script>
 {% endif %}
