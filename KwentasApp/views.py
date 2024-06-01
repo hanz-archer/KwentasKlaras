@@ -13,7 +13,7 @@ from django.contrib import messages
 from .forms import RegistrationForm
 
 
-
+print("KwentasApp.views module loaded")  # Debugging print
 
 
 def login_view(request):
@@ -103,10 +103,10 @@ def obligations(request):
 
 
 @login_required
-def homepage_view(request):
-    context = {
-        'user_name': request.user.username,
-    }
+def homepage(request):
+    print("homepage view called")  # Debugging print
+    name = request.user.username  # Assuming 'username' is a field in the User model
+    context = {'user_name': name}
     return render(request, 'KwentasApp/homepage.html', context)
 
 
