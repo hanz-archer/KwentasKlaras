@@ -338,19 +338,30 @@ body {
     max-width: 700px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
     .content main .bottom-data {
-        grid-template-columns: 1fr;
-    }
-
-    .content nav form {
-        max-width: 230px;
+        grid-template-columns: 1fr; /* Stack cards vertically */
     }
 }
 
-@media screen and (max-width: 1024px) {
+/* Adjustments for even smaller screens */
+@media screen and (max-width: 768px) {
     .content main .bottom-data {
-        grid-template-columns: 1fr; /* Stack cards vertically on smaller screens */
+        grid-template-columns: 1fr; /* Ensure cards are stacked */
+        grid-gap: 16px; /* Reduce gap between cards */
     }
+
+    .content main .header h1 {
+        font-size: 28px; /* Smaller font size for the header */
+    }
+
+    .content main .header .left ul.breadcrumb li a {
+        font-size: 14px; /* Smaller font size for breadcrumb */
+    }
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
 }
 
