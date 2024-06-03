@@ -1,96 +1,155 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Kwentas Klaras Reports</title>
-  <link rel="stylesheet" href="{% static 'KwentasApp/css/reports.css' %}" />
-  <!-- Font Awesome CDN Link -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="container">
-    <section class="main">
-      <div class="main-top">
-        <h1>Kwentas Klaras Reports</h1>
-      </div>
-      <div class="main-skills">
-        <div class="card">
-          <i class="fas fa-laptop-code"></i>
-          <h3>All Projects</h3>
-          <p style="font-size: 30px;"><strong>30</strong></p>
-        </div>
-        <div class="card">
-          <i class="fas fa-table"></i>
-          <h3>Current Projects</h3>
-          <p style="font-size: 30px;"><strong>30</strong></p>
-          <form action="{% url 'ongoing_projects' %}" method="get">
-            <button>View</button>
-          </form>
-        </div>
-        <div class="card">
-          <i class="fas fa-table"></i>
-          <h3>Continuing Projects</h3>
-          <p style="font-size: 30px;"><strong>30</strong></p>
-          <form action="{% url 'continuing_projects' %}" method="get">
-            <button>View</button>
-          </form>
-        </div>
-      </div>
 
-      <section class="main-course">
-        <h1>Kwentas Klaras Analytics</h1>
-        <div class="course-box">
-          <div class="course">
-            <div class="box">
-              <h3><strong>Utilization Rate</strong></h3>
-              <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/reports.css' %}">
+    <title>Responsive Dashboard Design #2 | AsmrProg</title>
+</head>
+
+<body>
+    <!-- Main Content -->
+    <div class="content no-sidebar">
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Reports Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Kwentas Klaras Analytics</a></li>
+                    </ul>
+                </div>
+                <a href="#" class="report">
+                    <i class='bx bx-cloud-download'></i>
+                    <span>Download Reports Page</span>
+                </a>
             </div>
-            <div class="box">
-              <h3><strong>Utilization rate by Department</strong></h3>
-              <canvas id="myChart1" style="width:100%;max-width:700px"></canvas>
+
+            <!-- Insights -->
+            <ul class="insights">
+                <li>
+                    <i class='bx bx-calendar-check'></i>
+                    <span class="info">
+                        <h3>1,074</h3>
+                        <p><strong>Projects</strong></p>
+                    </span>
+                </li>
+                <li><i class='bx bx-show-alt'></i>
+                    <span class="info">
+                        <h3>3,944</h3>
+                        <p><strong>Current Projects</strong></p>
+                    </span>
+                </li>
+                <li><i class='bx bx-line-chart'></i>
+                    <span class="info">
+                        <h3>14,721</h3>
+                        <p><strong>Continuing Projects</strong></p>
+                    </span>
+                </li>
+                <li><i class='bx bx-dollar-circle'></i>
+                    <span class="info">
+                        <h3>$6,742</h3>
+                        <p><strong>Budget Utilization Rate</strong></p>
+                    </span>
+                </li>
+            </ul>
+
+            <div class="bottom-data">
+                <div class="card">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Completed Projects</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+                </div>
+
+                <div class="card">
+                    <div class="header">
+                        <i class='bx bx-note'></i>
+                        <h3>Ongoing Projects</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-plus'></i>
+                    </div>
+                    <canvas id="myChart1" style="width:100%;max-width:700px"></canvas>
+                </div>
+
+                <div class="card">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Utilization Rate</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
+                </div>
+
+                <!-- Add more cards if needed -->
+                <div class="card">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Additional Project</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <canvas id="myChart3" style="width:100%;max-width:700px"></canvas>
+                </div>
+
+                <div class="card">
+                    <div class="header">
+                        <i class='bx bx-receipt'></i>
+                        <h3>Additional Project</h3>
+                        <i class='bx bx-filter'></i>
+                        <i class='bx bx-search'></i>
+                    </div>
+                    <canvas id="myChart3" style="width:100%;max-width:700px"></canvas>
+                </div>
             </div>
-            <div class="box">
-              <h3><strong>Projects by Department</strong></h3>
-              <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="button-container">
-          <form action="{% url 'homepage' %}" method="post" class="inline-form">
-            {% csrf_token %}
-            <button class="Btn">
-              <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
-              <div class="text">Back</div>
-            </button>
-          </form>
-        </div>
-      </section>
-    </section>
-  </div> 
+        </main>
+    </div>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('.report').addEventListener('click', function() {
+                html2canvas(document.body).then(function(canvas) {
+                    var link = document.createElement('a');
+                    link.download = 'dashboard.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                });
+            });
+        });
+    </script>
+    <script src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        var xValues = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
+        var yValues = [12, 19, 3, 5, 2, 3];
+        var barColors = ["#b91d47", "#00aba9", "#2b5797", "#e8c3b9", "#1e7145", "#f09609"];
+        new Chart("myChart", {
+            type: "pie",
+            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
+            options: { title: { display: true, text: "Utilization Rate" } }
+        });
+        new Chart("myChart1", {
+            type: "pie",
+            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
+            options: { title: { display: true, text: "Utilization rate by Department" } }
+        });
+        new Chart("myChart2", {
+            type: "doughnut",
+            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
+            options: { title: { display: true, text: "Projects by Department" } }
+        });
+        new Chart("myChart3", {
+            type: "doughnut",
+            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
+            options: { title: { display: true, text: "Additional Projects" } }
+        });
+    </script>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<script>
-  var xValues = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
-  var yValues = [12, 19, 3, 5, 2, 3];
-  var barColors = ["#b91d47","#00aba9","#2b5797","#e8c3b9","#1e7145","#f09609"];
-  new Chart("myChart", {
-    type: "pie",
-    data: {labels: xValues, datasets: [{backgroundColor: barColors, data: yValues}]},
-    options: {title: {display: true, text: "Utilization Rate"}}
-  });
-  new Chart("myChart1", {
-    type: "pie",
-    data: {labels: xValues, datasets: [{backgroundColor: barColors, data: yValues}]},
-    options: {title: {display: true, text: "Utilization rate by Department"}}
-  });
-  new Chart("myChart2", {
-    type: "doughnut",
-    data: {labels: xValues, datasets: [{backgroundColor: barColors, data: yValues}]},
-    options: {title: {display: true, text: "Projects by Department"}}
-  });
-</script>
+
 </html>
