@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -30,25 +31,25 @@
             <!-- Insights -->
             <ul class="insights">
                 <li>
-                    <i class='bx bx-calendar-check'></i>
+                    <i class='bx bx-check'></i>
                     <span class="info">
                         <h3>1,074</h3>
                         <p><strong>Projects</strong></p>
                     </span>
                 </li>
-                <li><i class='bx bx-show-alt'></i>
+                <li><i class='bx bx-chevron-left-square'></i>
                     <span class="info">
                         <h3>3,944</h3>
                         <p><strong>Current Projects</strong></p>
                     </span>
                 </li>
-                <li><i class='bx bx-line-chart'></i>
+                <li><i class='bx bx-check-circle'></i>
                     <span class="info">
                         <h3>14,721</h3>
                         <p><strong>Continuing Projects</strong></p>
                     </span>
                 </li>
-                <li><i class='bx bx-dollar-circle'></i>
+                <li><i class='bx bx-money-withdraw'></i>
                     <span class="info">
                         <h3>$6,742</h3>
                         <p><strong>Budget Utilization Rate</strong></p>
@@ -62,7 +63,34 @@
                         <i class='bx bx-receipt'></i>
                         <h3>Completed Projects</h3>
                     </div>
-                    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>John Doe</p>
+                                </td>
+                                <td><span class="status completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>John Doe</p>
+                                </td>
+                                <td><span class="status pending">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>John Doe</p>
+                                </td>
+                                <td><span class="status process">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="card">
@@ -70,7 +98,34 @@
                         <i class='bx bx-note'></i>
                         <h3>Ongoing Projects</h3>
                     </div>
-                    <canvas id="myChart1" style="width:100%;max-width:700px"></canvas>
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>John Doe</p>
+                                </td>
+                                <td><span class="status completed">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>John Doe</p>
+                                </td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>John Doe</p>
+                                </td>
+                                <td><span class="status process">Pending</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="card">
@@ -82,14 +137,6 @@
                 </div>
 
                 <!-- Add more cards if needed -->
-                <div class="card">
-                    <div class="header">
-                        <i class='bx bx-receipt'></i>
-                        <h3>Additional Project</h3>
-                    </div>
-                    <canvas id="myChart3" style="width:100%;max-width:700px"></canvas>
-                </div>
-
                 <div class="card">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
