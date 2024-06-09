@@ -1,435 +1,483 @@
-{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
     {% csrf_token %}
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Admin Dashboard</title>
-
-    <!-- Montserrat Font -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-REkIOwLjNfkdczJxZtWKJ68Scw8rtr1HQ1nlWzww99fTVd1dMqA9Xn4e+eNm/TZNPpiQNB6q7BsYRKj7hlLqdw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
-
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/base.css' %}">
-  </head>
-  <body>
-    <div class="grid-container">
-        
-      <!-- Main -->
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Convert | Export html Table to CSV & EXCEL File</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ongoing Projects</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+        <!-- Material Icons -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     
-    <body>
-        <main class="table" id="customers_table">
-            <section class="table__header">
-                <h1><a href="{% url 'ongoing_projects'%}" style="text-decoration: none;color: initial;"> Current Projects Data</a></h1>
-                
-                <div class="input-group">
-                    <form method="GET" action="{% url 'search_ongoing_projects' %}" >
-                        <input type="text" name="query" placeholder="Search Ongoing Projects...">
-                    </div>
 
 
-                        <button type="submit" class="status delivered" style="width: 10%;font-size: 20px; margin-right: 230px;">Search</button>
+        <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/ongoing.css' %}">
+</head>
 
-                    </form>
-            </section>
-            <section class="table__body">
-
-
-
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th> P/P/A <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Implementing Unit <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Code <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Year <span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Add Data<span class="icon-arrow">&UpArrow;</span></th>
-                            <th> Action <span class="icon-arrow">&UpArrow;</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if matched_entries_2024_and_above %}
-                            {% for entry in matched_entries_2024_and_above %}
-                                <tr>
-                                    <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                                    <td class="implementing-unit">{{ entry.implementing_unit }}</td>
-                                    <td class="code">{{ entry.code }}</td>
-                                    <td class="year">{{ entry.year }}</td>
-                                    <td>
-                                        <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')">
-                                            <a id="obligation-link" style="text-decoration: none; font-size: 20px; color: white;">Obligation</a>
-                                        </button>
-                                        <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')">
-                                            <a id="budget-link" style="text-decoration: none; font-size: 20px; color: white;">Budget</a>
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button class="status update" onclick="showUpdateForm('{{ entry.code }}')">
-                                            <a id="update-link" style="text-decoration: none; font-size: 20px; color: white;">Update</a>
-                                        </button>
-                                        <button class="status update" onclick="showDeleteForm('{{ entry.code }}')">
-                                            <a id="delete-link" style="text-decoration: none; font-size: 20px; color: white;">Delete</a>
-                                        </button>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% else %}
-                            {% for entry in entries_2024_and_above %}
-                                <tr>
-                                    <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                                    <td class="implementing-unit">{{ entry.implementing_unit }}</td>
-                                    <td class="code">{{ entry.code }}</td>
-                                    <td class="year">{{ entry.year }}</td>
-                                    <td>
-                                        <button class="status delivered" onclick="showAddObligationForm('{{ entry.code }}')">
-                                            <a id="obligation-link" style="text-decoration: none; font-size: 20px; color: white;">Obligation</a>
-                                        </button>
-                                        <button class="status delivered" onclick="showAddBudget('{{ entry.code }}')">
-                                            <a id="budget-link" style="text-decoration: none; font-size: 20px; color: white;">Budget</a>
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button class="status update" onclick="showUpdateForm('{{ entry.code }}')">
-                                            <a id="update-link" style="text-decoration: none; font-size: 20px; color: white;">Update</a>
-                                        </button>
-                                        <button class="status update" onclick="showDeleteForm('{{ entry.code }}')">
-                                            <a id="delete-link" style="text-decoration: none; font-size: 20px; color: white;">Delete</a>
-                                        </button>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-            </section>
-        </main>
-    </div>
-
-
-
-
-  <!-- obligation -->
-   
-    <div class="container" id="obligation">
-        <div class="card">
-            <div class="card-content">
-            <div class="login-container">
-                <div class="login-content">
-
-
-
-                <form id="add-obligation-form" action="{% url 'ongoing_add_obligation' %}" method="post">
-                    {% csrf_token %}
-                    <h2 class="title">Add Obligation Form</h2>
-                    <br>
-                    <input type="hidden" name="entry-code" id="obligation-code">
-
-
-
-                    <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="div">
-                        <h5>Name</h5>
-                        <input type="text" name="obligation_name" class="input">
-                    </div>
-                    </div>
-
-                    <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="div">
-                        <h5>Date</h5>
-                        <input type="date" name="obligation_date" class="input">
-                    </div>
-                    </div>
-
-                    <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="div">
-                        <h5>Spent</h5>
-                        <input type="text" name="obligation_spent" class="input">
-                    </div>
-                    </div>
-
-                    <button type="submit" class="btn-add" value="Submit">Submit</button>
-                    <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
-                </form>
-                </div>
+<body>
+    <main class="table" id="customers_table">
+        <section class="table__header">
+            <h1>Ongoing Projects</h1>
+            
+            <div class="input-group">
+                <form method="GET" action="{% url 'search_ongoing_projects' %}" >
+                    <input type="text" name="query" placeholder="Search Ongoing Projects...">
+               
             </div>
+            <div class="export__file">
+                <button type="submit" class="export__file-btn">Search</button>
+
+            </form>
+               
+             
             </div>
-        </div>
-        </div> 
 
-    <div class="button-container">
-        <form action="{% url 'homepage' %}" method="post" class="inline-form">
-        {% csrf_token %}
-        <button class="Btn">
-            <div class="sign"><svg viewBox="0 0 512 512"><path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path></svg></div>
-            <div class="text">Back</div>
-          </button>
-        </form>
-    </div>    
-    
-  <!-- Budget -->
-    
-    <div class="container" id="budget">
-        <div class="card">
-            <div class="card-content">
-            <div class="login-container">
-                <div class="login-content">
-
-
-                    
-                    <form id="add-budget-form" action="{% url 'add_budget' %}" method="post">
-                    
-                        {% csrf_token %}
-                        <h2 class="title">Add Budget Form</h2><br><br>
-                        <input type="hidden" name="entry_code" id="budget-code">
-
-                    <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="div">
-                        <h5>Budget Name</h5>
-                        <input type="text" name="budget_name" class="input">
-                    </div>
-                    </div>
-
-                    <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="div">
-                        <h5>Date</h5>
-                        <input type="date" name="budget_date" class="input">
-                    </div>
-                    </div>
-
-                    <div class="input-div">
-                    <div class="i">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="div">
-                        <h5>Added Budget</h5>
-                        <input type="text" name="added_budget" class="input">
-                    </div>
-                    </div>
-                    <button type="submit" class="btn-add" value="Submit">Submit</button>
-                    <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
-                </form>
-                </div>
-            </div>
-            </div>
-        </div>
-        </div>
-    
+         
 
 
 
+        </section>
+        <section class="table__body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> PPA </th>
+                        <th> Implementing Unit </th>
+                        <th>Code </th>
+                        <th> Year</th>
+                        <th> Add </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
 
 
+                    {% if matched_entries_2024_and_above %}
+                    {% for entry in matched_entries_2024_and_above %}
+                    <tr>
+                        
+                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                        <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                        <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                        <td>
+                            <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p><br>
+                            <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
+                        </td>
+                        <td>  
+                            <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p><br>
+                            <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
 
-
-
-
-<!-- Update-->
-    
-<div class="container" id="update">
-    <div class="card">
-        <div class="card-content">
-            <div class="login-container">
-                <div class="login-content">
-
-                    {% for entry in all_entries %}
-                    <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post">
-                        {% csrf_token %}
-
-                        <h2 class="title">Update Form</h2><br><br>
-
-                        <input type="hidden" name="entry_code" value="{{ entry.code }}">
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-info"></i>
-                            </div>
-                            <div class="div">
-                                <h5>PPA</h5>
-                                <input type="text" name="ppa" class="input" value="{{ entry.ppa }}">
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div class="drop">
-                                <input type="text" name="implementing_unit" placeholder="Implementing Department" onclick="toggleDropdown('departmentOptions_{{ entry.code }}')" id="departmentInput_{{ entry.code }}" readonly value="{{ entry.implementing_unit }}">
-                                <i class="fas fa-chevron-down" onclick="toggleDropdown('departmentOptions_{{ entry.code }}')"></i>
-                                <div class="dropdown-container">
-                                    <ul class="content" id="departmentOptions_{{ entry.code }}">
-                                        <li onclick="selectOption('Mayor\'s Office', 'departmentInput_{{ entry.code }}')">Mayor's Office</li>
-                                        <li onclick="selectOption('Tourism Office', 'departmentInput_{{ entry.code }}')">Tourism Office</li>
-                                        <li onclick="selectOption('PESO Office', 'departmentInput_{{ entry.code }}')">PESO Office</li>
-                                        <li onclick="selectOption('MDRRMO', 'departmentInput_{{ entry.code }}')">MDDRMO</li>
-                                        <li onclick="selectOption('Sanguniang Barangay Office', 'departmentInput_{{ entry.code }}')">Sanguniang Barangay Office</li>
-                                        <li onclick="selectOption('MPDC', 'departmentInput_{{ entry.code }}')">MPDC</li>
-                                        <li onclick="selectOption('MCR Office', 'departmentInput_{{ entry.code }}')">MCR Office</li>
-                                        <li onclick="selectOption('MBO Office', 'departmentInput_{{ entry.code }}')">MBO Office</li>
-                                        <li onclick="selectOption('Accountant Office', 'departmentInput_{{ entry.code }}')">Accountant Office</li>
-                                        <li onclick="selectOption('Assessor\'s Office', 'departmentInput_{{ entry.code }}')">Assessor's Office</li>
-                                        <li onclick="selectOption('MHO Office', 'departmentInput_{{ entry.code }}')">MHO Office</li>
-                                        <li onclick="selectOption('Parks & Plaza', 'departmentInput_{{ entry.code }}')">Parks & Plaza</li>
-                                        <li onclick="selectOption('MSWD Office', 'departmentInput_{{ entry.code }}')">MSWD Office</li>
-                                        <li onclick="selectOption('MENRO Office', 'departmentInput_{{ entry.code }}')">MENRO Office</li>
-                                        <li onclick="selectOption('MO', 'departmentInput_{{ entry.code }}')">MO</li>
-                                        <li onclick="selectOption('Streets & Bridges', 'departmentInput_{{ entry.code }}')">Streets & Bridges</li>
-                                        <li onclick="selectOption('LDF', 'departmentInput_{{ entry.code }}')">LDF</li>
-                                        <li onclick="selectOption('Waterworks', 'departmentInput_{{ entry.code }}')">Waterworks</li>
-                                        <li onclick="selectOption('Markets', 'departmentInput_{{ entry.code }}')">Markets</li>
-                                        <li onclick="selectOption('Zero Waste', 'departmentInput_{{ entry.code }}')">Zero Waste</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-location-arrow"></i>
-                            </div>
-                            <div class="div">
-                                <h5>Location</h5>
-                                <input type="text" name="location" class="input" value="{{ entry.location }}">
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-registered"></i>
-                            </div>
-                            <div class="div">
-                                <h5>Remarks</h5>
-                                <input type="text" name="remarks" class="input" value="{{ entry.remarks }}">
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-calendar-times"></i>
-                            </div>
-                            <div class="div">
-                                <h5>Start Date</h5>
-                                <input type="date" name="start_date" class="input" value="{{ entry.start_date }}">
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-calendar-check"></i>
-                            </div>
-                            <div class="div">
-                                <h5>End Date</h5>
-                                <input type="date" name="end_date" class="input" value="{{ entry.end_date }}">
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-hashtag"></i>
-                            </div>
-                            <div class="div">
-                                <h5>Code</h5>
-                                <input type="text" name="code" class="input" value="{{ entry.code }}">
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-search-plus"></i>
-                            </div>
-                            <div class="drop">
-                                <input type="text" name="services" placeholder="Services" onclick="toggleDropdown('servicesOptions_{{ entry.code }}')" id="servicesInput_{{ entry.code }}" readonly value="{{ entry.services }}">
-                                <i class="fas fa-chevron-down" onclick="toggleDropdown('servicesOptions_{{ entry.code }}')"></i>
-                                <ul class="content" id="servicesOptions_{{ entry.code }}">
-                                    <li onclick="selectOption('General', 'servicesInput_{{ entry.code }}')">General</li>
-                                    <li onclick="selectOption('Social', 'servicesInput_{{ entry.code }}')">Social</li>
-                                    <li onclick="selectOption('Economic', 'servicesInput_{{ entry.code }}')">Economic</li>
-                                    <li onclick="selectOption('Environmental', 'servicesInput_{{ entry.code }}')">Environmental</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-calendar-week"></i>
-                            </div>
-                            <div class="div">
-                                <h5>Year</h5>
-                                <input type="number" name="year" class="input" value="{{ entry.year }}">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-add" value="Submit">Submit</button>
-                        <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
-                    </form>
+                        
+                        
+                        
+                        
+                        </td>
+                    </tr>
                     {% endfor %}
+                    {% else %}
+                        {% for entry in entries_2024_and_above %}
+                    
+                   
+                        <tr>
+                        
+                            <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                            <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                            <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                            <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                            <td>
+                                <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p><br>
+                                <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
+                            </td>
+                            <td>  
+                                <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p><br>
+                                <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+    
+                            
+                            
+                            
+                            
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                 
+                </tbody>
+            </table>
+        </section>
 
+
+
+      
+        <div class="back">
+            <a href="{% url 'homepage' %}">  <button  class="back-btn">Back</button></a>
+
+
+           
+         
+        </div>
+
+
+
+      
+    </main>
+<!-- DETAILS  -->
+    <div class="details" id="details">
+        <a href="{% url 'ongoing_projects' %}"> <p class="x" >X</p> </a>
+        <a href="{% url 'ongoing_projects' %}">
+            <h1 class="form-title">PROJECT DETAILS</h1> 
+        </a>
+<ul>
+        {% for entry in all_entries %}
+        <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
+            <div class="main-user-info"  id="main-detail">
+                <div class="user-input-box">
+                    <label for="fullName">PPA</label>
+                    <p id="fullName" class="user-text"> {{ entry.ppa }} </p>
+                </div>
+                <div class="user-input-box">
+                    <label for="username">Implementing Unit</label>
+                    <p id="username" class="user-text">{{ entry.implementing_unit }}</p></p>
+                </div>
+                <div class="user-input-box">
+                    <label for="email">Location</label>
+                    <p id="email" class="user-text"> {{ entry.location }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="phoneNumber">Appropriation</label>
+                    <p id="phoneNumber" class="user-text"> {{ entry.appropriation }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="password">Remarks</label>
+                    <p id="password" class="user-text">{{ entry.remarks }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="confirmPassword">Start Date</label>
+                    <p id="confirmPassword" class="user-text"> {{ entry.start_date }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="endDate">End Date</label>
+                    <p id="endDate" class="user-text"> {{ entry.end_date }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="code">Code</label>
+                    <p id="code" class="user-text">{{ entry.code }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="services">Services</label>
+                    <p id="services" class="user-text"> {{ entry.services }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="year">Year</label>
+                    <p id="year" class="user-text">{{ entry.year }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="totalBudget">Total Budget</label>
+                    <p id="totalBudget" class="user-text">{{ entry.total_budget }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="totalSpent">Total Spent</label>
+                    <p id="totalSpent" class="user-text">{{ entry.added_budget }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="totalAddedBudget">Total Added Budget</label>
+                    <p id="totalAddedBudget" class="user-text"> {{ entry.total_spent }}</p>
+                </div>
+                <div class="user-input-box">
+                    <label for="remainingBalance">Remaining Balance</label>
+                    <p id="remainingBalance" class="user-text">{{ entry.remaining_balance }}</p>
                 </div>
             </div>
-        </div>
+          
+        
+            <div class="tables-container">
+                <div class="table-box">
+                    <span class="table-title"> Added Budget</span>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for budget in entry.budget_data %}
+                                <tr>
+                                    <td>{{ budget.name }}</td>
+                                    <td>{{ budget.added_budget }}</td>
+                                    <td>{{ budget.date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-box">
+                    <span class="table-title">Added Obligation</span><br>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for obligation in entry.obligation %}
+                                <tr>
+                                    <td>{{ obligation.name }}</td>
+                                    <td>{{ obligation.date }}</td>
+                                    <td>{{ obligation.spent }}</td>
+                                </tr>
+                                {% endfor %}
+
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+           
+        </li>
+        {% endfor %}
+    </ul>
     </div>
+    
+<!-- UPDATE -->
+ 
+<div class="details" id="update">
+    <a href="{% url 'ongoing_projects' %}"> <p class="x">X</p> </a>
+    <a href="{% url 'ongoing_projects' %}">
+        <h1 class="form-title">Update Form</h1> 
+    </a>
+
+    {% for entry in all_entries %}
+    <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post">
+        {% csrf_token %}
+
+        <input type="hidden" name="entry_code" value="{{ entry.code }}">
+        <div class="main-user-info" id="main-update">
+            <div class="user-input-box">
+                <label for="ppa_{{ entry.code }}">PPA</label>
+                <input type="text" id="ppa_{{ entry.code }}" name="ppa" class="user-text" value="{{ entry.ppa }}">
+            </div>
+
+            <div class="user-input-box">
+                <label for="implementing_unit_{{ entry.code }}">Implementing Unit</label>
+                <div class="select-container">
+                    <select id="implementing_unit_{{ entry.code }}" name="implementing_unit" class="user-input">
+                        <option value="" disabled selected>{{ entry.implementing_unit }}</option>
+                        <option value="Mayor's Office" {% if entry.implementing_unit == "Mayor's Office" %}selected{% endif %}>Mayor's Office</option>
+                        <option value="Tourism Office" {% if entry.implementing_unit == "Tourism Office" %}selected{% endif %}>Tourism Office</option>
+                        <option value="PESO Office" {% if entry.implementing_unit == "PESO Office" %}selected{% endif %}>PESO Office</option>
+                        <option value="MDRRMO" {% if entry.implementing_unit == "MDRRMO" %}selected{% endif %}>MDRRMO</option>
+                        <option value="Sanguniang Barangay Office" {% if entry.implementing_unit == "Sanguniang Barangay Office" %}selected{% endif %}>Sanguniang Barangay Office</option>
+                        <option value="MPDC" {% if entry.implementing_unit == "MPDC" %}selected{% endif %}>MPDC</option>
+                        <option value="MCR Office" {% if entry.implementing_unit == "MCR Office" %}selected{% endif %}>MCR Office</option>
+                        <option value="MBO Office" {% if entry.implementing_unit == "MBO Office" %}selected{% endif %}>MBO Office</option>
+                        <option value="Accountant Office" {% if entry.implementing_unit == "Accountant Office" %}selected{% endif %}>Accountant Office</option>
+                        <option value="Assessor's Office" {% if entry.implementing_unit == "Assessor's Office" %}selected{% endif %}>Assessor's Office</option>
+                        <option value="MHO Office" {% if entry.implementing_unit == "MHO Office" %}selected{% endif %}>MHO Office</option>
+                        <option value="Parks & Plaza" {% if entry.implementing_unit == "Parks & Plaza" %}selected{% endif %}>Parks & Plaza</option>
+                        <option value="MSWD Office" {% if entry.implementing_unit == "MSWD Office" %}selected{% endif %}>MSWD Office</option>
+                        <option value="MENRO Office" {% if entry.implementing_unit == "MENRO Office" %}selected{% endif %}>MENRO Office</option>
+                        <option value="MO" {% if entry.implementing_unit == "MO" %}selected{% endif %}>MO</option>
+                        <option value="Streets & Bridges" {% if entry.implementing_unit == "Streets & Bridges" %}selected{% endif %}>Streets & Bridges</option>
+                        <option value="LDF" {% if entry.implementing_unit == "LDF" %}selected{% endif %}>LDF</option>
+                        <option value="Waterworks" {% if entry.implementing_unit == "Waterworks" %}selected{% endif %}>Waterworks</option>
+                        <option value="Markets" {% if entry.implementing_unit == "Markets" %}selected{% endif %}>Markets</option>
+                        <option value="Zero Waste" {% if entry.implementing_unit == "Zero Waste" %}selected{% endif %}>Zero Waste</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="user-input-box">
+                <label for="location_{{ entry.code }}">Location</label>
+                <input type="text" id="location_{{ entry.code }}" name="location" class="user-input" value="{{ entry.location }}">
+            </div>
+
+            <div class="user-input-box">
+                <label for="remarks_{{ entry.code }}">Remarks</label>
+                <input type="text" id="remarks_{{ entry.code }}" name="remarks" class="user-input" value="{{ entry.remarks }}">
+            </div>
+
+            <div class="user-input-box">
+                <label for="start_date_{{ entry.code }}">Start Date</label>
+                <input type="date" id="start_date_{{ entry.code }}" name="start_date" class="user-input" value="{{ entry.start_date }}">
+            </div>
+
+            <div class="user-input-box">
+                <label for="end_date_{{ entry.code }}">End Date</label>
+                <input type="date" id="end_date_{{ entry.code }}" name="end_date" class="user-input" value="{{ entry.end_date }}">
+            </div>
+
+            <div class="user-input-box">
+                <label for="code_{{ entry.code }}">Code</label>
+                <input type="text" id="code_{{ entry.code }}" name="code" class="user-input" value="{{ entry.code }}">
+            </div>
+
+            <div class="user-input-box">
+                <label for="services_{{ entry.code }}">Services</label>
+                <select id="services_{{ entry.code }}" name="services" class="user-input">
+                    <option value="" disabled selected>{{ entry.services }}</option>
+                    <option value="General" {% if entry.services == "General" %}selected{% endif %}>General</option>
+                    <option value="Social" {% if entry.services == "Social" %}selected{% endif %}>Social</option>
+                    <option value="Economic" {% if entry.services == "Economic" %}selected{% endif %}>Economic</option>
+                    <option value="Environmental" {% if entry.services == "Environmental" %}selected{% endif %}>Environmental</option>
+                </select>
+            </div>
+
+            <div class="user-input-box">
+                <label for="year_{{ entry.code }}">Year</label>
+                <input type="number" id="year_{{ entry.code }}" name="year" class="user-input" value="{{ entry.year }}">
+            </div>
+        </div>
+
+        <div class="form-submit-btn">
+            <input type="submit" value="Update">
+        </div>
+        <a href="{% url 'ongoing_projects' %}">
+            <div class="form-submit-btn">
+                <input type="text" value="Exit" style="background-color: red;text-align: center;">
+            </div>
+        </a>
+    </form>
+    {% endfor %}
 </div>
 
-
-
-<!-- Delete-->
     
-
     
-  <div class="container" id="delete">
+<!-- BUDGET -->
+
+<div class="container" id="budget">
     <div class="card">
-        <div class="card-content">
-        <div class="login-container">
+       
+            <div class="login-content">
+
+
+                
+                <form id="add-budget-form" action="{% url 'add_budget' %}" method="post">
+                    {% csrf_token %}
+
+                  
+                    <h2 class="title">Add Budget Form</h2><br><br>
+                    <input type="hidden" name="entry_code" id="budget-code">
+
+                <div class="input-div">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Budget Name</h5>
+                    <input type="text" name="budget_name" class="input">
+                </div>
+                </div>
+
+                <div class="input-div">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Date</h5>
+                    <input type="date" name="budget_date" class="input">
+                </div>
+                </div>
+
+                <div class="input-div">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Added Budget</h5>
+                    <input type="text" name="added_budget" class="input">
+                </div>
+                </div>
+                <button type="submit" class="btn-add" value="Submit">Submit</button>
+                <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+            </form>
+            </div>
+      
+    </div>
+    </div>
+      
+<!-- OBLIGATION -->
+    <div class="container" id="obligation">
+        <div class="card">
+           
+                <div class="login-content">
+    
+    
+                    
+                    <form id="add-obligation-form" action="{% url 'ongoing_add_obligation' %}" method="post">
+                        {% csrf_token %}
+                      
+                        <h2 class="title">Add Obligation Form</h2><br><br>
+                        <input type="hidden" name="entry-code" id="obligation-code">
+
+                        <div class="input-div">
+                            <div class="i">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="div">
+                                <h5>Name</h5>
+                                <input type="text" name="obligation_name" class="input">
+                            </div>
+                            </div>
+
+
+    
+                            <div class="input-div">
+                                <div class="i">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="div">
+                                    <h5>Date</h5>
+                                    <input type="date" name="obligation_date" class="input">
+                                </div>
+                                </div>
+    
+                                <div class="input-div">
+                                    <div class="i">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="div">
+                                        <h5>Spent</h5>
+                                        <input type="text" name="obligation_spent" class="input">
+                                    </div>
+                                    </div>
+
+                                    
+                    <button type="submit" class="btn-add" value="Submit">Submit</button>
+                    <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                </form>
+                </div>
+          
+        </div>
+        </div>
+
+
+
+
+<!-- Delete -->
+<div class="container" id="delete">
+    <div class="card">
+       
             <div class="login-content">
 
 
                 
                 <form id="add-delete-form" action="{% url 'ongoing_delete_entry' %}" method="post">
-                
                     {% csrf_token %}
+                   
                     <h2 class="title">Delete Form</h2><br><br>
                    
 
@@ -439,7 +487,7 @@
                 </div>
                 <div class="div">
                     <h5>Entry Code</h5>
-                    <input type="text" name="entry_code" id="delete-code">
+                    <input type="text" name="entry_code" id="delete-code" readonly placeholder="1-121">
                 </div>
                 </div>
 
@@ -447,139 +495,59 @@
 
                
                 <button type="submit" class="btn-add" value="Submit">Delete</button>
-                <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                <a href="{% url 'ongoing_projects' %}"  class="btn-cancel" style="text-decoration: none;">Exit</a>
             </form>
             </div>
-        </div>
-        </div>
+      
     </div>
     </div>
 
-<!--Details-->
 
-<div class="container-details" id="details">
-    <div class="card-details">
-        <div class="card-content">
-            <div class="login-container-details">
-                <div class="login-content-details">
-                    <ul class="entry-list">
-                        {% for entry in all_entries %}
-                        <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
-                            <div class="entry-details">
-                                <h2>Details</h2>
-                                <h4><strong>PPA:</strong> {{ entry.ppa }}</h4>
-                                <h4><strong>Implementing Unit:</strong> {{ entry.implementing_unit }}</h4>
-                                <h4><strong>Location:</strong> {{ entry.location }}</h4>
-                                <h4><strong>Appropriation:</strong> {{ entry.appropriation }}</h4>
-                                <h4><strong>Remarks:</strong> {{ entry.remarks }}</h4>
-                                <h4><strong>Start Date:</strong> {{ entry.start_date }}</h4>
-                                <h4><strong>End Date:</strong> {{ entry.end_date }}</h4>
-                                <h4><strong>Code:</strong> {{ entry.code }}</h4>
-                                <h4><strong>Services:</strong> {{ entry.services }}</h4>
-                                <h4><strong>Year:</strong> {{ entry.year }}</h4>
-                                <!-- Add more fields as needed -->
-                                <h4><strong>Total Budget:</strong> {{ entry.total_budget }}</h4>
-                                <h4><strong>Total Added Budget:</strong> {{ entry.added_budget }}</h4>
-                                <h4><strong>Total Spent:</strong> {{ entry.total_spent }}</h4>
-                                <h4><strong>Remaining Balance:</strong> {{ entry.remaining_balance }}</h4>
-                            </div>
-                            
-                            <div class="entry-tables">
-                                <h2>Added Budgets</h2>
-                                <div class="table-container">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Budget Name</th>
-                                                <th>Added Budget</th>
-                                                <th>Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for budget in entry.budget_data %}
-                                            <tr>
-                                                <td>{{ budget.name }}</td>
-                                                <td>{{ budget.added_budget }}</td>
-                                                <td>{{ budget.date }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
 
-                                <h2>Obligations</h2>
-                                <div class="table-container">
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Obligation Name</th>
-                                                <th>Spent</th>
-                                                <th>Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for obligation in entry.obligation %}
-                                            <tr>
-                                                <td>{{ obligation.name }}</td>
-                                                <td>{{ obligation.spent }}</td>
-                                                <td>{{ obligation.date }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="search.js"></script>
+
+
+
+
+    <!-- Details js-->
+    <script>
+        function showDetails(code) {
+            // Hide table and add entry form
+            document.getElementById('customers_table').style.filter = 'blur(10px)';
         
-    <div class="button-container">
-        <a href="{% url 'homepage'%}" style="text-decoration: none;">
-        <form action="{% url 'homepage' %}" method="post">
-            {% csrf_token %}
-      <button type="button" class="button"><i class="fas fa-arrow-circle-left"></i> Back</button>
-      </form>
-    </a>
-    </div>    
-
-
-
-
-
-
-
-<!--Details-->
-
-<script>
-    function showDetails(code) {
-        // Hide table and add entry form
-        document.getElementById('customers_table').style.filter = 'blur(10px)';
-    
-        // Hide all details first
-        var details = document.getElementsByClassName('entry-item');
-        for (var i = 0; i < details.length; i++) {
-            details[i].style.display = 'none';
+            // Hide all details first
+            var details = document.getElementsByClassName('entry-item');
+            for (var i = 0; i < details.length; i++) {
+                details[i].style.display = 'none';
+            }
+        
+            // Show details of the clicked PPA
+            document.getElementById('details-' + code).style.display = 'block';
+        
+            document.getElementById('details').style.display = 'block';
         }
-    
-        // Show details of the clicked PPA
-        document.getElementById('details-' + code).style.display = 'block';
-    
-        document.getElementById('details').style.display = 'block';
-    }
-    </script>
+        </script>
 
 
 
-
-
-  <!-- update js-->
-  <script>
+<!-- Update js -->
+<script>
     function showUpdateForm(code) {
         // Hide all update forms
         var allUpdateForms = document.querySelectorAll('[id^="updateForm_"]');
@@ -602,22 +570,10 @@
     </script>
 
 
-  <!-- delete js-->
-    <script>
-        function showDeleteForm(code) {
-             // Set the entry code value to the hidden input field
-          document.getElementById('delete-code').value = code;
-          document.getElementById('delete').style.display = 'block';
-            document.getElementById('customers_table').style.filter = 'blur(10px)';
-          // Show the add obligation form
-        }
-    </script>
 
 
-
-
-  <!-- budget js-->
-  <script>
+<!-- Budget js -->
+<script>
     function showAddBudget(budget_code) {
       // Set the entry code value to the hidden input field
       document.getElementById('budget-code').value = budget_code;
@@ -630,112 +586,42 @@
   </script>
 
 
-<!-- Obligation -->
-
-    <script>
-        function showAddObligationForm(entryCode) {
-          // Set the entry code value to the hidden input field
-          document.getElementById('obligation-code').value = entryCode;
-          document.getElementById('obligation').style.display = 'block';
 
 
-
-          document.getElementById('customers_table').style.filter = 'blur(10px)';
-          // Show the add obligation form
-         
-      }
-      
-      </script>
+<!-- Obligation js -->
 <script>
-    function toggleDropdown(id) {
-       const dropdown = document.getElementById(id);
-       dropdown.classList.toggle("show");
-   
-       // Make the dropdown scrollable if it has more than 5 items
-       if (dropdown.children.length > 5) {
-           dropdown.style.maxHeight = "150px";
-           dropdown.style.overflowY = "auto";
-       } else {
-           dropdown.style.maxHeight = "";
-           dropdown.style.overflowY = "";
-       }
-   }
-   
-   function selectOption(option, inputId) {
-       const input = document.getElementById(inputId);
-       input.value = option;
-       toggleDropdown(inputId.replace('Input', 'Options'));
-   }
-   
-   // Close dropdown when clicking outside of it
-   window.onclick = function(event) {
-       if (!event.target.matches('.fas.fa-chevron-down')) {
-           const dropdowns = document.querySelectorAll('.content.show');
-           dropdowns.forEach(dropdown => {
-               dropdown.classList.remove('show');
-           });
-       }
-   };
-   
-   
-   </script>
-<script>
-    function toggleDropdown1() {
-        const servicesOptions = document.getElementById("servicesOptions");
-        servicesOptions.classList.toggle("show");
-    }
+    function showAddObligationForm(entryCode) {
+      // Set the entry code value to the hidden input field
+      document.getElementById('obligation-code').value = entryCode;
+      document.getElementById('obligation').style.display = 'block';
 
-    function selectOption1(option) {
-        const servicesInput = document.getElementById("servicesInput");
-        servicesInput.value = option;
-        toggleDropdown();
-    }
-    window.onclick = function(event) {
-        if (!event.target.matches('.fas.fa-chevron-down')) {
-            const servicesOptions = document.getElementById("departmentOptions");
-            if (servicesOptions.classList.contains('show')) {
-                servicesOptions.classList.remove('show');
-            }
-        }
+
+
+      document.getElementById('customers_table').style.filter = 'blur(10px)';
+      // Show the add obligation form
+     
+  }
+  
+  </script>
+
+
+
+
+
+<!-- Delete js -->
+
+
+<script>
+    function showDeleteForm(code) {
+         // Set the entry code value to the hidden input field
+      document.getElementById('delete-code').value = code;
+      document.getElementById('delete').style.display = 'block';
+        document.getElementById('customers_table').style.filter = 'blur(10px)';
+      // Show the add obligation form
     }
 </script>
-</script>
-<script>
-$(document).ready(function() {
-  // Add click event listener to table header th elements
-  $("#myTable th").click(function() {
-    // Toggle class on table to indicate expanded state
-    $("#myTable").toggleClass("expanded");
-  });
-});
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.3/apexcharts.min.js"></script>
-<!-- Custom JS -->
-
-<script>
-  const optionMenu = document.querySelector(".select-menu"),
-         selectBtn = optionMenu.querySelector(".select-btn"),
-         options = optionMenu.querySelectorAll(".option"),
-         sBtn_text = optionMenu.querySelector(".sBtn-text");
-  selectBtn.addEventListener("click", () => optionMenu.classList.toggle("active"));       
-  options.forEach(option =>{
-      option.addEventListener("click", ()=>{
-          let selectedOption = option.querySelector(".option-text").innerText;
-          sBtn_text.innerText = selectedOption;
-          optionMenu.classList.remove("active");
-      });
-  });
-  </script>   
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-  const body = document.querySelector('body');
+</body>
 
-  // Add class to body when page loads
-  body.classList.add('page-loaded');
-});
-
-</script>
-  </body>
 </html>
