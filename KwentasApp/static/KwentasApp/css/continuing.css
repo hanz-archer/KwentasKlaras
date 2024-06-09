@@ -1,11 +1,10 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 * {
   margin: 0;
   padding: 0;
-
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 @media print {
 .table, .table__body {
@@ -22,7 +21,7 @@ width: auto !important;
 
 body {
   min-height: 100vh;
-  background-color: #e6f7ff;
+  background-color: #eee;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -211,17 +210,15 @@ margin-top: 1%;
 }
 
 .status.update {
-  background-color: #6fcaea;
-  color: black;
- 
+  background-color: #28a745;
+  color: white;
 }
 
 
 
 .status.delete{
-  
-  background-color: #6fcaea;
-  color: black;
+  background-color: #ff3b3b;
+  color: white;
 }
 
 @media (max-width: 1000px) {
@@ -278,16 +275,13 @@ left: 70%;
   font-weight: 700;
   border-radius: 2rem;
   transition: .2s ease-in-out;
-  background-color: #5A4FCF;
+  background-color: #28a745;
   color: white;
 
   border: 2px solid #f0f8ff; /* Same as background color */
 }
 
 .export__file .export__file-btn:hover {
-  background-color: skyblue;
-  border: 2px solid skyblue; /* Border matches background color on hover */
-  color: black;
   transform: scale(1.15);
   cursor: pointer;
 }
@@ -307,20 +301,18 @@ left: 87%;
   height: 2.5rem;
   font-weight: 700;
   border-radius: 2rem;
-  transition: .2s ease-in-out;
-  background-color: #5A4FCF;
+  transition: 0.2s ease-in-out;
+  background-color: #007bff; /* Blue color */
   color: white;
-
-  border: 2px solid #f0f8ff; /* Same as background color */
+  border: 2px solid #007bff; /* Same as background color */
 }
 
 .back-btn:hover {
-  background-color: skyblue;
-  border: 2px solid skyblue; /* Border matches background color on hover */
-  color: black;
+  color: white;
   transform: scale(1.15);
   cursor: pointer;
 }
+
 
 
 
@@ -433,45 +425,45 @@ form, input {
 
 
 
-.user-input-box {
-  display: flex;
-  flex-direction: column;
-  width: 48%; /* Adjust width */
-  margin-bottom: 15px;
+  /* User input box */
+  .user-input-box {
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Adjust width */
+    margin-bottom: 15px;
 }
 
 .user-input-box label {
-  margin-bottom: 5px;
-  color: black;
-  font-size: 20px;
-  font-weight: 600;
+    margin-bottom: 5px;
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
 }
 
 .user-input-box .user-text {
-  min-height: 40px; /* Set a minimum height for the paragraph */
-  width: 95%;
-  border-radius: 7px;
-  outline: none;
-  border: 1px solid #fff; /* Light grey border */
-  padding: 10px; /* Add some padding for better look */
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
-  overflow: hidden; /* Hide overflow text */
-  word-wrap: break-word; /* Allow long words to wrap */
-  white-space: pre-line; /* Preserve line breaks */
-  background-color:#e6f7ff;
+    min-height: 40px; /* Set a minimum height for the paragraph */
+    width: 95%;
+    border-radius: 7px;
+    outline: none;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Add some padding for better look */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    overflow: hidden; /* Hide overflow text */
+    word-wrap: break-word; /* Allow long words to wrap */
+    white-space: pre-line; /* Preserve line breaks */
+    background-color: #ffffff; /* White background */
 }
 
-
 .user-input {
-  min-height: 40px; /* Set a minimum height for the input */
-  width: 95%;
-  border-radius: 7px;
-  outline: none;
-  border: 1px solid #ccc; /* Light grey border */
-  padding: 10px; /* Add some padding for better look */
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
-  background-color: #e6f7ff;
-  font-size: 16px; /* Adjust font size */
+    min-height: 40px; /* Set a minimum height for the input */
+    width: 95%;
+    border-radius: 7px;
+    outline: none;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Add some padding for better look */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    background-color: #f8f9fa; /* Light grey background */
+    font-size: 16px; /* Adjust font size */
 }
 
 .user-input::placeholder {
@@ -516,15 +508,13 @@ form, input {
   font-size: 18px;
   padding: 10px;
   border: none;
-  border-radius: 3px;
+  border-radius: 30px;
   color: #fff;
   background:blue;
   transition: .2s ease-in-out;
 }
 
 .form-submit-btn input:hover {
-  background:skyblue;
-  color: black;
   transform: scale(1.15);
 }
 
@@ -571,13 +561,16 @@ form, input {
 }
 
 .table-wrapper table th {
-  background-color: #007BFF; /* Blue header */
-  color: white;
+  background-color: #f8f9fa; /* Light grey header */
+  color: black; /* Text color */
   text-transform: uppercase;
   font-weight: bold;
   padding-top: 12px;
   padding-bottom: 12px;
+  border: none; /* Remove border */
 }
+
+
 
 .table-wrapper tr:nth-child(even) {
   background-color: darkgray;
@@ -896,12 +889,18 @@ margin-bottom: 4px;
     line-height: 46px; /* Ensure consistent vertical alignment */
 }
 
+.btn-add:hover{
+  transform: scale(1.15);
+}
+.btn-cancel:hover{
+  transform: scale(1.15);
+}
 .btn-add {
-    background-image: linear-gradient(to right, #246dec, #246dec, #246dec);
+    background-color: blue;
 }
 
 .btn-cancel {
-    background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
+    background-color: red;
 }
 .btn-signup{
   background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
@@ -973,13 +972,6 @@ form{
   transform: translateY(-50%);
   cursor: pointer;
 }
-
-
-
-
-
-
-
 .entry-list {
   list-style: none;
   padding: 0;
@@ -1116,9 +1108,6 @@ form{
 .entry-item {
   text-align: left;
 }
-
-
-
 
 
 /* Base styles */
