@@ -21,7 +21,7 @@ width: auto !important;
 
 body {
   min-height: 100vh;
-  background-color: #eee;
+  background-color: #f5f5f5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,7 +57,7 @@ main.table {
 .table__header .input-group {
   width: 45%;
   height: 100%;
-  background-color: #e6f7ff;
+  background-color: #f5f5f5;
   padding: 0 .5rem;
   border-radius: 2rem;
 
@@ -198,13 +198,13 @@ margin-top: 1%;
 }
 
 .status.obligation {
-  background-color: blue;
+  background-color: #1e90ff;
   color: white;
  
 }
 
 .status.budget {
-  background-color: blue;
+  background-color: #1e90ff;
   color: white;
  
 }
@@ -217,7 +217,7 @@ margin-top: 1%;
 
 
 .status.delete{
-  background-color: #ff3b3b;
+  background-color: #dc3545;
   color: white;
 }
 
@@ -508,15 +508,13 @@ form, input {
   font-size: 18px;
   padding: 10px;
   border: none;
-  border-radius: 3px;
+  border-radius: 30px;
   color: #fff;
   background:blue;
   transition: .2s ease-in-out;
 }
 
 .form-submit-btn input:hover {
-  background:skyblue;
-  color: black;
   transform: scale(1.15);
 }
 
@@ -563,13 +561,16 @@ form, input {
 }
 
 .table-wrapper table th {
-  background-color: #007BFF; /* Blue header */
-  color: white;
+  background-color: #f8f9fa; /* Light grey header */
+  color: black; /* Text color */
   text-transform: uppercase;
   font-weight: bold;
   padding-top: 12px;
   padding-bottom: 12px;
+  border: none; /* Remove border */
 }
+
+
 
 .table-wrapper tr:nth-child(even) {
   background-color: darkgray;
@@ -888,12 +889,18 @@ margin-bottom: 4px;
     line-height: 46px; /* Ensure consistent vertical alignment */
 }
 
+.btn-add:hover{
+  transform: scale(1.15);
+}
+.btn-cancel:hover{
+  transform: scale(1.15);
+}
 .btn-add {
-    background-image: linear-gradient(to right, #246dec, #246dec, #246dec);
+    background-color: blue;
 }
 
 .btn-cancel {
-    background-image: linear-gradient(to right, #DC143C, #DC143C, #DC143C);
+    background-color: red;
 }
 .btn-signup{
   background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
