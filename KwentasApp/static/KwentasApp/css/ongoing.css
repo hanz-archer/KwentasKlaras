@@ -31,7 +31,6 @@ main.table {
   width: 82vw;
   height: 90vh;
   background-color:white;
-
   backdrop-filter: blur(7px);
   box-shadow: 0 .4rem .8rem #0005;
   border-radius: .8rem;
@@ -1151,6 +1150,9 @@ button.status.delivered {
     width: 50%;
 }
 }
+
+
+
 
 
 
