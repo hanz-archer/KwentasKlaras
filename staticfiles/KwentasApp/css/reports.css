@@ -1,0 +1,425 @@
+:root {
+    --light: #f6f6f9;
+    --primary: #1976D2;
+    --light-primary: #CFE8FF;
+    --grey: #eee;
+    --dark-grey: #AAAAAA;
+    --dark: #363949;
+    --danger: #D32F2F;
+    --light-danger: #FECDD3;
+    --warning: #FBC02D;
+    --light-warning: #FFF2C6;
+    --success: #388E3C;
+    --light-success: #BBF7D0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+.bx {
+    font-size: 1.7rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body.dark {
+    --light: #181a1e;
+    --grey: #25252c;
+    --dark: #fbfbfb;
+}
+
+body {
+    background: var(--grey);
+    overflow-x: hidden;
+}
+
+.content {
+    position: relative;
+    width: 100%;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.content nav {
+    height: 56px;
+    background: var(--light);
+    padding: 0 24px 0 0;
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.content nav::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    bottom: -40px;
+    left: 0;
+    border-radius: 50%;
+    box-shadow: -20px -20px 0 var(--light);
+}
+
+.content nav a {
+    color: var(--dark);
+}
+
+.content nav .bx.bx-menu {
+    cursor: pointer;
+    color: var(--dark);
+}
+
+.content nav form {
+    max-width: 400px;
+    width: 100%;
+    margin-right: auto;
+}
+
+.content nav form .form-input {
+    display: flex;
+    align-items: center;
+    height: 36px;
+}
+
+.content nav form .form-input input {
+    flex-grow: 1;
+    padding: 0 16px;
+    height: 100%;
+    border: none;
+    background: var(--grey);
+    border-radius: 36px 0 0 36px;
+    outline: none;
+    width: 100%;
+    color: var(--dark);
+}
+
+.content nav form .form-input button {
+    width: 80px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--primary);
+    color: var(--light);
+    font-size: 18px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 0 36px 36px 0;
+}
+
+.content nav .theme-toggle {
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+    background: var(--primary);
+    border-radius: 24px;
+    position: relative;
+    cursor: pointer;
+}
+
+.content nav .theme-toggle::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--light);
+    border-radius: 50%;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+}
+
+#theme-toggle:checked+label.theme-toggle::before {
+    left: 22px;
+}
+
+#theme-toggle:checked+label.theme-toggle {
+    background: var(--grey);
+}
+
+.content nav .notif {
+    position: relative;
+}
+
+.content nav .notif .count {
+    position: absolute;
+    top: -10px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: var(--danger);
+    color: var(--light);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.content nav .profile {
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+    margin-left: 24px;
+}
+
+.content nav .profile img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.content nav .profile p {
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.content main {
+    margin-top: 24px;
+    padding: 0 24px;
+}
+
+.content main .header {
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+    margin-bottom: 24px;
+}
+
+.content main .header .left {
+    flex-grow: 1;
+}
+
+.content main .header .left h1 {
+    font-size: 36px; /* Adjust the font size as needed */
+    color: var(--dark);
+}
+
+.content main .header .left ul.breadcrumb {
+    display: flex;
+    align-items: center;
+    grid-gap: 16px;
+}
+
+.content main .header .left ul.breadcrumb li a {
+    font-size: 18px; /* Adjust the font size as needed */
+    color: var(--dark-grey);
+}
+
+.content main .header .left ul.breadcrumb li a.active {
+    color: var(--primary);
+}
+
+.content main .header .report {
+    display: flex;
+    align-items: center;
+    grid-gap: 8px;
+    padding: 8px 16px;
+    background: var(--primary);
+    color: var(--light);
+    border-radius: 24px;
+}
+
+.content main .header .report:hover {
+    box-shadow: 0 4px 8px var(--primary);
+    transition: all 0.3s ease;
+}
+
+.content main .insights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-gap: 24px;
+    margin-bottom: 24px;
+}
+
+.content main .insights li {
+    padding: 16px;
+    background: var(--light);
+    display: flex;
+    align-items: center;
+    grid-gap: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px var(--grey);
+    cursor: pointer;
+}
+
+.content main .insights li:hover {
+    box-shadow: 0 8px 16px var(--grey);
+    transition: all 0.3s ease;
+}
+
+.content main .insights li i {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.content main .insights li .info h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.content main .insights li .info p {
+    color: var(--dark-grey);
+}
+
+.content main .insights li:nth-child(1) i {
+    background: var(--light-primary);
+    color: var(--primary);
+}
+
+.content main .insights li:nth-child(2) i {
+    background: var(--light-warning);
+    color: var(--warning);
+}
+
+.content main .insights li:nth-child(3) i {
+    background: var(--light-success);
+    color: var(--success);
+}
+
+.content main .insights li:nth-child(4) i {
+    background: var(--light-danger);
+    color: var(--danger);
+}
+
+.content main .bottom-data {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(300px, 1fr)); /* Display up to 3 cards per row */
+    grid-auto-rows: minmax(300px, auto); /* Adjust the row height */
+    grid-gap: 24px;
+    min-height: 300px;
+}
+
+.content main .bottom-data .card {
+    background: var(--light);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 8px var(--grey);
+}
+
+.content main .bottom-data .card .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.content main .bottom-data .card canvas {
+    width: 100%;
+    max-width: 700px;
+}
+
+.content main .bottom-data .orders table tr td .status.completed{
+    background: var(--success);
+}
+
+.content main .bottom-data .orders table tr td .status.process{
+    background: var(--primary);
+}
+
+.content main .bottom-data .orders table tr td .status.pending{
+    background: var(--warning);
+}
+
+.content main .bottom-data .orders table tr td .status{
+    font-size: 10px;
+    padding: 6px 16px;
+    color: var(--light);
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+@media screen and (max-width: 1024px) {
+    .content main .bottom-data {
+        grid-template-columns: 1fr; /* Stack cards vertically */
+    }
+}
+
+/* Adjustments for even smaller screens */
+@media screen and (max-width: 768px) {
+    .content main .bottom-data {
+        grid-template-columns: 1fr; /* Ensure cards are stacked */
+        grid-gap: 16px; /* Reduce gap between cards */
+    }
+
+    .content main .header h1 {
+        font-size: 28px; /* Smaller font size for the header */
+    }
+
+    .content main .header .left ul.breadcrumb li a {
+        font-size: 14px; /* Smaller font size for breadcrumb */
+    }
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders collapse into a single border */
+    background-color: var(--light); /* Background color for the table */
+    box-shadow: 0 4px 8px var(--grey); /* Adds shadow to the table */
+    border-radius: 16px; /* Rounds the corners of the table */
+    overflow: hidden; /* Ensures the rounded corners are visible */
+}
+
+.modern-table th, .modern-table td {
+    padding: 12px 15px; /* Adds spacing inside each table cell */
+    border-bottom: 1px solid var(--grey); /* Adds a light border to each cell */
+    text-align: left; /* Ensures text is aligned to the left */
+    font-size: 16px; /* Sets a base font size */
+}
+
+.modern-table th {
+    background-color: #e0e0e0; /* Light neutral background color for the table headers */
+    color: var(--dark); /* Header text color */
+    font-weight: 600; /* Makes header text bold */
+}
+
+.modern-table tbody tr {
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.modern-table tbody tr:hover {
+    background-color: var(--light-primary); /* Background color on row hover */
+}
+
+.modern-table tbody tr:last-child td {
+    border-bottom: none; /* Removes the border from the last row */
+}
+
+.modern-table td p {
+    margin: 0; /* Ensures paragraphs inside cells have no margin */
+    color: var(--dark); /* Text color */
+}
+

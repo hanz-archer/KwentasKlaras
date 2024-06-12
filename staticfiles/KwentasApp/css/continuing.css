@@ -1,0 +1,1247 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+@media print {
+.table, .table__body {
+overflow: visible;
+height: auto !important;
+width: auto !important;
+}
+}
+
+
+.swal2-container {
+  z-index: 10000 !important; /* Ensure SweetAlert is on top */
+}
+
+/*@page {
+  size: landscape;
+  margin: 0; 
+}*/
+
+body {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main.table {
+  width: 82vw;
+  height: 90vh;
+  background-color:white;
+  backdrop-filter: blur(7px);
+  box-shadow: 0 .4rem .8rem #0005;
+  border-radius: .8rem;
+
+  overflow: hidden; 
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  z-index: 1000;
+  display: none; /* hidden by default */
+}
+
+.details, .container {
+  z-index: 2000; /* Ensure modals/cards are above the overlay */
+}
+
+/* Example card styling */
+.container .card {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 2001; /* Ensure the card is above the overlay */
+}
+
+
+
+.table__header {
+  width: 100%;
+  height: 10%;
+  background-color: #fff4;
+  padding: .8rem 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table__header .input-group {
+  width: 45%;
+  height: 100%;
+  background-color: #f5f5f5;
+  padding: 0 .5rem;
+  border-radius: 2rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-right: 32%;
+  transition: .2s;
+}
+
+.table__header .input-group:hover {
+ 
+  background-color: #fff8;
+  box-shadow: 0 .1rem .4rem #0002;
+}
+
+
+
+.table__header .input-group input {
+  width: 100%;
+  
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.table__body {
+  width: 95%;
+  max-height: calc(85% - 1.6rem);
+  background-color: #fffb;
+
+  margin: .8rem auto;
+  border-radius: .6rem;
+margin-top: 1%;
+  overflow: auto;
+  overflow: overlay;
+}
+
+
+.table__body::-webkit-scrollbar{
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb{
+  border-radius: .5rem;
+  background-color: #0004;
+  visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb{ 
+  visibility: visible;
+}
+
+
+.table {
+  width: 100%;
+  
+}
+
+.table td img {
+  width: 36px;
+  height: 36px;
+  margin-right: .5rem;
+  border-radius: 50%;
+
+  vertical-align: middle;
+}
+
+.table, th, td {
+  border-collapse: collapse;
+  padding: 1rem;
+  text-align: left;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: #d5d1defe;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #0000000b;
+}
+
+.table tbody tr {
+  --delay: .1s;
+  transition: .5s ease-in-out var(--delay), background-color 0s;
+}
+
+.table tbody tr.hide {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.table tbody tr:hover {
+  background-color: #fff6 !important;
+}
+
+.table tbody tr td,
+.table tbody tr td p,
+.table tbody tr td img {
+  transition: .2s ease-in-out;
+}
+
+.tabletbody tr.hide td,
+.table tbody tr.hide td p {
+  padding: 0;
+  font: 0 / 0 sans-serif;
+  transition: .2s ease-in-out .5s;
+}
+
+.table tbody tr.hide td img {
+  width: 0;
+  height: 0;
+  transition: .2s ease-in-out .5s;
+}
+
+.status {
+  padding: .4rem 0;
+  border-radius: 2rem;
+  text-align: center;
+  height: 2rem;
+  font-size: 14px;
+  width: 6rem;
+}
+
+.status:hover{
+  background-color: skyblue;
+  
+  font-weight: 600;
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+.status.obligation {
+  background-color: #1e90ff;
+  color: white;
+ 
+}
+
+.status.budget {
+  background-color: #1e90ff;
+  color: white;
+ 
+}
+
+.status.update {
+  background-color: #28a745;
+  color: white;
+}
+
+
+
+.status.delete{
+  background-color: #dc3545;
+  color: white;
+}
+
+@media (max-width: 1000px) {
+  td:not(:first-of-type) {
+      min-width: 12.1rem;
+  }
+}
+
+.table thead th span.icon-arrow {
+  display: inline-block;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  border: 1.4px solid transparent;
+  
+  text-align: center;
+  font-size: 1rem;
+  
+  margin-left: .5rem;
+  transition: .2s ease-in-out;
+}
+
+.table thead th:hover span.icon-arrow{
+  border: 1.4px solid blue;
+}
+
+.table thead th:hover {
+  color: blue;
+}
+
+.table thead th.active span.icon-arrow{
+  background-color: #6c00bd;
+  color: #fff;
+}
+
+.table thead th.asc span.icon-arrow{
+  transform: rotate(180deg);
+}
+
+.table thead th.active,tbody td.active {
+  color: #6c00bd;
+}
+
+.export__file {
+  position: absolute;
+left: 70%;
+ 
+}
+
+.export__file .export__file-btn {
+  display: inline-block;
+  width: 5.5rem;
+  height: 2.5rem;
+  font-weight: 700;
+  border-radius: 2rem;
+  transition: .2s ease-in-out;
+  background-color: #28a745;
+  color: white;
+
+  border: 2px solid #f0f8ff; /* Same as background color */
+}
+
+.export__file .export__file-btn:hover {
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+
+
+.back {
+  position: absolute;
+bottom: 1%;
+left: 87%;
+ 
+}
+
+.back-btn {
+  display: inline-block;
+  width: 5.5rem;
+  height: 2.5rem;
+  font-weight: 700;
+  border-radius: 2rem;
+  transition: 0.2s ease-in-out;
+  background-color: #007bff; /* Blue color */
+  color: white;
+  border: 2px solid #007bff; /* Same as background color */
+}
+
+.back-btn:hover {
+  color: white;
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+  .export__file {
+    width: 2rem;
+    left: 83%;
+      transform: translateX(-50%);
+  }
+  .export__file .export__file-btn {
+      width: 3rem;
+      height: 1.5rem;
+      font-size: 0.75rem;
+  }
+  .back {
+      
+      transform: translateX(-50%);
+  }
+  .back-btn {
+      width: 4rem;
+      height: 1.5rem;
+      font-size: 0.75rem;
+     
+  }
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+  h1 {
+   font-size: 15px;
+  }
+ .input-group{
+ width: 50%;
+  left: 10%;
+ 
+ }
+}
+
+
+
+form, input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* DETAILS CSS */
+
+
+.details {
+  width: 100%;
+  max-width: 650px;
+  background: white;
+  padding: 28px;
+  margin: 0 28px;
+  border-radius: 10px;
+  box-shadow: inset -2px 2px 2px white;
+  position: absolute;
+  overflow-y: auto; /* Enable vertical scroll if content exceeds container height */
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  max-height: 100vh; /* Ensure it doesn't exceed the viewport height */
+  box-sizing: border-box;
+  display: none;
+}
+
+.form-title {
+  
+  top: 0;
+ 
+  z-index: 999; /* Ensure the title is above other elements */
+  width: 100%;
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px 0; /* Adjust padding as needed */
+
+ 
+}
+
+.main-user-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 0;
+
+
+}
+
+
+
+  /* User input box */
+  .user-input-box {
+    display: flex;
+    flex-direction: column;
+    width: 48%; /* Adjust width */
+    margin-bottom: 15px;
+}
+
+.user-input-box label {
+    margin-bottom: 5px;
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.user-input-box .user-text {
+    min-height: 40px; /* Set a minimum height for the paragraph */
+    width: 95%;
+    border-radius: 7px;
+    outline: none;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Add some padding for better look */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    overflow: hidden; /* Hide overflow text */
+    word-wrap: break-word; /* Allow long words to wrap */
+    white-space: pre-line; /* Preserve line breaks */
+    background-color: #ffffff; /* White background */
+}
+
+.user-input {
+    min-height: 40px; /* Set a minimum height for the input */
+    width: 95%;
+    border-radius: 7px;
+    outline: none;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Add some padding for better look */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    background-color: #f8f9fa; /* Light grey background */
+    font-size: 16px; /* Adjust font size */
+}
+
+.user-input::placeholder {
+  color: #999; /* Light grey placeholder text */
+}
+
+#update{
+  background-color: white;
+}
+
+
+.select-container {
+  max-height: 150px; /* Adjust as needed */
+  overflow-y: auto;
+}
+
+.user-input-box select {
+  width: calc(100% - 20px); /* Adjust width to accommodate scrollbar */
+}
+
+.user-input-box {
+  margin-bottom: 15px;
+}
+
+
+.form-submit-btn input{
+  cursor: pointer;
+}
+.form-submit-btn {
+  margin-top: 20px;
+  text-align: center;
+  border-radius: 2rem;
+ 
+}
+
+
+.form-submit-btn input {
+  cursor: pointer;
+  display: inline-block;
+  width: 200px;
+  margin-top: -10px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  background: #007FFF;
+  transition: .2s ease-in-out;
+}
+
+.form-submit-btn input:hover {
+  transform: scale(1.15);
+}
+
+
+
+.tables-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.table-box {
+  width: 47%;
+  
+}
+
+.table-title {
+  color: black;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 100px;
+}
+
+.table-wrapper {
+  max-height: 150px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  font-size: 14px;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: .8rem;
+}
+
+.table-wrapper th, .table-wrapper td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-wrapper table th {
+  background-color: #f8f9fa; /* Light grey header */
+  color: black; /* Text color */
+  text-transform: uppercase;
+  font-weight: bold;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border: none; /* Remove border */
+}
+
+
+
+.table-wrapper tr:nth-child(even) {
+  background-color: darkgray;
+}
+
+.table-wrapper tr:hover {
+  background-color: #ddd;
+}
+
+.table-wrapper td {
+  color: #333;
+}
+
+/* Custom scroll bar */
+.table-wrapper::-webkit-scrollbar {
+  width: 4px; /* Smaller width */
+  height: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+
+@media(max-width: 600px) {
+  .details {
+      min-width: 280px;
+  }
+
+  .user-input-box {
+      margin-bottom: 12px;
+      width: 100%;
+  }
+
+  .user-input-box:nth-child(2n) {
+      justify-content: space-between;
+  }
+
+  .tables-container {
+      flex-direction: column;
+  }
+
+  .table-box {
+      width: 100%;
+      margin-bottom: 20px;
+  }
+}
+
+.details a {
+  text-decoration: none;
+  color: black;
+}
+
+
+.x {
+left: 70%;
+  font-weight: 1000;
+  position: fixed;
+  overflow: hidden;
+  z-index: 999; /* Ensure the element appears above other content */
+}
+
+@media(max-width: 600px) {
+.x{
+  left: 90%;
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CARD CSS */
+
+
+
+
+
+
+
+/* Parent container to center the card */
+.container {
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 800px;
+  padding: 0 2rem;
+  text-align: center;
+  z-index: 10; 
+  transition: opacity 0.5s ease; 
+  height: auto; 
+  display: none;
+}
+
+
+.card {
+  width: 100%; 
+  max-width: 800px; 
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0.3em 0.3em 0.7em #00000015;
+  transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: rgb(250, 250, 250) 0.2em solid;
+  overflow: hidden;
+  margin-bottom: auto; 
+  margin-top: 2em;
+  margin-right: auto; 
+  margin-left: auto;
+}
+
+
+.login-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 3rem; /* Reduced padding */
+}
+
+
+@media screen and (max-width: 1000px) {
+  form {
+      width: 100%; /* Adjusted width */
+  }
+
+ 
+
+ 
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+      grid-template-columns: 1fr;
+  }
+
+
+  .wave {
+      display: none;
+  }
+
+ 
+}
+
+
+
+
+
+
+.login-content h2{
+margin: 10px 0;
+color: #333;
+text-transform: uppercase;
+font-size:2.0rem;
+}
+
+.login-content .input-div{
+position: relative;
+  display: grid;
+  grid-template-columns: 7% 93%;
+  margin: 25px 0;
+  padding: 5px 0;
+  width: 100%;
+  border-bottom: 2px solid #d9d9d9;
+
+
+}
+
+.login-content .input-div.one{
+margin-top: 0;
+}
+
+.i{
+color: #d9d9d9;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.i i{
+transition: .3s;
+}
+
+.input-div > div{
+  position: relative;
+height: 45px;
+}
+
+.input-div > div > h5{
+position: absolute;
+left: 10px;
+
+transform: translateY(-50%);
+color: #999;
+font-size: 18px;
+transition: .3s;
+}
+
+.input-div:before, .input-div:after{
+content: '';
+position: absolute;
+bottom: -2px;
+width: 0%;
+height: 2px;
+background-color: #007FFF;
+transition: .4s;
+}
+
+.input-div:before{
+right: 50%;
+}
+
+.input-div:after{
+left: 50%;
+}
+
+.input-div.focus:before, .input-div.focus:after {
+  content: "";  /* This is necessary for the pseudo-elements to be visible */
+  width: 50%;
+}
+
+
+.input-div.focus > div > h5{
+top: -5px;
+font-size: 15px;
+}
+.input-div .div {
+  position: relative;  /* Add this if necessary */
+}
+
+.input-div.focus > .i > i{
+color: #007FFF;
+}
+
+.input-div > div > input{
+position: absolute;
+left: 0;
+top: 0;
+width: calc(100% - 20px); /* Decrease the width of inputs */
+height: 100%;
+border: none;
+outline: none;
+background: none;
+padding: 0.5rem 0.7rem;
+font-size: 1.2rem;
+color: #555;
+font-weight: bolder;
+font-family: 'poppins', sans-serif;
+}
+
+.input-div.pass{
+margin-bottom: 4px;
+}
+.btn-add,
+.btn-cancel,
+.btn-signup{
+    display: block;
+    width: 100%;
+    height: 46px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-size: 200%;
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: .5s;
+    text-align: center;
+    line-height: 46px; /* Ensure consistent vertical alignment */
+}
+
+.btn-add:hover{
+  transform: scale(1.15);
+}
+.btn-cancel:hover{
+  transform: scale(1.15);
+}
+.btn-add {
+    background-color: blue;
+}
+
+.btn-cancel {
+    background-color: red;
+}
+.btn-signup{
+  background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
+}
+
+.btn:hover{
+background-position: right;
+}
+
+
+@media screen and (max-width: 1050px){
+.container{
+  grid-gap: 5rem;
+}
+}
+
+@media screen and (max-width: 1000px){
+form{
+  width: 290px;
+}
+
+.login-content h2{
+      font-size: 2.4rem;
+      margin: 8px 0;
+}
+
+.img img{
+  width: 400px;
+}
+}
+
+@media screen and (max-width: 900px){
+.container{
+  grid-template-columns: 1fr;
+}
+
+.img{
+  display: none;
+}
+
+.wave{
+  display: none;
+}
+
+.login-content{
+  justify-content: center;
+}
+}
+/* Add this style to hide the initial option */
+.select-hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.drop {
+  position: relative;
+  display: inline-block;
+    text-align: center;
+}
+
+#departmentInput {
+  padding-right: 30px; /* Leave space for the arrow icon */
+}
+
+#dropdownArrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.entry-list {
+  list-style: none;
+  padding: 0;
+}
+
+
+.entry-item h2 {
+  margin-top: 0;
+  font-size: 28px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.entry-item strong {
+  color: #555;
+}
+
+.entry-item table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+}
+
+.entry-item th, .entry-item td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.entry-item th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.entry-item table td:first-child {
+  width: 40%;
+}
+
+.entry-item table td:last-child {
+  width: 30%;
+}
+
+.entry-item h2 {
+  font-size: 24px;
+  color: #555;
+}
+
+.button-container {
+  position: fixed; /* Fix the button at a specific position relative to the viewport */
+  bottom: 46px; /* Position it 20px from the bottom */
+  right: -340px; /* Position it 20px from the right */
+  z-index: 10; /* Ensure it's on top of other elements */
+}
+
+.inline-form {
+  display: inline-block;
+  margin: 0;
+}
+
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: #007FFF;
+}
+
+/* plus sign */
+.sign {
+  width: 100%;
+  transition-duration: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: white;
+}
+
+/* text */
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: .3s;
+}
+
+/* hover effect on button width */
+.Btn:hover {
+  width: 125px;
+  border-radius: 40px;
+  transition-duration: .3s;
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: .3s;
+  padding-left: 20px;
+}
+
+/* hover effect button's text */
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: .3s;
+  padding-right: 10px;
+}
+
+/* button click effect */
+.Btn:active {
+  transform: translate(2px ,2px);
+}
+
+.entry-item {
+  text-align: left;
+}
+
+
+/* Base styles */
+button#search {
+width: 100%;
+font-size: 1.25rem; /* 20px */
+margin-right: auto;
+padding: 10px;
+}
+
+/* Media queries for different screen sizes */
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+button.status.delivered {
+    font-size: 1rem; /* 16px */
+    width: 80%;
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px to 768px) */
+@media (min-width: 600px) and (max-width: 768px) {
+button.status.delivered {
+    font-size: 1.125rem; /* 18px */
+    width: 70%;
+}
+}
+
+/* Medium devices (landscape tablets, 768px to 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+button.status.delivered {
+    font-size: 1.25rem; /* 20px */
+    width: 60%;
+}
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+button.status.delivered {
+    font-size: 1.5rem; /* 24px */
+    width: 50%;
+}
+}
+
+
+
+.title {
+  /* Style your title to match the PROJECT DETAILS design */
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.input-div-new {
+  margin-bottom: 15px;
+}
+
+.div h5 {
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn-add {
+  background-color: #007FFF; /* Example button color */
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+  height: 50px;
+}
+
+.btn-cancel {
+  background-color: #f44336; /* Example cancel button color */
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+  text-decoration: none;
+  height: 50px;
+}
+
+.btn-add, .btn-cancel {
+  padding: 5px 10px; /* Smaller padding */
+  font-size: 16px; /* Smaller font size */
+  text-align: center; /* Centers the text within the button */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
