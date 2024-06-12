@@ -11,6 +11,8 @@ from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from .forms import RegistrationForm
+from django.http import HttpResponseRedirect
+
 
 
 print("KwentasApp.views module loaded")  # Debugging print
@@ -56,15 +58,18 @@ def registration_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponse('<script>alert("Account Created."); window.location.href = "/login";</script>', status=200)
+            try:
+                form.save()
+                messages.success(request, 'Your account has been created successfully!')
+                return redirect('homepage')  # Use the name of your homepage URL pattern
+            except Exception as e:
+                messages.error(request, f'An error occurred: {e}')
         else:
-            # If form is invalid, render the registration form again with errors
-            
-            return render(request, 'KwentasApp/register.html', {'form': form})
+            messages.error(request, 'Form is invalid. Please correct the errors.')
     else:
         form = RegistrationForm()
     return render(request, 'KwentasApp/register.html', {'form': form})
+
 
 
 

@@ -13,6 +13,4 @@ class RegistrationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if not email.endswith('@example.com'):
-            raise ValidationError("Only example.com email addresses are allowed.")
         return email

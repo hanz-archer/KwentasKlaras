@@ -19,7 +19,7 @@ body {
 
 .container {
     position: absolute;
-    top: 50%; /* Center vertically */
+    top: 49%; /* Center vertically */
     left: 50%; /* Center horizontally */
     transform: translate(-50%, -50%);
     margin-top: 60px;
@@ -415,4 +415,16 @@ a {
 
 .drop .content li:hover {
     background: #f0f0f0;
+}
+
+.swal2-confirm {
+    box-shadow: none;
+    border: none;
+    outline: none;
+}
+
+.swal2-cancel {
+    box-shadow: none;
+    border: none;
+    outline: none;
 }

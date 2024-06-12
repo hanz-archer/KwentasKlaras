@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/login.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container">
@@ -38,9 +39,6 @@
         </form>
     </div>
 </div>
-
-<ul class="notifications"></ul>
-
 <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
 <script>
     document.getElementById('show-password').addEventListener('click', function () {
@@ -82,34 +80,13 @@
 {% if error %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const notifications = document.querySelector(".notifications");
-
-        const removeToast = (toast) => {
-            toast.classList.add("hide");
-            if (toast.timeoutId) clearTimeout(toast.timeoutId);
-            setTimeout(() => toast.remove(), 500);
-        }
-
-        const createToast = (id, message) => {
-            const toast = document.createElement("li");
-            toast.className = `toast ${id}`;
-            toast.innerHTML = `<div class="column">
-                                   <i class="fa-solid fa-circle-xmark"></i>
-                                   <i class="fas fa-lock"></i>
-                                   <span>${message}</span>
-                                </div>
-                                <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
-            notifications.appendChild(toast);
-            toast.timeoutId = setTimeout(() => removeToast(toast), 5000);
-        }
-
-        // Function to show a toast message for validation errors
-        const showErrorToast = (message) => {
-            createToast('error', message);
-        }
-
-        // Immediately call the function to show the toast if there's an error message
-        showErrorToast("{{ error }}");
+        // SweetAlert for displaying error message
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{ error }}',
+            confirmButtonColor: '#3085d6' // Blue color for the confirm button
+        });
     });
 </script>
 {% endif %}
