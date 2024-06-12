@@ -22,6 +22,7 @@
 </head>
 
 <body>
+    <div class="overlay" id="overlay"></div>
     <main class="table" id="customers_table">
         <section class="table__header">
             <h1>Continuing Projects</h1>
@@ -29,19 +30,12 @@
             <div class="input-group">
                 <form method="GET" action="{% url 'search_continuing_projects' %}" >
                     <input type="text" name="query" placeholder="Search Continuing Projects...">
-               
             </div>
             <div class="export__file">
                 <button type="submit" class="export__file-btn">Search</button>
 
             </form>
-               
-             
             </div>
-
-         
-
-
 
         </section>
         <section class="table__body">
@@ -112,10 +106,6 @@
                 </tbody>
             </table>
         </section>
-
-
-
-      
         <div class="back">
             <a href="{% url 'homepage' %}">  <button  class="back-btn">Back</button></a>
 
@@ -260,11 +250,9 @@
     <a href="{% url 'continuing_projects' %}">
         <h1 class="form-title">Update Form</h1> 
     </a>
-
     {% for entry in all_entries %}
     <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post" onsubmit="handleSubmit(event)">
         {% csrf_token %}
-
         <input type="hidden" name="entry_code" value="{{ entry.code }}">
         <div class="main-user-info" id="main-update">
             <div class="user-input-box">
@@ -300,7 +288,6 @@
                     </select>
                 </div>
             </div>
-
             <div class="user-input-box">
                 <label for="location_{{ entry.code }}">Location</label>
                 <input type="text" id="location_{{ entry.code }}" name="location" class="user-input" value="{{ entry.location }}">
@@ -359,168 +346,91 @@
     
 <!-- BUDGET -->
 
-<div class="container" id="budget">
-    <div class="card">
-       
-            <div class="login-content">
-
-
-                
-                <form id="add-budget-form" action="{% url 'add_budget' %}" method="post">
-                    {% csrf_token %}
-
-                  
-                    <h2 class="title">Add Budget Form</h2><br><br>
-                    <input type="hidden" name="entry_code" id="budget-code">
-
-                <div class="input-div">
-                <div class="i">
-                    <i class="fas fa-user"></i>
-                </div>
+<div class="details" id="budget">
+    <div class="login-content">
+        <form id="add-budget-form" action="{% url 'add_budget' %}" method="post">
+            {% csrf_token %}
+            <h2 class="title">Add Budget Form</h2>
+            <input type="hidden" name="entry_code" id="budget-code">
+            <div class="input-div-new">
                 <div class="div">
                     <h5>Budget Name</h5>
                     <input type="text" name="budget_name" class="input">
                 </div>
-                </div>
-
-                <div class="input-div">
-                <div class="i">
-                    <i class="fas fa-user"></i>
-                </div>
+            </div>
+            <div class="input-div-new">
                 <div class="div">
                     <h5>Date</h5>
                     <input type="date" name="budget_date" class="input">
                 </div>
-                </div>
-
-                <div class="input-div">
-                <div class="i">
-                    <i class="fas fa-user"></i>
-                </div>
+            </div>
+            <div class="input-div-new">
                 <div class="div">
                     <h5>Added Budget</h5>
                     <input type="text" name="added_budget" class="input">
                 </div>
-                </div>
-                <button type="submit" class="btn-add" value="Submit">Submit</button>
-                <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
-            </form>
             </div>
-      
+            <button type="submit" class="btn-add" value="Submit">Submit</button>
+            <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="color: white;">Exit</a>
+        </form>
     </div>
-    </div>
+</div>
+
+
       
 <!-- OBLIGATION -->
-    <div class="container" id="obligation">
-        <div class="card">
-           
+    <div class="details" id="obligation">
                 <div class="login-content">
-    
-    
-                    
                     <form id="add-obligation-form" action="{% url 'continuing_add_obligation' %}" method="post">
                         {% csrf_token %}
                       
                         <h2 class="title">Add Obligation Form</h2><br><br>
                         <input type="hidden" name="entry-code" id="obligation-code">
 
-                        <div class="input-div">
-                            <div class="i">
-                                <i class="fas fa-user"></i>
-                            </div>
+                        <div class="input-div-new">
                             <div class="div">
                                 <h5>Name</h5>
                                 <input type="text" name="obligation_name" class="input">
                             </div>
                             </div>
-
-
-    
-                            <div class="input-div">
-                                <div class="i">
-                                    <i class="fas fa-user"></i>
-                                </div>
+                            <div class="input-div-new">
                                 <div class="div">
                                     <h5>Date</h5>
                                     <input type="date" name="obligation_date" class="input">
                                 </div>
                                 </div>
     
-                                <div class="input-div">
-                                    <div class="i">
-                                        <i class="fas fa-user"></i>
-                                    </div>
+                                <div class="input-div-new">
                                     <div class="div">
                                         <h5>Spent</h5>
                                         <input type="text" name="obligation_spent" class="input">
                                     </div>
-                                    </div>
-
-                                    
+                                    </div> 
                     <button type="submit" class="btn-add" value="Submit">Submit</button>
-                    <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none;">Exit</a>
+                    <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
                 </form>
                 </div>
           
         </div>
         </div>
 
-
-
-
 <!-- Delete -->
-<div class="container" id="delete">
-    <div class="card">
-       
+<div class="details" id="delete">
             <div class="login-content">
-
-
-                
                 <form id="add-delete-form" action="{% url 'continuing_delete_entry' %}" method="post">
                     {% csrf_token %}
-                   
                     <h2 class="title">Delete Form</h2><br><br>
-                   
-
-                <div class="input-div">
-                <div class="i">
-                    <i class="fas fa-user"></i>
-                </div>
+                    <div class="input-div-new">
                 <div class="div">
                     <h5>Entry Code</h5>
-                    <input type="text" name="entry_code" id="delete-code" readonly placeholder="1-121">
+                    <input type="text" name="entry_code" id="delete-code" readonly placeholder="1-121" class="input">
                 </div>
                 </div>
-
-               
-
-               
                 <button type="submit" class="btn-add" value="Submit">Delete</button>
-                <a href="{% url 'continuing_projects' %}"  class="btn-cancel" style="text-decoration: none;">Exit</a>
+                <a href="{% url 'continuing_projects' %}"  class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
             </form>
             </div>
-      
     </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <script src="search.js"></script>
 
 
@@ -528,42 +438,31 @@
 
     <script>
         function showDetails(code) {
-            // Hide table and add entry form
             document.getElementById('customers_table').style.filter = 'blur(10px)';
-        
-            // Hide all details first
+            document.getElementById('overlay').style.display = 'block';
             var details = document.getElementsByClassName('entry-item');
             for (var i = 0; i < details.length; i++) {
                 details[i].style.display = 'none';
             }
-        
-            // Show details of the clicked PPA
             document.getElementById('details-' + code).style.display = 'block';
-        
             document.getElementById('details').style.display = 'block';
         }
         </script>
 <!-- Update js -->
 <script>
     function showUpdateForm(code) {
-        // Hide all update forms
-        var allUpdateForms = document.querySelectorAll('[id^="updateForm_"]');
-        allUpdateForms.forEach(function(form) {
-            form.style.display = 'none';
-        });
-    
-        // Show only the update form corresponding to the provided code
-        var updateForm = document.getElementById('updateForm_' + code);
-        if (updateForm) {
-            updateForm.style.display = 'block';
+            var allUpdateForms = document.querySelectorAll('[id^="updateForm_"]');
+            allUpdateForms.forEach(function(form) {
+                form.style.display = 'none';
+            });
+            var updateForm = document.getElementById('updateForm_' + code);
+            if (updateForm) {
+                updateForm.style.display = 'block';
+            }
+            document.getElementById('update').style.display = 'block';
+            document.getElementById('customers_table').style.filter = 'blur(10px)';
+            document.getElementById('overlay').style.display = 'block';
         }
-    
-        // Show the container
-        document.getElementById('update').style.display = 'block';
-    
-        // Hide the main table
-        document.getElementById('customers_table').style.filter = 'blur(10px)';
-    }
     </script>
 
 <script>
@@ -619,11 +518,11 @@
 <!-- Budget js -->
 <script>
     function showAddBudget(budget_code) {
-      // Set the entry code value to the hidden input field
-      document.getElementById('budget-code').value = budget_code;
+        document.getElementById('budget-code').value = budget_code;
         document.getElementById('customers_table').style.filter = 'blur(10px)';
-      document.getElementById('budget').style.display = 'block';
-  }
+        document.getElementById('budget').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
   </script>
 
 <script>
@@ -661,17 +560,11 @@
 <!-- Obligation js -->
 <script>
     function showAddObligationForm(entryCode) {
-      // Set the entry code value to the hidden input field
-      document.getElementById('obligation-code').value = entryCode;
-      document.getElementById('obligation').style.display = 'block';
-
-
-
-      document.getElementById('customers_table').style.filter = 'blur(10px)';
-      // Show the add obligation form
-     
-  }
-  
+            document.getElementById('obligation-code').value = entryCode;
+            document.getElementById('obligation').style.display = 'block';
+            document.getElementById('customers_table').style.filter = 'blur(10px)';
+            document.getElementById('overlay').style.display = 'block';
+        }
   </script>
 
 <script>
@@ -710,12 +603,11 @@
 <!-- Delete js -->
 <script>
     function showDeleteForm(code) {
-         // Set the entry code value to the hidden input field
-      document.getElementById('delete-code').value = code;
-      document.getElementById('delete').style.display = 'block';
+        document.getElementById('delete-code').value = code;
+        document.getElementById('delete').style.display = 'block';
         document.getElementById('customers_table').style.filter = 'blur(10px)';
-      // Show the add obligation form
-    }
+        document.getElementById('overlay').style.display = 'block';
+        }
 </script>
 
 <script>
@@ -742,6 +634,25 @@
             });
         });
     });
+</script>
+
+<script>
+    function hideOverlay() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('customers_table').style.filter = 'none';
+            var details = document.getElementById('details');
+            if (details) details.style.display = 'none';
+            var update = document.getElementById('update');
+            if (update) update.style.display = 'none';
+            var budget = document.getElementById('budget');
+            if (budget) budget.style.display = 'none';
+            var obligation = document.getElementById('obligation');
+            if (obligation) obligation.style.display = 'none';
+            var deleteForm = document.getElementById('delete');
+            if (deleteForm) deleteForm.style.display = 'none';
+        }
+
+        document.getElementById('overlay').addEventListener('click', hideOverlay);
 </script>
 
 
