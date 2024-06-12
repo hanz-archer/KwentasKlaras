@@ -12,11 +12,17 @@ from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from .forms import RegistrationForm
 from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 
 
 
 print("KwentasApp.views module loaded")  # Debugging print
 
+#this def ensures the Sweet Alert in Homepage just shows after loggin in only
+def unset_just_logged_in(request):
+    if 'just_logged_in' in request.session:
+        del request.session['just_logged_in']
+    return JsonResponse({'status': 'success'})
 
 def login_view(request):
     if request.method == 'POST':
@@ -26,6 +32,8 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
+            # Set the session flag after successful login
+            request.session['just_logged_in'] = True
             return redirect(reverse('homepage'))  # Redirect to homepage
         else:
             error = 'Invalid credentials. Please try again.'
@@ -109,8 +117,10 @@ def obligations(request):
 @login_required
 def homepage(request):
     print("homepage view called")  # Debugging print
-    name = request.user.username  # Assuming 'username' is a field in the User model
-    context = {'user_name': name}
+    user_name = request.user.name if request.user.is_authenticated else "Guest"
+    context = {
+        'user_name': user_name,
+        }
     return render(request, 'KwentasApp/homepage.html', context)
 
 

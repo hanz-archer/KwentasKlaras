@@ -94,7 +94,7 @@
             <div class="icon-wrapper">
               <i class="fas fa-person"></i>
             </div>
-            <h3>ACCOUNT</h3>
+            <h3>Logged in as {{ user_name }}</h3>
             <p>
               <form action="{% url 'admin:index' %}" method="post">
                 {% csrf_token %}
@@ -168,10 +168,10 @@
 });
 </script>
 
-
+{% if request.session.just_logged_in %}
 <script>
   // Function to display a SweetAlert message with dynamic greeting based on time
-  function showWelcomeMessage() {
+  function showWelcomeMessage(userName) {
       const now = new Date();
       const hours = now.getHours();
 
@@ -189,8 +189,8 @@
       Swal.fire({
           icon: 'success',
           title: `${greeting}, Welcome to Kwentas Klaras`,
-          text: '{{ user_name }}', // Replace '{{ user_name }}' with the actual username variable
-          timer: 3000, // Set the timer for the message to automatically disappear after 3 seconds
+          text: `Logged in as ${userName}`,
+          timer: 3700, // Set the timer for the message to automatically disappear after 3 seconds
           confirmButtonText: 'Proceed', // Change the text of the OK button to Proceed
           customClass: {
               confirmButton: 'green-btn' // Apply custom class to confirm button
@@ -207,23 +207,25 @@
 
   // Call the function to display the message and update the clock when the page loads
   window.addEventListener('DOMContentLoaded', () => {
-      showWelcomeMessage();
+      // Check if the user has just logged in
+      
+          // Get the username from a global variable or other means
+          const userName = '{{ request.user.name }}'; // Replace this with actual logic to get the username
+          showWelcomeMessage(userName);
+          // Unset the just_logged_in session variable
+          fetch("{% url 'unset_just_logged_in' %}");
+    
+      
       setInterval(updateClock, 1000); // Update the clock every second
   });
+  
 </script>
+{% endif %}
 
 <style>
   .green-btn {
       background-color: green !important;
   }
 </style>
-
-
-<style>
-  .green-btn {
-      background-color: green !important;
-  }
-</style>
-
   </body>
 </html>

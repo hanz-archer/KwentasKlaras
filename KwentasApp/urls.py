@@ -3,6 +3,7 @@ from . import views
 from django.views.generic import RedirectView
 from django.contrib import admin
 from .projects import *
+from .views import login_view, unset_just_logged_in
 
 print("KwentasApp.urls module loaded")  # Debugging print
 
@@ -38,4 +39,5 @@ urlpatterns = [
     path('adddata/', adddata, name='adddata'),
     path('ppa/', views.ppa, name='ppa'),
     path('addbudget/', views.addbudget, name='addbudget'),
+    path('unset_just_logged_in/', unset_just_logged_in, name='unset_just_logged_in'),
 ]
