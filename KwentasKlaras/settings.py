@@ -125,7 +125,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'KwentasApp/static'),
 ]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = 	'/home/KwentasKlarasPMIS/KwentasKlaras/KwentasApp/static'
 
 
 
