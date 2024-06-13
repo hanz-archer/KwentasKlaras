@@ -24,10 +24,10 @@
             </div>
             <h3>Programs Projects & Activities under 20% LDF</h3>
             <p>
-              <form action="{% url 'continuing_projects' %}" method="get">
+              <form action="{% url 'continuing_projects' %}" method="get" onsubmit="showLoadingAlert(event)">
                 <button type="submit" class="btn"><i class="fas fa-table"></i> Continuing</button>
               </form>
-              <form action="{% url 'ongoing_projects' %}" method="get">
+              <form action="{% url 'ongoing_projects' %}" method="get" onsubmit="showLoadingAlert(event)">
                 <button type="submit" class="btn"><i class="fas fa-table"></i> Current </button>
               </form>
               <form action="{% url 'adddata' %}" method="get">
@@ -115,49 +115,43 @@
       </div>
     </section>
     <script>
-      const notifications = document.querySelector(".notifications");
+      function showLoadingAlert(event) {
+        event.preventDefault(); // Prevent the form from submitting immediately
     
-      // Object containing details for different types of toasts
-      const toastDetails = {
-          timer: 5000,
-          success: {
-              icon: 'fa-circle-check',
-              text: 'Welcome to Kwentas Klaras, {{ user_name }}',
+        // Display SweetAlert with a custom icon from static files
+        Swal.fire({
+          title: 'Loading...',
+          text: 'Fetching data from realtime database.',
+          html: `
+            <div class="swal2-icon swal2-info swal2-icon-show" style="display: flex;">
+              <img src="{% static 'KwentasApp/img/distribution.png' %}" style="width: 50px; height: 50px;" />
+            </div>
+            <p>Fetching data from realtime database.</p>
+          `,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
           }
+        });
+    
+        // Save in session storage that SweetAlert was shown
+        sessionStorage.setItem('showingSweetAlert', 'true');
+    
+        // Submit the form after a short delay
+        setTimeout(() => {
+          event.target.submit();
+        }, 500); // Adjust delay as needed
       }
     
-      const removeToast = (toast) => {
-          toast.classList.add("hide");
-          if (toast.timeoutId) clearTimeout(toast.timeoutId); // Clearing the timeout for the toast
-          setTimeout(() => toast.remove(), 500); // Removing the toast after 500ms
-      }
-    
-      const createToast = (id) => {
-          // Getting the icon and text for the toast based on the id passed
-          const { icon, text } = toastDetails[id];
-          const toast = document.createElement("li"); // Creating a new 'li' element for the toast
-          toast.className = `toast ${id}`; // Setting the classes for the toast
-          // Setting the inner HTML for the toast
-          toast.innerHTML = `<div class="column">
-                               <i class="fa-solid ${icon}"></i>
-                               <span>${text}</span>
-                            </div>
-                            <i class="fa-solid fa-xmark" onclick="removeToast(this.parentElement)"></i>`;
-          notifications.appendChild(toast); // Append the toast to the notification ul
-          // Setting a timeout to remove the toast after the specified duration
-          toast.timeoutId = setTimeout(() => removeToast(toast), toastDetails.timer);
-      }
-    
-      // Function to show a toast message after logging in
-      const showLoginToast = () => {
-        createToast('success');
-      }
-    
-      // Call the function to show the toast when the page loads
-      window.addEventListener('DOMContentLoaded', (event) => {
-        showLoginToast();
+      // Check if SweetAlert was shown before and close it when the page loads
+      window.addEventListener('pageshow', function () {
+        if (sessionStorage.getItem('showingSweetAlert') === 'true') {
+          Swal.close();
+          sessionStorage.removeItem('showingSweetAlert');
+        }
       });
     </script>
+    
 
 
 <script>
