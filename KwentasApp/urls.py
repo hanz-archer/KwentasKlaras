@@ -8,7 +8,6 @@ from .views import login_view, unset_just_logged_in
 print("KwentasApp.urls module loaded")  # Debugging print
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', RedirectView.as_view(pattern_name='login', permanent=False)),
     path('login/', views.login_view, name='login'),
     path('create_entry/', create_entry, name='create_entry'),

@@ -20,10 +20,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-622za#sv=0#-^^g10d%qqeb*7jy$@yx!wmw=ly&-ku7%#nke*m'
+SECRET_KEY = '!#rx%wi3#35boq)q&9e9me)&83*bwvy(@t9q1*t293-@_sh%-g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['KwentasKlarasPMIS.pythonanywhere.com', '127.0.0.1', 'localhost']
 
@@ -162,6 +162,28 @@ LOGGING = {
         },
     },
 }
+
+
+#CROSS SITE SCRIPTING PROTECTION
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+#The below line will ensure that your application redirects all non-HTTPS requests to HTTP.
+SECURE_SSL_REDIRECT = True
+
+
+#The below lines will protect your web application from man-in-the-middle attacks and will force a connection over HTTPS.
+SECURE_HSTS_SECONDS = 86400
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+#CSRF protection prevents you from accidentally sending your session and your CSRF cookie over HTTP by accident.
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
+
 
 
 
