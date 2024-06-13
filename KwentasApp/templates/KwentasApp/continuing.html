@@ -249,7 +249,7 @@
 <div class="details" id="update">
     <a href="{% url 'continuing_projects' %}"> <p class="x">X</p> </a>
     <a href="{% url 'continuing_projects' %}">
-        <h1 class="form-title">Update Form</h1> 
+        <h1 class="form-title">Update Project</h1> 
     </a>
     {% for entry in all_entries %}
     <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post" onsubmit="handleSubmit(event)">
@@ -351,7 +351,7 @@
     <div class="login-content">
         <form id="add-budget-form" action="{% url 'add_budget' %}" method="post">
             {% csrf_token %}
-            <h2 class="title">Add Budget Form</h2>
+            <h2 class="title">Add Project Budget</h2>
             <input type="hidden" name="entry_code" id="budget-code">
             <div class="input-div-new">
                 <div class="div">
@@ -385,7 +385,7 @@
                     <form id="add-obligation-form" action="{% url 'continuing_add_obligation' %}" method="post">
                         {% csrf_token %}
                       
-                        <h2 class="title">Add Obligation Form</h2><br><br>
+                        <h2 class="title">Add Project Obligation</h2><br><br>
                         <input type="hidden" name="entry-code" id="obligation-code">
 
                         <div class="input-div-new">
@@ -420,7 +420,7 @@
             <div class="login-content">
                 <form id="add-delete-form" action="{% url 'continuing_delete_entry' %}" method="post">
                     {% csrf_token %}
-                    <h2 class="title">Delete Form</h2><br><br>
+                    <h2 class="title">Delete Project</h2><br><br>
                     <div class="input-div-new">
                 <div class="div">
                     <h5>Entry Code</h5>

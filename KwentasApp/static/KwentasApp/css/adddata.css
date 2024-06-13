@@ -16,18 +16,16 @@ body {
     height: 100%;
     z-index: -1;
 }
-
 .container {
     position: absolute;
-    top: 49%; /* Center vertically */
+    top: 50%; /* Center vertically */
     left: 50%; /* Center horizontally */
     transform: translate(-50%, -50%);
-    margin-top: 60px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 2rem; /* Reduced gap for better fit */
+    grid-gap: 2rem;
     max-width: 1000px;
-    padding: 0 2rem; /* Adjust padding for better fit */
+    padding: 0 2rem;
 }
 
 .img {
