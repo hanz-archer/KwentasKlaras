@@ -359,26 +359,24 @@
                     <h2 class="title">Add Project Budget</h2><br><br>
                     <input type="hidden" name="entry_code" id="budget-code">
 
-                <div class="input-div-new">
-                <div class="div">
-                    <h5>Budget Name</h5>
-                    <input type="text" name="budget_name" class="input">
-                </div>
-                </div>
-
-                <div class="input-div-new">
-                <div class="div">
-                    <h5>Date</h5>
-                    <input type="date" name="budget_date" class="input">
-                </div>
-                </div>
-
-                <div class="input-div-new">
-                <div class="div">
-                    <h5>Added Budget</h5>
-                    <input type="text" name="added_budget" class="input">
-                </div>
-                </div>
+                    <div class="input-div-new">
+                        <div class="div">
+                            <label for="budget_name" style="white-space: nowrap;">Budget Name</label> <!-- Use label instead of h5 -->
+                            <input type="text" name="budget_name" class="input">
+                        </div>
+                    </div>
+                    <div class="input-div-new">
+                        <div class="div">
+                            <label for="budget_date">Date</label> <!-- Use label instead of h5 -->
+                            <input type="date" name="budget_date" class="input">
+                        </div>
+                    </div>
+                    <div class="input-div-new">
+                        <div class="div">
+                            <label for="added_budget" style="white-space: nowrap;">Added Budget</label> <!-- Use label instead of h5 -->
+                            <input type="text" name="added_budget" class="input">
+                        </div>
+                    </div>
                 <button type="submit" class="btn-add" value="Submit">Submit</button>
                 <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
             </form>
@@ -397,25 +395,23 @@
 
                         <div class="input-div-new">
                             <div class="div">
-                                <h5>Name</h5>
+                                <label for="obligation_name" style="white-space: nowrap;">Obligation Name</label> <!-- Use label instead of h5 -->
                                 <input type="text" name="obligation_name" class="input">
                             </div>
+                        </div>
+                        <div class="input-div-new">
+                            <div class="div">
+                                <label for="obligation_date">Date</label> <!-- Use label instead of h5 -->
+                                <input type="date" name="obligation_date" class="input">
                             </div>
-                            <div class="input-div-new">
-                                <div class="div">
-                                    <h5>Date</h5>
-                                    <input type="date" name="obligation_date" class="input">
-                                </div>
-                                </div>
-    
-                                <div class="input-div-new">
-                                    <div class="div">
-                                        <h5>Spent</h5>
-                                        <input type="text" name="obligation_spent" class="input">
-                                    </div>
-                                    </div>
-
-                                    
+                        </div>
+            
+                        <div class="input-div-new">
+                            <div class="div">
+                                <label for="obligation_spent" style="white-space: nowrap;">Obligation Spent</label> <!-- Use label instead of h5 -->
+                                <input type="text" name="obligation_spent" class="input">
+                            </div>
+                        </div> 
                     <button type="submit" class="btn-add" value="Submit">Submit</button>
                     <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
                 </form>
@@ -430,7 +426,7 @@
                     <h2 class="title">Delete Project</h2><br><br>
                 <div class="input-div-new">
                 <div class="div">
-                    <h5>Entry Code</h5>
+                    <label for="entry_code" style="white-space: nowrap;">Entry Code</label>
                     <input type="text" name="entry_code" id="delete-code" readonly placeholder="1-121" class="input">
                 </div>
                 </div>

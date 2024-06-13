@@ -190,7 +190,7 @@
       Swal.fire({
           icon: 'success',
           title: `${greeting}, Welcome to Kwentas Klaras`,
-          text: `Logged in as ${userName}`,
+          text: `${userName}`,
           timer: 3700, // Set the timer for the message to automatically disappear after 3 seconds
           confirmButtonText: 'Proceed', // Change the text of the OK button to Proceed
           customClass: {
@@ -225,7 +225,9 @@
 
 <style>
   .green-btn {
-      background-color: green !important;
+    background-color: #00AB66 !important;
+    border: none !important; /* Remove the border */
+    box-shadow: none !important; /* Remove the box shadow */
   }
 </style>
   </body>

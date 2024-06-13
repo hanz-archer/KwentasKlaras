@@ -406,6 +406,15 @@ form, input {
 
 
 
+.input-div-new .div label {
+  display: block;
+  color: black;
+  text-align: left; /* Align the label text to the left */
+  width: 100px; /* Adjust the width of the label as needed */
+  font-size: 20px;
+  font-weight: 600;
+}
+
 
 
 /* DETAILS CSS */
@@ -446,8 +455,6 @@ form, input {
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 20px 0;
-
-
 }
 
 
