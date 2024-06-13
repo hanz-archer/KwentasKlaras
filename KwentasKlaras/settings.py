@@ -164,24 +164,6 @@ LOGGING = {
 }
 
 
-#CROSS SITE SCRIPTING PROTECTION
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-
-#The below line will ensure that your application redirects all non-HTTPS requests to HTTP.
-SECURE_SSL_REDIRECT = True
-
-
-#The below lines will protect your web application from man-in-the-middle attacks and will force a connection over HTTPS.
-SECURE_HSTS_SECONDS = 86400
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-#CSRF protection prevents you from accidentally sending your session and your CSRF cookie over HTTP by accident.
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
 
 
 
