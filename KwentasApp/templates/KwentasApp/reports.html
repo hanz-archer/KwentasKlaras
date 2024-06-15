@@ -18,10 +18,7 @@
         <main>
             <div class="header">
                 <div class="left">
-                    <h1>Reports Dashboard</h1>
-                    <ul class="breadcrumb">
-                        <li><a href="#">Kwentas Klaras Analytics</a></li>
-                    </ul>
+                    <h1>Dashboard</h1>
                 </div>
                 <a href="#" class="report">
                     <i class='bx bx-cloud-download'></i>
@@ -38,19 +35,22 @@
                         <p><strong>Projects</strong></p>
                     </span>
                 </li>
-                <li><i class='bx bx-chevron-left-square'></i>
+                <li>
+                    <i class='bx bx-chevron-left-square'></i>
                     <span class="info">
                         <h3></h3>
                         <p><strong>Current Projects</strong></p>
                     </span>
                 </li>
-                <li><i class='bx bx-check-circle'></i>
+                <li>
+                    <i class='bx bx-check-circle'></i>
                     <span class="info">
                         <h3></h3>
                         <p><strong>Continuing Projects</strong></p>
                     </span>
                 </li>
-                <li><i class='bx bx-money-withdraw'></i>
+                <li>
+                    <i class='bx bx-money-withdraw'></i>
                     <span class="info">
                         <h3></h3>
                         <p><strong>Budget Utilization Rate</strong></p>
@@ -58,86 +58,34 @@
                 </li>
             </ul>
 
+            <h1 style="margin-bottom: 15px;">Project Report</h1>
             <div class="bottom-data">
-                <div class="card">
+                <div class="card half-width-card">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Completed Projects</h3>
+                        <h3>Physical Accomplishment</h3>
                     </div>
-                    <table class="modern-table">
-                        <thead>
-                            <tr>
-                                <th>Project Name</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p>Hanz</p>
-                                </td>
-                                <td><span class="status completed">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Josh</p>
-                                </td>
-                                <td><span class="status pending">Completed</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Josh</p>
-                                </td>
-                                <td><span class="status process">Completed</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
-
-                <div class="card">
+                <div class="card half-width-card">
                     <div class="header">
                         <i class='bx bx-note'></i>
-                        <h3>Ongoing Projects</h3>
+                        <h3>Financial Accomplishment</h3>
                     </div>
-                    <table class="modern-table">
-                        <thead>
-                            <tr>
-                                <th>Project Name</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p>Hanz</p>
-                                </td>
-                                <td><span class="status completed">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Josh</p>
-                                </td>
-                                <td><span class="status pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <p>Josh</p>
-                                </td>
-                                <td><span class="status process">Pending</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
-
+                <div class="card big-card">
+                    <div class="header">
+                        <i class='bx bx-bar-chart-alt'></i>
+                        <h3>Comprehensive Overview</h3>
+                    </div>
+                    <canvas id="myChart4" style="width:100%;max-width:700px"></canvas>
+                </div>
                 <div class="card">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
-                        <h3>Utilization Rate</h3>
+                        <h3>Overall Utilization Rate</h3>
                     </div>
                     <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
                 </div>
-
-                <!-- Add more cards if needed -->
                 <div class="card">
                     <div class="header">
                         <i class='bx bx-receipt'></i>
@@ -146,13 +94,14 @@
                     <canvas id="myChart3" style="width:100%;max-width:700px"></canvas>
                 </div>
             </div>
+
         </main>
     </div>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelector('.report').addEventListener('click', function() {
-                html2canvas(document.body).then(function(canvas) {
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector('.report').addEventListener('click', function () {
+                html2canvas(document.body).then(function (canvas) {
                     var link = document.createElement('a');
                     link.download = 'dashboard.png';
                     link.href = canvas.toDataURL();
@@ -169,23 +118,67 @@
         var barColors = ["#b91d47", "#00aba9", "#2b5797", "#e8c3b9", "#1e7145", "#f09609"];
         new Chart("myChart", {
             type: "pie",
-            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
-            options: { title: { display: true, text: "Utilization Rate" } }
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Utilization Rate"
+                }
+            }
         });
         new Chart("myChart1", {
             type: "pie",
-            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
-            options: { title: { display: true, text: "Utilization rate by Department" } }
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Utilization rate by Department"
+                }
+            }
         });
         new Chart("myChart2", {
             type: "doughnut",
-            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
-            options: { title: { display: true, text: "Projects by Department" } }
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Projects by Department"
+                }
+            }
         });
         new Chart("myChart3", {
             type: "doughnut",
-            data: { labels: xValues, datasets: [{ backgroundColor: barColors, data: yValues }] },
-            options: { title: { display: true, text: "Additional Projects" } }
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Additional Projects"
+                }
+            }
         });
     </script>
 </body>

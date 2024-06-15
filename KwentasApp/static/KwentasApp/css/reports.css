@@ -168,7 +168,7 @@ body {
     width: 18px;
     height: 18px;
     background: var(--danger);
-    color: var(--light);
+    color: var (--light);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -199,6 +199,29 @@ body {
 .content main {
     margin-top: 24px;
     padding: 0 24px;
+}
+
+.half-width-card {
+    flex: 1 1 calc(50% - 12px); /* Adjust width for two cards in a row */
+    box-sizing: border-box;
+    width: 30%; /* Adjust to fit two cards in a row, accounting for gap */
+    margin: 1%; /* Optional: Adds space between cards */
+    background: var(--light); /* Example background color */
+    border-radius: 8px; /* Example border radius */
+    padding: 16px; /* Example padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Example box shadow */
+    
+}
+
+.big-card {
+    flex: 1 1 100%; /* Make the big card span the entire width */
+    box-sizing: border-box;
+}
+
+.bottom-data {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
 }
 
 .content main .header {
@@ -310,12 +333,26 @@ body {
     color: var(--danger);
 }
 
+
 .content main .bottom-data {
     display: grid;
-    grid-template-columns: repeat(3, minmax(300px, 1fr)); /* Display up to 3 cards per row */
+    grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Display up to 3 cards per row */
     grid-auto-rows: minmax(300px, auto); /* Adjust the row height */
     grid-gap: 24px;
     min-height: 300px;
+    gap: 24px; /* Adjust gap between cards */
+}
+
+@media screen and (max-width: 768px) {
+    .half-width-card {
+        width: 100%; /* Full width on smaller screens */
+        margin: 0 0 24px 0; /* Adjust margin for smaller screens */
+        flex: 1 1 100%; /* Full width on smaller screens */
+    }
+}
+
+.content main .bottom-data .card.half-width-card {
+    grid-column: span 2; /* Ensure the card spans 2 columns */
 }
 
 .content main .bottom-data .card {
@@ -327,9 +364,12 @@ body {
 
 .content main .bottom-data .card .header {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    text-align: center;
     margin-bottom: 16px;
+    
 }
 
 .content main .bottom-data .card canvas {
@@ -337,19 +377,19 @@ body {
     max-width: 700px;
 }
 
-.content main .bottom-data .orders table tr td .status.completed{
+.content main .bottom-data .orders table tr td .status.completed {
     background: var(--success);
 }
 
-.content main .bottom-data .orders table tr td .status.process{
+.content main .bottom-data .orders table tr td .status.process {
     background: var(--primary);
 }
 
-.content main .bottom-data .orders table tr td .status.pending{
+.content main .bottom-data .orders table tr td .status.pending {
     background: var(--warning);
 }
 
-.content main .bottom-data .orders table tr td .status{
+.content main .bottom-data .orders table tr td .status {
     font-size: 10px;
     padding: 6px 16px;
     color: var(--light);
@@ -358,10 +398,21 @@ body {
 }
 
 @media screen and (max-width: 1024px) {
+    .bottom-data {
+        flex-direction: column;
+    }
+
+    .half-width-card {
+        flex: 1 1 100%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
     .content main .bottom-data {
         grid-template-columns: 1fr; /* Stack cards vertically */
     }
 }
+
 
 /* Adjustments for even smaller screens */
 @media screen and (max-width: 768px) {
@@ -393,7 +444,8 @@ canvas {
     overflow: hidden; /* Ensures the rounded corners are visible */
 }
 
-.modern-table th, .modern-table td {
+.modern-table th,
+.modern-table td {
     padding: 12px 15px; /* Adds spacing inside each table cell */
     border-bottom: 1px solid var(--grey); /* Adds a light border to each cell */
     text-align: left; /* Ensures text is aligned to the left */
@@ -422,4 +474,3 @@ canvas {
     margin: 0; /* Ensures paragraphs inside cells have no margin */
     color: var(--dark); /* Text color */
 }
-
