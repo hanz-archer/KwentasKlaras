@@ -6,6 +6,35 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  z-index: 1000;
+  display: none; /* hidden by default */
+}
+
+.details, .container {
+  z-index: 2000; /* Ensure modals/cards are above the overlay */
+}
+
+.swal2-container {
+  z-index: 10000 !important; /* Ensure SweetAlert is on top */
+}
+
+/* Example card styling */
+.container .card {
+  position: relative;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 2001; /* Ensure the card is above the overlay */
+}
+
 @media print {
 .table, .table__body {
 overflow: visible;
@@ -13,6 +42,11 @@ height: auto !important;
 width: auto !important;
 }
 }
+
+/*@page {
+  size: landscape;
+  margin: 0; 
+}*/
 
 body {
   min-height: 100vh;
@@ -30,24 +64,13 @@ main.table {
   box-shadow: 0 .4rem .8rem #0005;
   border-radius: .8rem;
 
-  overflow: hidden; 
+  overflow: hidden;
+
+
+
+  
 }
 
-/* Overlay styles */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
-  z-index: 1000;
-  display: none; /* hidden by default */
-}
-
-.details {
-  z-index: 2000; /* Ensure modals/cards are above the overlay */
-}
 .table__header {
   width: 100%;
   height: 10%;
@@ -59,21 +82,37 @@ main.table {
   align-items: center;
 }
 
+
+
 .table__header .input-group {
   width: 45%;
   height: 100%;
   background-color: #f5f5f5;
   padding: 0 .5rem;
   border-radius: 2rem;
-
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* Align content to the start */
   align-items: center;
   position: relative;
   margin-right: 32%;
   transition: .2s;
 }
 
+.table__header .input-group form{
+  width: 100%;
+}
+
+
+.table__header .input-group input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+  text-align: left; /* Ensure text starts from the left */
+  padding: .1rem .1rem; /* Adjust padding for better visibility */
+  text-indent: .1rem;
+  
+}
 .table__header .input-group:hover {
  
   background-color: #fff8;
@@ -82,13 +121,11 @@ main.table {
 
 
 
-.table__header .input-group input {
-  width: 100%;
-  
-  background-color: transparent;
-  border: none;
-  outline: none;
-}
+
+
+
+
+
 
 .table__body {
   width: 95%;
@@ -124,6 +161,15 @@ margin-top: 1%;
   
 }
 
+.table td img {
+  width: 36px;
+  height: 36px;
+  margin-right: .5rem;
+  border-radius: 50%;
+
+  vertical-align: middle;
+}
+
 .table, th, td {
   border-collapse: collapse;
   padding: 1rem;
@@ -148,13 +194,32 @@ margin-top: 1%;
   transition: .5s ease-in-out var(--delay), background-color 0s;
 }
 
+.table tbody tr.hide {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
 .table tbody tr:hover {
   background-color: #fff6 !important;
 }
 
 .table tbody tr td,
-.table tbody tr td p {
+.table tbody tr td p,
+.table tbody tr td img {
   transition: .2s ease-in-out;
+}
+
+.tabletbody tr.hide td,
+.table tbody tr.hide td p {
+  padding: 0;
+  font: 0 / 0 sans-serif;
+  transition: .2s ease-in-out .5s;
+}
+
+.table tbody tr.hide td img {
+  width: 0;
+  height: 0;
+  transition: .2s ease-in-out .5s;
 }
 
 .status {
@@ -204,8 +269,39 @@ margin-top: 1%;
   }
 }
 
+.table thead th span.icon-arrow {
+  display: inline-block;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  border: 1.4px solid transparent;
+  
+  text-align: center;
+  font-size: 1rem;
+  
+  margin-left: .5rem;
+  transition: .2s ease-in-out;
+}
+
+.table thead th:hover span.icon-arrow{
+  border: 1.4px solid blue;
+}
+
 .table thead th:hover {
   color: blue;
+}
+
+.table thead th.active span.icon-arrow{
+  background-color: #6c00bd;
+  color: #fff;
+}
+
+.table thead th.asc span.icon-arrow{
+  transform: rotate(180deg);
+}
+
+.table thead th.active,tbody td.active {
+  color: #6c00bd;
 }
 
 .export__file {
@@ -258,6 +354,10 @@ left: 87%;
   transform: scale(1.15);
   cursor: pointer;
 }
+
+
+
+
 /* Extra small devices (phones, 600px and down) */
 @media (max-width: 600px) {
   .export__file {
@@ -281,6 +381,7 @@ left: 87%;
      
   }
 }
+
 
 /* Extra small devices (phones, 600px and down) */
 @media (max-width: 600px) {
@@ -307,14 +408,83 @@ form, input {
   box-shadow: none;
   appearance: none;
 }
-.input-div-new .div label {
-  display: block;
-  color: black;
-  text-align: left; /* Align the label text to the left */
-  width: 100px; /* Adjust the width of the label as needed */
-  font-size: 20px;
-  font-weight: 600;
+
+
+
+
+
+/* DETAILS CSS */
+
+
+/* DETAILS CSS */
+
+#details {
+  max-width: 1300px;
+  flex-direction: row; /* Items are displayed horizontally by default */
+  justify-content: space-between; /* Adjust as needed */
 }
+
+.details-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#details .entry-item .main-user-info {
+  display: flex;
+  flex-wrap: wrap;
+
+  padding: 20px 0;
+  width: 55%; /* Adjusted width */
+}
+
+#details .entry-item #chart {
+  display: flex;
+  flex-wrap: wrap;
+
+  padding: 20px 0;
+  width: 45%; /* Adjusted width */
+  height: 500px;
+margin-bottom: 10%;
+
+
+}
+
+#details .entry-item #chart .user-input-box{
+margin-left: 30%;
+}
+
+.utilizationRate{
+  font-weight: 400;
+}
+
+
+
+
+
+@media screen and (max-width: 768px) {
+  .details-container {
+    flex-direction: column;
+  }
+
+  #details .entry-item .main-user-info,
+  #details .entry-item #chart {
+    width: 100%; /* Change width to full width on smaller screens */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  #details .entry-item .main-user-info {
+    order: 1; /* Set the order to display above the chart */
+  }
+
+  #details .entry-item #chart {
+    order: 2; /* Set the order to display below the user info */
+    height: 300px;
+    margin-bottom: 20%;
+  }
+}
+
+
+
 
 /* DETAILS CSS */
 
@@ -354,6 +524,8 @@ form, input {
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 20px 0;
+
+
 }
 
 
@@ -362,9 +534,9 @@ form, input {
   .user-input-box {
     display: flex;
     flex-direction: column;
-    width: 48%; /* Adjust width */
+    width: 40%; /* Adjust width */
     margin-bottom: 15px;
-}
+  }
 
 .user-input-box label {
     margin-bottom: 5px;
@@ -397,6 +569,10 @@ form, input {
     box-sizing: border-box; /* Include padding and border in element's total width and height */
     background-color: #f8f9fa; /* Light grey background */
     font-size: 16px; /* Adjust font size */
+}
+
+.user-input::placeholder {
+  color: #999; /* Light grey placeholder text */
 }
 
 #update{
@@ -439,7 +615,7 @@ form, input {
   border: none;
   border-radius: 30px;
   color: #fff;
-  background: #007FFF;
+  background:#007FFF;
   transition: .2s ease-in-out;
 }
 
@@ -453,10 +629,14 @@ form, input {
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
+
+
+
 }
 
 .table-box {
   width: 47%;
+
   
 }
 
@@ -498,7 +678,6 @@ form, input {
   padding-bottom: 12px;
   border: none; /* Remove border */
 }
-
 .table-wrapper tr:hover {
   background-color: #ddd;
 }
@@ -559,7 +738,7 @@ form, input {
 
 
 .x {
-left: 70%;
+left: 90%;
   font-weight: 1000;
   position: fixed;
   overflow: hidden;
@@ -572,6 +751,84 @@ left: 70%;
 }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CARD CSS */
+
+
+
+
+
+
+
+/* Parent container to center the card */
+.container {
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 800px;
+  padding: 0 2rem;
+  text-align: center;
+  z-index: 10; 
+  transition: opacity 0.5s ease; 
+  height: auto; 
+  display: none;
+}
+
+
+.card {
+  width: 100%; 
+  max-width: 800px; 
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0.3em 0.3em 0.7em #00000015;
+  transition: border 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: rgb(250, 250, 250) 0.2em solid;
+  overflow: hidden;
+  margin-bottom: auto; 
+  margin-top: 2em;
+  margin-right: auto; 
+  margin-left: auto;
+}
+
+
 .login-content {
   display: flex;
   justify-content: center;
@@ -585,7 +842,29 @@ left: 70%;
   form {
       width: 100%; /* Adjusted width */
   }
+
+ 
+
+ 
 }
+
+@media screen and (max-width: 900px) {
+  .container {
+      grid-template-columns: 1fr;
+  }
+
+
+  .wave {
+      display: none;
+  }
+
+ 
+}
+
+
+
+
+
 
 .login-content h2{
 margin: 10px 0;
@@ -593,8 +872,107 @@ color: #333;
 text-transform: uppercase;
 font-size:2.0rem;
 }
+
+.login-content .input-div{
+position: relative;
+  display: grid;
+  grid-template-columns: 7% 93%;
+  margin: 25px 0;
+  padding: 5px 0;
+  width: 100%;
+  border-bottom: 2px solid #d9d9d9;
+
+
+}
+
+.login-content .input-div.one{
+margin-top: 0;
+}
+
+.i{
+color: #d9d9d9;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.i i{
+transition: .3s;
+}
+
+.input-div > div{
+  position: relative;
+height: 45px;
+}
+
+.input-div > div > h5{
+position: absolute;
+left: 10px;
+
+transform: translateY(-50%);
+color: #999;
+font-size: 18px;
+transition: .3s;
+}
+
+.input-div:before, .input-div:after{
+content: '';
+position: absolute;
+bottom: -2px;
+width: 0%;
+height: 2px;
+background-color: #007FFF;
+transition: .4s;
+}
+
+.input-div:before{
+right: 50%;
+}
+
+.input-div:after{
+left: 50%;
+}
+
+.input-div.focus:before, .input-div.focus:after {
+  content: "";  /* This is necessary for the pseudo-elements to be visible */
+  width: 50%;
+}
+
+
+.input-div.focus > div > h5{
+top: -5px;
+font-size: 15px;
+}
+.input-div .div {
+  position: relative;  /* Add this if necessary */
+}
+
+.input-div.focus > .i > i{
+color: #007FFF;
+}
+
+.input-div > div > input{
+position: absolute;
+left: 0;
+top: 0;
+width: calc(100% - 20px); /* Decrease the width of inputs */
+height: 100%;
+border: none;
+outline: none;
+background: none;
+padding: 0.5rem 0.7rem;
+font-size: 1.2rem;
+color: #555;
+font-weight: bolder;
+font-family: 'poppins', sans-serif;
+}
+
+.input-div.pass{
+margin-bottom: 4px;
+}
 .btn-add,
-.btn-cancel{
+.btn-cancel,
+.btn-signup{
     display: block;
     width: 100%;
     height: 46px;
@@ -626,6 +1004,20 @@ font-size:2.0rem;
 .btn-cancel {
     background-color: red;
 }
+.btn-signup{
+  background-image: linear-gradient(to right, #00AB66, #00AB66, #00AB66);
+}
+
+.btn:hover{
+background-position: right;
+}
+
+
+@media screen and (max-width: 1050px){
+.container{
+  grid-gap: 5rem;
+}
+}
 
 @media screen and (max-width: 1000px){
 form{
@@ -636,15 +1028,70 @@ form{
       font-size: 2.4rem;
       margin: 8px 0;
 }
+
+.img img{
+  width: 400px;
+}
 }
 
 @media screen and (max-width: 900px){
+.container{
+  grid-template-columns: 1fr;
+}
+
+.img{
+  display: none;
+}
+
+.wave{
+  display: none;
+}
 
 .login-content{
   justify-content: center;
 }
 }
 /* Add this style to hide the initial option */
+.select-hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.drop {
+  position: relative;
+  display: inline-block;
+    text-align: center;
+}
+
+#departmentInput {
+  padding-right: 30px; /* Leave space for the arrow icon */
+}
+
+#dropdownArrow {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+.entry-list {
+  list-style: none;
+  padding: 0;
+}
+
+
+.entry-item h2 {
+  margin-top: 0;
+  font-size: 28px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.entry-item strong {
+  color: #555;
+}
 
 .entry-item table {
   width: 100%;
@@ -672,9 +1119,142 @@ form{
   width: 30%;
 }
 
+.entry-item h2 {
+  font-size: 24px;
+  color: #555;
+}
+
+.button-container {
+  position: fixed; /* Fix the button at a specific position relative to the viewport */
+  bottom: 46px; /* Position it 20px from the bottom */
+  right: -340px; /* Position it 20px from the right */
+  z-index: 10; /* Ensure it's on top of other elements */
+}
+
+.inline-form {
+  display: inline-block;
+  margin: 0;
+}
+
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: #007FFF;
+}
+
+/* plus sign */
+.sign {
+  width: 100%;
+  transition-duration: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: white;
+}
+
+/* text */
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: .3s;
+}
+
+/* hover effect on button width */
+.Btn:hover {
+  width: 125px;
+  border-radius: 40px;
+  transition-duration: .3s;
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: .3s;
+  padding-left: 20px;
+}
+
+/* hover effect button's text */
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: .3s;
+  padding-right: 10px;
+}
+
+/* button click effect */
+.Btn:active {
+  transform: translate(2px ,2px);
+}
+
 .entry-item {
   text-align: left;
 }
+
+
+/* Base styles */
+button#search {
+width: 100%;
+font-size: 1.25rem; /* 20px */
+margin-right: auto;
+padding: 10px;
+}
+
+/* Media queries for different screen sizes */
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+button.status.delivered {
+    font-size: 1rem; /* 16px */
+    width: 80%;
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px to 768px) */
+@media (min-width: 600px) and (max-width: 768px) {
+button.status.delivered {
+    font-size: 1.125rem; /* 18px */
+    width: 70%;
+}
+}
+
+/* Medium devices (landscape tablets, 768px to 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+button.status.delivered {
+    font-size: 1.25rem; /* 20px */
+    width: 60%;
+}
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+button.status.delivered {
+    font-size: 1.5rem; /* 24px */
+    width: 50%;
+}
+}
+
+
 .title {
   /* Style your title to match the PROJECT DETAILS design */
   font-size: 24px;
@@ -684,6 +1264,11 @@ form{
 
 .input-div-new {
   margin-bottom: 15px;
+}
+
+.div h5 {
+  margin-bottom: 5px;
+  color: #666;
 }
 
 .input {
@@ -719,3 +1304,29 @@ form{
   font-size: 16px; /* Smaller font size */
   text-align: center; /* Centers the text within the button */
 }
+
+.input-div-new .div label {
+  display: block;
+  color: black;
+  text-align: left; /* Align the label text to the left */
+  width: 100px; /* Adjust the width of the label as needed */
+  font-size: 20px;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
