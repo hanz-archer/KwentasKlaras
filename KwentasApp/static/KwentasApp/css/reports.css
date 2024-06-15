@@ -201,22 +201,6 @@ body {
     padding: 0 24px;
 }
 
-.half-width-card {
-    flex: 1 1 calc(50% - 12px); /* Adjust width for two cards in a row */
-    box-sizing: border-box;
-    width: 30%; /* Adjust to fit two cards in a row, accounting for gap */
-    margin: 1%; /* Optional: Adds space between cards */
-    background: var(--light); /* Example background color */
-    border-radius: 8px; /* Example border radius */
-    padding: 16px; /* Example padding */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Example box shadow */
-    
-}
-
-.big-card {
-    flex: 1 1 100%; /* Make the big card span the entire width */
-    box-sizing: border-box;
-}
 
 .bottom-data {
     display: flex;
@@ -360,6 +344,7 @@ body {
     border-radius: 16px;
     padding: 16px;
     box-shadow: 0 4px 8px var(--grey);
+    flex: 1 1 100%;
 }
 
 .content main .bottom-data .card .header {
@@ -402,10 +387,18 @@ body {
         flex-direction: column;
     }
 
-    .half-width-card {
+    .left-column,
+    .right-column {
         flex: 1 1 100%;
     }
+
+    .half-width-card,
+    .big-card,
+    .card {
+        width: 100%;
+    }
 }
+
 
 @media screen and (max-width: 1024px) {
     .content main .bottom-data {
@@ -417,16 +410,16 @@ body {
 /* Adjustments for even smaller screens */
 @media screen and (max-width: 768px) {
     .content main .bottom-data {
-        grid-template-columns: 1fr; /* Ensure cards are stacked */
-        grid-gap: 16px; /* Reduce gap between cards */
+        grid-template-columns: 1fr;
+        grid-gap: 16px;
     }
 
     .content main .header h1 {
-        font-size: 28px; /* Smaller font size for the header */
+        font-size: 28px;
     }
 
     .content main .header .left ul.breadcrumb li a {
-        font-size: 14px; /* Smaller font size for breadcrumb */
+        font-size: 14px;
     }
 }
 
@@ -435,42 +428,34 @@ canvas {
     height: auto !important;
 }
 
-.modern-table {
+
+.left-column {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.right-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.half-width-card {
+    flex: 1 1 calc(50% - 12px);
+    box-sizing: border-box;
     width: 100%;
-    border-collapse: collapse; /* Ensures borders collapse into a single border */
-    background-color: var(--light); /* Background color for the table */
-    box-shadow: 0 4px 8px var(--grey); /* Adds shadow to the table */
-    border-radius: 16px; /* Rounds the corners of the table */
-    overflow: hidden; /* Ensures the rounded corners are visible */
+    margin: 0;
+    background: var(--light);
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.modern-table th,
-.modern-table td {
-    padding: 12px 15px; /* Adds spacing inside each table cell */
-    border-bottom: 1px solid var(--grey); /* Adds a light border to each cell */
-    text-align: left; /* Ensures text is aligned to the left */
-    font-size: 16px; /* Sets a base font size */
+.big-card {
+    box-sizing: border-box;
+    width: 100%;
+    margin-top: 0;
 }
 
-.modern-table th {
-    background-color: #e0e0e0; /* Light neutral background color for the table headers */
-    color: var(--dark); /* Header text color */
-    font-weight: 600; /* Makes header text bold */
-}
-
-.modern-table tbody tr {
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-}
-
-.modern-table tbody tr:hover {
-    background-color: var(--light-primary); /* Background color on row hover */
-}
-
-.modern-table tbody tr:last-child td {
-    border-bottom: none; /* Removes the border from the last row */
-}
-
-.modern-table td p {
-    margin: 0; /* Ensures paragraphs inside cells have no margin */
-    color: var(--dark); /* Text color */
-}
