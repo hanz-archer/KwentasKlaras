@@ -1,3 +1,4 @@
+{% load humanize %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -58,8 +59,8 @@
                 <li>
                     <i class='bx bx-money-withdraw'></i>
                     <span class="info">
-                        <h3></h3>
-                        <p><strong>Budget Utilization Rate</strong></p>
+                        <h3>{{ average_utilization|floatformat:"-2" }} %</h3>
+                        <p><strong>Overall Budget Utilization Rate</strong></p>
                     </span>
                 </li>
             </ul>
@@ -133,7 +134,7 @@
                         <h3>Overall Utilization Rate</h3>
                     </div>
                     {% if average_utilization %}
-                    <p>Average Utilization Rate: <span id="averageUtilization">{{ average_utilization }}</span>%</p>
+                    <p>Average Utilization Rate: <span id="averageUtilization">{{ average_utilization|floatformat:"-2" }}</span>%</p>
                     {% else %}
                     <p>Debug: No Average Utilization Found</p>
                     {% endif %}

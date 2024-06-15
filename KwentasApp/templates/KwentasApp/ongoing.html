@@ -1,8 +1,7 @@
-
-
+{%load humanize%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
     {% csrf_token %}
 <head>
     <meta charset="UTF-8">
@@ -149,7 +148,7 @@
                     </div>
                     <div class="user-input-box">
                         <label for="phoneNumber">Appropriation</label>
-                        <p id="phoneNumber" class="user-text">{{ entry.appropriation }}</p>
+                        <p id="phoneNumber" class="user-text">₱{{ entry.appropriation|intcomma }}</p>
                     </div>
                     <div class="user-input-box">
                         <label for="password">Remarks</label>
@@ -177,25 +176,25 @@
                     </div>
                     <div class="user-input-box">
                         <label for="totalBudget">Total Budget</label>
-                        <p id="totalBudget" class="user-text">{{ entry.total_budget }}</p>
+                        <p id="totalBudget" class="user-text">₱{{ entry.total_budget|intcomma }}</p>
                     </div>
                     <div class="user-input-box">
                         <label for="totalSpent">Total Spent</label>
-                        <p id="totalAddedBudget" class="user-text">{{ entry.total_spent }}</p>
+                        <p id="totalAddedBudget" class="user-text">₱{{ entry.total_spent|intcomma }}</p>
                        
                     </div>
                     <div class="user-input-box">
                         <label for="totalAddedBudget">Total Added Budget</label>
-                        <p id="totalSpent" class="user-text">{{ entry.added_budget }}</p>
+                        <p id="totalSpent" class="user-text">₱{{ entry.added_budget|intcomma }}</p>
                     </div>
                     <div class="user-input-box">
                         <label for="remainingBalance">Remaining Balance</label>
-                        <p id="remainingBalance" class="user-text">{{ entry.remaining_balance }}</p>
+                        <p id="remainingBalance" class="user-text">₱{{ entry.remaining_balance|intcomma }}</p>
                     </div>
                 </div>
                 <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
                     <div class="user-input-box">
-                        <label for="fullName">Utilization Rate: </label><span class="utilizationRate">{{ entry.utilization_rate }} %</span>
+                        <label for="fullName">Utilization Rate: </label><span class="utilizationRate">{{ entry.utilization_rate|floatformat:"-2" }} %</span>
                     </div>
                     <canvas class="pie-chart"></canvas>
                 </div>
@@ -217,7 +216,7 @@
                                 {% for budget in entry.budget_data %}
                                 <tr>
                                     <td>{{ budget.name }}</td>
-                                    <td>{{ budget.added_budget }}</td>
+                                    <td>₱{{ budget.added_budget|intcomma }}</td>
                                     <td>{{ budget.date }}</td>
                                 </tr>
                                 {% endfor %}
@@ -242,7 +241,7 @@
                                 <tr>
                                     <td>{{ obligation.name }}</td>
                                    
-                                    <td>{{ obligation.spent }}</td>
+                                    <td>₱{{ obligation.spent|intcomma }}</td>
                                     <td>{{ obligation.date }}</td>
                                 </tr>
                                 {% endfor %}
