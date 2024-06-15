@@ -53,7 +53,6 @@ body {
     padding: 0 24px;
 }
 
-
 .bottom-data {
     display: flex;
     flex-wrap: wrap;
@@ -154,18 +153,20 @@ body {
     color: var(--danger);
 }
 
-
 .content main .bottom-data {
     display: grid;
-    grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Display up to 3 cards per row */
+    grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Display up to 2 cards per row */
     grid-auto-rows: minmax(300px, auto); /* Adjust the row height */
     grid-gap: 24px;
     min-height: 300px;
     gap: 24px; /* Adjust gap between cards */
 }
 
-
 .content main .bottom-data .card.half-width-card {
+    grid-column: span 1; /* Ensure the card spans 1 column */
+}
+
+.content main .bottom-data .card.big-card {
     grid-column: span 2; /* Ensure the card spans 2 columns */
 }
 
@@ -182,13 +183,22 @@ body {
     color: var(--dark); /* Set text color */
     transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
 }
-.left-column .card:hover {
+.content main .bottom-data .card p{
+    align-self: center;
+}
+
+
+
+
+.content main .bottom-data .card:hover {
     transform: translateY(-5px); /* Move card up on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
 }
-.left-column .card:hover h3 {
+
+.content main .bottom-data .card:hover h3 {
     color: var(--primary); /* Change text color of h3 on hover */
 }
+
 .content main .bottom-data .card .header {
     display: flex;
     flex-direction: column;
@@ -196,12 +206,23 @@ body {
     justify-content: center;
     text-align: center;
     margin-bottom: 16px;
-    
 }
 
 .content main .bottom-data .card canvas {
     width: 100%;
     max-width: 700px;
+}
+
+@media screen and (max-width: 1600px) and (min-width: 1025px) {
+    .content main .bottom-data {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for screens between 1025px and 1600px */
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .content main .bottom-data {
+        grid-template-columns: 1fr; /* Stack cards vertically */
+    }
 }
 
 @media screen and (max-width: 1024px) {
@@ -221,14 +242,6 @@ body {
     }
 }
 
-
-@media screen and (max-width: 1024px) {
-    .content main .bottom-data {
-        grid-template-columns: 1fr; /* Stack cards vertically */
-    }
-}
-
-
 /* Adjustments for even smaller screens */
 @media screen and (max-width: 768px) {
     .content main .bottom-data {
@@ -245,7 +258,6 @@ canvas {
     width: 100% !important;
     height: auto !important;
 }
-
 
 .left-column {
     display: flex;
@@ -301,6 +313,30 @@ canvas {
     }
 }
 
+@media screen and (min-width: 770px) and (max-width: 1600px) {
+    .content main .bottom-data .card.half-width-card,
+    .content main .bottom-data .card.big-card {
+        grid-column: span 1; /* Ensure both cards span 1 column */
+        width: 100%; /* Ensure both cards take full width */
+        margin-left: auto; /* Reset any custom margin */
+    }
+}
+
+@media screen and (min-width: 1026px) and (max-width: 1600px) {
+    .content main .bottom-data .card.big-card {
+        grid-column: span 2; /* Ensure the big card spans 2 columns */
+        width: calc(145% + 24px); /* Adjusted width to avoid overlap */
+        margin-left: calc(-50% + 12px); /* Adjusted margin to center the big card */
+    }
+
+    .content main .bottom-data .card.half-width-card {
+        grid-column: span 1; /* Ensure the half-width card spans 1 column */
+        width: calc(50% - 12px); /* Adjusted width for the half-width card */
+    }
+}
+
+
+
 .user-list {
     list-style: none; /* Remove default list styles */
     padding: 0; /* Remove default padding */
@@ -335,12 +371,10 @@ canvas {
     box-sizing: border-box; /* Include padding and border in total width */
     font-size: 12px; /* Adjusted font size */
     margin-top: 5px; /* Spacing between label and input */
-}
+}   
+
 @media screen and (max-width: 768px) {
     .user-list {
         grid-template-columns: 1fr; /* Stack items vertically on smaller screens */
     }
 }
-
-
-

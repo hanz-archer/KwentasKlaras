@@ -10,6 +10,12 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/reports.css' %}">
     <title>Kwentas Klaras Reports</title>
+
+
+
+    <script src="index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -121,14 +127,23 @@
                     </div>
                 </div>
                 
-                
                 <div class="card">
                     <div class="header">
                         <i class='bx bx-pie-chart'></i>
                         <h3>Overall Utilization Rate</h3>
                     </div>
+                    {% if average_utilization %}
+                    <p>Average Utilization Rate: <span id="averageUtilization">{{ average_utilization }}</span>%</p>
+                    {% else %}
+                    <p>Debug: No Average Utilization Found</p>
+                    {% endif %}
                     <canvas id="myChart2" style="width:100%;max-width:700px"></canvas>
                 </div>
+                
+
+              
+
+
                 <div class="card">
                     <div class="header">
                         <i class='bx bx-pie-chart'></i>
@@ -141,25 +156,17 @@
 
         </main>
     </div>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector('.report').addEventListener('click', function () {
-                html2canvas(document.body).then(function (canvas) {
-                    var link = document.createElement('a');
-                    link.download = 'dashboard.png';
-                    link.href = canvas.toDataURL();
-                    link.click();
-                });
-            });
-        });
-    </script>
-    <script src="index.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+
+
+    
+ 
+
     <script>
         var xValues = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
         var yValues = [12, 19, 3, 5, 2, 3];
         var barColors = ["#b91d47", "#00aba9", "#2b5797", "#e8c3b9", "#1e7145", "#f09609"];
+    
         new Chart("myChart", {
             type: "pie",
             data: {
@@ -176,6 +183,7 @@
                 }
             }
         });
+    
         new Chart("myChart1", {
             type: "pie",
             data: {
@@ -192,22 +200,7 @@
                 }
             }
         });
-        new Chart("myChart2", {
-            type: "doughnut",
-            data: {
-                labels: xValues,
-                datasets: [{
-                    backgroundColor: barColors,
-                    data: yValues
-                }]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: "Projects by Department"
-                }
-            }
-        });
+    
         new Chart("myChart3", {
             type: "doughnut",
             data: {
@@ -224,7 +217,84 @@
                 }
             }
         });
+    
+        // New chart for overall utilization rate
+        document.addEventListener("DOMContentLoaded", function() {
+            var averageUtilization = document.getElementById("averageUtilization").textContent;
+            var utilizationValue = parseFloat(averageUtilization);
+    
+            var utilizationLabels = ["Utilized", "Available"];
+            var utilizationData = [utilizationValue, 100 - utilizationValue];
+            var utilizationColors = ["blue", "skyblue"];
+    
+            new Chart("myChart2", {
+                type: "doughnut",
+                data: {
+                    labels: utilizationLabels,
+                    datasets: [{
+                        backgroundColor: utilizationColors,
+                        data: utilizationData
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Overall Utilization Rate"
+                    }
+                }
+            });
+        });
     </script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector('.report').addEventListener('click', function () {
+                html2canvas(document.body).then(function (canvas) {
+                    var link = document.createElement('a');
+                    link.download = 'dashboard.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                });
+            });
+        });
+    </script>
+   
+  
+
+
+
+
+
 </body>
 
 </html>

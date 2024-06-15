@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 import firebase_admin
 from firebase_admin import credentials, db
-
+from django.contrib.auth.decorators import login_required
 import datetime
 import re
 
@@ -18,6 +18,7 @@ import re
 import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
+
 
 def create_entry(request):
     if request.method == 'POST':
@@ -32,7 +33,7 @@ def create_entry(request):
         code = request.POST.get('code')
         services = request.POST.get('services')
         year_str = request.POST.get('year')
-        
+
         # Validate required fields
         if not (ppa and implementing_unit and location and appropriation_str and start_date_str and end_date_str and code and services and year_str):
             return HttpResponse('<script>alert("All fields are required."); window.location.href = "/adddata";</script>', status=400)
@@ -76,6 +77,10 @@ def create_entry(request):
         # Set remaining balance equal to appropriation
         total_budget = appropriation
         remaining_balance = total_budget
+        total_spent = 0
+
+        # Calculate the utilization rate (initially 0 since total_spent is 0)
+        utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
 
         try:
             # Save project entry with code as the key
@@ -91,9 +96,10 @@ def create_entry(request):
                 "services": services,
                 "year": year_str,
                 "remaining_balance": remaining_balance,
-                "total_spent": 0,  # Set total spent default value to 0
+                "total_spent": total_spent,  # Set total spent default value to 0
                 "added_budget": 0,  # Set added budget default value to 0
-                "total_budget": total_budget
+                "total_budget": total_budget,
+                "utilization_rate": utilization_rate  # Include utilization rate
             })
             
             return HttpResponse('<script>alert("Successfully added"); window.location.href = "/adddata";</script>')
@@ -103,6 +109,10 @@ def create_entry(request):
     else:
         # Render the form for GET requests
         return render(request, 'KwentasApp/adddata.html')
+
+
+
+
 
 
 
@@ -137,19 +147,24 @@ def continuing_add_obligation(request):
             remaining_balance = total_budget - total_spent
 
             if remaining_balance < 0:
-                  return HttpResponse('<script>alert("Remaining Balance cant be negative. Add Budget if you wish to continue"); window.location.href = "/continuing_projects";</script>', status=404)
+                return HttpResponse('<script>alert("Remaining Balance cannot be negative. Add Budget if you wish to continue"); window.location.href = "/continuing_projects";</script>', status=404)
+
             # Push a new child node with a unique key for the obligation under the chosen entry
-            new_obligation_ref = database.child('Data').child(entry_key) .child('obligation').push({
+            new_obligation_ref = database.child('Data').child(entry_key).child('obligation').push({
                 'name': name,
                 'spent': spent,
                 'date': date
             })
 
-            # Update total spent under the entry
-            database.child('Data').child(entry_key) .update({"total_spent": total_spent})
+            # Update total spent and remaining balance under the entry
+            database.child('Data').child(entry_key).update({
+                "total_spent": total_spent,
+                "remaining_balance": remaining_balance
+            })
 
-            # Update remaining balance under the entry
-            database.child('Data').child(entry_key) .update({"remaining_balance": remaining_balance})
+            # Calculate and update utilization rate
+            utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
+            database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
             # Redirect back to the previous page
             return redirect(request.META.get('HTTP_REFERER', '/'))
@@ -157,7 +172,6 @@ def continuing_add_obligation(request):
             return HttpResponse(f"Error: {str(e)}", status=500)
     else:
         return HttpResponse("Method not allowed", status=405)
-
 
 
 
@@ -189,19 +203,24 @@ def ongoing_add_obligation(request):
             remaining_balance = total_budget - total_spent
 
             if remaining_balance < 0:
-                  return HttpResponse('<script>alert("Remaining Balance cant be negative. Add Budget if you wish to continue"); window.location.href = "/ongoing_projects";</script>', status=404)
+                return HttpResponse('<script>alert("Remaining Balance cannot be negative. Add Budget if you wish to continue"); window.location.href = "/ongoing_projects";</script>', status=404)
+
             # Push a new child node with a unique key for the obligation under the chosen entry
-            new_obligation_ref = database.child('Data').child(entry_key) .child('obligation').push({
+            new_obligation_ref = database.child('Data').child(entry_key).child('obligation').push({
                 'name': name,
                 'spent': spent,
                 'date': date
             })
 
-            # Update total spent under the entry
-            database.child('Data').child(entry_key) .update({"total_spent": total_spent})
+            # Update total spent and remaining balance under the entry
+            database.child('Data').child(entry_key).update({
+                "total_spent": total_spent,
+                "remaining_balance": remaining_balance
+            })
 
-            # Update remaining balance under the entry
-            database.child('Data').child(entry_key) .update({"remaining_balance": remaining_balance})
+            # Calculate and update utilization rate
+            utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
+            database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
             # Redirect back to the previous page
             return redirect(request.META.get('HTTP_REFERER', '/'))
@@ -279,13 +298,16 @@ def add_budget(request):
                 "remaining_balance": remaining_balance
             })
 
-            return redirect(request.META.get('HTTP_REFERER', '/')) # Redirect back to the main projects page after successful addition
+            # Calculate and update utilization rate
+            total_spent = entry_data.get('total_spent', 0)
+            utilization_rate = (total_spent / overall_budget) * 100 if overall_budget > 0 else 0
+            database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
+
+            return redirect(request.META.get('HTTP_REFERER', '/'))  # Redirect back to the main projects page after successful addition
         except Exception as e:
             return HttpResponse(f"Error: {str(e)}", status=500)
     else:
         return HttpResponse("Method not allowed", status=405)
-
-
 
 
 
@@ -316,8 +338,10 @@ def get_project_entries():
                 'total_spent': value.get('total_spent'),
                 'added_budget': value.get('added_budget'),
                 'total_budget': value.get('total_budget'),
-                'obligation': []  # Initialize obligation list
+                'obligation': [],  # Initialize obligation list
+                'utilization_rate': value.get('utilization_rate')  # Fetch utilization rate
             }
+
             # Check if obligation node exists
             if 'obligation' in value:
                 # Iterate over obligation items and append to entry's obligation list
@@ -327,7 +351,7 @@ def get_project_entries():
                         'spent': obligation_value.get('spent'),
                         'date': obligation_value.get('date')
                     })
-            
+
             # Fetch budget data for the current entry
             budget_data = database.child('Data').child(key).child('budget').get().val()
 
@@ -340,7 +364,7 @@ def get_project_entries():
                         'added_budget': budget_value.get('added_budget'),
                         'date': budget_value.get('date')
                     })
-            
+
             # Add entry to all_entries list
             all_entries.append(entry)
 
@@ -350,7 +374,9 @@ def get_project_entries():
                     entries_below_2024.append(entry)
                 else:
                     entries_2024_and_above.append(entry)
-    
+
+    print(f"All Entries: {all_entries}")  # Debugging statement
+
     return entries_below_2024, entries_2024_and_above, all_entries
 
 
@@ -704,3 +730,49 @@ def ongoing_delete_entry(request):
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/ongoing_projects";</script>', status=500)
     else:
         return redirect('ongoing_projects')
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def reports_view(request):
+    _, _, all_entries = get_project_entries()
+
+    total_utilization = 0
+    total_entries = 0
+
+    for entry in all_entries:
+        if 'utilization_rate' in entry and entry['utilization_rate'] is not None:
+            total_utilization += entry['utilization_rate']
+            total_entries += 1
+
+    average_utilization = total_utilization / total_entries if total_entries > 0 else 0
+
+    # Debugging statement to ensure average_utilization is calculated
+    print(f"Average Utilization: {average_utilization}")
+
+    return render(request, 'KwentasApp/reports.html', {
+        'average_utilization': average_utilization,
+    })
+
+
+
+
+
+
+

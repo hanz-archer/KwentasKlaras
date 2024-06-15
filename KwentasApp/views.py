@@ -49,9 +49,7 @@ def base_view(request):
     logout(request)
     return redirect(reverse('login'))
 
-@login_required
-def reports_view(request):
-    return render(request, 'KwentasApp/reports.html')
+
 
 @login_required
 def current_view(request):

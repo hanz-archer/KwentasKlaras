@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
     {% load static %}
@@ -14,8 +16,14 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <script src="https://kit.fontawesome.com/a81368914c.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    
+
+
         <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/ongoing.css' %}">
 </head>
+
 <body>
     <div class="overlay" id="overlay"></div>
     <main class="table" id="customers_table">
@@ -24,11 +32,15 @@
             
             <div class="input-group">
                 <form method="GET" action="{% url 'search_ongoing_projects' %}" >
-                    <input type="text" name="query" placeholder="Search Ongoing Projects...">    
+                    <input type="text" name="query" placeholder="Search Ongoing Projects...">
+               
             </div>
             <div class="export__file">
                 <button type="submit" class="export__file-btn">Search</button>
-            </form>            
+
+            </form>
+               
+             
             </div>
         </section>
         <section class="table__body">
@@ -46,7 +58,8 @@
                 <tbody>
                     {% if matched_entries_2024_and_above %}
                     {% for entry in matched_entries_2024_and_above %}
-                    <tr>  
+                    <tr>
+                        
                         <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                         <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                         <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
@@ -57,13 +70,17 @@
                         </td>
                         <td>  
                             <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p><br>
-                            <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>              
+                            <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+               
                         </td>
                     </tr>
                     {% endfor %}
                     {% else %}
                         {% for entry in entries_2024_and_above %}
-                        <tr>                     
+                    
+                   
+                        <tr>
+                        
                             <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                             <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                             <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
@@ -75,89 +92,118 @@
                             <td>  
                                 <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p><br>
                                 <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+    
+                            
+                            
+                            
+                            
                             </td>
                         </tr>
                         {% endfor %}
-                        {% endif %}                 
+                        {% endif %}
+                 
                 </tbody>
             </table>
         </section>
+
+
+
+      
         <div class="back">
             <a href="{% url 'homepage' %}">  <button  class="back-btn">Back</button></a>
-        </div>     
+
+
+           
+         
+        </div>
+
+
+
+      
     </main>
-
-
 <!-- DETAILS  -->
-    <div class="details" id="details">
-        <a href="{% url 'ongoing_projects' %}"> <p class="x" >X</p> </a>
-        <a href="{% url 'ongoing_projects' %}">
-            <h1 class="form-title">PROJECT DETAILS</h1> 
-        </a>
-<ul>
+<div class="details" id="details">
+    <a href="{% url 'ongoing_projects' %}">
+        <p class="x">X</p>
+    </a>
+    <a href="{% url 'ongoing_projects' %}">
+        <h1 class="form-title">PROJECT DETAILS</h1>
+    </a>
+    <ul>
         {% for entry in all_entries %}
         <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
-            <div class="main-user-info"  id="main-detail">
-                <div class="user-input-box">
-                    <label for="fullName">PPA</label>
-                    <p id="fullName" class="user-text"> {{ entry.ppa }} </p>
+            <div class="details-container">
+                
+                <div class="main-user-info" id="main-detail">
+                    <div class="user-input-box">
+                        <label for="fullName">PPA</label>
+                        <p id="fullName" class="user-text">{{ entry.ppa }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="username">Implementing Unit</label>
+                        <p id="username" class="user-text">{{ entry.implementing_unit }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="email">Location</label>
+                        <p id="email" class="user-text">{{ entry.location }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="phoneNumber">Appropriation</label>
+                        <p id="phoneNumber" class="user-text">{{ entry.appropriation }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="password">Remarks</label>
+                        <p id="password" class="user-text">{{ entry.remarks }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="confirmPassword">Start Date</label>
+                        <p id="confirmPassword" class="user-text">{{ entry.start_date }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="endDate">End Date</label>
+                        <p id="endDate" class="user-text">{{ entry.end_date }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="code">Code</label>
+                        <p id="code" class="user-text">{{ entry.code }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="services">Services</label>
+                        <p id="services" class="user-text">{{ entry.services }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="year">Year</label>
+                        <p id="year" class="user-text">{{ entry.year }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="totalBudget">Total Budget</label>
+                        <p id="totalBudget" class="user-text">{{ entry.total_budget }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="totalSpent">Total Spent</label>
+                        <p id="totalAddedBudget" class="user-text">{{ entry.total_spent }}</p>
+                       
+                    </div>
+                    <div class="user-input-box">
+                        <label for="totalAddedBudget">Total Added Budget</label>
+                        <p id="totalSpent" class="user-text">{{ entry.added_budget }}</p>
+                    </div>
+                    <div class="user-input-box">
+                        <label for="remainingBalance">Remaining Balance</label>
+                        <p id="remainingBalance" class="user-text">{{ entry.remaining_balance }}</p>
+                    </div>
                 </div>
-                <div class="user-input-box">
-                    <label for="username">Implementing Unit</label>
-                    <p id="username" class="user-text">{{ entry.implementing_unit }}</p></p>
+                <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
+                    <div class="user-input-box">
+                        <label for="fullName">Utilization Rate: </label><span class="utilizationRate">{{ entry.utilization_rate }} %</span>
+                    </div>
+                    <canvas class="pie-chart"></canvas>
                 </div>
-                <div class="user-input-box">
-                    <label for="email">Location</label>
-                    <p id="email" class="user-text"> {{ entry.location }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="phoneNumber">Appropriation</label>
-                    <p id="phoneNumber" class="user-text"> {{ entry.appropriation }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="password">Remarks</label>
-                    <p id="password" class="user-text">{{ entry.remarks }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="confirmPassword">Start Date</label>
-                    <p id="confirmPassword" class="user-text"> {{ entry.start_date }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="endDate">End Date</label>
-                    <p id="endDate" class="user-text"> {{ entry.end_date }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="code">Code</label>
-                    <p id="code" class="user-text">{{ entry.code }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="services">Services</label>
-                    <p id="services" class="user-text"> {{ entry.services }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="year">Year</label>
-                    <p id="year" class="user-text">{{ entry.year }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="totalBudget">Total Budget</label>
-                    <p id="totalBudget" class="user-text">{{ entry.total_budget }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="totalSpent">Total Spent</label>
-                    <p id="totalSpent" class="user-text">{{ entry.added_budget }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="totalAddedBudget">Total Added Budget</label>
-                    <p id="totalAddedBudget" class="user-text"> {{ entry.total_spent }}</p>
-                </div>
-                <div class="user-input-box">
-                    <label for="remainingBalance">Remaining Balance</label>
-                    <p id="remainingBalance" class="user-text">{{ entry.remaining_balance }}</p>
-                </div>
+                
             </div>
             <div class="tables-container">
                 <div class="table-box">
-                    <span class="table-title"> Added Budget</span>
+                    <span class="table-title">Added Budget</span>
                     <div class="table-wrapper">
                         <table>
                             <thead>
@@ -186,31 +232,33 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Date</th>
+                                   
                                     <th>Amount</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for obligation in entry.obligation %}
                                 <tr>
                                     <td>{{ obligation.name }}</td>
-                                    <td>{{ obligation.date }}</td>
+                                   
                                     <td>{{ obligation.spent }}</td>
+                                    <td>{{ obligation.date }}</td>
                                 </tr>
-                                {% endfor %}   
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-           
         </li>
         {% endfor %}
     </ul>
-    </div>
-    
+</div>
 
+    
 <!-- UPDATE -->
+ 
 <div class="details" id="update">
     <a href="{% url 'ongoing_projects' %}"> <p class="x">X</p> </a>
     <a href="{% url 'ongoing_projects' %}">
@@ -219,7 +267,9 @@
 
     {% for entry in all_entries %}
     <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post" onsubmit="handleSubmit(event)">
+
         {% csrf_token %}
+
         <input type="hidden" name="entry_code" value="{{ entry.code }}">
         <div class="main-user-info" id="main-update">
             <div class="user-input-box">
@@ -309,8 +359,11 @@
     </form>
     {% endfor %}
 </div>
+
+    
     
 <!-- BUDGET -->
+
 <div class="details" id="budget">
        
             <div class="login-content">
@@ -377,8 +430,6 @@
                 </form>
                 </div>
         </div>
-
-
 <!-- Delete -->
 <div class="details" id="delete">
             <div class="login-content">
@@ -397,7 +448,83 @@
             </form>
             </div>
     </div>
-    <script src="search.js"></script>
+
+
+
+
+
+<!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="search.js"></script>
+
+<!-- PIE CHART JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var chartContainers = document.querySelectorAll('.chart-container');
+
+        chartContainers.forEach(function(container) {
+            var utilizationRateElement = container.querySelector('.utilizationRate');
+            var utilizationRate = parseFloat(utilizationRateElement.textContent);
+            var remainingPercentage = 100 - utilizationRate;
+
+            var canvas = container.querySelector('.pie-chart');
+            var ctx = canvas.getContext('2d');
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Utilized', 'Remaining'],
+                    datasets: [{
+                        data: [utilizationRate, remainingPercentage],
+                        backgroundColor: [
+                            'rgba(0, 123, 255, 0.6)', // Utilized (blue)
+                            'rgba(135, 206, 235, 0.6)'  // Remaining (sky blue)
+                        ],
+                        borderColor: [
+                            'rgba(0, 123, 255, 1)',
+                            'rgba(135, 206, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Utilization Rate'
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+
     <!-- Details js-->
     <script>
         function showDetails(code) {
@@ -477,6 +604,7 @@
     }
 </script>
 
+
 <!-- Budget js -->
 <script>
     function showAddBudget(budget_code) {
@@ -516,6 +644,9 @@
     });
 </script>
 
+
+
+
 <!-- Obligation js -->
 <script>
     function showAddObligationForm(entryCode) {
@@ -554,6 +685,10 @@
         });
     });
 </script>
+
+
+
+
 
 <!-- Delete js -->
 <script>
@@ -609,5 +744,6 @@
 
         document.getElementById('overlay').addEventListener('click', hideOverlay);
 </script>
+
 </body>
 </html>

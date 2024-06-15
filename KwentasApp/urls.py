@@ -22,10 +22,13 @@ urlpatterns = [
     path('continuing_update_entry/', continuing_update_entry, name='continuing_update_entry'),
     path('continuing_delete_entry/', continuing_delete_entry, name='continuing_delete_entry'),
     path('ongoing_delete_entry/', ongoing_delete_entry, name='ongoing_delete_entry'),
+
+ 
+
     path('base/', views.base_view, name='base'),
     path('register/', views.registration_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
-    path('reports/', views.reports_view, name='reports'),
+    path('reports/', reports_view, name='reports'),
     path('procurements/', views.procurements, name='procurements'),
     path('ongoing/', views.ongoing, name='ongoing'),
     path('monitoring/', views.monitoring, name='monitoring'),
