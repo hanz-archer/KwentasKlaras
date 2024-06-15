@@ -327,13 +327,6 @@ body {
     gap: 24px; /* Adjust gap between cards */
 }
 
-@media screen and (max-width: 768px) {
-    .half-width-card {
-        width: 100%; /* Full width on smaller screens */
-        margin: 0 0 24px 0; /* Adjust margin for smaller screens */
-        flex: 1 1 100%; /* Full width on smaller screens */
-    }
-}
 
 .content main .bottom-data .card.half-width-card {
     grid-column: span 2; /* Ensure the card spans 2 columns */
@@ -345,8 +338,20 @@ body {
     padding: 16px;
     box-shadow: 0 4px 8px var(--grey);
     flex: 1 1 100%;
+    display: flex; /* Use flexbox for vertical centering */
+    flex-direction: column; /* Stack header and content vertically */
+    justify-content: center; /* Center content vertically */
+    text-decoration: none; /* Remove default underline for links */
+    color: var(--dark); /* Set text color */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
 }
-
+.left-column .card:hover {
+    transform: translateY(-5px); /* Move card up on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Add shadow on hover */
+}
+.left-column .card:hover h3 {
+    color: var(--primary); /* Change text color of h3 on hover */
+}
 .content main .bottom-data .card .header {
     display: flex;
     flex-direction: column;
@@ -434,6 +439,7 @@ canvas {
     flex: 1;
     flex-wrap: wrap;
     gap: 24px;
+    width: 50%;
 }
 
 .right-column {
@@ -443,19 +449,42 @@ canvas {
 }
 
 .half-width-card {
-    flex: 1 1 calc(50% - 12px);
+    flex: 1 1 calc(40% - 12px); /* Reduced the width */
     box-sizing: border-box;
-    width: 100%;
-    margin: 0;
-    background: var(--light);
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 40%; /* Reduced the width */
+    margin: 1%; /* Optional: Adds space between cards */
+    background: var(--light); /* Example background color */
+    border-radius: 8px; /* Example border radius */
+    padding: 16px; /* Example padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Example box shadow */
 }
 
 .big-card {
+    flex: 1 1 calc(75% - 24px); /* Expanded width */
     box-sizing: border-box;
-    width: 100%;
-    margin-top: 0;
+    width: calc(75% + 675px); /* Expanded width */
+    margin-left: calc(-25% - 220px); /* Adjust to move left */
+    background: var(--light); /* Example background color */
+    border-radius: 8px; /* Example border radius */
+    padding: 16px; /* Example padding */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Example box shadow */
+}
+
+@media screen and (max-width: 768px) {
+    .left-column, .right-column {
+        width: 100%; /* Full width for both columns on smaller screens */
+    }
+
+    .half-width-card {
+        flex: 1 1 calc(50% - 24px); /* Two cards per row */
+        width: calc(50% - 24px); /* Two cards per row */
+        margin: 0 0 24px 0; /* Adjusted margin for smaller screens */
+    }
+
+    .big-card {
+        flex: 1 1 100%; /* Full width on smaller screens */
+        width: 100%; /* Full width on smaller screens */
+        margin-left: 0; /* Reset margin for full width */
+    }
 }
 
