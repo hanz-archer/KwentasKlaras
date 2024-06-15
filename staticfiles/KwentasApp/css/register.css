@@ -12,14 +12,6 @@ body{
 
 }
 
-.wave{
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	height: 100%;
-	z-index: -1;
-}
-
 .container {
     position: absolute;
     top: 50%; /* Adjusted to center vertically */
@@ -53,10 +45,6 @@ form{
 	width: 360px;
 }
 
-.login-content img{
-    height: 100px;
-}
-
 .login-content h2{
 	margin: 15px 0;
 	color: #333;
@@ -71,10 +59,6 @@ form{
     margin: 25px 0;
     padding: 5px 0;
     border-bottom: 2px solid #d9d9d9;
-}
-
-.login-content .input-div.one{
-	margin-top: 0;
 }
 
 .i{
@@ -120,22 +104,8 @@ form{
 .input-div:after{
 	left: 50%;
 }
-
-.input-div.focus:before, .input-div.focus:after {
-    content: "";  /* This is necessary for the pseudo-elements to be visible */
-    width: 50%;
-}
-
-.input-div.focus > div > h5{
-	top: -5px;
-	font-size: 15px;
-}
 .input-div .div {
     position: relative;  /* Add this if necessary */
-}
-
-.input-div.focus > .i > i{
-	color: #007FFF;
 }
 
 .input-div > div > input{
@@ -151,10 +121,6 @@ form{
 	font-size: 1.2rem;
 	color: #555;
 	font-family: 'poppins', sans-serif;
-}
-
-.input-div.pass{
-	margin-bottom: 4px;
 }
 
 a{
@@ -239,19 +205,11 @@ a{
 		display: none;
 	}
 
-	.wave{
-		display: none;
-	}
-
 	.login-content{
 		justify-content: center;
 	}
 }
 /* Add this style to hide the initial option */
-.select-hidden {
-    display: none;
-    visibility: hidden;
-}
 
 .drop {
     position: relative;
@@ -292,10 +250,6 @@ a{
     z-index: 1;
 }
 
-.drop .content.show {
-    display: block;
-}
-
 .drop .content li {
     padding: 10px;
     cursor: pointer;
@@ -307,45 +261,5 @@ a{
     background: #f0f0f0;
 }
 
-
-
-
-
-   /* Navbar styles */
-   .navbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	background-color: #007FFF;
-	padding: 15px 30px;
-}
-
-.navbar-brand {
-	font-size: 24px;
-	color: #fff;
-	text-decoration: none;
-	font-weight: bold;
-}
-
-.navbar-nav {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	display: flex;
-}
-
-.navbar-nav li {
-	margin-left: 15px;
-}
-
-.navbar-nav li a {
-	color: #fff;
-	text-decoration: none;
-	font-size: 18px;
-}
-
-.navbar-nav li a:hover {
-	color: #f0f0f0;
-}
 
 
