@@ -27,6 +27,8 @@
                     <div class="div">
                         <h5>Account Username</h5>
                         <input type="text" name="username" class="input" required>
+                        <h6 id="usernameNote" style="display: none; margin-top: 55px; text-align: left; white-space: nowrap; color: #cc0000;">Note: Dont use username as your password.</h6>
+
                     </div>
                 </div>
                 <div class="input-div">
@@ -85,6 +87,7 @@
                     <div class="div">
                         <h5>Password</h5>
                         <input type="password" class="input password-input" name="password1" required>
+                        <h6 id="passwordNote" style="margin-top: 55px; white-space: nowrap;text-align: left; color: #cc0000;">Note: Password should not contain the username & email</h6>
                     </div>
                 </div>
                 <div class="input-div">
@@ -157,9 +160,9 @@
                         icon: 'success',
                         title: 'Account Created!',
                         text: 'Your account has been successfully created.',
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
+                        showConfirmButton: true, // Keep confirm button visible
+                        allowOutsideClick: false, // Prevent dismissing by clicking outside
+                        allowEscapeKey: false // Prevent dismissing by pressing Escape key
                     });
                 }
             });
@@ -226,6 +229,36 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const usernameInput = document.querySelector('input[name="username"]');
+            const password1Input = document.querySelector('input[name="password1"]');
+            const passwordNote = document.getElementById('passwordNote');
+    
+            // Initially hide the password note
+            passwordNote.style.display = 'none';
+    
+            usernameInput.addEventListener('focus', function() {
+                document.getElementById('usernameNote').style.display = 'block';
+            });
+    
+            usernameInput.addEventListener('blur', function() {
+                document.getElementById('usernameNote').style.display = 'none';
+            });
+    
+            password1Input.addEventListener('focus', function() {
+                // Show the password note only when the password input gains focus
+                passwordNote.style.display = 'block';
+            });
+    
+            password1Input.addEventListener('blur', function() {
+                // Hide the password note when the password input loses focus
+                passwordNote.style.display = 'none';
+            });
+        });
+
     </script>
 </body>
 </html>
