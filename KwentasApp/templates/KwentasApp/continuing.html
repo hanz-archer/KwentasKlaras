@@ -216,7 +216,7 @@
                             <tbody>
                                 {% for budget in entry.budget_data %}
                                 <tr>
-                                    <td>₱{{ budget.name|intcomma }}</td>
+                                    <td>{{ budget.name|intcomma }}</td>
                                     <td>₱{{ budget.added_budget|intcomma }}</td>
                                     <td>{{ budget.date }}</td>
                                 </tr>
