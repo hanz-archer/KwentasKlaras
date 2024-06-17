@@ -353,18 +353,22 @@
     <!-- Delete -->
     <div class="details" id="delete">
       <div class="login-content">
-        <form id="add-delete-form" action="{% url 'continuing_delete_entry' %}" method="post"> {% csrf_token %} <h2 class="title">Delete Project</h2>
+        <form id="deleteForm" action="{% url 'continuing_delete_entry' %}" method="post">
+          {% csrf_token %}
+          <h2 class="title">Delete Project</h2>
           <br>
           <br>
           <div class="input-div-new">
             <div class="div">
-              <label for="entry_code" style="white-space: nowrap;">Entry Code</label>
+              <label for="delete-code" style="white-space: nowrap;">Entry Code</label>
               <input type="text" name="entry_code" id="delete-code" readonly placeholder="1-121" class="input">
             </div>
           </div>
-          <button type="submit" class="btn-add" value="Submit">Delete</button>
+          <!-- No need for a submit button here -->
+          <button type="button" onclick="confirmDelete()" class="btn-add">Delete</button>
           <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
         </form>
+        
       </div>
     </div>
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
@@ -565,30 +569,26 @@
         document.getElementById('overlay').style.display = 'block';
       }
     </script>
-    <script>
-      // Sweeet Alert for Delete
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('add-delete-form').addEventListener('submit', function(event) {
-          event.preventDefault(); // Prevent form submission
-          // Show SweetAlert confirmation dialog
-          Swal.fire({
-            title: 'Are you sure?',
-            text: 'You are about to delete this entry!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#dc3545', // Red color for the confirm button
-            cancelButtonColor: '#28a745' // Green color for the cancel button
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // If user confirms, submit the form
-              event.target.submit();
-            }
-          });
-        });
+   <script>
+    function confirmDelete() {
+      // Show SweetAlert confirmation dialog
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // If user confirms deletion, submit the form
+          var form = document.getElementById('deleteForm');
+          form.submit();
+        }
       });
-    </script>
+    }
+  </script>     
     <script>
       function hideOverlay() {
         document.getElementById('overlay').style.display = 'none';

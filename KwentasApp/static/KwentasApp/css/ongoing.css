@@ -890,6 +890,10 @@ form{
   font-size: 20px;
   font-weight: 600;
 }
+.swal2-container {
+  z-index: 10000 !important; /* Ensure SweetAlert is on top */
+}
+
 
 
 
