@@ -119,19 +119,18 @@
         event.preventDefault(); // Prevent the form from submitting immediately
     
         // Display SweetAlert with a custom icon from static files
+
         Swal.fire({
-          title: 'Loading...',
-          text: 'Fetching data from realtime database.',
-          html: `
-            <div class="swal2-icon swal2-info swal2-icon-show" style="display: flex;">
-              <img src="{% static 'KwentasApp/img/download.gif' %}" style="width: 50px; height: 50px;" />
-            </div>
-            <p>Fetching data from database.</p>
-          `,
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
+            title: 'Loading...',
+            text: 'Fetching data from realtime database.',
+            html: `
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <img src="{% static 'KwentasApp/img/download.gif' %}" style="width: 100px; height: 100px;" />
+                </div>
+                <p>Fetching data from database.</p>
+            `,
+            allowOutsideClick: false,
+            showConfirmButton: false
         });
     
         // Save in session storage that SweetAlert was shown
@@ -231,20 +230,21 @@
     event.preventDefault(); // Prevent the default link action
 
     // Display SweetAlert with a custom icon from static files
-    Swal.fire({
-      html: `
-        <h2>Generating Report from database</h2>
-        <div class="swal2-icon swal2-info swal2-icon-show" style="display: flex; justify-content: center;">
-          <img src="{% static 'KwentasApp/img/printer.gif' %}" style="width: 50px; height: 50px; margin-top="20px" />
-        </div>
-         <p>Fetching data from database.</p>
-      `,
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-        sessionStorage.setItem('showingSweetAlert', 'true'); // Save in session storage that SweetAlert was shown
-      }
-    });
+
+      Swal.fire({
+          html: `
+              <h2>Generating Report from database</h2>
+              <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                <img src="{% static 'KwentasApp/img/printer.gif' %}" style="width: 100px; height: 100px; margin-bottom: 35px" />
+              </div>
+              <p>Fetching data from database.</p>
+          `,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+              sessionStorage.setItem('showingSweetAlert', 'true'); // Save in session storage that SweetAlert was shown
+          }
+      });
 
     // Navigate to the reports URL after a short delay
     const link = event.currentTarget; // Get the <a> element

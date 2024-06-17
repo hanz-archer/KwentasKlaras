@@ -101,6 +101,16 @@ form{
 	right: 50%;
 }
 
+.input-div.focus:before, .input-div.focus:after {
+    content: "";  /* This is necessary for the pseudo-elements to be visible */
+    width: 50%;
+}
+
+.input-div.focus > div > h5{
+	top: -5px;
+	font-size: 15px;
+}
+
 .input-div:after{
 	left: 50%;
 }
