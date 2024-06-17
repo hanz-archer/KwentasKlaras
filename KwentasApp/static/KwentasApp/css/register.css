@@ -144,6 +144,7 @@ a{
 
 
 .btn{
+	transition: transform 0.3s ease; /* Smooth transition */
 	display: block;
 	width: 100%;
 	height: 50px;
@@ -161,6 +162,7 @@ a{
 	transition: .5s;
 }
 .btn-cancel{
+	transition: transform 0.3s ease; /* Smooth transition */
 	display: block;
 	width: 100%;
 	height: 50px;
@@ -182,6 +184,10 @@ a{
 
 .btn:hover{
 	background-position: right;
+	transform: scale(1.15); /* Scale up on hover */
+}
+.btn-cancel:hover{
+	transform: scale(1.15); /* Scale up on hover */
 }
 
 
