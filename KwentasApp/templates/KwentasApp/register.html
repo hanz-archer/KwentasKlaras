@@ -86,8 +86,9 @@
                     </div>
                     <div class="div">
                         <h5>Password</h5>
-                        <input type="password" class="input password-input" name="password1" required>
-                        <h6 id="passwordNote" style="margin-top: 55px; white-space: nowrap;text-align: left; color: #cc0000;">Note: Password should not contain the username & email</h6>
+                        <input type="password" class="input password-input" id="password-input" name="password1" required>
+                        <h6 id="capsLockNote" style="display: none; margin-top: 55px; white-space: nowrap; text-align: left; color: #cc0000;">Caps Lock is ON</h6>
+                        <h6 id="passwordRuleNote" style="margin-top: 55px; white-space: nowrap; text-align: left; color: #cc0000;">Note: Password should not contain the username or email</h6>
                     </div>
                 </div>
                 <div class="input-div">
@@ -97,6 +98,7 @@
                     <div class="div">
                         <h5>Enter password again</h5>
                         <input type="password" class="input password-input" name="password2" required>
+                        <h6 id="capsLockNote2" style="display: none; margin-top: 55px; white-space: nowrap; text-align: left; color: #cc0000;">Caps Lock is ON</h6>
                     </div>
                 </div>
                 <input type="submit" class="btn" value="Submit">
@@ -231,34 +233,85 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const usernameInput = document.querySelector('input[name="username"]');
-            const password1Input = document.querySelector('input[name="password1"]');
-            const passwordNote = document.getElementById('passwordNote');
-    
-            // Initially hide the password note
-            passwordNote.style.display = 'none';
-    
-            usernameInput.addEventListener('focus', function() {
-                document.getElementById('usernameNote').style.display = 'block';
-            });
-    
-            usernameInput.addEventListener('blur', function() {
-                document.getElementById('usernameNote').style.display = 'none';
-            });
-    
-            password1Input.addEventListener('focus', function() {
-                // Show the password note only when the password input gains focus
-                passwordNote.style.display = 'block';
-            });
-    
-            password1Input.addEventListener('blur', function() {
-                // Hide the password note when the password input loses focus
-                passwordNote.style.display = 'none';
-            });
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password-input');
+        const capsLockNote = document.getElementById('capsLockNote');
+        const passwordRuleNote = document.getElementById('passwordRuleNote');
+
+        // Function to check if Caps Lock is on
+        function checkCapsLock(event) {
+            const capsLockOn = event.getModifierState && event.getModifierState('CapsLock');
+            capsLockNote.style.display = capsLockOn ? 'block' : 'none';
+            passwordRuleNote.style.display = capsLockOn ? 'none' : 'block';
+        }
+
+        // Hide the caps lock note and password rule note by default
+        capsLockNote.style.display = 'none';
+        passwordRuleNote.style.display = 'none';
+
+        // Event listener for keyup event on password input
+        passwordInput.addEventListener('keyup', function(event) {
+            checkCapsLock(event);
         });
 
-    </script>
+        // Event listener for keydown event on password input (for handling Caps Lock on page load)
+        passwordInput.addEventListener('keydown', function(event) {
+            checkCapsLock(event);
+        });
+
+        // Event listener for click event on password input to show password rule note
+        passwordInput.addEventListener('click', function() {
+            passwordRuleNote.style.display = 'block';
+        });
+
+        // Event listener for blur event on password input to hide password rule note
+        passwordInput.addEventListener('blur', function() {
+            passwordRuleNote.style.display = 'none';
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput1 = document.getElementById('password-input');
+        const capsLockNote1 = document.getElementById('capsLockNote');
+        const passwordInput2 = document.querySelector('input[name="password2"]');
+        const capsLockNote2 = document.getElementById('capsLockNote2');
+
+        // Function to check if Caps Lock is on for password1
+        function checkCapsLock1(event) {
+            const capsLockOn = event.getModifierState && event.getModifierState('CapsLock');
+            capsLockNote1.style.display = capsLockOn ? 'block' : 'none';
+        }
+
+        // Function to check if Caps Lock is on for password2
+        function checkCapsLock2(event) {
+            const capsLockOn = event.getModifierState && event.getModifierState('CapsLock');
+            capsLockNote2.style.display = capsLockOn ? 'block' : 'none';
+        }
+
+        // Hide the caps lock notes by default
+        capsLockNote1.style.display = 'none';
+        capsLockNote2.style.display = 'none';
+
+        // Event listeners for keyup and keydown events on password1
+        passwordInput1.addEventListener('keyup', function(event) {
+            checkCapsLock1(event);
+        });
+        passwordInput1.addEventListener('keydown', function(event) {
+            checkCapsLock1(event);
+        });
+
+        // Event listeners for keyup and keydown events on password2
+        passwordInput2.addEventListener('keyup', function(event) {
+            checkCapsLock2(event);
+        });
+        passwordInput2.addEventListener('keydown', function(event) {
+            checkCapsLock2(event);
+        });
+    });
+</script>
+
 </body>
 </html>

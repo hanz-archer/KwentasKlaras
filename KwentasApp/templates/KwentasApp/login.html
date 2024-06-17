@@ -24,7 +24,8 @@
                 </div>
                 <div class="div">
                     <h5>User ID</h5>
-                    <input type="text" class="input" name="username" required>
+                    <input type="text" class="input" id="username-input" name="username" required>
+                    <h6 id="userNote" style="margin-top: 55px; white-space: nowrap;text-align: left; color: #cc0000;">Caps Lock is ON</h6>
                 </div>
             </div>
             <div class="input-div pass">
@@ -34,6 +35,7 @@
                 <div class="div">
                     <h5>Password</h5>
                     <input type="password" class="input" id="password-input" name="password" required>
+                    <h6 id="passwordNote" style="margin-top: 55px; white-space: nowrap;text-align: left; color: #cc0000;">Caps Lock is ON</h6>
                 </div>
             </div>
             <input type="submit" class="btn" value="Login">
@@ -91,5 +93,57 @@
     });
 </script>
 {% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password-input');
+        const capsLockAlert = document.getElementById('passwordNote');
+
+        // Function to check if Caps Lock is on
+        function checkCapsLock(event) {
+            const capsLockOn = event.getModifierState && event.getModifierState('CapsLock');
+            capsLockAlert.style.display = capsLockOn ? 'block' : 'none';
+        }
+
+        // Hide the caps lock alert by default
+        capsLockAlert.style.display = 'none';
+
+        // Event listener for keyup event on password input
+        passwordInput.addEventListener('keyup', function(event) {
+            checkCapsLock(event);
+        });
+
+        // Event listener for keydown event on password input (for handling Caps Lock on page load)
+        passwordInput.addEventListener('keydown', function(event) {
+            checkCapsLock(event);
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const usernameInput = document.getElementById('username-input');
+        const userNote = document.getElementById('userNote');
+
+        // Function to check if Caps Lock is on
+        function checkCapsLock(event) {
+            const capsLockOn = event.getModifierState && event.getModifierState('CapsLock');
+            userNote.style.display = capsLockOn ? 'block' : 'none';
+        }
+
+        // Hide the caps lock alert by default
+        userNote.style.display = 'none';
+
+        // Event listener for keyup event on username input
+        usernameInput.addEventListener('keyup', function(event) {
+            checkCapsLock(event);
+        });
+
+        // Event listener for keydown event on username input (for handling Caps Lock on page load)
+        usernameInput.addEventListener('keydown', function(event) {
+            checkCapsLock(event);
+        });
+    });
+</script>
 </body>
 </html>
