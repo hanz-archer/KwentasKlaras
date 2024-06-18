@@ -39,4 +39,5 @@ urlpatterns = [
     path('ppa/', views.ppa, name='ppa'),
     path('addbudget/', views.addbudget, name='addbudget'),
     path('unset_just_logged_in/', unset_just_logged_in, name='unset_just_logged_in'),
+    path('forgot-passwprd/', views.forgotpassword, name="forgot-password"),
 ]

@@ -134,3 +134,7 @@ def ppa(request):
 @login_required
 def addbudget(request):
     return render(request, 'KwentasApp/addbudget.html')
+
+
+def forgotpassword(request):
+     return render(request, 'KwentasApp/forgot-password.html')
