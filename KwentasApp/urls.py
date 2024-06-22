@@ -39,5 +39,6 @@ urlpatterns = [
     path('ppa/', views.ppa, name='ppa'),
     path('addbudget/', views.addbudget, name='addbudget'),
     path('unset_just_logged_in/', unset_just_logged_in, name='unset_just_logged_in'),
-     path('forgot-password/', views.forgotpassword, name='forgot-password'),
+    path('forgot-password/', views.forgotpassword, name='forgot-password'),
+    path('send-verification-code/', views.send_verification_code, name='send_verification_code'),
 ]

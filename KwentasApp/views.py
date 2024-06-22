@@ -137,4 +137,36 @@ def addbudget(request):
 
 
 def forgotpassword(request):
+     if request.method == 'POST':
+        email = request.POST.get('email')
+        code = request.POST.get('code')
+        password = request.POST.get('password')
+        password2 = request.POST.get('password2')
      return render(request, 'KwentasApp/forgot-password.html')
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
+import random
+import string
+import json
+
+@csrf_exempt
+def send_verification_code(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        if email:
+            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            send_mail(
+                'Your Verification Code',
+                f'Your verification code is: {code}',
+                'kwentasklarasboljoon@gmail.com',  # Change to your "from" email address
+                [email],
+                fail_silently=False,
+            )
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False, 'error': 'Invalid email'}, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
