@@ -145,28 +145,59 @@ def forgotpassword(request):
      return render(request, 'KwentasApp/forgot-password.html')
 
 
-from django.shortcuts import render
+import logging
 from django.http import JsonResponse
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 import random
 import string
 import json
 
+logger = logging.getLogger(__name__)
+
 @csrf_exempt
 def send_verification_code(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        email = data.get('email')
-        if email:
-            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-            send_mail(
-                'Your Verification Code',
-                f'Your verification code is: {code}',
-                'kwentasklarasboljoon@gmail.com',  # Change to your "from" email address
-                [email],
-                fail_silently=False,
-            )
-            return JsonResponse({'success': True})
-        return JsonResponse({'success': False, 'error': 'Invalid email'}, status=400)
-    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            if email:
+                code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+                subject = 'Your Verification Code'
+                from_email = 'kwentasklarasboljoon@gmail.com'
+                text_content = f'Your verification code is: {code}'
+
+                try:
+                    html_content = render_to_string('KwentasApp/verification_email.html', {'code': code})
+                except Exception as e:
+                    logger.error(f'Error rendering email template: {str(e)}')
+                    return JsonResponse({'success': False, 'error': 'Error rendering email template.'}, status=500)
+
+                try:
+                    msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+                    logger.info(f'Verification code sent to {email}')
+                    return JsonResponse({'success': True, 'code': code})
+                except BadHeaderError:
+                    logger.error(f'Invalid header found when sending email to {email}')
+                    return JsonResponse({'success': False, 'error': 'Invalid header found.'}, status=400)
+                except Exception as e:
+                    logger.error(f'Error sending email to {email}: {str(e)}')
+                    return JsonResponse({'success': False, 'error': 'Error sending email.'}, status=500)
+            else:
+                logger.warning('No email provided in the request.')
+                return JsonResponse({'success': False, 'error': 'Invalid email'}, status=400)
+        except json.JSONDecodeError:
+            logger.warning('JSON decode error.')
+            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+        except Exception as e:
+            logger.error(f'Unexpected error: {str(e)}')
+            return JsonResponse({'success': False, 'error': 'Internal server error.'}, status=500)
+    else:
+        logger.warning('Invalid request method.')
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+
+
+
