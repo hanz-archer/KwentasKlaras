@@ -34,45 +34,40 @@
         <table class="table">
           <thead>
             <tr>
-              <th> PPA </th>
-              <th> Implementing Unit </th>
-              <th>Code </th>
-              <th> Year</th>
-              <th> Add </th>
+              <th>PPA</th>
+              <th>Implementing Unit</th>
+              <th>Code</th>
+              <th>Year</th>
+              <th>Add</th>
               <th>Action</th>
             </tr>
           </thead>
-          <tbody> {% if matched_entries_2024_and_above %} {% for entry in matched_entries_2024_and_above %} <tr>
-              <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-              <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-              <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-              <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-              <td>
-                <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
-                <br>
-                <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
-              </td>
-              <td>
-                <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                <br>
-                <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
-              </td>
-            </tr> {% endfor %} {% else %} {% for entry in entries_2024_and_above %} <tr>
-              <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-              <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-              <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-              <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-              <td>
-                <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
-                <br>
-                <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
-              </td>
-              <td>
-                <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                <br>
-                <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
-              </td>
-            </tr> {% endfor %} {% endif %} </tbody>
+          <tbody>
+            {% if page_obj %}
+              {% for entry in page_obj %}
+                <tr>
+                  <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                  <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                  <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                  <td>
+                    <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
+                    <br>
+                    <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
+                  </td>
+                  <td>
+                    <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
+                    <br>
+                    <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="6">No projects found.</td>
+              </tr>
+            {% endif %}
+          </tbody>
         </table>
       </section>
       <div class="back">
@@ -80,6 +75,29 @@
           <button class="back-btn">Back</button>
         </a>
       </div>
+
+      <div class="pagination">
+        <ul class="pagination-list">
+          {% if page_obj.has_previous %}
+            <li class="pagination-item"><a href="?page=1">&laquo; First</a></li>
+            <li class="pagination-item"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% else %}
+            <li class="pagination-item disabled"><span>&laquo; First</span></li>
+            <li class="pagination-item disabled"><span>Previous</span></li>
+          {% endif %}
+          
+          <li class="pagination-item active"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+          
+          {% if page_obj.has_next %}
+            <li class="pagination-item"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            <li class="pagination-item"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+          {% else %}
+            <li class="pagination-item disabled"><span>Next</span></li>
+            <li class="pagination-item disabled"><span>Last &raquo;</span></li>
+          {% endif %}
+        </ul>
+      </div>
+
     </main>
     <!-- DETAILS  -->
     <div class="details" id="details">

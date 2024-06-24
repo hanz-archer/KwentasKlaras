@@ -381,11 +381,16 @@ def get_project_entries():
 
 
 
-
+from django.core.paginator import Paginator
 def continuing_projects(request):
     entries_below_2024, _, all_entries = get_project_entries()
+
+    paginator = Paginator(entries_below_2024, 10)  # Show 10 projects per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'KwentasApp/continuing.html', {
-        'entries_below_2024': entries_below_2024,
+        'page_obj': page_obj,
         'all_entries': all_entries
     })
 
@@ -393,11 +398,15 @@ def continuing_projects(request):
 
 def ongoing_projects(request):
     _, entries_2024_and_above, all_entries = get_project_entries()
+    
+    paginator = Paginator(entries_2024_and_above, 10)  # Show 10 projects per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     return render(request, 'KwentasApp/ongoing.html', {
-        'entries_2024_and_above': entries_2024_and_above,
+        'page_obj': page_obj,
         'all_entries': all_entries
     })
-
 
 
 
