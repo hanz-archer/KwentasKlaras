@@ -41,4 +41,5 @@ urlpatterns = [
     path('unset_just_logged_in/', unset_just_logged_in, name='unset_just_logged_in'),
     path('forgot-password/', views.forgotpassword, name='forgot-password'),
     path('send-verification-code/', views.send_verification_code, name='send_verification_code'),
+    path('verify-and-change-password/', views.verify_and_change_password, name='verify_and_change_password'),
 ]

@@ -28,14 +28,17 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        logger.info(f'Attempting login for user: {username}')  # Add logging
+
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
+            logger.info(f'Successful login for user: {username}')
             login(request, user)
-            # Set the session flag after successful login
             request.session['just_logged_in'] = True
-            return redirect(reverse('homepage'))  # Redirect to homepage
+            return redirect(reverse('homepage'))
         else:
+            logger.warning(f'Invalid login attempt for user: {username}')
             error = 'Invalid credentials. Please try again.'
             return render(request, 'KwentasApp/login.html', {'error': error})
     return render(request, 'KwentasApp/login.html')
@@ -147,9 +150,11 @@ def forgotpassword(request):
 
 import logging
 from django.http import JsonResponse
-from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.template.loader import render_to_string
+from django.contrib.auth.hashers import make_password
+from .models import CustomUser  # Assuming you have a CustomUser model
 import random
 import string
 import json
@@ -178,8 +183,10 @@ def send_verification_code(request):
                     msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
+                    request.session['verification_code'] = code  # Store the code in the session
+                    request.session['email'] = email  # Store the email in the session
                     logger.info(f'Verification code sent to {email}')
-                    return JsonResponse({'success': True, 'code': code})
+                    return JsonResponse({'success': True})
                 except BadHeaderError:
                     logger.error(f'Invalid header found when sending email to {email}')
                     return JsonResponse({'success': False, 'error': 'Invalid header found.'}, status=400)
@@ -198,6 +205,71 @@ def send_verification_code(request):
     else:
         logger.warning('Invalid request method.')
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+
+import logging
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate
+from .models import CustomUser  # Assuming you have a CustomUser model
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+def verify_and_change_password(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+            code = data.get('code')
+            password = data.get('password')
+            stored_code = request.session.get('verification_code')
+
+            if code and code == stored_code and email == request.session.get('email'):
+                user = CustomUser.objects.get(email=email)
+                hashed_password = make_password(password)
+                user.password = hashed_password
+                user.save()
+
+                # Log the user password hash
+                logger.info(f'Password hash for user {email}: {hashed_password}')
+                
+                # Clear the session data
+                del request.session['verification_code']
+                del request.session['email']
+                
+                # Log successful password change
+                logger.info(f'Password changed for user: {email}')
+
+                # Attempt to log in the user with the new password
+                user = authenticate(username=user.username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return JsonResponse({'success': True})
+                else:
+                    logger.error(f'Authentication failed for user after password change: {email}')
+                    return JsonResponse({'success': False, 'error': 'Authentication failed after password change'}, status=400)
+            else:
+                logger.warning(f'Invalid code or email mismatch for user: {email}')
+                return JsonResponse({'success': False, 'error': 'Invalid code or email mismatch'}, status=400)
+        except json.JSONDecodeError:
+            logger.warning('JSON decode error during password change process.')
+            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
+        except CustomUser.DoesNotExist:
+            logger.error(f'User not found for email: {email}')
+            return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+        except Exception as e:
+            logger.error(f'Unexpected error during password change process: {str(e)}')
+            return JsonResponse({'success': False, 'error': 'Internal server error.'}, status=500)
+    else:
+        logger.warning('Invalid request method for password change.')
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+
+
+
+
+               
 
 
 
