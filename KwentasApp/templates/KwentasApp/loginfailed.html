@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwentas Klaras - Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<div class="container">
+    <div class="login-content">
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <img src="{% static 'KwentasApp/img/logo.png' %}" alt="User Avatar">
+            <h2 class="title">Login failed please try again later.</h2>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

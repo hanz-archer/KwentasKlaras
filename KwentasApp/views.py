@@ -265,6 +265,7 @@ def verify_and_change_password(request):
     else:
         logger.warning('Invalid request method for password change.')
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+    
 
 
 

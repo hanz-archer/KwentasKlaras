@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import CustomUser 
+from unfold.admin import ModelAdmin
 
-class CustomUserAdmin(UserAdmin):
+class CustomUserAdmin(ModelAdmin):
     list_display = ('username', 'email', 'department', 'is_staff')
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -19,4 +19,5 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+# Ensure the CustomUserAdmin class is defined before this line
 admin.site.register(CustomUser, CustomUserAdmin)
