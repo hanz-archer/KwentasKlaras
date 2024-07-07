@@ -382,29 +382,18 @@ def get_project_entries():
 
 
 from django.core.paginator import Paginator
-from django.core.cache import cache
-from datetime import timedelta
 
 def continuing_projects(request):
-    cache_key = 'continuing_projects_page_{}'.format(request.GET.get('page', 1))
-    cached_page = cache.get(cache_key)
-
-    if cached_page:
-        return cached_page
-
     entries_below_2024, _, all_entries = get_project_entries()
+
     paginator = Paginator(entries_below_2024, 10)  # Show 10 projects per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    response = render(request, 'KwentasApp/continuing.html', {
+    return render(request, 'KwentasApp/continuing.html', {
         'page_obj': page_obj,
-        'all_entries': all_entries,
-        'matched_entries_below_2024': True
+        'all_entries': all_entries
     })
-
-    cache.set(cache_key, response, timeout=timedelta(hours=1))  # Cache the response for 1 hour
-    return response
 
 
 
