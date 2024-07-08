@@ -378,3 +378,41 @@ canvas {
         grid-template-columns: 1fr; /* Stack items vertically on smaller screens */
     }
 }
+
+.btn {
+    padding: 0.9rem 1.9rem;  /* Increased padding */
+    background-color: #007FFF;
+    border: 2px solid #fafafa;
+    font-size: 1.1rem;  /* Increased font size */
+    color: white;
+    line-height: 1;
+    border-radius: 25px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 0;
+    transition: transform 0.3s ease;
+  }
+  
+  .btn:hover {
+    transform: scale(1.15); /* Scale up on hover */
+  }
+  
+  .sticky-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  @media (max-width: 480px) {
+    .sticky-btn {
+      bottom: 10px;
+      right: 10px;
+      padding: 0.6rem 1.2rem;  /* Adjusted padding for mobile */
+      font-size: 1rem;  /* Adjusted font size for mobile */
+    }
+  }
+  
+  
+  

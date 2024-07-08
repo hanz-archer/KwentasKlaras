@@ -264,6 +264,7 @@ left: 70%;
   position: absolute;
 bottom: 1%;
 left: 87%;
+z-index: 1100; /* Higher z-index than pagination */
  
 }
 
@@ -893,6 +894,91 @@ form{
 .swal2-container {
   z-index: 10000 !important; /* Ensure SweetAlert is on top */
 }
+
+.pagination {
+  text-align: center;
+  position: fixed;
+  bottom: -5px; /* Minimum distance from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  z-index: 1000;
+  padding: 10px 0;
+}
+
+.pagination-list {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
+}
+
+.pagination-item {
+  display: inline-block;
+  margin-right: 5px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.pagination-item a,
+.pagination-item span {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border: none;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.pagination-item a:hover,
+.pagination-item span:hover {
+  background-color: #ddd;
+  transform: scale(1.15);
+}
+
+.pagination-item.active span {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination-item.disabled span,
+.pagination-item.disabled a {
+  background-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .pagination {
+    padding: 5px 0; /* Reduce padding for smaller screens */
+    bottom: 30px; /* Adjust bottom spacing to prevent overlap with back button */
+    font-size: 14px; /* Reduce font size for pagination items */
+  }
+
+  .pagination-item a,
+  .pagination-item span {
+    padding: 6px 10px; /* Adjust padding for smaller links */
+  }
+
+  .back {
+    bottom: 2px; /* Adjust bottom spacing for the "Back" button */
+    left: 52%; /* Center horizontally */
+    transform: translateX(-50%);
+    z-index: 1100; /* Ensure back button is above pagination */
+  }
+
+  .back-btn {
+    width: 80px; /* Adjust width of the back button for smaller screens */
+    height: 32px; /* Adjust height of the back button for smaller screens */
+    font-size: 12px; /* Reduce font size of the back button for smaller screens */
+    line-height: 32px; /* Center text vertically in the smaller button */
+  }
+}
+
+
+
 
 
 

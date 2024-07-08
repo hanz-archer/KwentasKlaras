@@ -177,18 +177,6 @@ EMAIL_HOST_USER = 'kwentasklarasboljoon@gmail.com'
 EMAIL_HOST_PASSWORD = 'erzk qbyp jkmn cmxr'
 
 
-# settings.py
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
-
 
 
 

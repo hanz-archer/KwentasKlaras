@@ -382,7 +382,6 @@ def get_project_entries():
 
 
 from django.core.paginator import Paginator
-
 def continuing_projects(request):
     entries_below_2024, _, all_entries = get_project_entries()
 
