@@ -18,7 +18,7 @@
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-    <main class="table" id="customers_table">
+    <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
         <h1>Continuing Projects</h1>
         <div class="input-group">
@@ -32,59 +32,57 @@
       </section>
       <section class="table__body">
         <table class="table">
-          <thead>
-              <tr>
-                  <th> PPA </th>
-                  <th> Implementing Unit </th>
-                  <th> Code </th>
-                  <th> Year </th>
-                  <th> Add </th>
-                  <th> Action </th>
-              </tr>
-          </thead>
-          <tbody>
-              {% if matched_entries_below_2024 %}
-                  {% for entry in page_obj %}
-                      <tr>
-                          <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                          <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                          <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                          <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                          <td>
-                              <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
-                              <br>
-                              <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
-                          </td>
-                          <td>
-                              <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                              <br>
-                              <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
-                          </td>
-                      </tr>
-                  {% endfor %}
-              {% else %}
-                  {% for entry in page_obj %}
-                      <tr>
-                          <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                          <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                          <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                          <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                          <td>
-                              <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
-                              <br>
-                              <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
-                          </td>
-                          <td>
-                              <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                              <br>
-                              <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
-                          </td>
-                      </tr>
-                  {% endfor %}
-              {% endif %}
-          </tbody>
-      </table>
-  </section>
+            <thead>
+                <tr>
+                  <th class="left-align">PPA</th>
+                    <th>Implementing Unit</th>
+                    <th>Code</th>
+                    <th>Year</th>
+                    {% if request.user.is_superuser %}
+                        <th>Add</th>
+                        <th>Action</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in page_obj %}
+                    <tr>
+                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                        <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                        <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                        {% if request.user.is_superuser %}
+                            <td>
+                                <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
+                                <br>
+                                <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
+                            </td>
+                            <td>
+                                <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
+                                <br>
+                                <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+    {% if not request.user.is_superuser %}
+    <style>
+      .left-align {
+          text-align: left !important;
+      }
+  
+      .non-superuser .table th:nth-child(5), 
+      .non-superuser .table th:nth-child(6),
+      .non-superuser .table td:nth-child(5), 
+      .non-superuser .table td:nth-child(6) {
+          display: none;
+      }
+  </style>
+{% endif %}
+
   <div class="back">
       <a href="{% url 'homepage' %}">
           <button class="back-btn">Back</button>

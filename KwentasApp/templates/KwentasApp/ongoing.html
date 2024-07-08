@@ -18,7 +18,7 @@
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-    <main class="table" id="customers_table">
+    <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
         <h1>Ongoing Projects</h1>
         <div class="input-group">
@@ -34,12 +34,14 @@
         <table class="table">
           <thead>
             <tr>
-              <th>PPA</th>
+              <th class="left-align">PPA</th>
               <th>Implementing Unit</th>
               <th>Code</th>
               <th>Year</th>
-              <th>Add</th>
-              <th>Action</th>
+              {% if request.user.is_superuser %}
+                        <th>Add</th>
+                        <th>Action</th>
+                    {% endif %}
             </tr>
           </thead>
           <tbody>
@@ -70,6 +72,20 @@
           </tbody>
         </table>
       </section>
+      {% if not request.user.is_superuser %}
+      <style>
+        .left-align {
+            text-align: left !important;
+        }
+    
+        .non-superuser .table th:nth-child(5), 
+        .non-superuser .table th:nth-child(6),
+        .non-superuser .table td:nth-child(5), 
+        .non-superuser .table td:nth-child(6) {
+            display: none;
+        }
+    </style>
+  {% endif %}
       <div class="back">
         <a href="{% url 'homepage' %}">
           <button class="back-btn">Back</button>

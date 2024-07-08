@@ -97,14 +97,18 @@
             </div>
             <h3>Logged in as {{ user_name }}</h3>
             <p>
+              {% if user.is_superuser %}
               <form action="{% url 'admin:index' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn"><i class="fas fa-person"></i> Admin</button>
               </form>
+              {% endif %}
+              {% if user.is_superuser %}
               <form action="{% url 'register' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn"><i class="fas fa-add"></i> Add Account</button>
               </form>
+              {% endif %}
               <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
