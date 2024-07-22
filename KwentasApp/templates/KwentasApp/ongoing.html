@@ -45,6 +45,33 @@
             </tr>
           </thead>
           <tbody>
+
+
+            {% if  matched_entries_2024_and_above %}
+            {% for entry in  matched_entries_2024_and_above %}
+              <tr>
+                <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                {% if request.user.is_superuser %}
+                <td>
+                    <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
+                    <br>
+                    <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
+                </td>
+                <td>
+                    <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
+                    <br>
+                    <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+                </td>
+            {% endif %}
+              </tr>
+            {% endfor %}
+            {% else %}
+
+
+
             {% if page_obj %}
               {% for entry in page_obj %}
                 <tr>
@@ -69,9 +96,16 @@
                 <td colspan="6">No projects found.</td>
               </tr>
             {% endif %}
+            {% endif %}
           </tbody>
         </table>
       </section>
+
+
+
+
+
+
       {% if not request.user.is_superuser %}
       <style>
         .left-align {
