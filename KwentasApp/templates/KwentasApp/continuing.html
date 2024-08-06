@@ -50,7 +50,7 @@
             <tbody>
               {% if matched_entries_below_2024 %}
               {% for entry in matched_entries_below_2024 %}
-              <tr>
+              <tr style="cursor: pointer;">
                   <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                   <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
@@ -73,7 +73,7 @@
 
           {% if page_obj %}
                 {% for entry in page_obj %}
-                    <tr>
+                    <tr style="cursor: pointer;">
                         <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                         <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                         <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
@@ -267,7 +267,7 @@
                   <tbody> {% for obligation in entry.obligation %} <tr>
                       <td>{{ obligation.name }}</td>
                       <td>₱{{ obligation.spent|intcomma }}</td>
-                      <td>₱{{ obligation.date|intcomma }}</td>
+                      <td>{{ obligation.date}}</td>
                     </tr> {% endfor %} </tbody>
                 </table>
               </div>
