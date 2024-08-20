@@ -181,32 +181,44 @@
 {% if request.session.just_logged_in %}
 <script>
   // Function to display a SweetAlert message with dynamic greeting based on time
-  function showWelcomeMessage(userName) {
-      const now = new Date();
-      const hours = now.getHours();
-
-      let greeting = '';
-
-      if (hours >= 5 && hours < 12) {
-          greeting = 'Good Morning';
-      } else if (hours >= 12 && hours < 18) {
-          greeting = 'Good Afternoon';
-      } else {
-          greeting = 'Good Evening';
-      }
-
-      // Display the dynamic greeting message
-      Swal.fire({
-          icon: 'success',
-          title: `${greeting}, Welcome to Kwentas Klaras`,
-          text: `${userName}`,
-          timer: 3700, // Set the timer for the message to automatically disappear after 3 seconds
-          confirmButtonText: 'Proceed', // Change the text of the OK button to Proceed
-          customClass: {
-              confirmButton: 'green-btn' // Apply custom class to confirm button
-          }
-      });
+  const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end", // Position the toast at the top-left corner
+  showConfirmButton: false,
+  timer: 3700, // Timer for the message to automatically disappear after 3.7 seconds
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+  customClass: {
+    container: 'custom-toast-container' // Apply a custom class for further styling
   }
+});
+
+function showWelcomeMessage(userName) {
+  const now = new Date();
+  const hours = now.getHours();
+
+  let greeting = '';
+
+  if (hours >= 5 && hours < 12) {
+    greeting = 'Good Morning';
+  } else if (hours >= 12 && hours < 18) {
+    greeting = 'Good Afternoon';
+  } else {
+    greeting = 'Good Evening';
+  }
+
+  // Display the dynamic toast message
+  Toast.fire({
+    icon: 'success',
+    title: `${greeting}, Welcome to Kwentas Klaras`,
+    text: `${userName}`
+  });
+}
+
+
 
   // Update the clock every second
   function updateClock() {

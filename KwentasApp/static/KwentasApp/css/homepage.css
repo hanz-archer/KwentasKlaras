@@ -251,3 +251,8 @@ body.page-loaded {
   transform: translate(-50%, -50%);
   animation: reloadAnimation 2s linear infinite;
 }
+
+.custom-toast-container {
+  margin-right: 60px; /* Adjust the left margin as needed */
+}
+
