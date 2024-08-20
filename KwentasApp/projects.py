@@ -763,7 +763,7 @@ def reports_view(request):
     # Debugging statement to ensure average_utilization is calculated
     print(f"Average Utilization: {average_utilization}")
 
-    return render(request, 'KwentasApp/reports.html', {
+    return render(request, 'KwentasApp/stats.html', {
         'average_utilization': average_utilization,
     })
 
@@ -795,7 +795,7 @@ def all_projects(request):
                 search_query.lower() in str(entry['utilization_rate']).lower())
         ]
 
-    return render(request, 'KwentasApp/sampleword.html', {
+    return render(request, 'KwentasApp/projectreports.html', {
         'all_entries': all_entries,
         'search_query': search_query,
     })
@@ -897,3 +897,5 @@ def get_monthly_expenses_view(request):
 
 def samplechart(request):
     return render(request, 'KwentasApp/samplecharts.html')
+
+

@@ -58,14 +58,16 @@
             <form action="" method="get">
               <button type="submit" class="btn">Obligations</button>
             </form>
-            <p>
+         
               <form action="" method="get">
                 <button type="submit" class="btn">Disbursement</button>
               </form>
+              <form action="" method="get">
+                <button type="submit" class="btn">Check Payment</button>
+              </form>
              
-            </p>
-           <a href="{% url 'all_projects' %}" style="text-decoration: none;"> <button type="button" class="btn">Sample Word</button></a>
-           <a href="{% url 'samplechart' %}" style="text-decoration: none;"> <button type="button" class="btn">Chart</button></a>
+          
+          
           </div>
         </div>
         <div class="column">
@@ -79,19 +81,25 @@
             </p>
           </div>
         </div>
+
+
         <div class="column">
-          <a href="{% url 'reports' %}"  onclick="showLoadingAlertReports(event)" style="text-decoration: none;">
             <div class="card">
               <div class="icon-wrapper">
                 <i class="fas fa-chart-line"></i>
               </div>
               <h3>REPORTS</h3>
-              <p>
-                View Reports
-              </p>
+              
+        
+          <a href="{% url 'reports' %}"  onclick="showLoadingAlertReports(event)"  style="text-decoration: none;"> <button type="button" class="btn">Statistical Data</button></a>
+
+          <a href="{% url 'all_projects' %}"  onclick="showLoadingAlertReports(event)"  style="text-decoration: none;"> <button type="button" class="btn">Project</button></a>
+          
             </div>
-          </a>
+          
         </div>
+
+
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">

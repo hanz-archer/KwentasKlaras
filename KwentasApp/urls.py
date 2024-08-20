@@ -46,7 +46,6 @@ urlpatterns = [
 
 
 path(' samplechart/',  samplechart, name='samplechart'),
-
   path('api/get_monthly_expenses/', get_monthly_expenses_view, name='get_monthly_expenses'),
         path('all-projects/', all_projects, name='all_projects'),
        
