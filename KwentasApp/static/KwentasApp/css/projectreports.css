@@ -448,7 +448,10 @@ canvas {
     }
 }
 
-
+.list{
+    max-height: 400px;
+    overflow-y: scroll;
+}
 
 .user-list {
     list-style: none; /* Remove default list styles */

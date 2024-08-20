@@ -30,9 +30,11 @@
               <form action="{% url 'ongoing_projects' %}" method="get" onsubmit="showLoadingAlert(event)">
                 <button type="submit" class="btn"><i class="fas fa-table"></i> Current </button>
               </form>
+              {% if request.user.is_superuser %}
               <form action="{% url 'adddata' %}" method="get">
                 <button type="submit" class="btn"><i class="fas fa-search"></i> Add Data</button>
               </form>
+              {% endif %}
             </p>
           </div>
         </div>
@@ -91,9 +93,9 @@
               <h3>REPORTS</h3>
               
         
-          <a href="{% url 'reports' %}"  onclick="showLoadingAlertReports(event)"  style="text-decoration: none;"> <button type="button" class="btn">Statistical Data</button></a>
+          <a href="{% url 'reports' %}"  onclick="showLoadingAlertReports(event)"  style="text-decoration: none;"> <button type="button" class="btn">Dashboard</button></a>
 
-          <a href="{% url 'all_projects' %}"  onclick="showLoadingAlertReports(event)"  style="text-decoration: none;"> <button type="button" class="btn">Project</button></a>
+          <a href="{% url 'all_projects' %}"  onclick="showLoadingAlertReports(event)"  style="text-decoration: none;"> <button type="button" class="btn">Project Reports</button></a>
           
             </div>
           

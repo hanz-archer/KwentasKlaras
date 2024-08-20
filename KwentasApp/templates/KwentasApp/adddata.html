@@ -154,47 +154,7 @@
     <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
 
     <script>
-        document.getElementById('dataForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the form from submitting the usual way
-
-        let isValid = true;
-        const fields = document.querySelectorAll('.input-div input');
-        fields.forEach(field => {
-            if (field.value.trim() === '') {
-                isValid = false;
-            }
-        });
-
-        if (isValid) {
-            // Display the SweetAlert
-            Swal.fire({
-                title: 'Submit Data?',
-                text: "Are you sure you want to submit this data?",
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Submit'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Submit the form programmatically if user confirms
-                    this.submit();
-                    Swal.fire(
-                        'Submitted!',
-                        'Your data has been submitted.',
-                        'success'
-                    );
-                }
-            });
-        } else {
-            // If form has empty fields, show an error
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Please fill out all required fields!'
-            });
-        }
-    });
+    
 
 
     document.getElementById('cancelButton').addEventListener('click', function(event) {

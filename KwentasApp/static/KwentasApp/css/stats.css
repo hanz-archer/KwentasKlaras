@@ -302,6 +302,53 @@ canvas {
 }
 
 
+.list{
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.user-list {
+    list-style: none; /* Remove default list styles */
+    padding: 0; /* Remove default padding */
+    display: grid; /* Use grid layout */
+    grid-template-columns: repeat(2, 1fr); /* One column */
+    gap: 15px; /* Gap between items */
+}
+
+.user-input-box {
+    background-color: #ffffff; /* White background */
+    border-radius: 7px;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Padding around the input box */
+    box-sizing: border-box; /* Include padding and border in total width */
+    width: 100%; /* Full width */
+}
+
+.user-input-box label {
+    display: block;
+    margin-bottom: 5px;
+    color: black;
+    font-size: 14px; /* Adjusted font size */
+    font-weight: 600;
+}
+
+.user-input-box .user-text {
+    height: 24px; /* Adjusted height for the text input */
+    width: 100%; /* Full width */
+    border-radius: 7px;
+    outline: none;
+    padding: 6px; /* Padding inside the input box */
+    box-sizing: border-box; /* Include padding and border in total width */
+    font-size: 12px; /* Adjusted font size */
+    margin-top: 5px; /* Spacing between label and input */
+    margin-bottom: 5px;
+}   
+
+@media screen and (max-width: 768px) {
+    .user-list {
+        grid-template-columns: 1fr; /* Stack items vertically on smaller screens */
+    }
+}
 @media screen and (max-width: 768px) {
     .user-list {
         grid-template-columns: 1fr; /* Stack items vertically on smaller screens */
