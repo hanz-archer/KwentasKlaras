@@ -47,18 +47,18 @@
                         <p><strong>Monthly Expense Tracking</strong></p>
                     </span>
                 </li>
-                <li onclick="showCard('below')">
-                    <i class='bx bx-check-circle'></i>
-                    <span class="info">
-                        <h3></h3>
-                        <p><strong>Projects Below 50% Utilization Rate</strong></p>
-                    </span>
-                </li>
                 <li onclick="showCard('above')">
                     <i class='bx bx-check'></i>
                     <span class="info">
                         <h3></h3>
                         <p><strong>Projects Above 50% Utilization Rate</strong></p>
+                    </span>
+                </li>
+                <li onclick="showCard('below')">
+                    <i class='bx bx-check-circle'></i>
+                    <span class="info">
+                        <h3></h3>
+                        <p><strong>Projects Below 50% Utilization Rate</strong></p>
                     </span>
                 </li>
             </ul>
@@ -91,7 +91,22 @@
                         <i class='bx bx-line-chart'></i>
                         <h3>Projects Below 50% Utilization Rate</h3>
                     </div>
-                    <canvas id="expenseChart" width="400" height="150"></canvas>
+                  
+                    <div id="project-list" class="project-list">
+                       
+                      
+                        {% for entry in below_50_utilization %}
+                            <div class="project-item">
+                                <div class="project-entry" onclick="selectProject('{{ entry.code }}')">
+                                    <h2>Project Code: {{ entry.code }}</h2>
+                                    <p><strong>PPA:</strong> {{ entry.ppa }}</p>
+                                    <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate }}%</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        
+                           
+                    </div>
                 </div>
     
                 <div class="card" id="above">
@@ -99,7 +114,15 @@
                         <i class='bx bx-line-chart'></i>
                         <h3>Projects Above 50% utilization Rate</h3>
                     </div>
-                    <canvas id="expenseChart" width="400" height="150"></canvas>
+                    {% for entry in above_50_utilization %}
+                            <div class="project-item">
+                                <div class="project-entry" onclick="selectProject('{{ entry.code }}')">
+                                    <h2>Project Code: {{ entry.code }}</h2>
+                                    <p><strong>PPA:</strong> {{ entry.ppa }}</p>
+                                    <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate }}%</p>
+                                </div>
+                            </div>
+                        {% endfor %}
                 </div>
             </div>
         </main>

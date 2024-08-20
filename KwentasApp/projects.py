@@ -122,14 +122,25 @@ def adddata(request):
 
 
 
+
 def continuing_add_obligation(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry-code')
         name = request.POST.get('obligation_name')
-        spent = float(request.POST.get('obligation_spent', 0))
+        spent_input = request.POST.get('obligation_spent', '0')
         date = request.POST.get('obligation_date')
 
         try:
+            # Remove any commas or spaces from the input
+            spent_cleaned = re.sub(r'[,\s]', '', spent_input)
+
+            # Validate that the cleaned input is a valid number
+            if not re.match(r'^\d+(\.\d{1,2})?$', spent_cleaned):
+                return HttpResponse('<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "/continuing_projects";</script>', status=400)
+            
+            # Convert the cleaned and validated string to a float
+            spent = float(spent_cleaned)
+            
             entry_ref = database.child('Data').child(entry_key)  # Assigning database child to entry_ref
 
             # Get data for the entry
@@ -177,15 +188,24 @@ def continuing_add_obligation(request):
 
 
 
-
 def ongoing_add_obligation(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry-code')
         name = request.POST.get('obligation_name')
-        spent = float(request.POST.get('obligation_spent', 0))
+        spent_input = request.POST.get('obligation_spent', '0')
         date = request.POST.get('obligation_date')
 
         try:
+            # Remove any commas or spaces from the input
+            spent_cleaned = re.sub(r'[,\s]', '', spent_input)
+
+            # Validate that the cleaned input is a valid number
+            if not re.match(r'^\d+(\.\d{1,2})?$', spent_cleaned):
+                return HttpResponse('<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "/ongoing_projects";</script>', status=400)
+            
+            # Convert the cleaned and validated string to a float
+            spent = float(spent_cleaned)
+            
             entry_ref = database.child('Data').child(entry_key)  # Assigning database child to entry_ref
 
             # Get data for the entry
@@ -228,6 +248,7 @@ def ongoing_add_obligation(request):
             return HttpResponse(f"Error: {str(e)}", status=500)
     else:
         return HttpResponse("Method not allowed", status=405)
+
 
 
 
@@ -753,10 +774,20 @@ def reports_view(request):
     total_utilization = 0
     total_entries = 0
 
+    below_50_utilization = []
+    above_50_utilization = []
+
     for entry in all_entries:
         if 'utilization_rate' in entry and entry['utilization_rate'] is not None:
-            total_utilization += entry['utilization_rate']
+            utilization_rate = entry['utilization_rate']
+            total_utilization += utilization_rate
             total_entries += 1
+            
+            # Categorize projects based on utilization rate
+            if utilization_rate < 50:
+                below_50_utilization.append(entry)
+            else:
+                above_50_utilization.append(entry)
 
     average_utilization = total_utilization / total_entries if total_entries > 0 else 0
 
@@ -765,7 +796,10 @@ def reports_view(request):
 
     return render(request, 'KwentasApp/stats.html', {
         'average_utilization': average_utilization,
+        'below_50_utilization': below_50_utilization,
+        'above_50_utilization': above_50_utilization,
     })
+
 
 
 

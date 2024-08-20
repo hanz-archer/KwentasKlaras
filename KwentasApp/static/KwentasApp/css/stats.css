@@ -302,47 +302,34 @@ canvas {
 }
 
 
-.list{
+.project-list {
     max-height: 400px;
     overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping of items to the next line */
+    gap: 20px; /* Space between items */
+    
 }
 
-.user-list {
-    list-style: none; /* Remove default list styles */
-    padding: 0; /* Remove default padding */
-    display: grid; /* Use grid layout */
-    grid-template-columns: repeat(2, 1fr); /* One column */
-    gap: 15px; /* Gap between items */
+.project-item {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    margin-bottom: 20px; /* Space between project items */
+    padding: 10px;
+    border: 1px solid #ccc; /* Optional border for visibility */
+    border-radius: 5px;
+    width: 48%; /* Set width to 48% to allow two items per row, accounting for gap */
+    background-color: #f9f9f9; /* Light background for each item */
+    cursor: pointer;
 }
 
-.user-input-box {
-    background-color: #ffffff; /* White background */
-    border-radius: 7px;
-    border: 1px solid #ccc; /* Light grey border */
-    padding: 10px; /* Padding around the input box */
-    box-sizing: border-box; /* Include padding and border in total width */
-    width: 100%; /* Full width */
-}
 
-.user-input-box label {
-    display: block;
-    margin-bottom: 5px;
-    color: black;
-    font-size: 14px; /* Adjusted font size */
-    font-weight: 600;
-}
 
-.user-input-box .user-text {
-    height: 24px; /* Adjusted height for the text input */
-    width: 100%; /* Full width */
-    border-radius: 7px;
-    outline: none;
-    padding: 6px; /* Padding inside the input box */
-    box-sizing: border-box; /* Include padding and border in total width */
-    font-size: 12px; /* Adjusted font size */
-    margin-top: 5px; /* Spacing between label and input */
-    margin-bottom: 5px;
-}   
+
+.project-entry h2, .project-entry p {
+    margin: 0;
+    padding: 5px 0; 
+}
 
 @media screen and (max-width: 768px) {
     .user-list {
