@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Expense Tracking</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Monthly Expense Tracking</h1>
+    <canvas id="expenseChart" width="200" height="50"></canvas>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Fetch data from the backend API
+            fetch('/api/get_monthly_expenses/')  // Adjust the URL based on your API endpoint
+                .then(response => response.json())
+                .then(monthlyExpenses => {
+                    // Convert the month labels from "2024-01" to "January 2024"
+                    const monthNames = ["January", "February", "March", "April", "May", "June", 
+                                        "July", "August", "September", "October", "November", "December"];
+        
+                    // Get an array of year-month pairs, sorted by year and month
+                    const sortedMonths = Object.keys(monthlyExpenses).sort((a, b) => new Date(a) - new Date(b));
+        
+                    // Convert the sorted year-month keys to human-readable labels
+                    const labels = sortedMonths.map(date => {
+                        const [year, month] = date.split('-');
+                        return `${monthNames[parseInt(month) - 1]} ${year}`;
+                    });
+        
+                    // Map the sorted months to their corresponding expense values
+                    const data = sortedMonths.map(date => monthlyExpenses[date]);
+        
+                    const ctx = document.getElementById('expenseChart').getContext('2d');
+                    const expenseChart = new Chart(ctx, {
+                        type: 'line',  // You can choose other types like 'bar'
+                        data: {
+                            labels: labels,  // Months in words
+                            datasets: [{
+                                label: 'Total Spent',
+                                data: data,  // Expenses
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+        </script>
+        
+</body>
+</html>

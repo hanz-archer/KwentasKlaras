@@ -746,18 +746,6 @@ def ongoing_delete_entry(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 @login_required
 def reports_view(request):
     _, _, all_entries = get_project_entries()
@@ -783,5 +771,129 @@ def reports_view(request):
 
 
 
+def all_projects(request):
+    _, _, all_entries = get_project_entries()  # Fetch all project entries
+
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        all_entries = [
+            entry for entry in all_entries 
+            if (search_query.lower() in str(entry['ppa']).lower() or
+                search_query.lower() in str(entry['implementing_unit']).lower() or
+                search_query.lower() in str(entry['location']).lower() or
+                search_query.lower() in str(entry['appropriation']).lower() or
+                search_query.lower() in str(entry['remarks']).lower() or
+                search_query.lower() in str(entry['start_date']).lower() or
+                search_query.lower() in str(entry['end_date']).lower() or
+                search_query.lower() in str(entry['code']).lower() or
+                search_query.lower() in str(entry['services']).lower() or
+                search_query.lower() in str(entry['remaining_balance']).lower() or
+                search_query.lower() in str(entry['total_spent']).lower() or
+                search_query.lower() in str(entry['added_budget']).lower() or
+                search_query.lower() in str(entry['total_budget']).lower() or
+                search_query.lower() in str(entry['utilization_rate']).lower())
+        ]
+
+    return render(request, 'KwentasApp/sampleword.html', {
+        'all_entries': all_entries,
+        'search_query': search_query,
+    })
 
 
+  
+
+from django.http import HttpResponse
+from docx import Document
+from io import BytesIO
+
+def download_word(request, project_code):
+    # Fetch the specific project entry based on the project code
+    _, _, all_entries = get_project_entries()  # Fetch all project entries
+    selected_entry = None
+    
+    for entry in all_entries:
+        if entry['code'] == project_code:
+            selected_entry = entry
+            break
+
+    if not selected_entry:
+        return HttpResponse("Project not found", status=404)
+
+    # Create a Word document
+    doc = Document()
+    doc.add_heading(f"Project Code: {selected_entry['code']}", level=1)
+    
+    # Add all relevant project details
+    doc.add_paragraph(f"Year: {selected_entry['year']}")
+    doc.add_paragraph(f"PPA: {selected_entry['ppa']}")
+    doc.add_paragraph(f"Implementing Unit: {selected_entry['implementing_unit']}")
+    doc.add_paragraph(f"Location: {selected_entry['location']}")
+    doc.add_paragraph(f"Appropriation: {selected_entry['appropriation']}")
+    doc.add_paragraph(f"Start Date: {selected_entry['start_date']}")
+    doc.add_paragraph(f"End Date: {selected_entry['end_date']}")
+    doc.add_paragraph(f"Remarks: {selected_entry['remarks']}")
+    doc.add_paragraph(f"Remaining Balance: {selected_entry['remaining_balance']}")
+    doc.add_paragraph(f"Total Spent: {selected_entry['total_spent']}")
+    doc.add_paragraph(f"Added Budget: {selected_entry['added_budget']}")
+    doc.add_paragraph(f"Total Budget: {selected_entry['total_budget']}")
+    doc.add_paragraph(f"Utilization Rate: {selected_entry['utilization_rate']}")
+
+    # Obligations and Budget Data as Lists
+    doc.add_heading("Obligation:", level=2)
+    for obligation in selected_entry['obligation']:
+        doc.add_paragraph(f"{obligation['name']}: {obligation['spent']} ({obligation['date']})", style='List Bullet')
+
+    doc.add_heading("Budget Data:", level=2)
+    for budget in selected_entry['budget_data']:
+        doc.add_paragraph(f"{budget['name']}: {budget['added_budget']} ({budget['date']})", style='List Bullet')
+
+    # Save the document in a BytesIO object
+    file_stream = BytesIO()
+    doc.save(file_stream)
+    file_stream.seek(0)
+
+    # Return the document as a downloadable file
+    response = HttpResponse(file_stream, content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = f'attachment; filename=Project_{selected_entry["code"]}.docx'
+    
+    return response
+
+
+
+def get_monthly_expenses():
+    result = database.child('Data').get()
+
+    monthly_expenses = {}
+
+    if result.val():
+        for key, value in result.val().items():
+            if key == 'placeholder':
+                continue
+
+            # Check if obligation node exists and aggregate the spent amounts by month
+            if 'obligation' in value:
+                for obligation_key, obligation_value in value['obligation'].items():
+                    date = obligation_value.get('date')
+                    spent = obligation_value.get('spent')
+
+                    if date and spent:
+                        month = date[:7]  # Extract YYYY-MM from date
+                        spent = float(spent)  # Ensure spent is a number
+
+                        if month in monthly_expenses:
+                            monthly_expenses[month] += spent
+                        else:
+                            monthly_expenses[month] = spent
+
+    return monthly_expenses
+
+
+
+def get_monthly_expenses_view(request):
+    monthly_expenses = get_monthly_expenses()
+    return JsonResponse(monthly_expenses)
+
+
+def samplechart(request):
+    return render(request, 'KwentasApp/samplecharts.html')

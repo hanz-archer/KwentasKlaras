@@ -42,4 +42,13 @@ urlpatterns = [
     path('forgot-password/', views.forgotpassword, name='forgot-password'),
     path('send-verification-code/', views.send_verification_code, name='send_verification_code'),
     path('verify-and-change-password/', views.verify_and_change_password, name='verify_and_change_password'),
+
+
+
+path(' samplechart/',  samplechart, name='samplechart'),
+
+  path('api/get_monthly_expenses/', get_monthly_expenses_view, name='get_monthly_expenses'),
+        path('all-projects/', all_projects, name='all_projects'),
+       
+          path('download_word/<str:project_code>/', download_word, name='download_word'),
 ]
