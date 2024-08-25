@@ -35,9 +35,7 @@ section {
   min-height: 350px;
   height: 360px;
   padding: 2em 1.5em;
-  background: linear-gradient(#ffffff 50%, #007FFF 50%);
-  background-size: 100% 200%;
-  background-position: 0 2.5%;
+  background: #ffffff; /* Removed gradient and kept a plain background */
   border-radius: 50px;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -72,22 +70,18 @@ p {
 }
 
 .card:hover {
-  background-position: 0 100%;
-  transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-10px); /* Simple hover animation */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Adding shadow on hover */
 }
 
 .card:hover .icon-wrapper {
-  background-color: #ffffff;
-  color: #007FFF;
+  background-color: #007FFF; /* Keeping the original background color */
+  color: #ffffff; /* Keeping the original icon color */
 }
 
-.card:hover h3 {
-  color: #ffffff;
-}
-
+.card:hover h3, 
 .card:hover p {
-  color: #f0f0f0;
+  color: #1f194c; /* Keeping the original text color */
 }
 
 @media screen and (min-width: 768px) {
@@ -152,9 +146,7 @@ p {
 }
 
 .btn:hover {
-  background-position: right center;
-  background-image: linear-gradient(to right, #ffffff, #ffffff, #ffffff);
-  color: #007FFF;
+  transform: scale(1.15); /* Hover scaling effect */
 }
 
 .btn-bottom-right {
@@ -177,6 +169,10 @@ p {
   z-index: 9999;
 }
 
+.btn-bottom-right:hover {
+  transform: scale(1.15); /* Hover scaling effect */
+}
+
 :root {
   --dark: #34495E;
   --light: #ffffff;
@@ -195,6 +191,7 @@ body {
 body.page-loaded {
   opacity: 1;
 }
+
 .buttons .btn {
   border: none;
   outline: none;
@@ -255,4 +252,3 @@ body.page-loaded {
 .custom-toast-container {
   margin-right: 60px; /* Adjust the left margin as needed */
 }
-
