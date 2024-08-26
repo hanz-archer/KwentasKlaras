@@ -23,7 +23,12 @@ section {
   display: flex;
   flex-wrap: wrap;
 }
-
+.logo-image {
+  margin-top: 0; /* Reset margin-top */
+  margin-left: 0; /* Reset margin-left */
+  height: 40px; /* Adjust height as needed */
+  /* Additional styling if needed */
+}
 .column {
   width: 100%;
   padding: 0 1em 1em 1em;
