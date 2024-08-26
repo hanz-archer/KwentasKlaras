@@ -14,10 +14,13 @@
   <body>
     <section>
       <div class="navbar">
-        <div class="navbar-brand">
-            <span>Kwentas Klaras Digital PMIS v1.0</span>
+        <div class="navbar-left">
+            <span>Welcome to Kwentas Klaras Digital PMIS v1.0</span>
+        </div>
+        <div class="navbar-right">
             <div id="datetime" class="datetime-display"></div>
         </div>
+    </div>
     </div>
       <div class="row">
         <div class="column">
@@ -232,33 +235,38 @@
     </script>
     {% endif %}
     <style>
-      .green-btn {
-        background-color: #00AB66 !important;
-        border: none !important;
-        box-shadow: none !important;
+            .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px;
+          background-color: #007FFF; /* Adjust background color as needed */
+          color: #fff; /* Adjust text color as needed */
       }
 
-      .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        background-color: #007FFF; /* Adjust background color as needed */
-        color: #fff; /* Adjust text color as needed */
+      .navbar-left, .navbar-right {
+          display: flex;
+          align-items: center;
       }
 
       .navbar-left {
-        flex: 1;
+          justify-content: center;
+          flex: 1;
+      }
+      .navbar-left span {
+          font-size: 25px; /* Adjust size as needed */
+          font-weight: bold; /* Makes text bold */
+          font-family: 'Poppins', sans-serif; /* Choose a heavier font family if needed */
       }
 
       .navbar-right {
-        flex: 1;
-        text-align: right;
+          justify-content: center;
+          flex: 1;
       }
 
       .datetime-display {
-        font-size: 14px;
-        color: #fff; /* Adjust color as needed */
+          font-size: 18px;
+          color: #fff; /* Adjust color as needed */
       }
     </style>
     <script>
