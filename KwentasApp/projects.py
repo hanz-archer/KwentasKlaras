@@ -20,6 +20,12 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 
+import re
+import datetime
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.core.cache import cache
+
 def create_entry(request):
     if request.method == 'POST':
         # Extract data from the form submission
@@ -101,13 +107,16 @@ def create_entry(request):
                 "total_budget": total_budget,
                 "utilization_rate": utilization_rate  # Include utilization rate
             })
-            
+
+            # Refresh the cache with the new entry
+            cache.delete('project_entries')
+            get_project_entries()
+
             return HttpResponse('<script>alert("Successfully added"); window.location.href = "/adddata";</script>')
-          
+
         except Exception as e:
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/adddata";</script>', status=500)
     else:
-        # Render the form for GET requests
         return render(request, 'KwentasApp/adddata.html')
 
 
@@ -120,8 +129,11 @@ def adddata(request):
     return render(request, 'KwentasApp/adddata.html')
 
 
-
-
+from django.shortcuts import redirect
+from django.http import HttpResponse
+import re
+import datetime
+from django.core.cache import cache
 
 def continuing_add_obligation(request):
     if request.method == 'POST':
@@ -177,6 +189,9 @@ def continuing_add_obligation(request):
             utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
+            # Invalidate the cache
+            cache.delete('project_entries')
+
             # Redirect back to the previous page
             return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
@@ -187,6 +202,13 @@ def continuing_add_obligation(request):
 
 
 
+
+
+from django.shortcuts import redirect
+from django.http import HttpResponse
+import re
+import datetime
+from django.core.cache import cache
 
 def ongoing_add_obligation(request):
     if request.method == 'POST':
@@ -242,6 +264,9 @@ def ongoing_add_obligation(request):
             utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
+            # Invalidate the cache
+            cache.delete('project_entries')
+
             # Redirect back to the previous page
             return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
@@ -272,9 +297,9 @@ def ongoing_add_obligation(request):
 
 
 
+
 from django.shortcuts import render, redirect, HttpResponse
-
-
+from django.core.cache import cache
 
 def add_budget(request):
     if request.method == 'POST':
@@ -324,6 +349,9 @@ def add_budget(request):
             utilization_rate = (total_spent / overall_budget) * 100 if overall_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
+            # Invalidate the cache
+            cache.delete('project_entries')
+
             return redirect(request.META.get('HTTP_REFERER', '/'))  # Redirect back to the main projects page after successful addition
         except Exception as e:
             return HttpResponse(f"Error: {str(e)}", status=500)
@@ -333,7 +361,16 @@ def add_budget(request):
 
 
 
+from django.core.paginator import Paginator
+from django.shortcuts import render
+from django.core.cache import cache
+
 def get_project_entries():
+    # Check if data is cached
+    cached_data = cache.get('project_entries')
+    if cached_data:
+        return cached_data
+
     result = database.child('Data').get()
 
     entries_below_2024 = []
@@ -359,13 +396,13 @@ def get_project_entries():
                 'total_spent': value.get('total_spent'),
                 'added_budget': value.get('added_budget'),
                 'total_budget': value.get('total_budget'),
+                'utilization_rate': value.get('utilization_rate'),
                 'obligation': [],  # Initialize obligation list
-                'utilization_rate': value.get('utilization_rate')  # Fetch utilization rate
+                'budget_data': []  # Initialize budget data list
             }
 
             # Check if obligation node exists
             if 'obligation' in value:
-                # Iterate over obligation items and append to entry's obligation list
                 for obligation_key, obligation_value in value['obligation'].items():
                     entry['obligation'].append({
                         'name': obligation_value.get('name'),
@@ -375,9 +412,6 @@ def get_project_entries():
 
             # Fetch budget data for the current entry
             budget_data = database.child('Data').child(key).child('budget').get().val()
-
-            # Add budget data to the entry
-            entry['budget_data'] = []
             if budget_data:
                 for budget_key, budget_value in budget_data.items():
                     entry['budget_data'].append({
@@ -386,7 +420,6 @@ def get_project_entries():
                         'date': budget_value.get('date')
                     })
 
-            # Add entry to all_entries list
             all_entries.append(entry)
 
             # Check the year and add to the appropriate list
@@ -396,13 +429,11 @@ def get_project_entries():
                 else:
                     entries_2024_and_above.append(entry)
 
-    print(f"All Entries: {all_entries}")  # Debugging statement
+    # Cache the data for future use (e.g., 1 hour)
+    cache.set('project_entries', (entries_below_2024, entries_2024_and_above, all_entries), 3600)
 
     return entries_below_2024, entries_2024_and_above, all_entries
 
-
-
-from django.core.paginator import Paginator
 def continuing_projects(request):
     entries_below_2024, _, all_entries = get_project_entries()
 
@@ -412,22 +443,22 @@ def continuing_projects(request):
 
     return render(request, 'KwentasApp/continuing.html', {
         'page_obj': page_obj,
-        'all_entries': all_entries
+        'all_entries': all_entries  # Pass all_entries to the template
     })
-
-
 
 def ongoing_projects(request):
     _, entries_2024_and_above, all_entries = get_project_entries()
-    
+
     paginator = Paginator(entries_2024_and_above, 10)  # Show 10 projects per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     return render(request, 'KwentasApp/ongoing.html', {
         'page_obj': page_obj,
-        'all_entries': all_entries
+        'all_entries': all_entries  # Pass all_entries to the template
     })
+
+
 
 
 
@@ -552,6 +583,7 @@ def search_ongoing_projects(request):
 import re
 import datetime
 from django.shortcuts import render, redirect, HttpResponse
+from django.core.cache import cache
 
 def ongoing_update_entry(request):
     if request.method == 'POST':
@@ -562,9 +594,9 @@ def ongoing_update_entry(request):
         end_date_str = request.POST.get('end_date', '') 
         year_str = request.POST.get('year', '') 
         code = request.POST.get('code', '')  # Added code field
-        services = request.POST.get('services', '')  # Added code field
-        remarks = request.POST.get('remarks', '')  # Added code field
-        location = request.POST.get('location', '')  # Added code field
+        services = request.POST.get('services', '')  # Added services field
+        remarks = request.POST.get('remarks', '')  # Added remarks field
+        location = request.POST.get('location', '')  # Added location field
 
         # Validate date format if not empty
         if start_date_str and end_date_str:
@@ -620,10 +652,13 @@ def ongoing_update_entry(request):
                 "end_date": end_date_str,
                 "year": year_str,
                 "code": code,  
-                 "services": services,
-                 "location": location,
-                  "remarks": remarks
+                "services": services,
+                "location": location,
+                "remarks": remarks
             })
+
+            # Invalidate the cache
+            cache.delete('project_entries')
 
             return redirect(request.META.get('HTTP_REFERER', '/')) # Redirect back to the main projects page after successful addition
         except Exception as e:
@@ -636,6 +671,12 @@ def ongoing_update_entry(request):
 
 
 
+
+import re
+import datetime
+from django.shortcuts import render, redirect, HttpResponse
+from django.core.cache import cache
+
 def continuing_update_entry(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
@@ -645,9 +686,9 @@ def continuing_update_entry(request):
         end_date_str = request.POST.get('end_date', '') 
         year_str = request.POST.get('year', '') 
         code = request.POST.get('code', '')  # Added code field
-        services = request.POST.get('services', '')  # Added code field
-        remarks = request.POST.get('remarks', '')  # Added code field
-        location = request.POST.get('location', '')  # Added code field
+        services = request.POST.get('services', '')  # Added services field
+        remarks = request.POST.get('remarks', '')  # Added remarks field
+        location = request.POST.get('location', '')  # Added location field
 
         # Validate date format if not empty
         if start_date_str and end_date_str:
@@ -703,16 +744,20 @@ def continuing_update_entry(request):
                 "end_date": end_date_str,
                 "year": year_str,
                 "code": code,  
-                 "services": services,
-                 "location": location,
-                  "remarks": remarks
+                "services": services,
+                "location": location,
+                "remarks": remarks
             })
 
-            return redirect(request.META.get('HTTP_REFERER', '/')) # Redirect back to the main projects page after successful addition
+            # Invalidate the cache
+            cache.delete('project_entries')
+
+            return redirect(request.META.get('HTTP_REFERER', '/')) # Redirect back to the main projects page after successful update
         except Exception as e:
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/continuing_projects";</script>', status=500)
     else:
         return HttpResponse('<script>alert("Method not allowed"); window.location.href = "/continuing_projects";</script>', status=405)
+
     
 
 
@@ -730,6 +775,10 @@ def add_placeholder():
 add_placeholder()
 
 # View to delete an entry in continuing projects
+from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.core.cache import cache
+
 def continuing_delete_entry(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
@@ -739,13 +788,21 @@ def continuing_delete_entry(request):
             database.child('Data').child(entry_key).remove()
             # Ensure placeholder remains
             ensure_placeholder()
+
+            # Refresh the cache after deletion
+            cache.delete('project_entries')
+
             return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
-            return HttpResponse(f'<script>alert("Successfully Deleted"); window.location.href = "/continuing_projects";</script>', status=500)
+            return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/continuing_projects";</script>', status=500)
     else:
         return redirect('continuing_projects')
 
 # View to delete an entry in ongoing projects
+from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.core.cache import cache
+
 def ongoing_delete_entry(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
@@ -755,11 +812,16 @@ def ongoing_delete_entry(request):
             database.child('Data').child(entry_key).remove()
             # Ensure placeholder remains
             ensure_placeholder()
-            return HttpResponse(f'<script>alert("Successfully Deleted"); window.location.href = "/ongoing_projects";</script>', status=500)
+
+            # Refresh the cache after deletion
+            cache.delete('project_entries')
+
+            return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/ongoing_projects";</script>', status=500)
     else:
         return redirect('ongoing_projects')
+
     
 
 
