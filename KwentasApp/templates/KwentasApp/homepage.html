@@ -13,9 +13,12 @@
   </head>
   <body>
     <section>
-      <div class="row">
-        <h1 class="section-heading">KWENTAS KLARAS DIGITAL PMIS V 1.0</h1>
-      </div>
+      <div class="navbar">
+        <div class="navbar-brand">
+            <span>Kwentas Klaras Digital PMIS v1.0</span>
+            <div id="datetime" class="datetime-display"></div>
+        </div>
+    </div>
       <div class="row">
         <div class="column">
           <div class="card">
@@ -132,8 +135,6 @@
       function showLoadingAlert(event) {
         event.preventDefault(); // Prevent the form from submitting immediately
     
-        // Display SweetAlert with a custom icon from static files
-
         Swal.fire({
             title: 'Loading...',
             text: 'Fetching data from realtime database.',
@@ -147,117 +148,123 @@
             showConfirmButton: false
         });
     
-        // Save in session storage that SweetAlert was shown
         sessionStorage.setItem('showingSweetAlert', 'true');
     
-        // Submit the form after a short delay
         setTimeout(() => {
           event.target.submit();
-        }, 500); // Adjust delay as needed
+        }, 500);
       }
     
-      // Check if SweetAlert was shown before and close it when the page loads
       window.addEventListener('pageshow', function () {
         if (sessionStorage.getItem('showingSweetAlert') === 'true') {
           Swal.close();
           sessionStorage.removeItem('showingSweetAlert');
         }
       });
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const body = document.querySelector('body');
+        body.classList.add('page-loaded');
+
+        // Update date and time
+        function updateDateTime() {
+          const now = new Date();
+          const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          const day = days[now.getDay()];
+          const date = now.toLocaleDateString();
+          const time = now.toLocaleTimeString();
+          document.getElementById('datetime').textContent = `${day}, ${date} - ${time}`;
+        }
+
+        updateDateTime();
+        setInterval(updateDateTime, 1000); // Update every second
+      });
+      </script>
+
+      {% if request.session.just_logged_in %}
+      <script>
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3700,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+        customClass: {
+          container: 'custom-toast-container'
+        }
+      });
+
+      function showWelcomeMessage(userName) {
+        const now = new Date();
+        const hours = now.getHours();
+        let greeting = '';
+        if (hours >= 5 && hours < 12) {
+          greeting = 'Good Morning';
+        } else if (hours >= 12 && hours < 18) {
+          greeting = 'Good Afternoon';
+        } else {
+          greeting = 'Good Evening';
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: `${greeting}, Welcome to Kwentas Klaras`,
+          text: `${userName}`
+        });
+      }
+
+      function updateClock() {
+        const now = new Date();
+        const timeElement = document.getElementById('clock');
+        timeElement.textContent = now.toLocaleTimeString();
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const userName = '{{ request.user.name }}';
+        showWelcomeMessage(userName);
+        fetch("{% url 'unset_just_logged_in' %}");
+        setInterval(updateClock, 1000);
+      });
     </script>
-    
+    {% endif %}
+    <style>
+      .green-btn {
+        background-color: #00AB66 !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
 
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #007FFF; /* Adjust background color as needed */
+        color: #fff; /* Adjust text color as needed */
+      }
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-  const body = document.querySelector('body');
+      .navbar-left {
+        flex: 1;
+      }
 
-  // Add class to body when page loads
-  body.classList.add('page-loaded');
-});
-</script>
+      .navbar-right {
+        flex: 1;
+        text-align: right;
+      }
 
-{% if request.session.just_logged_in %}
-<script>
-  // Function to display a SweetAlert message with dynamic greeting based on time
-  const Toast = Swal.mixin({
-  toast: true,
-  position: "top-end", // Position the toast at the top-left corner
-  showConfirmButton: false,
-  timer: 3700, // Timer for the message to automatically disappear after 3.7 seconds
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer;
-    toast.onmouseleave = Swal.resumeTimer;
-  },
-  customClass: {
-    container: 'custom-toast-container' // Apply a custom class for further styling
-  }
-});
-
-function showWelcomeMessage(userName) {
-  const now = new Date();
-  const hours = now.getHours();
-
-  let greeting = '';
-
-  if (hours >= 5 && hours < 12) {
-    greeting = 'Good Morning';
-  } else if (hours >= 12 && hours < 18) {
-    greeting = 'Good Afternoon';
-  } else {
-    greeting = 'Good Evening';
-  }
-
-  // Display the dynamic toast message
-  Toast.fire({
-    icon: 'success',
-    title: `${greeting}, Welcome to Kwentas Klaras`,
-    text: `${userName}`
-  });
-}
-
-
-
-  // Update the clock every second
-  function updateClock() {
-      const now = new Date();
-      const timeElement = document.getElementById('clock');
-      timeElement.textContent = now.toLocaleTimeString();
-  }
-
-  // Call the function to display the message and update the clock when the page loads
-  window.addEventListener('DOMContentLoaded', () => {
-      // Check if the user has just logged in
-      
-          // Get the username from a global variable or other means
-          const userName = '{{ request.user.name }}'; // Replace this with actual logic to get the username
-          showWelcomeMessage(userName);
-          // Unset the just_logged_in session variable
-          fetch("{% url 'unset_just_logged_in' %}");
-    
-      
-      setInterval(updateClock, 1000); // Update the clock every second
-  });
-  
-</script>
-{% endif %}
-
-<style>
-  .green-btn {
-    background-color: #00AB66 !important;
-    border: none !important; /* Remove the border */
-    box-shadow: none !important; /* Remove the box shadow */
-  }
-</style>
-
-<script>
-  // Function to show the loading alert
-  function showLoadingAlertReports(event) {
-    event.preventDefault(); // Prevent the default link action
-
-    // Display SweetAlert with a custom icon from static files
-
-      Swal.fire({
+      .datetime-display {
+        font-size: 14px;
+        color: #fff; /* Adjust color as needed */
+      }
+    </style>
+    <script>
+      function showLoadingAlertReports(event) {
+        event.preventDefault();
+        Swal.fire({
           html: `
               <h2>Generating Report from database</h2>
               <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
@@ -268,37 +275,30 @@ function showWelcomeMessage(userName) {
           allowOutsideClick: false,
           showConfirmButton: false,
           didOpen: () => {
-              sessionStorage.setItem('showingSweetAlert', 'true'); // Save in session storage that SweetAlert was shown
+              sessionStorage.setItem('showingSweetAlert', 'true');
           }
+        });
+
+        const link = event.currentTarget;
+        setTimeout(() => {
+          window.location.href = link.href;
+        }, 500);
+      }
+
+      function handlePageShow(event) {
+        if (sessionStorage.getItem('showingSweetAlert') === 'true') {
+          Swal.close();
+          sessionStorage.removeItem('showingSweetAlert');
+        }
+      }
+
+      document.getElementById('reports-link').addEventListener('click', showLoadingAlert);
+      window.addEventListener('pageshow', handlePageShow);
+      window.addEventListener('popstate', function () {
+        if (sessionStorage.getItem('showingSweetAlert') === 'true') {
+          sessionStorage.removeItem('showingSweetAlert');
+        }
       });
-
-    // Navigate to the reports URL after a short delay
-    const link = event.currentTarget; // Get the <a> element
-    setTimeout(() => {
-      window.location.href = link.href; // Use the href attribute of the <a> element
-    }, 500); // Adjust delay as needed
-  }
-
-  // Function to handle the page show event
-  function handlePageShow(event) {
-    if (sessionStorage.getItem('showingSweetAlert') === 'true') {
-      Swal.close();
-      sessionStorage.removeItem('showingSweetAlert');
-    }
-  }
-
-  // Add the click event listener to the link
-  document.getElementById('reports-link').addEventListener('click', showLoadingAlert);
-
-  // Add the pageshow event listener to handle page load
-  window.addEventListener('pageshow', handlePageShow);
-
-  // Add the popstate event listener to handle browser navigation (back/forward)
-  window.addEventListener('popstate', function () {
-    if (sessionStorage.getItem('showingSweetAlert') === 'true') {
-      sessionStorage.removeItem('showingSweetAlert'); // Ensure the flag is removed
-    }
-  });
-</script>
+    </script>
   </body>
 </html>

@@ -252,3 +252,111 @@ body.page-loaded {
 .custom-toast-container {
   margin-right: 60px; /* Adjust the left margin as needed */
 }
+
+/* General Navbar Styles */
+.navbar {
+  width: 100%;
+  background-color: #007FFF; /* Blue background */
+  padding: 0.75rem 2rem; /* Padding for the navbar */
+  border-radius: 10px; /* Rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  position: relative; /* Ensure positioning context for the mobile menu */
+}
+
+/* Navbar Brand */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Navbar Menu */
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: 2rem; /* Space between menu items */
+}
+
+/* Navbar Menu Items */
+.navbar-menu li {
+  display: inline-block;
+}
+
+.navbar-menu li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-menu li a:hover {
+  color: #cce7ff; /* Lighter blue on hover */
+}
+
+/* Navbar Search */
+.navbar-search {
+  font-size: 1.2rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Mobile Navbar Styles */
+@media (max-width: 768px) {
+  .navbar-menu {
+    display: none; /* Hide the menu by default on small screens */
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #007FFF;
+    width: 100%;
+    border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-menu.active {
+    display: flex; /* Show the menu when active */
+  }
+
+  .navbar-menu li {
+    display: block; /* Stack the menu items vertically */
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .navbar-menu li a {
+    font-size: 1.2rem;
+  }
+
+  .navbar-search {
+    display: none; /* Hide the search icon on small screens if needed */
+  }
+
+  /* Hamburger Menu */
+  .navbar-toggler {
+    display: block;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+/* Hamburger Menu Icon */
+.navbar-toggler::before {
+  content: '☰'; /* Hamburger icon */
+}
+
+/* Ensure navbar-toggler is hidden on larger screens */
+@media (min-width: 769px) {
+  .navbar-toggler {
+    display: none;
+  }
+}
+
+
