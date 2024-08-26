@@ -665,19 +665,16 @@ margin-left: 30%;
 
 
 .x {
-left: 90%;
+
   font-weight: 1000;
-  position: fixed;
+ 
   overflow: hidden;
   z-index: 999; /* Ensure the element appears above other content */
 }
 
-@media(max-width: 600px) {
-.x{
-  left: 90%;
-}
 
-}
+
+
 
 
 

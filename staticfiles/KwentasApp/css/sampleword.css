@@ -1,0 +1,44 @@
+
+
+.project-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.project-item {
+    flex: 0 0 48%; /* Adjusts the width to take up about half the container width, with some space in between */
+    box-sizing: border-box;
+}
+.search{
+    margin-bottom: 30px;
+}
+.project-entry {
+    border: 1px solid #000;
+    max-height: 200px;
+    width: 300px;
+    font-size: 15px;
+    overflow-y: scroll;
+    padding: 10px;
+}
+.project-entry p {
+    margin: 2px 0; /* Reduce space between elements */
+}
+.hidden {
+    display: none;
+}
+.project-form ul {
+    list-style-type: none;
+    padding: 0;
+}
+.project-form li {
+    margin-bottom: 5px;
+}
+.project-form label {
+    font-weight: bold;
+}
+.project-form input {
+    width: 50%; /* Make inputs take full width */
+    padding: 3px;
+    font-size: 0.9em;
+}
