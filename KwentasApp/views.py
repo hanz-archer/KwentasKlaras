@@ -1,18 +1,24 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, logout
-from .forms import RegistrationForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.cache import never_cache
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.hashers import make_password
+from django.core.mail import EmailMultiAlternatives, BadHeaderError
+from django.template.loader import render_to_string
 from .forms import RegistrationForm
-from django.http import HttpResponseRedirect
-from django.http import JsonResponse
+from .models import CustomUser  # Assuming you have a CustomUser model
+import logging
+import json
+import random
+import string
+
+logger = logging.getLogger(__name__)
+
 
 
 
@@ -54,9 +60,6 @@ def base_view(request):
 
 
 
-@login_required
-def current_view(request):
-    return render(request, 'KwentasApp/currentproject.html')
 
 
 def is_superuser(user):
@@ -82,13 +85,7 @@ def registration_view(request):
 
 
 
-@login_required
-def procurements(request):
-    return render(request, 'KwentasApp/procurements.html')
 
-@login_required
-def ongoing(request):
-    return render(request, 'KwentasApp/ongoing.html')
 
 
 def logout_view(request):
@@ -96,23 +93,6 @@ def logout_view(request):
     return redirect(reverse('login'))
 
 
-@login_required
-def monitoring(request):
-    return render(request,'KwentasApp/monitoring.html')
-
-@login_required
-def evaluation(request):
-    return render(request,'KwentasApp/evaluation.html')
-
-
-@login_required
-def activities(request):
-    return render(request,'KwentasApp/activities.html')
-
-
-@login_required
-def obligations(request):
-    return render(request,'KwentasApp/obligations.html')
 
 
 @login_required
@@ -125,19 +105,6 @@ def homepage(request):
     return render(request, 'KwentasApp/homepage.html', context)
 
 
-@login_required
-def finished(request):
-    return render(request,'KwentasApp/finished.html')
-
-
-@login_required
-def ppa(request):
-    return render(request, 'KwentasApp/ppa.html')
-
-@login_required
-def addbudget(request):
-    return render(request, 'KwentasApp/addbudget.html')
-
 
 def forgotpassword(request):
      if request.method == 'POST':
@@ -148,18 +115,7 @@ def forgotpassword(request):
      return render(request, 'KwentasApp/forgot-password.html')
 
 
-import logging
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import EmailMultiAlternatives, BadHeaderError
-from django.template.loader import render_to_string
-from django.contrib.auth.hashers import make_password
-from .models import CustomUser  # Assuming you have a CustomUser model
-import random
-import string
-import json
 
-logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def send_verification_code(request):
@@ -206,15 +162,7 @@ def send_verification_code(request):
         logger.warning('Invalid request method.')
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
 
-import logging
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth import authenticate
-from .models import CustomUser  # Assuming you have a CustomUser model
 
-logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def verify_and_change_password(request):

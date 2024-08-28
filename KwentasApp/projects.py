@@ -1,30 +1,18 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from .firebase import database
-from django.http import JsonResponse
-from django.http import JsonResponse
-from django.shortcuts import redirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db.models import F, ExpressionWrapper, FloatField
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.core.cache import cache
+from django.core.cache import cache
+from io import BytesIO
+from docx import Document
+from .firebase import database
 import firebase_admin
 from firebase_admin import credentials, db
-from django.contrib.auth.decorators import login_required
 import datetime
 import re
 
-import re
-import datetime
-from django.http import HttpResponse
-from django.shortcuts import render
-
-
-import re
-import datetime
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.core.cache import cache
 
 def create_entry(request):
     if request.method == 'POST':
@@ -125,15 +113,10 @@ def create_entry(request):
 
 
 
-def adddata(request):
-    return render(request, 'KwentasApp/adddata.html')
 
 
-from django.shortcuts import redirect
-from django.http import HttpResponse
-import re
-import datetime
-from django.core.cache import cache
+
+
 
 def continuing_add_obligation(request):
     if request.method == 'POST':
@@ -204,11 +187,7 @@ def continuing_add_obligation(request):
 
 
 
-from django.shortcuts import redirect
-from django.http import HttpResponse
-import re
-import datetime
-from django.core.cache import cache
+
 
 def ongoing_add_obligation(request):
     if request.method == 'POST':
@@ -298,8 +277,7 @@ def ongoing_add_obligation(request):
 
 
 
-from django.shortcuts import render, redirect, HttpResponse
-from django.core.cache import cache
+
 
 def add_budget(request):
     if request.method == 'POST':
@@ -361,9 +339,6 @@ def add_budget(request):
 
 
 
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from django.core.cache import cache
 
 def get_project_entries():
     # Check if data is cached
@@ -580,10 +555,7 @@ def search_ongoing_projects(request):
 
 
 
-import re
-import datetime
-from django.shortcuts import render, redirect, HttpResponse
-from django.core.cache import cache
+
 
 def ongoing_update_entry(request):
     if request.method == 'POST':
@@ -669,13 +641,6 @@ def ongoing_update_entry(request):
 
 
 
-
-
-
-import re
-import datetime
-from django.shortcuts import render, redirect, HttpResponse
-from django.core.cache import cache
 
 def continuing_update_entry(request):
     if request.method == 'POST':
@@ -774,10 +739,7 @@ def add_placeholder():
 # Ensure the placeholder exists when the module is loaded
 add_placeholder()
 
-# View to delete an entry in continuing projects
-from django.shortcuts import redirect
-from django.http import HttpResponse
-from django.core.cache import cache
+
 
 def continuing_delete_entry(request):
     if request.method == 'POST':
@@ -798,10 +760,7 @@ def continuing_delete_entry(request):
     else:
         return redirect('continuing_projects')
 
-# View to delete an entry in ongoing projects
-from django.shortcuts import redirect
-from django.http import HttpResponse
-from django.core.cache import cache
+
 
 def ongoing_delete_entry(request):
     if request.method == 'POST':
@@ -899,9 +858,7 @@ def all_projects(request):
 
   
 
-from django.http import HttpResponse
-from docx import Document
-from io import BytesIO
+
 
 def download_word(request, project_code):
     # Fetch the specific project entry based on the project code

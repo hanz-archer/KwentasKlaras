@@ -26,18 +26,11 @@ urlpatterns = [
     path('register/', views.registration_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
     path('reports/', reports_view, name='reports'),
-    path('procurements/', views.procurements, name='procurements'),
-    path('ongoing/', views.ongoing, name='ongoing'),
-    path('monitoring/', views.monitoring, name='monitoring'),
-    path('evaluation/', views.evaluation, name='evaluation'),
-    path('activities/', views.activities, name='activities'),
-    path('obligations/', views.obligations, name='obligations'),
-    path('finished/', views.finished, name='finished'),
-    path('currentproject/', views.current_view, name='currentprojects'),
+   
+   
     path('homepage/', views.homepage, name='homepage'),
-    path('adddata/', adddata, name='adddata'),
-    path('ppa/', views.ppa, name='ppa'),
-    path('addbudget/', views.addbudget, name='addbudget'),
+  
+   
     path('unset_just_logged_in/', unset_just_logged_in, name='unset_just_logged_in'),
     path('forgot-password/', views.forgotpassword, name='forgot-password'),
     path('send-verification-code/', views.send_verification_code, name='send_verification_code'),
