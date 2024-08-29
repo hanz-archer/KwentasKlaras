@@ -12,22 +12,20 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('create_entry/', create_entry, name='create_entry'),
     path('continuing_projects/', continuing_projects, name='continuing_projects'),
-    path('ongoing_projects/', ongoing_projects, name='ongoing_projects'),
-    path('search/ongoing/', search_ongoing_projects, name='search_ongoing_projects'),
+    path('current_projects/', current_projects, name='current_projects'),
+    path('search/current/', search_current_projects, name='search_current_projects'),
     path('search/continuing/', search_continuing_projects, name='search_continuing_projects'),
-    path('continuing_add_obligation/', continuing_add_obligation, name='continuing_add_obligation'),
-    path('ongoing_add_obligation/', ongoing_add_obligation, name='ongoing_add_obligation'),
+   path('add_obligation/<str:project_type>/', add_obligation, name='add_obligation'),
     path('add_budget/', add_budget, name='add_budget'),
-    path('ongoing_update_entry/', ongoing_update_entry, name='ongoing_update_entry'),
-    path('continuing_update_entry/', continuing_update_entry, name='continuing_update_entry'),
+   path('update_entry/<str:project_type>/', update_entry, name='update_entry'),
     path('continuing_delete_entry/', continuing_delete_entry, name='continuing_delete_entry'),
-    path('ongoing_delete_entry/', ongoing_delete_entry, name='ongoing_delete_entry'),
+    path('current_delete_entry/', current_delete_entry, name='current_delete_entry'),
     path('base/', views.base_view, name='base'),
     path('register/', views.registration_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
     path('reports/', reports_view, name='reports'),
    
-   
+    
     path('homepage/', views.homepage, name='homepage'),
   
    

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ongoing Projects</title>
+    <title>current Projects</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Material Icons -->
@@ -15,16 +15,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/ongoing.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/current.css' %}">
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
-        <h1>Ongoing Projects</h1>
+        <h1>current Projects</h1>
         <div class="input-group">
-          <form method="GET" action="{% url 'search_ongoing_projects' %}">
-            <input type="text" name="query" placeholder="Search Ongoing Projects...">
+          <form method="GET" action="{% url 'search_current_projects' %}">
+            <input type="text" name="query" placeholder="Search current Projects...">
         </div>
         <div class="export__file">
           <button type="submit" class="export__file-btn">Search</button>
@@ -152,10 +152,10 @@
     </main>
     <!-- DETAILS  -->
     <div class="details" id="details">
-      <a href="{% url 'ongoing_projects' %}">
+      <a href="{% url 'current_projects' %}">
         <i class="material-icons x" id="exit">close</i>
       </a>
-      <a href="{% url 'ongoing_projects' %}">
+      <a href="{% url 'current_projects' %}">
         <h1 class="form-title">PROJECT DETAILS</h1>
       </a>
       <ul> {% for entry in all_entries %} <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
@@ -271,12 +271,12 @@
     </div>
     <!-- UPDATE -->
     <div class="details" id="update">
-      <a href="{% url 'ongoing_projects' %}">
+      <a href="{% url 'current_projects' %}">
         <p class="x">X</p>
       </a>
-      <a href="{% url 'ongoing_projects' %}">
+      <a href="{% url 'current_projects' %}">
         <h1 class="form-title">Update Project</h1>
-      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
+      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'update_entry' 'current' %}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
         <div class="main-user-info" id="main-update">
           <div class="user-input-box">
             <label for="ppa_{{ entry.code }}">PPA</label>
@@ -348,7 +348,7 @@
         <div class="form-submit-btn">
           <input type="submit" value="Update">
         </div>
-        <a href="{% url 'ongoing_projects' %}">
+        <a href="{% url 'current_projects' %}">
           <div class="form-submit-btn">
             <input type="text" value="Exit" style="background-color: red;text-align: center;">
           </div>
@@ -384,14 +384,14 @@
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>
-          <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
+          <a href="{% url 'current_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
         </form>
       </div>
     </div>
     <!-- OBLIGATION -->
     <div class="details" id="obligation">
       <div class="login-content">
-        <form id="add-obligation-form" action="{% url 'ongoing_add_obligation' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
+        <form id="add-obligation-form" action="{% url 'add_obligation' 'current' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
           <br>
           <br>
           <input type="hidden" name="entry-code" id="obligation-code">
@@ -417,14 +417,14 @@
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>
-          <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
+          <a href="{% url 'current_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
         </form>
       </div>
     </div>
     <!-- Delete -->
     <div class="details" id="delete">
       <div class="login-content">
-        <form id="add-delete-form" action="{% url 'ongoing_delete_entry' %}" method="post"> {% csrf_token %} <h2 class="title">Delete Project</h2>
+        <form id="add-delete-form" action="{% url 'current_delete_entry' %}" method="post"> {% csrf_token %} <h2 class="title">Delete Project</h2>
           <br>
           <br>
           <div class="input-div-new">
@@ -434,7 +434,7 @@
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Delete</button>
-          <a href="{% url 'ongoing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
+          <a href="{% url 'current_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
         </form>
       </div>
     </div>

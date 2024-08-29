@@ -276,127 +276,12 @@
           </div>
         </li> {% endfor %} </ul>
     </div>
-    <!-- UPDATE -->
-    <div class="details" id="update">
-      <a href="{% url 'continuing_projects' %}">
-        <p class="x">X</p>
-      </a>
-      <a href="{% url 'continuing_projects' %}">
-        <h1 class="form-title">Update Project</h1>
-      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'update_entry' 'continuing' %}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
-        <div class="main-user-info" id="main-update">
-          <div class="user-input-box">
-            <label for="ppa_{{ entry.code }}">PPA</label>
-            <input type="text" id="ppa_{{ entry.code }}" name="ppa" class="user-text" value="{{ entry.ppa }}">
-          </div>
-          <div class="user-input-box">
-            <label for="implementing_unit_{{ entry.code }}">Implementing Unit</label>
-            <div class="select-container">
-              <select id="implementing_unit_{{ entry.code }}" name="implementing_unit" class="user-input">
-                <option value="" disabled selected>{{ entry.implementing_unit }}</option>
-                <option value="Mayor's Office" {% if entry.implementing_unit == "Mayor's Office" %}selected{% endif %}>Mayor's Office</option>
-                <option value="Tourism Office" {% if entry.implementing_unit == "Tourism Office" %}selected{% endif %}>Tourism Office</option>
-                <option value="PESO Office" {% if entry.implementing_unit == "PESO Office" %}selected{% endif %}>PESO Office</option>
-                <option value="MDRRMO" {% if entry.implementing_unit == "MDRRMO" %}selected{% endif %}>MDRRMO</option>
-                <option value="Sanguniang Barangay Office" {% if entry.implementing_unit == "Sanguniang Barangay Office" %}selected{% endif %}>Sanguniang Barangay Office</option>
-                <option value="MPDC" {% if entry.implementing_unit == "MPDC" %}selected{% endif %}>MPDC</option>
-                <option value="MCR Office" {% if entry.implementing_unit == "MCR Office" %}selected{% endif %}>MCR Office</option>
-                <option value="MBO Office" {% if entry.implementing_unit == "MBO Office" %}selected{% endif %}>MBO Office</option>
-                <option value="Accountant Office" {% if entry.implementing_unit == "Accountant Office" %}selected{% endif %}>Accountant Office</option>
-                <option value="Assessor's Office" {% if entry.implementing_unit == "Assessor's Office" %}selected{% endif %}>Assessor's Office</option>
-                <option value="MHO Office" {% if entry.implementing_unit == "MHO Office" %}selected{% endif %}>MHO Office</option>
-                <option value="Parks & Plaza" {% if entry.implementing_unit == "Parks & Plaza" %}selected{% endif %}>Parks & Plaza</option>
-                <option value="MSWD Office" {% if entry.implementing_unit == "MSWD Office" %}selected{% endif %}>MSWD Office</option>
-                <option value="MENRO Office" {% if entry.implementing_unit == "MENRO Office" %}selected{% endif %}>MENRO Office</option>
-                <option value="MO" {% if entry.implementing_unit == "MO" %}selected{% endif %}>MO</option>
-                <option value="Streets & Bridges" {% if entry.implementing_unit == "Streets & Bridges" %}selected{% endif %}>Streets & Bridges</option>
-                <option value="LDF" {% if entry.implementing_unit == "LDF" %}selected{% endif %}>LDF</option>
-                <option value="Waterworks" {% if entry.implementing_unit == "Waterworks" %}selected{% endif %}>Waterworks</option>
-                <option value="Markets" {% if entry.implementing_unit == "Markets" %}selected{% endif %}>Markets</option>
-                <option value="Zero Waste" {% if entry.implementing_unit == "Zero Waste" %}selected{% endif %}>Zero Waste</option>
-              </select>
-            </div>
-          </div>
-          <div class="user-input-box">
-            <label for="location_{{ entry.code }}">Location</label>
-            <input type="text" id="location_{{ entry.code }}" name="location" class="user-input" value="{{ entry.location }}">
-          </div>
-          <div class="user-input-box">
-            <label for="remarks_{{ entry.code }}">Remarks</label>
-            <input type="text" id="remarks_{{ entry.code }}" name="remarks" class="user-input" value="{{ entry.remarks }}">
-          </div>
-          <div class="user-input-box">
-            <label for="start_date_{{ entry.code }}">Start Date</label>
-            <input type="date" id="start_date_{{ entry.code }}" name="start_date" class="user-input" value="{{ entry.start_date }}">
-          </div>
-          <div class="user-input-box">
-            <label for="end_date_{{ entry.code }}">End Date</label>
-            <input type="date" id="end_date_{{ entry.code }}" name="end_date" class="user-input" value="{{ entry.end_date }}">
-          </div>
-          <div class="user-input-box">
-            <label for="code_{{ entry.code }}">Code</label>
-            <input type="text" id="code_{{ entry.code }}" name="code" class="user-input" value="{{ entry.code }}">
-          </div>
-          <div class="user-input-box">
-            <label for="services_{{ entry.code }}">Services</label>
-            <select id="services_{{ entry.code }}" name="services" class="user-input">
-              <option value="" disabled selected>{{ entry.services }}</option>
-              <option value="General" {% if entry.services == "General" %}selected{% endif %}>General</option>
-              <option value="Social" {% if entry.services == "Social" %}selected{% endif %}>Social</option>
-              <option value="Economic" {% if entry.services == "Economic" %}selected{% endif %}>Economic</option>
-              <option value="Environmental" {% if entry.services == "Environmental" %}selected{% endif %}>Environmental</option>
-            </select>
-          </div>
-          <div class="user-input-box">
-            <label for="year_{{ entry.code }}">Year</label>
-            <input type="number" id="year_{{ entry.code }}" name="year" class="user-input" value="{{ entry.year }}">
-          </div>
-        </div>
-        <div class="form-submit-btn">
-          <input type="submit" value="Update">
-        </div>
-        <a href="{% url 'continuing_projects' %}">
-          <div class="form-submit-btn">
-            <input type="text" value="Exit" style="background-color: red;text-align: center;">
-          </div>
-        </a>
-      </form> {% endfor %}
-    </div>
-    <!-- BUDGET -->
-    <div class="details" id="budget">
-      <div class="login-content">
-        <form id="add-budget-form" action="{% url 'add_budget' %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
-          <input type="hidden" name="entry_code" id="budget-code">
-          <div class="input-div-new">
-            <div class="div">
-              <label for="budget_name" style="white-space: nowrap;">Budget Name</label>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="budget_name" class="input">
-            </div>
-          </div>
-          <div class="input-div-new">
-            <div class="div">
-              <label for="budget_date">Date</label>
-              <!-- Use label instead of h5 -->
-              <input type="date" name="budget_date" class="input">
-            </div>
-          </div>
-          <div class="input-div-new">
-            <div class="div">
-              <label for="added_budget" style="white-space: nowrap;">Added Budget</label>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="added_budget" class="input">
-            </div>
-          </div>
-          <button type="submit" class="btn-add" value="Submit">Submit</button>
-          <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="color: white;">Exit</a>
-        </form>
-      </div>
-    </div>
+  
+  
     <!-- OBLIGATION -->
     <div class="details" id="obligation">
       <div class="login-content">
-        <form id="add-obligation-form" action="{% url 'add_obligation' 'continuing' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
+        <form id="add-obligation-form" action="{% url 'continuing_add_obligation' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
           <br>
           <br>
           <input type="hidden" name="entry-code" id="obligation-code">
@@ -426,27 +311,7 @@
         </form>
       </div>
     </div>
-    <!-- Delete -->
-    <div class="details" id="delete">
-      <div class="login-content">
-        <form id="deleteForm" action="{% url 'continuing_delete_entry' %}" method="post">
-          {% csrf_token %}
-          <h2 class="title">Delete Project</h2>
-          <br>
-          <br>
-          <div class="input-div-new">
-            <div class="div">
-              <label for="delete-code" style="white-space: nowrap;">Entry Code</label>
-              <input type="text" name="entry_code" id="delete-code" readonly placeholder="1-121" class="input">
-            </div>
-          </div>
-          <!-- No need for a submit button here -->
-          <button type="button" onclick="confirmDelete()" class="btn-add">Delete</button>
-          <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
-        </form>
-        
-      </div>
-    </div>
+  
 
     
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
@@ -507,102 +372,10 @@
         document.getElementById('details').style.display = 'block';
       }
     </script>
-    <!-- Update js -->
-    <script>
-      function showUpdateForm(code) {
-        var allUpdateForms = document.querySelectorAll('[id^="updateForm_"]');
-        allUpdateForms.forEach(function(form) {
-          form.style.display = 'none';
-        });
-        var updateForm = document.getElementById('updateForm_' + code);
-        if (updateForm) {
-          updateForm.style.display = 'block';
-        }
-        document.getElementById('update').style.display = 'block';
-        document.getElementById('customers_table').style.filter = 'blur(10px)';
-        document.getElementById('overlay').style.display = 'block';
-      }
-    </script>
-    <script>
-      // Function to handle form submission
-      function handleSubmit(event) {
-        event.preventDefault(); // Prevent default form submission
-        // Validate form fields
-        if (!validateForm(event.target)) {
-          // If form validation fails, do not proceed
-          console.log("Form validation failed!");
-          return;
-        }
-        // Show confirmation dialog using SweetAlert2
-        Swal.fire({
-          title: "Are you sure?",
-          text: "Once updated, you won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Yes, update it!",
-          cancelButtonText: "No, cancel!",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // If user confirms, submit the form
-            var form = event.target;
-            form.submit();
-          } else {
-            // If user cancels, do nothing
-            // Optional: Redirect or perform other actions
-            console.log("Update canceled!");
-          }
-        });
-      }
-      // Function to validate form fields
-      function validateForm(form) {
-        // Example: Check if required fields are empty
-        var requiredFields = form.querySelectorAll("[required]");
-        for (var i = 0; i < requiredFields.length; i++) {
-          if (requiredFields[i].value.trim() === "") {
-            // If a required field is empty, return false
-            return false;
-          }
-        }
-        return true; // Return true if all validations pass
-      }
-    </script>
-    <!-- Budget js -->
-    <script>
-      function showAddBudget(budget_code) {
-        document.getElementById('budget-code').value = budget_code;
-        document.getElementById('customers_table').style.filter = 'blur(10px)';
-        document.getElementById('budget').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
-      }
-    </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Get the form element
-        var form = document.getElementById('add-budget-form');
-        // Add submit event listener to the form
-        form.addEventListener('submit', function(event) {
-          event.preventDefault(); // Prevent the default form submission
-          // Show SweetAlert confirmation dialog
-          Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to submit this budget? This will alter data',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, submit',
-            cancelButtonText: 'No, cancel',
-            confirmButtonColor: '#28a745', // Green color for the confirm button
-            cancelButtonColor: '#dc3545' // Red color for the cancel button
-          }).then((result) => {
-            // If the user confirms, submit the form
-            if (result.isConfirmed) {
-              form.submit();
-            }
-          });
-        });
-      });
-    </script>
+   
+  
+
+
     <!-- Obligation js -->
     <script>
       function showAddObligationForm(entryCode) {
@@ -638,35 +411,7 @@
         });
       });
     </script>
-    <!-- Delete js -->
-    <script>
-      function showDeleteForm(code) {
-        document.getElementById('delete-code').value = code;
-        document.getElementById('delete').style.display = 'block';
-        document.getElementById('customers_table').style.filter = 'blur(10px)';
-        document.getElementById('overlay').style.display = 'block';
-      }
-    </script>
-   <script>
-    function confirmDelete() {
-      // Show SweetAlert confirmation dialog
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // If user confirms deletion, submit the form
-          var form = document.getElementById('deleteForm');
-          form.submit();
-        }
-      });
-    }
-  </script>     
+      
     <script>
       function hideOverlay() {
         document.getElementById('overlay').style.display = 'none';
