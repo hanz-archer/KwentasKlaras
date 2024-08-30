@@ -115,7 +115,11 @@ def forgotpassword(request):
      return render(request, 'KwentasApp/forgot-password.html')
 
 
+def disbursements(request):
+    return render(request, 'KwentasApp/disbursements.html')
 
+def obligations(request):
+    return render(request, 'KwentasApp/obligations.html')
 
 @csrf_exempt
 def send_verification_code(request):

@@ -42,10 +42,6 @@
                     <th>Implementing Unit</th>
                     <th>Code</th>
                     <th>Year</th>
-                    {% if request.user.is_superuser %}
-                        <th>Add</th>
-                        <th>Action</th>
-                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -56,11 +52,6 @@
                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                   <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                  {% if request.user.is_superuser %}
-                      <td>
-                          <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Add</p>
-                      </td>
-                  {% endif %}
               </tr>
           {% endfor %}
           {% else %}
@@ -72,11 +63,6 @@
                         <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                         <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                         <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                        {% if request.user.is_superuser %}
-                            <td>
-                                <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Add</p>
-                            </td>
-                        {% endif %}
                     </tr>
                 {% endfor %}
 
@@ -103,6 +89,12 @@
       }
   </style>
 {% endif %}
+
+
+
+
+
+
   <div class="back">
       <a href="{% url 'homepage' %}">
           <button class="back-btn">Back</button>

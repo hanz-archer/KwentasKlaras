@@ -108,7 +108,6 @@
       .left-align {
           text-align: left !important;
       }
-  
       .non-superuser .table th:nth-child(5), 
       .non-superuser .table th:nth-child(6),
       .non-superuser .table td:nth-child(5), 
@@ -283,7 +282,7 @@
       </a>
       <a href="{% url 'continuing_projects' %}">
         <h1 class="form-title">Update Project</h1>
-      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'update_entry' 'continuing' %}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
+      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
         <div class="main-user-info" id="main-update">
           <div class="user-input-box">
             <label for="ppa_{{ entry.code }}">PPA</label>
@@ -396,7 +395,7 @@
     <!-- OBLIGATION -->
     <div class="details" id="obligation">
       <div class="login-content">
-        <form id="add-obligation-form" action="{% url 'add_obligation' 'continuing' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
+        <form id="add-obligation-form" action="{% url 'continuing_add_obligation' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
           <br>
           <br>
           <input type="hidden" name="entry-code" id="obligation-code">
@@ -447,8 +446,6 @@
         
       </div>
     </div>
-
-    
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
     <script src="search.js"></script>
     <!-- PIE CHART JS -->
