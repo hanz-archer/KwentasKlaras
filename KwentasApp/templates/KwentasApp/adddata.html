@@ -41,9 +41,26 @@
                             <input type="text" name="implementing_unit" placeholder="Department" onclick="toggleDepartmentDropdown()" id="departmentInput" readonly required>
                             <i class="fas fa-chevron-down" id="departmentDropdownArrow" onclick="toggleDepartmentDropdown()"></i>
                             <ul class="content" id="departmentOptions">
-                                <!-- Department Options -->
                                 <li onclick="selectDepartmentOption('Mayors Office')">Mayor's Office</li>
-                                <!-- Add other department options here -->
+                            <li onclick="selectDepartmentOption('Tourism Office')">Tourism Office</li>
+                            <li onclick="selectDepartmentOption('PESO Office')">PESO Office</li>
+                            <li onclick="selectDepartmentOption('MDRRMO')">MDDRMO</li>
+                            <li onclick="selectDepartmentOption('Sanguniang Baranggay Office')">Sanguniang Barangay Office</li>
+                            <li onclick="selectDepartmentOption('MPDC Office')">MPDC</li>
+                            <li onclick="selectDepartmentOption('MCR Office')">MCR Office</li>
+                            <li onclick="selectDepartmentOption('MBO Office')">MBO Office</li>
+                            <li onclick="selectDepartmentOption('Accountant Office')">Accountant Office</li>
+                            <li onclick="selectDepartmentOption('Assessor Office')">Assessor's Office</li>
+                            <li onclick="selectDepartmentOption('MHO Office')">MHO Office</li>
+                            <li onclick="selectDepartmentOption('Parks & Plaza')">Parks & Plaza</li>
+                            <li onclick="selectDepartmentOption('MSWD Office')">MSWD Office</li>
+                            <li onclick="selectDepartmentOption('MENRO Office')">MENRO Office</li>
+                            <li onclick="selectDepartmentOption('MO')">MO</li>
+                            <li onclick="selectDepartmentOption('Streets & Bridges')">Streets & Bridges</li>
+                            <li onclick="selectDepartmentOption('LDF')">LDF</li>
+                            <li onclick="selectDepartmentOption('Waterworks')">Waterworks</li>
+                            <li onclick="selectDepartmentOption('Markets')">Markets</li>
+                            <li onclick="selectDepartmentOption('Zero Waste')">Zero Waste</li>
                             </ul>
                         </div>
                     </div>
@@ -91,9 +108,13 @@
                         <div class="i">
                             <i class="fas fa-registered"></i>
                         </div>
-                        <div class="div">
-                            <h5>Remarks</h5>
-                            <input type="text" name="remarks" class="input" required>
+                        <div class="drop">
+                            <input type="text" name="remarks" class="input" placeholder="Services" onclick="toggleRemarksDropdown()" id="remarksInput" readonly required>
+                            <i class="fas fa-chevron-down" id="remarksDropdownArrow" onclick="toggleRemarksDropdown()"></i>
+                            <ul class="content" id="remarksOptions">
+                                <li onclick="selectRemarksOption('General')">No PPMP/APP/POW</li>
+                                <li onclick="selectRemarksOption('Social')">Awarded Already</li>
+                            </ul>
                         </div>
                     </div>
         
@@ -115,9 +136,10 @@
                             <input type="text" name="services" placeholder="Services" onclick="toggleServicesDropdown()" id="servicesInput" readonly required>
                             <i class="fas fa-chevron-down" id="servicesDropdownArrow" onclick="toggleServicesDropdown()"></i>
                             <ul class="content" id="servicesOptions">
-                                <!-- Services Options -->
                                 <li onclick="selectServicesOption('General')">General</li>
-                                <!-- Add other service options here -->
+                                <li onclick="selectServicesOption('Social')">Social</li>
+                                <li onclick="selectServicesOption('Economic')">Economic</li>
+                                <li onclick="selectServicesOption('Environmental')">Environmental</li>
                             </ul>
                         </div>
                     </div>
@@ -167,6 +189,17 @@
     });
     </script>
     <script>
+        function toggleRemarksDropdown() {
+            const remarksOptions = document.getElementById("remarksOptions");
+            remarksOptions.classList.toggle("show");
+        }
+
+        function selectRemarksOption(option) {
+            const remarksInput = document.getElementById("remarksInput");
+            remarksInput.value = option;
+            toggleRemarksDropdown();
+        }
+
         function toggleServicesDropdown() {
             const servicesOptions = document.getElementById("servicesOptions");
             servicesOptions.classList.toggle("show");
@@ -191,12 +224,16 @@
 
         // Close dropdowns when clicking outside of them
         window.onclick = function(event) {
-            if (!event.target.matches('.fas.fa-chevron-down') && !event.target.matches('#servicesInput') && !event.target.matches('#departmentInput')) {
+            if (!event.target.matches('.fas.fa-chevron-down') && !event.target.matches('#servicesInput') && !event.target.matches('#departmentInput') && !event.target.matches('#remarksInput')) {
                 const servicesOptions = document.getElementById("servicesOptions");
+                const remarksOptions = document.getElementById("remarksOptions");
                 const departmentOptions = document.getElementById("departmentOptions");
 
                 if (servicesOptions.classList.contains('show')) {
                     servicesOptions.classList.remove('show');
+                }
+                if (remarksOptions.classList.contains('show')) {
+                    remarksOptions.classList.remove('show');
                 }
                 if (departmentOptions.classList.contains('show')) {
                     departmentOptions.classList.remove('show');
