@@ -1,348 +1,996 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 * {
   margin: 0;
   padding: 0;
-  outline: none;
-  border: none;
-  text-decoration: none;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  z-index: 1000;
+  display: none; /* hidden by default */
+}
+
+.details {
+  z-index: 2000; /* Ensure modals/cards are above the overlay */
+}
+
+/* Example card styling */
+
+@media print {
+.table, .table__body {
+overflow: visible;
+height: auto !important;
+width: auto !important;
+}
+}
+
+/*@page {
+  size: landscape;
+  margin: 0; 
+}*/
+
 body {
-  background: #f2f2f2;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main.table {
+  width: 82vw;
+  height: 90vh;
+  background-color:white;
+  backdrop-filter: blur(7px);
+  box-shadow: 0 .4rem .8rem #0005;
+  border-radius: .8rem;
+
+  overflow: hidden;
+
+
+
+  
+}
+
+.table__header {
+  width: 100%;
+  height: 10%;
+  background-color: #fff4;
+  padding: .8rem 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+.table__header .input-group {
+  width: 45%;
+  height: 100%;
+  background-color: #f5f5f5;
+  padding: 0 .5rem;
+  border-radius: 2rem;
+  display: flex;
+  justify-content: flex-start; /* Align content to the start */
+  align-items: center;
+  position: relative;
+  margin-right: 32%;
+  transition: .2s;
+}
+
+.table__header .input-group form{
+  width: 100%;
+}
+
+
+.table__header .input-group input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+  text-align: left; /* Ensure text starts from the left */
+  padding: .1rem .1rem; /* Adjust padding for better visibility */
+  text-indent: .1rem;
+  
+}
+.table__header .input-group:hover {
+ 
+  background-color: #fff8;
+  box-shadow: 0 .1rem .4rem #0002;
+}
+
+
+
+
+
+
+
+
+
+.table__body {
+  width: 95%;
+  max-height: calc(85% - 1.6rem);
+  background-color: #fffb;
+
+  margin: .8rem auto;
+  border-radius: .6rem;
+margin-top: 1%;
+  overflow: auto;
+  overflow: overlay;
+}
+
+
+.table__body::-webkit-scrollbar{
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.table__body::-webkit-scrollbar-thumb{
+  border-radius: .5rem;
+  background-color: #0004;
+  visibility: hidden;
+}
+
+.table__body:hover::-webkit-scrollbar-thumb{ 
+  visibility: visible;
+}
+
+
+.table {
+  width: 100%;
+  
+}
+
+.table, th, td {
+  border-collapse: collapse;
+  padding: 1rem;
+  text-align: left;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: #d5d1defe;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #0000000b;
+}
+
+.table tbody tr {
+  --delay: .1s;
+  transition: .5s ease-in-out var(--delay), background-color 0s;
+}
+
+.table tbody tr:hover {
+  background-color: #fff6 !important;
+}
+
+.table tbody tr td,
+.table tbody tr td p {
+  transition: .2s ease-in-out;
+}
+
+.status {
+  padding: .4rem 0;
+  border-radius: 2rem;
+  text-align: center;
+  height: 2rem;
+  font-size: 14px;
+  width: 6rem;
+}
+
+.status:hover{
+  background-color: skyblue;
+  
+  font-weight: 600;
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+.status.obligation {
+  background-color: #1e90ff;
+  color: white;
+ 
+}
+
+.status.budget {
+  background-color: #1e90ff;
+  color: white;
+ 
+}
+
+.status.update {
+  background-color: #28a745;
+  color: white;
+}
+
+
+
+.status.delete{
+  background-color: #dc3545;
+  color: white;
+}
+
+@media (max-width: 1000px) {
+  td:not(:first-of-type) {
+      min-width: 12.1rem;
+  }
+}
+
+.table thead th:hover {
+  color: blue;
+}
+
+.export__file {
+  position: absolute;
+left: 70%;
+ 
+}
+
+.export__file .export__file-btn {
+  display: inline-block;
+  width: 5.5rem;
+  height: 2.5rem;
+  font-weight: 700;
+  border-radius: 2rem;
+  transition: .2s ease-in-out;
+  background-color: #28a745;
+  color: white;
+
+  border: 2px solid #f0f8ff; /* Same as background color */
+}
+
+.export__file .export__file-btn:hover {
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+
+
+.back {
+  position: absolute;
+bottom: 1%;
+left: 87%;
+z-index: 1100; /* Higher z-index than pagination */
+ 
+}
+
+.back-btn {
+  display: inline-block;
+  width: 5.5rem;
+  height: 2.5rem;
+  font-weight: 700;
+  border-radius: 2rem;
+  transition: 0.2s ease-in-out;
+  background-color: #007bff; /* Blue color */
+  color: white;
+  border: 2px solid #007bff; /* Same as background color */
+}
+
+.back-btn:hover {
+  color: white;
+  transform: scale(1.15);
+  cursor: pointer;
+}
+
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+  .export__file {
+    width: 2rem;
+    left: 83%;
+      transform: translateX(-50%);
+  }
+  .export__file .export__file-btn {
+      width: 3rem;
+      height: 1.5rem;
+      font-size: 0.75rem;
+  }
+  .back {
+      
+      transform: translateX(-50%);
+  }
+  .back-btn {
+      width: 4rem;
+      height: 1.5rem;
+      font-size: 0.75rem;
+     
+  }
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+  h1 {
+   font-size: 15px;
+  }
+ .input-group{
+ width: 50%;
+  left: 10%;
+ 
+ }
+}
+
+
+
+form, input {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  outline: none;
+  box-shadow: none;
+  appearance: none;
+}
+
+
+
+
+
+/* DETAILS CSS */
+
+
+/* DETAILS CSS */
+
+#details {
+  max-width: 1300px;
+  flex-direction: row; /* Items are displayed horizontally by default */
+  justify-content: space-between; /* Adjust as needed */
+}
+
+.details-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+#details .entry-item .main-user-info {
+  display: flex;
+  flex-wrap: wrap;
+
+  padding: 20px 0;
+  width: 55%; /* Adjusted width */
+}
+
+#details .entry-item #chart {
+  display: flex;
+  flex-wrap: wrap;
+
+  padding: 20px 0;
+  width: 45%; /* Adjusted width */
+  height: 500px;
+margin-bottom: 10%;
+
+
+}
+
+#details .entry-item #chart .user-input-box{
+margin-left: 30%;
+}
+
+.utilizationRate{
+  font-weight: 400;
+}
+
+
+
+
+
+@media screen and (max-width: 768px) {
+  .details-container {
+    flex-direction: column;
+  }
+
+  #details .entry-item .main-user-info,
+  #details .entry-item #chart {
+    width: 100%; /* Change width to full width on smaller screens */
+    margin-left: 0; /* Remove left margin */
+  }
+
+  #details .entry-item .main-user-info {
+    order: 1; /* Set the order to display above the chart */
+  }
+
+  #details .entry-item #chart {
+    order: 2; /* Set the order to display below the user info */
+    height: 300px;
+    margin-bottom: 20%;
+  }
+}
+
+
+
+
+/* DETAILS CSS */
+
+
+.details {
+  width: 100%;
+  max-width: 650px;
+  background: white;
+  padding: 28px;
+  margin: 0 28px;
+  border-radius: 10px;
+  box-shadow: inset -2px 2px 2px white;
+  position: absolute;
+  overflow-y: auto; /* Enable vertical scroll if content exceeds container height */
+  overflow-x: hidden; /* Prevent horizontal overflow */
+  max-height: 100vh; /* Ensure it doesn't exceed the viewport height */
+  box-sizing: border-box;
+  display: none;
+}
+
+.form-title {
+  
+  top: 0;
+ 
+  z-index: 999; /* Ensure the title is above other elements */
+  width: 100%;
+  font-size: 26px;
+  font-weight: 600;
+  text-align: center;
+  padding: 10px 0; /* Adjust padding as needed */
+
+ 
+}
+
+.main-user-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 0;
+
+
+}
+
+
+
+  /* User input box */
+  .user-input-box {
+    display: flex;
+    flex-direction: column;
+    width: 40%; /* Adjust width */
+    margin-bottom: 15px;
+  }
+
+.user-input-box label {
+    margin-bottom: 5px;
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.user-input-box .user-text {
+    min-height: 40px; /* Set a minimum height for the paragraph */
+    width: 95%;
+    border-radius: 7px;
+    outline: none;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Add some padding for better look */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    overflow: hidden; /* Hide overflow text */
+    word-wrap: break-word; /* Allow long words to wrap */
+    white-space: pre-line; /* Preserve line breaks */
+    background-color: #ffffff; /* White background */
+}
+
+.user-input {
+    min-height: 40px; /* Set a minimum height for the input */
+    width: 95%;
+    border-radius: 7px;
+    outline: none;
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Add some padding for better look */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    background-color: #f8f9fa; /* Light grey background */
+    font-size: 16px; /* Adjust font size */
+}
+
+#update{
+  background-color: white;
+}
+
+
+.select-container {
+  max-height: 150px; /* Adjust as needed */
+  overflow-y: auto;
+}
+
+.user-input-box select {
+  width: calc(100% - 20px); /* Adjust width to accommodate scrollbar */
+}
+
+.user-input-box {
+  margin-bottom: 15px;
+}
+
+
+.form-submit-btn input{
+  cursor: pointer;
+}
+.form-submit-btn {
+  margin-top: 20px;
+  text-align: center;
+  border-radius: 2rem;
+ 
+}
+
+
+.form-submit-btn input {
+  cursor: pointer;
+  display: inline-block;
+  width: 200px;
+  margin-top: -10px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  background:#007FFF;
+  transition: .2s ease-in-out;
+}
+
+.form-submit-btn input:hover {
+  transform: scale(1.15);
+}
+
+
+
+.tables-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+
+
+
+}
+
+.table-box {
+  width: 47%;
+
+  
+}
+
+.table-title {
+  color: black;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 100px;
+}
+
+.table-wrapper {
+  max-height: 150px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  font-size: 14px;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: .8rem;
+}
+
+.table-wrapper th, .table-wrapper td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table-wrapper table th {
+  background-color: #f8f9fa; /* Light grey header */
+  color: black; /* Text color */
+  text-transform: uppercase;
+  font-weight: bold;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border: none; /* Remove border */
+}
+.table-wrapper tr:hover {
+  background-color: #ddd;
+}
+
+.table-wrapper td {
   color: #333;
 }
 
-.button-container {
-  position: fixed; 
-  bottom: 46px; 
-  right: 80px; 
-  z-index: 10; 
+/* Custom scroll bar */
+.table-wrapper::-webkit-scrollbar {
+  width: 4px; /* Smaller width */
+  height: 4px;
 }
 
-.Btn {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 45px;
-  height: 45px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  position: relative;
+.table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+
+@media(max-width: 600px) {
+  .details {
+      min-width: 280px;
+  }
+
+  .user-input-box {
+      margin-bottom: 12px;
+      width: 100%;
+  }
+
+  .user-input-box:nth-child(2n) {
+      justify-content: space-between;
+  }
+
+  .tables-container {
+      flex-direction: column;
+  }
+
+  .table-box {
+      width: 100%;
+      margin-bottom: 20px;
+  }
+}
+
+.details a {
+  text-decoration: none;
+  color: black;
+}
+
+
+.x {
+
+  font-weight: 1000;
+ 
   overflow: hidden;
-  transition: all 0.3s;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-  background-color: #007FFF;
+  z-index: 999; /* Ensure the element appears above other content */
 }
 
-.sign {
-  width: 100%;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* CARD CSS */
+
+
+
+
+
+
+
+/* Parent container to center the card */
+
+
+.login-content {
   display: flex;
-  align-items: center;
   justify-content: center;
-  transition: all 0.3s;
+  align-items: center;
+  text-align: center;
+  padding: 3rem; /* Reduced padding */
 }
 
-.sign svg {
-  width: 17px;
+
+@media screen and (max-width: 1000px) {
+  form {
+      width: 100%; /* Adjusted width */
+  }
+
+ 
+
+ 
 }
 
-.sign svg path {
-  fill: white;
+
+
+
+
+
+.login-content h2{
+margin: 10px 0;
+color: #333;
+text-transform: uppercase;
+font-size:2.0rem;
+}
+.btn-add,
+.btn-cancel{
+    display: block;
+    width: 100%;
+    height: 46px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-size: 200%;
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: .5s;
+    text-align: center;
+    line-height: 46px; /* Ensure consistent vertical alignment */
 }
 
-.text {
-  position: absolute;
-  right: 0%;
-  width: 0%;
-  opacity: 0;
-  color: white;
-  font-size: 1.2em;
-  font-weight: 600;
-  transition: all 0.3s;
+.btn-add:hover{
+  transform: scale(1.15);
+}
+.btn-cancel:hover{
+  transform: scale(1.15);
+}
+.btn-add {
+    background-color: blue;
 }
 
-.Btn:hover {
-  width: 125px;
-  border-radius: 40px;
+.btn-cancel {
+    background-color: red;
 }
 
-.Btn:hover .sign {
+@media screen and (max-width: 1000px){
+form{
+  width: 290px;
+}
+
+.login-content h2{
+      font-size: 2.4rem;
+      margin: 8px 0;
+}
+}
+
+@media screen and (max-width: 900px){
+
+.login-content{
+  justify-content: center;
+}
+}
+/* Add this style to hide the initial option */
+
+.entry-item table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border: 1px solid #ddd;
+}
+
+.entry-item th, .entry-item td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.entry-item th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.entry-item table td:first-child {
+  width: 40%;
+}
+
+.entry-item table td:last-child {
   width: 30%;
-  padding-left: 20px;
 }
 
-.Btn:hover .text {
-  opacity: 1;
-  width: 70%;
-  padding-right: 10px;
-}
+/* plus sign */
 
-.Btn:active {
-  transform: translate(2px, 2px);
-}
+/* text */
+
+/* hover effect on button width */
+
+/* hover effect button's text */
+
+/* button click effect */
 
 .entry-item {
   text-align: left;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 70px;
+
+/* Base styles */
+
+/* Media queries for different screen sizes */
+
+/* Extra small devices (phones, 600px and down) */
+
+/* Small devices (portrait tablets and large phones, 600px to 768px) */
+
+/* Medium devices (landscape tablets, 768px to 992px) */
+
+/* Large devices (desktops, 992px and up) */
+
+
+.title {
+  /* Style your title to match the PROJECT DETAILS design */
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-.main {
-  padding: 20px;
-  width: 100%;
-}
-
-.main-top {
-  display: flex;
-  justify-content: left;
-}
-
-.main-top h1 {
-  font-size: 35px;
-  font-weight: 600;
-  text-align: left;
-  margin-top: -10px;
-  margin-bottom: 10px;
-  width: 50%;
-}
-
-.main-course h1 {
-  font-size: 35px;
-  font-weight: 600;
-  text-align: left;
-  margin-top: 30px;
-  margin-bottom: 40px;
-  width: 50%;
-}
-
-.main-skills {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  gap: 20px;
-}
-
-.main-skills .card {
-  flex: 1 1 calc(25% - 20px);
-  background: #fff;
-  text-align: center;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
-}
-
-.main-skills .card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
-.main-skills .card h3 {
-  margin: 15px 0;
-  font-size: 18px;
-  font-weight: 500;
-  color: #495057;
-}
-
-.main-skills .card p {
-  font-size: 30px;
-  font-weight: bold;
-  color: #495057;
-}
-
-.main-skills .card button {
-  background: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-top: 15px;
-  cursor: pointer;
-  border: none;
-  font-size: 14px;
-  transition: background 0.3s;
-}
-
-.main-skills .card button:hover {
-  background: #0056b3;
-}
-
-.main-skills .card i {
-  font-size: 40px;
-  color: #007bff;
+.input-div-new {
   margin-bottom: 15px;
-  transition: all 0.3s;
 }
 
-.main-skills .card:hover i {
-  transform: scale(1.2);
-  color: #0056b3;
-}
-
-.main-course {
-  margin-top: 30px;
+.input {
   width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.course-box {
-  width: 100%;
-  padding: 20px;
-  background: #fff;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.course-box .course {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.box {
-  flex: 1 1 calc(33% - 20px);
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
-}
-
-.box:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
-.box h3 {
-  font-size: 18px;
-  font-weight: 500;
-  color: #495057;
-  margin-bottom: 10px;
-}
-
-.box p {
-  font-size: 14px;
-  color: #6c757d;
-}
-
-.box button {
-  background: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-top: 20px;
-  cursor: pointer;
+.btn-add {
+  background-color: #007FFF; /* Example button color */
+  color: white;
   border: none;
-  font-size: 14px;
-  transition: background 0.3s;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+  height: 50px;
 }
 
-.box button:hover {
-  background: #0056b3;
+.btn-cancel {
+  background-color: #f44336; /* Example cancel button color */
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+  text-decoration: none;
+  height: 50px;
 }
 
-.box i {
-  font-size: 60px;
-  color: #007bff;
-  float: right;
-  margin: -30px 0 0 0;
+.btn-add, .btn-cancel {
+  padding: 5px 10px; /* Smaller padding */
+  font-size: 16px; /* Smaller font size */
+  text-align: center; /* Centers the text within the button */
 }
 
-.html {
-  color: #e34f26;
+.input-div-new .div label {
+  display: block;
+  color: black;
+  text-align: left; /* Align the label text to the left */
+  width: 100px; /* Adjust the width of the label as needed */
+  font-size: 20px;
+  font-weight: 600;
+}
+.swal2-container {
+  z-index: 10000 !important; /* Ensure SweetAlert is on top */
 }
 
-.css {
-  color: #264de4;
+.pagination {
+  text-align: center;
+  position: fixed;
+  bottom: -5px; /* Minimum distance from bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  z-index: 1000;
+  padding: 10px 0;
 }
 
-.js {
-  color: #f0db4f;
+.pagination-list {
+  list-style: none;
+  padding: 0;
+  display: inline-block;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 767px) {
-  .main-skills .card, .box {
-    flex: 1 1 100%;
+.pagination-item {
+  display: inline-block;
+  margin-right: 5px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.pagination-item a,
+.pagination-item span {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #f0f0f0;
+  border: none;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.pagination-item a:hover,
+.pagination-item span:hover {
+  background-color: #ddd;
+  transform: scale(1.15);
+}
+
+.pagination-item.active span {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.pagination-item.disabled span,
+.pagination-item.disabled a {
+  background-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .pagination {
+    padding: 5px 0; /* Reduce padding for smaller screens */
+    bottom: 30px; /* Adjust bottom spacing to prevent overlap with back button */
+    font-size: 14px; /* Reduce font size for pagination items */
   }
 
-  .box {
-    padding: 15px;
-    margin-bottom: 15px;
+  .pagination-item a,
+  .pagination-item span {
+    padding: 6px 10px; /* Adjust padding for smaller links */
   }
 
-  .box h3 {
-    font-size: 16px;
+  .back {
+    bottom: 2px; /* Adjust bottom spacing for the "Back" button */
+    left: 52%; /* Center horizontally */
+    transform: translateX(-50%);
+    z-index: 1100; /* Ensure back button is above pagination */
   }
 
-  .box p {
-    font-size: 12px;
-  }
-
-  .box button {
-    font-size: 12px;
-    padding: 8px 16px;
-  }
-
-  .box i {
-    font-size: 50px;
-    margin-top: -20px;
-  }
-
-  .course-box .course {
-    flex-direction: column;
+  .back-btn {
+    width: 80px; /* Adjust width of the back button for smaller screens */
+    height: 32px; /* Adjust height of the back button for smaller screens */
+    font-size: 12px; /* Reduce font size of the back button for smaller screens */
+    line-height: 32px; /* Center text vertically in the smaller button */
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  section {
-    padding: 0 2em;
-  }
-  
-  .main-skills .card, .box {
-    flex: 1 1 calc(50% - 20px);
-  }
 
-  .column {
-    flex: 0 50%;
-    max-width: 50%;
-  }
 
-  .btn, .btn-bottom-right {
-    width: auto;
-    padding: 0.1rem 1rem;
-    font-size: 0.8rem;
-  }
 
-  h3 {
-    white-space: nowrap;
-  }
 
-  .btn {
-    width: 70%;
-  }
-}
 
-@media screen and (min-width: 992px) {
-  section {
-    padding: 1em 3em;
-  }
 
-  .main-skills .card, .box {
-    flex: 1 1 calc(33.33% - 20px);
-  }
 
-  .column {
-    flex: 0 0 33.33%;
-    max-width: 33.33%;
-  }
 
-  h3 {
-    white-space: wrap;
-  }
-}
+
+
+
+
+
+
+
+
+
+
+
+
