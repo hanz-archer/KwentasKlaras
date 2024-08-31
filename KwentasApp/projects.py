@@ -30,48 +30,51 @@ def create_entry(request):
 
         # Validate required fields
         if not (ppa and implementing_unit and location and appropriation_str and start_date_str and end_date_str and code and services and year_str):
-            return HttpResponse('<script>alert("All fields are required."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("All fields are required."); window.location.href = "/create_entry";</script>', status=400)
 
         # Validate appropriation amount
         try:
             appropriation = float(appropriation_str)
             if appropriation <= 0:
-                return HttpResponse('<script>alert("Appropriation amount must be a positive number."); window.location.href = "/adddata";</script>', status=400)
+                return HttpResponse('<script>alert("Appropriation amount must be a positive number."); window.location.href = "/create_entry";</script>', status=400)
         except ValueError:
-            return HttpResponse('<script>alert("Invalid appropriation amount."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("Invalid appropriation amount."); window.location.href = "/create_entry";</script>', status=400)
 
         # Validate date format
         date_format = r'\d{4}-\d{2}-\d{2}'  # YYYY-MM-DD
         if not (re.match(date_format, start_date_str) and re.match(date_format, end_date_str)):
-            return HttpResponse('<script>alert("Invalid date format. Please use YYYY-MM-DD."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("Invalid date format. Please use YYYY-MM-DD."); window.location.href = "/create_entry";</script>', status=400)
 
         # Convert dates to datetime objects for further validation
         try:
             start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
             end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
         except ValueError:
-            return HttpResponse('<script>alert("Invalid date."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("Invalid date."); window.location.href = "/create_entry";</script>', status=400)
 
         # Validate start date is before end date
         if start_date >= end_date:
-            return HttpResponse('<script>alert("Start date must be before end date."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("Start date must be before end date."); window.location.href = "/create_entry";</script>', status=400)
 
         # Validate code format
         if not re.match(r'^[\w\d\s-]+$', code):
-            return HttpResponse('<script>alert("Invalid code format. Only letters, numbers, spaces, and hyphens are allowed."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("Invalid code format. Only letters, numbers, spaces, and hyphens are allowed."); window.location.href = "/create_entry";</script>', status=400)
 
         # Validate code uniqueness
         if database.child('Data').child(code).get().val() is not None:
-            return HttpResponse('<script>alert("Code already exists."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("Code already exists."); window.location.href = "/create_entry";</script>', status=400)
 
         # Validate year format
         if not re.match(r'\d{4}', year_str):
-            return HttpResponse('<script>alert("Invalid year format. Please use YYYY."); window.location.href = "/adddata";</script>', status=400)
+            return HttpResponse('<script>alert("Invalid year format. Please use YYYY."); window.location.href = "/create_entry";</script>', status=400)
 
         # Set remaining balance equal to appropriation
         total_budget = appropriation
-        remaining_balance = total_budget
+        remaining_total_balance = total_budget
         total_spent = 0
+        total_obligations = 0
+        remaining_obligations = 0
+       
 
         # Calculate the utilization rate (initially 0 since total_spent is 0)
         utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
@@ -89,21 +92,24 @@ def create_entry(request):
                 "code": code,
                 "services": services,
                 "year": year_str,
-                "remaining_balance": remaining_balance,
+                "remaining_total_balance": remaining_total_balance,
                 "total_spent": total_spent,  # Set total spent default value to 0
                 "added_budget": 0,  # Set added budget default value to 0
                 "total_budget": total_budget,
-                "utilization_rate": utilization_rate  # Include utilization rate
+                "utilization_rate": utilization_rate,  # Include utilization rate
+                "total_obligations": total_obligations,
+                "remaining_obligations": remaining_obligations,
+               
             })
 
             # Refresh the cache with the new entry
             cache.delete('project_entries')
             get_project_entries()
 
-            return HttpResponse('<script>alert("Successfully added"); window.location.href = "/adddata";</script>')
+            return HttpResponse('<script>alert("Successfully added"); window.location.href = "/create_entry";</script>')
 
         except Exception as e:
-            return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/adddata";</script>', status=500)
+            return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/create_entry";</script>', status=500)
     else:
         return render(request, 'KwentasApp/adddata.html')
 
@@ -119,7 +125,7 @@ def add_obligation(request, project_type):
     if request.method == 'POST':
         entry_key = request.POST.get('entry-code')
         name = request.POST.get('obligation_name')
-        spent_input = request.POST.get('obligation_spent', '0')
+        obligation_input = request.POST.get('obligation_input', '0')
         date = request.POST.get('obligation_date')
 
         # Determine redirect URL based on project type
@@ -132,14 +138,14 @@ def add_obligation(request, project_type):
 
         try:
             # Remove any commas or spaces from the input
-            spent_cleaned = re.sub(r'[,\s]', '', spent_input)
+            spent_cleaned = re.sub(r'[,\s]', '', obligation_input)
 
             # Validate that the cleaned input is a valid number
             if not re.match(r'^\d+(\.\d{1,2})?$', spent_cleaned):
                 return HttpResponse(f'<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "{redirect_url}";</script>', status=400)
             
             # Convert the cleaned and validated string to a float
-            spent = float(spent_cleaned)
+            obligation = float(spent_cleaned)
             
             entry_ref = database.child('Data').child(entry_key)  # Assigning database child to entry_ref
 
@@ -151,26 +157,98 @@ def add_obligation(request, project_type):
                 return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
 
             # Update total spent for the entry
-            total_spent = entry_data.get('total_spent', 0) + spent
+            total_obligations = entry_data.get('total_spent', 0) + obligation
 
             # Calculate remaining balance
             total_budget = entry_data.get('total_budget', 0)
-            remaining_balance = total_budget - total_spent
+            remaining_total_balance = total_budget - total_obligations
 
-            if remaining_balance < 0:
+            if remaining_total_balance < 0:
                 return HttpResponse(f'<script>alert("Remaining Balance cannot be negative. Add Budget if you wish to continue"); window.location.href = "{redirect_url}";</script>', status=404)
 
             # Push a new child node with a unique key for the obligation under the chosen entry
             new_obligation_ref = database.child('Data').child(entry_key).child('obligation').push({
                 'name': name,
-                'spent': spent,
+                'obligation': obligation,
+                'date': date
+            })
+
+            # Update total spent and remaining balance under the entry
+            database.child('Data').child(entry_key).update({
+                "total_obligations": total_obligations,
+                "remaining_total_balance": remaining_total_balance
+            })
+
+         
+
+            # Invalidate the cache
+            cache.delete('project_entries')
+
+            # Redirect back to the previous page
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+        except Exception as e:
+            return HttpResponse(f"Error: {str(e)}", status=500)
+    else:
+        return HttpResponse("Method not allowed", status=405)
+
+
+
+
+def add_disbursement(request, project_type):
+    if request.method == 'POST':
+        entry_key = request.POST.get('entry-code')
+        name = request.POST.get('disbursement_name')
+        disbursement_input = request.POST.get('disbursement_input', '0')
+        date = request.POST.get('disbursement_date')
+
+        # Determine redirect URL based on project type
+        if project_type == 'disbursement':
+            redirect_url = '/disbursements'
+       
+        else:
+            redirect_url = '/'
+
+        try:
+            # Remove any commas or spaces from the input
+            spent_cleaned = re.sub(r'[,\s]', '', disbursement_input)
+
+            # Validate that the cleaned input is a valid number
+            if not re.match(r'^\d+(\.\d{1,2})?$', spent_cleaned):
+                return HttpResponse(f'<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "{redirect_url}";</script>', status=400)
+            
+            # Convert the cleaned and validated string to a float
+            disbursement = float(spent_cleaned)
+            
+            entry_ref = database.child('Data').child(entry_key)  # Assigning database child to entry_ref
+
+            # Get data for the entry
+            entry_data = entry_ref.get().val()
+
+            # Check if entry_data is None
+            if entry_data is None:
+                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
+
+            # Update total spent for the entry
+            total_spent = entry_data.get('total_spent', 0) + disbursement
+            total_obligations = entry_data.get('total_obligations')
+            # Calculate remaining balance of obligation
+            total_budget = entry_data.get('total_budget', 0)
+            remaining_obligations = total_obligations - total_spent
+
+            if remaining_obligations < 0:
+                return HttpResponse(f'<script>alert("Remaining Obligations cannot be negative. Add Obligation if you wish to continue"); window.location.href = "{redirect_url}";</script>', status=404)
+
+            # Push a new child node with a unique key for the obligation under the chosen entry
+            new_obligation_ref = database.child('Data').child(entry_key).child('disbursement').push({
+                'name': name,
+                'disbursement': disbursement,
                 'date': date
             })
 
             # Update total spent and remaining balance under the entry
             database.child('Data').child(entry_key).update({
                 "total_spent": total_spent,
-                "remaining_balance": remaining_balance
+                "remaining_obligations": remaining_obligations
             })
 
             # Calculate and update utilization rate
@@ -193,9 +271,59 @@ def add_obligation(request, project_type):
 
 
 
+def disbursements(request):
+    _, _, all_entries = get_project_entries()
+    query = request.GET.get('query', '')  # Default to empty string if query is None
+    paginator = Paginator(all_entries, 10)  # Show 10 projects per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    result = database.child('Data').get()
 
+    matched_entries = []
 
+    if result.val():
+        for key, value in result.val().items():
+            if key == 'placeholder':
+                continue  # Skip the placeholder entry
+            entry = {
+                'ppa': value.get('ppa'),
+                'implementing_unit': value.get('implementing_unit'),
+                'location': value.get('location'),
+                'appropriation': value.get('appropriation'),
+                'remarks': value.get('remarks'),
+                'start_date': value.get('start_date'),
+                'end_date': value.get('end_date'),
+                'code': value.get('code'),
+                'services': value.get('services'),
+                'year': value.get('year'),
+                'remaining_total_balance': value.get('remaining_total_balance'),
+                'total_spent': value.get('total_spent'),
+                'total_obligations': value.get('total_obligations'),
+                'obligation': []  # Initialize obligation list
+               
+            }
 
+        
+            # Perform a case-insensitive search only if the fields are not None
+            if (query.lower() in str(entry['ppa']).lower() if entry['ppa'] else False or
+                query.lower() in str(entry['implementing_unit']).lower() if entry['implementing_unit'] else False or
+                query.lower() in str(entry['location']).lower() if entry['location'] else False or
+                query.lower() in str(entry['appropriation']).lower() if entry['appropriation'] else False or
+                query.lower() in str(entry['remarks']).lower() if entry['remarks'] else False or
+                query.lower() in str(entry['start_date']).lower() if entry['start_date'] else False or
+                query.lower() in str(entry['end_date']).lower() if entry['end_date'] else False or
+                query.lower() in str(entry['code']).lower() if entry['code'] else False or
+                query.lower() in str(entry['services']).lower() if entry['services'] else False):
+                
+                
+                    matched_entries.append(entry)
+
+    return render(request, 'KwentasApp/disbursements.html', {
+        'page_obj': page_obj,
+        'all_entries': all_entries,  # Pass all_entries to the template
+        'matched_entries': matched_entries,
+        'query': query
+    })
 
 
 
@@ -237,10 +365,10 @@ def add_budget(request):
             overall_budget = total_budget + added_budget
 
             # Calculate remaining balance
-            remaining_balance = entry_data.get('remaining_balance', 0) + added_budget
+            remaining_total_balance = entry_data.get('remaining_total_balance', 0) + added_budget
 
             # Check if remaining balance would go below 0
-            if remaining_balance < 0:
+            if remaining_total_balance < 0:
                 return HttpResponse('<script>alert("Remaining balance cannot go below 0."); window.location.href = "/";</script>', status=400)
 
             # Push a new child node with a unique key for the budget under the chosen entry
@@ -250,11 +378,11 @@ def add_budget(request):
                 'date': date
             })
 
-            # Update added_budget, total_budget, and remaining_balance under the entry
+            # Update added_budget, total_budget, and remaining_total_balance under the entry
             database.child('Data').child(entry_key).update({
                 "added_budget": total_added_budget,
                 "total_budget": overall_budget,
-                "remaining_balance": remaining_balance
+                "remaining_total_balance": remaining_total_balance
             })
 
             # Calculate and update utilization rate
@@ -302,11 +430,14 @@ def get_project_entries():
                 'code': value.get('code'),
                 'services': value.get('services'),
                 'year': value.get('year'),
-                'remaining_balance': value.get('remaining_balance'),
+                'remaining_total_balance': value.get('remaining_total_balance'),
                 'total_spent': value.get('total_spent'),
                 'added_budget': value.get('added_budget'),
                 'total_budget': value.get('total_budget'),
                 'utilization_rate': value.get('utilization_rate'),
+                'total_obligations': value.get('total_obligations'),
+                'remaining_obligations': value.get('remaining_obligations'),
+                'disbursement':[],
                 'obligation': [],  # Initialize obligation list
                 'budget_data': []  # Initialize budget data list
             }
@@ -316,8 +447,16 @@ def get_project_entries():
                 for obligation_key, obligation_value in value['obligation'].items():
                     entry['obligation'].append({
                         'name': obligation_value.get('name'),
-                        'spent': obligation_value.get('spent'),
+                        'obligation': obligation_value.get('obligation'),
                         'date': obligation_value.get('date')
+                    })
+             # Check if obligation node exists
+            if 'disbursement' in value:
+                for disbursement_key, disbursement_value in value['disbursement'].items():
+                    entry['disbursement'].append({
+                        'name': disbursement_value.get('name'),
+                        'disbursement': disbursement_value.get('disbursement'),
+                        'date': disbursement_value.get('date')
                     })
 
             # Fetch budget data for the current entry
@@ -395,17 +534,11 @@ def search_continuing_projects(request):
                 'code': value.get('code'),
                 'services': value.get('services'),
                 'year': value.get('year'),
-                'remaining_balance': value.get('remaining_balance'),
-                'total_spent': value.get('total_spent'),
-                'obligation': []  # Initialize obligation list
+                'remaining_total_balance': value.get('remaining_total_balance'),
+                'total_spent': value.get('total_spent')
+               
             }
-            if 'obligation' in value:
-                for obligation_key, obligation_value in value['obligation'].items():
-                    entry['obligation'].append({
-                        'name': obligation_value.get('name'),
-                        'spent': obligation_value.get('spent'),
-                        'date': obligation_value.get('date')
-                    })
+            
 
             if (query.lower() in str(entry['ppa']).lower() or
                 query.lower() in str(entry['implementing_unit']).lower() or
@@ -453,17 +586,11 @@ def search_current_projects(request):
                 'code': value.get('code'),
                 'services': value.get('services'),
                 'year': value.get('year'),
-                'remaining_balance': value.get('remaining_balance'),
-                'total_spent': value.get('total_spent'),
-                'obligation': []  # Initialize obligation list
+                'remaining_total_balance': value.get('remaining_total_balance'),
+                'total_spent': value.get('total_spent')
+               
             }
-            if 'obligation' in value:
-                for obligation_key, obligation_value in value['obligation'].items():
-                    entry['obligation'].append({
-                        'name': obligation_value.get('name'),
-                        'spent': obligation_value.get('spent'),
-                        'date': obligation_value.get('date')
-                    })
+        
 
             if (query.lower() in str(entry['ppa']).lower() or
                 query.lower() in str(entry['implementing_unit']).lower() or
@@ -699,7 +826,7 @@ def all_projects(request):
                 search_query.lower() in str(entry['end_date']).lower() or
                 search_query.lower() in str(entry['code']).lower() or
                 search_query.lower() in str(entry['services']).lower() or
-                search_query.lower() in str(entry['remaining_balance']).lower() or
+                search_query.lower() in str(entry['remaining_total_balance']).lower() or
                 search_query.lower() in str(entry['total_spent']).lower() or
                 search_query.lower() in str(entry['added_budget']).lower() or
                 search_query.lower() in str(entry['total_budget']).lower() or
@@ -742,7 +869,7 @@ def download_word(request, project_code):
     doc.add_paragraph(f"Start Date: {selected_entry['start_date']}")
     doc.add_paragraph(f"End Date: {selected_entry['end_date']}")
     doc.add_paragraph(f"Remarks: {selected_entry['remarks']}")
-    doc.add_paragraph(f"Remaining Balance: {selected_entry['remaining_balance']}")
+    doc.add_paragraph(f"Remaining Balance: {selected_entry['remaining_total_balance']}")
     doc.add_paragraph(f"Total Spent: {selected_entry['total_spent']}")
     doc.add_paragraph(f"Added Budget: {selected_entry['added_budget']}")
     doc.add_paragraph(f"Total Budget: {selected_entry['total_budget']}")

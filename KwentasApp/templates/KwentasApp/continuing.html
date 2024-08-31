@@ -221,8 +221,20 @@
               </div>
               <div class="user-input-box">
                 <label for="remainingBalance">Remaining Balance</label>
-                <p id="remainingBalance" class="user-text">₱{{ entry.remaining_balance|intcomma }}</p>
+                <p id="remainingBalance" class="user-text">₱{{ entry.remaining_total_balance|intcomma }}</p>
               </div>
+              <div class="user-input-box">
+                <label for="remainingObligations">Remaining Obligation</label>
+                <p id="remainingObligations" class="user-text">₱{{ entry.remaining_obligations|intcomma }}</p>
+              </div>
+              <div class="user-input-box">
+                <label for="totalObligations">Total Obligation</label>
+                <p id="totalObligations" class="user-text">₱{{ entry.total_obligations|intcomma }}</p>
+              </div>
+
+
+
+
             </div>
             <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
               <div class="user-input-box">
@@ -266,12 +278,40 @@
                   </thead>
                   <tbody> {% for obligation in entry.obligation %} <tr>
                       <td>{{ obligation.name }}</td>
-                      <td>₱{{ obligation.spent|intcomma }}</td>
+                      <td>₱{{ obligation.obligation|intcomma }}</td>
                       <td>{{ obligation.date}}</td>
                     </tr> {% endfor %} </tbody>
                 </table>
               </div>
             </div>
+
+            <div class="table-box">
+              <span class="table-title">Added Disbursement</span>
+              <br>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Amount</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody> {% for disbursement in entry.disbursement %} <tr>
+                      <td>{{ disbursement.name }}</td>
+                      <td>₱{{ disbursement.disbursement|intcomma }}</td>
+                      <td>{{ disbursement.date}}</td>
+                    </tr> {% endfor %} </tbody>
+                </table>
+              </div>
+            </div>
+
+
+
+
+
+
+
           </div>
         </li> {% endfor %} </ul>
     </div>
@@ -282,7 +322,7 @@
       </a>
       <a href="{% url 'continuing_projects' %}">
         <h1 class="form-title">Update Project</h1>
-      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'ongoing_update_entry' %}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
+      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'update_entry' 'continuing'%}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
         <div class="main-user-info" id="main-update">
           <div class="user-input-box">
             <label for="ppa_{{ entry.code }}">PPA</label>
@@ -395,7 +435,7 @@
     <!-- OBLIGATION -->
     <div class="details" id="obligation">
       <div class="login-content">
-        <form id="add-obligation-form" action="{% url 'continuing_add_obligation' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
+        <form id="add-obligation-form" action="{% url 'add_obligation' 'continuing' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
           <br>
           <br>
           <input type="hidden" name="entry-code" id="obligation-code">
@@ -415,9 +455,9 @@
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="obligation_spent" style="white-space: nowrap;">Obligation Spent</label>
+              <label for="obligation_input" style="white-space: nowrap;">Obligation Spent</label>
               <!-- Use label instead of h5 -->
-              <input type="text" name="obligation_spent" class="input">
+              <input type="text" name="obligation_input" class="input">
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>

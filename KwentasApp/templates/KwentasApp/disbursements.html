@@ -5,7 +5,7 @@
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Continuing Projects</title>
+    <title>Disbursements</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Material Icons -->
@@ -24,10 +24,10 @@
 
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
-        <h1>Continuing Projects</h1>
+        <h1>All Projects</h1>
         <div class="input-group">
-          <form method="GET" action="{% url 'search_continuing_projects' %}">
-            <input type="text" name="query" placeholder="Search Continuing Projects...">
+          <form method="GET" action="{% url 'disbursements' %}">
+            <input type="text" name="query" placeholder="Search Disbursements...">
         </div>
         <div class="export__file">
           <button type="submit" class="export__file-btn">Search</button>
@@ -41,51 +41,48 @@
                   <th class="left-align">PPA</th>
                     <th>Implementing Unit</th>
                     <th>Code</th>
-                    <th>Year</th>
+                    <th>Total Obligation</th>
                     {% if request.user.is_superuser %}
                         <th>Add</th>
-                        <th>Action</th>
+                       
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
-              {% if matched_entries_below_2024 %}
-              {% for entry in matched_entries_below_2024 %}
+              {% if matched_entries %}
+              {% for entry in matched_entries %}
               <tr style="cursor: pointer;">
                   <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                   <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
                   {% if request.user.is_superuser %}
                       <td>
-                          <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Add</p>
+                          <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Disburse</p>
                       </td>
                   {% endif %}
               </tr>
-          {% endfor %}
+              {% endfor %}
+          {% elif page_obj and not query %}
+              {% for entry in page_obj %}
+                  <tr style="cursor: pointer;">
+                      <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                      <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                      <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                      <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
+                      {% if request.user.is_superuser %}
+                          <td>
+                              <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Disburse</p>
+                          </td>
+                      {% endif %}
+                  </tr>
+              {% endfor %}
           {% else %}
-
-          {% if page_obj %}
-                {% for entry in page_obj %}
-                    <tr style="cursor: pointer;">
-                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                        <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                        <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                        {% if request.user.is_superuser %}
-                            <td>
-                                <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Add</p>
-                            </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-
-                {% else %}
-                <tr>
+              <tr>
                   <td colspan="6">No projects found.</td>
-                </tr>
-              {% endif %}
-                {% endif %}
+              </tr>
+          {% endif %}
+          
             </tbody>
         </table>
     </section>
@@ -139,10 +136,10 @@
 
     <!-- DETAILS  -->
     <div class="details" id="details">
-      <a href="{% url 'continuing_projects' %}">
+      <a href="{% url 'disbursements' %}">
         <i class="material-icons x" id="exit">close</i>
       </a>
-      <a href="{% url 'continuing_projects' %}">
+      <a href="{% url 'disbursements' %}">
         <h1 class="form-title">PROJECT DETAILS</h1>
       </a>
       <ul> {% for entry in all_entries %} <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
@@ -204,6 +201,15 @@
                 <label for="remainingBalance">Remaining Balance</label>
                 <p id="remainingBalance" class="user-text">₱{{ entry.remaining_balance|intcomma }}</p>
               </div>
+
+              <div class="user-input-box">
+                <label for="remainingObligations">Remaining Obligation</label>
+                <p id="remainingObligations" class="user-text">₱{{ entry.remaining_obligations|intcomma }}</p>
+              </div>
+              <div class="user-input-box">
+                <label for="totalObligations">Total Obligation</label>
+                <p id="totalObligations" class="user-text">₱{{ entry.total_obligations|intcomma }}</p>
+              </div>
             </div>
             <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
               <div class="user-input-box">
@@ -253,37 +259,59 @@
                 </table>
               </div>
             </div>
+
+
+            <div class="table-box">
+              <span class="table-title">Added Disbursements</span>
+              <br>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Amount</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody> {% for disbursement in entry.disbursement %} <tr>
+                      <td>{{ disbursement.name }}</td>
+                      <td>₱{{ disbursement.disbursement|intcomma }}</td>
+                      <td>{{ disbursement.date}}</td>
+                    </tr> {% endfor %} </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </li> {% endfor %} </ul>
     </div>
   
   
-    <!-- OBLIGATION -->
+    <!-- Disbursement-->
     <div class="details" id="obligation">
       <div class="login-content">
-        <form id="add-obligation-form" action="" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
+        <form id="add-obligation-form" action="{% url 'add_disbursement' 'disbursement' %}" method="post"> {% csrf_token %} <h2 class="title">Add Disbursement</h2>
           <br>
           <br>
           <input type="hidden" name="entry-code" id="obligation-code">
           <div class="input-div-new">
             <div class="div">
-              <label for="obligation_name" style="white-space: nowrap;">Obligation Name</label>
+              <label for="disbursement_name" style="white-space: nowrap;">Disbursement Name</label>
               <!-- Use label instead of h5 -->
-              <input type="text" name="obligation_name" class="input">
+              <input type="text" name="disbursement_name" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="obligation_date">Date</label>
+              <label for="disbursement_date">Date</label>
               <!-- Use label instead of h5 -->
-              <input type="date" name="obligation_date" class="input">
+              <input type="date" name="disbursement_date" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="obligation_spent" style="white-space: nowrap;">Obligation Spent</label>
+              <label for="disbursement_input" style="white-space: nowrap;">Disbursement Amount</label>
               <!-- Use label instead of h5 -->
-              <input type="text" name="obligation_spent" class="input">
+              <input type="text" name="disbursement_input" class="input">
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>
@@ -356,7 +384,7 @@
   
 
 
-    <!-- Obligation js -->
+    <!-- Disbursement js -->
     <script>
       function showAddObligationForm(entryCode) {
         document.getElementById('obligation-code').value = entryCode;
@@ -375,7 +403,7 @@
           // Show SweetAlert confirmation dialog
           Swal.fire({
             title: 'Are you sure?',
-            text: 'Do you want to add this obligation? This will alter data',
+            text: 'Do you want to add this disbursement? This will alter data',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, submit',

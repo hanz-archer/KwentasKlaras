@@ -35,5 +35,6 @@ urlpatterns = [
     path('all-projects/', all_projects, name='all_projects'),
     path('download_word/<str:project_code>/', download_word, name='download_word'),
     path('disbursements/', disbursements, name='disbursements'),
+     path('add_disbursement/<str:project_type>/', add_disbursement, name='add_disbursement'),
     path('obligations/', obligations, name='obligations')
 ]
