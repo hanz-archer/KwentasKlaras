@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>current Projects</title>
+    <title>Current Projects</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Material Icons -->
@@ -21,7 +21,7 @@
     <div class="overlay" id="overlay"></div>
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
-        <h1>current Projects</h1>
+        <h1>Current Projects</h1>
         <div class="input-group">
           <form method="GET" action="{% url 'search_current_projects' %}">
             <input type="text" name="query" placeholder="Search current Projects...">
