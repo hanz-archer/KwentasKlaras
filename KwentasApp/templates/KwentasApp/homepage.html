@@ -146,7 +146,7 @@
                     <img src="{% static 'KwentasApp/img/download.gif' %}" style="width: 100px; height: 100px;" />
                 </div>
                 <p>Fetching data from database.</p>
-            `,
+            `,  
             allowOutsideClick: false,
             showConfirmButton: false
         });
@@ -186,39 +186,41 @@
 
       {% if request.session.just_logged_in %}
       <script>
-      const Toast = Swal.mixin({
+          const Toast = Swal.mixin({
         toast: true,
-        position: "top-end",
+        position: window.innerWidth <= 480 ? "center" : "top-end",  // Center the toast on very small screens
         showConfirmButton: false,
         timer: 3700,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.onmouseenter = Swal.stopTimer;
-          toast.onmouseleave = Swal.resumeTimer;
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
         },
         customClass: {
-          container: 'custom-toast-container'
+            container: 'custom-toast-container'
         }
-      });
+    });
 
-      function showWelcomeMessage(userName) {
+    function showWelcomeMessage(userName) {
         const now = new Date();
         const hours = now.getHours();
         let greeting = '';
+
         if (hours >= 5 && hours < 12) {
-          greeting = 'Good Morning';
+            greeting = 'Good Morning';
         } else if (hours >= 12 && hours < 18) {
-          greeting = 'Good Afternoon';
+            greeting = 'Good Afternoon';
         } else {
-          greeting = 'Good Evening';
+            greeting = 'Good Evening';
         }
 
         Toast.fire({
-          icon: 'success',
-          title: `${greeting}, Welcome to Kwentas Klaras`,
-          text: `${userName}`
+            icon: 'success',
+            title: `${greeting}, Welcome to Kwentas Klaras`,
+            text: `${userName}`
         });
-      }
+    }
+
 
       function updateClock() {
         const now = new Date();

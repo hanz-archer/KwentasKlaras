@@ -70,7 +70,7 @@
                       <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                       <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                       <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
-                      {% if request.user.is_superuser %}
+                      {% if request.user.is_superuser and request.user.department == 'Accountant Office' %}
                           <td>
                               <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Disburse</p>
                           </td>

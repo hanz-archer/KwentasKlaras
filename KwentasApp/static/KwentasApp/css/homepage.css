@@ -254,9 +254,7 @@ body.page-loaded {
   animation: reloadAnimation 2s linear infinite;
 }
 
-.custom-toast-container {
-  margin-right: 60px; /* Adjust the left margin as needed */
-}
+
 
 /* General Navbar Styles */
 .navbar {
@@ -364,4 +362,18 @@ body.page-loaded {
   }
 }
 
+.custom-toast-container {
+  margin-right: 60px;
+}
+
+@media (max-width: 480px) {
+  .custom-toast-container {
+      /* Move the toast up on small screens */
+      top: 30%;  /* Adjust this value to move the toast higher */
+      left: 50%;
+      transform: translate(-50%, -30%);  /* Adjust this value accordingly */
+      max-width: 100%;
+      font-size: 14px;
+  }
+}
 
