@@ -299,6 +299,7 @@ def disbursements(request):
                 'remaining_total_balance': value.get('remaining_total_balance'),
                 'total_spent': value.get('total_spent'),
                 'total_obligations': value.get('total_obligations'),
+                'remaining_obligations': value.get('remaining_obligations'),
                 'obligation': []  # Initialize obligation list
                
             }
@@ -908,10 +909,10 @@ def get_monthly_expenses():
                 continue
 
             # Check if obligation node exists and aggregate the spent amounts by month
-            if 'obligation' in value:
-                for obligation_key, obligation_value in value['obligation'].items():
+            if 'disbursement' in value:
+                for obligation_key, obligation_value in value['disbursement'].items():
                     date = obligation_value.get('date')
-                    spent = obligation_value.get('spent')
+                    spent = obligation_value.get('disbursement')
 
                     if date and spent:
                         month = date[:7]  # Extract YYYY-MM from date

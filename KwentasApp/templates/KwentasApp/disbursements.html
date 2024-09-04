@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+    <!-- Same CSS as Continuing Projects-->
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/continuing.css' %}">
   </head>
   <body>
@@ -40,7 +42,7 @@
                 <tr>
                   <th class="left-align">PPA</th>
                     <th>Implementing Unit</th>
-                    <th>Code</th>
+                    <th>Remaining Obligations</th>
                     <th>Total Obligation</th>
                     {% if request.user.is_superuser %}
                         <th>Add</th>
@@ -54,11 +56,11 @@
               <tr style="cursor: pointer;">
                   <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                  <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                  <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.remaining_obligations }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
                   {% if request.user.is_superuser %}
                       <td>
-                          <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Disburse</p>
+                          <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
                       </td>
                   {% endif %}
               </tr>
@@ -68,11 +70,11 @@
                   <tr style="cursor: pointer;">
                       <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                       <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                      <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                      <td class="code" onclick="showDetails('{{ entry.code }}')">{{  entry.remaining_obligations }}</td>
                       <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
                       {% if request.user.is_superuser and request.user.department == 'Accountant Office' %}
                           <td>
-                              <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Disburse</p>
+                              <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
                           </td>
                       {% endif %}
                   </tr>
@@ -199,7 +201,7 @@
               </div>
               <div class="user-input-box">
                 <label for="remainingBalance">Remaining Balance</label>
-                <p id="remainingBalance" class="user-text">₱{{ entry.remaining_balance|intcomma }}</p>
+                <p id="remainingBalance" class="user-text">₱{{ entry.remaining_total_balance|intcomma }}</p>
               </div>
 
               <div class="user-input-box">
@@ -253,7 +255,7 @@
                   </thead>
                   <tbody> {% for obligation in entry.obligation %} <tr>
                       <td>{{ obligation.name }}</td>
-                      <td>₱{{ obligation.spent|intcomma }}</td>
+                      <td>₱{{ obligation.obligation|intcomma }}</td>
                       <td>{{ obligation.date}}</td>
                     </tr> {% endfor %} </tbody>
                 </table>
@@ -287,12 +289,12 @@
   
   
     <!-- Disbursement-->
-    <div class="details" id="obligation">
+    <div class="details" id="disbursement">
       <div class="login-content">
         <form id="add-obligation-form" action="{% url 'add_disbursement' 'disbursement' %}" method="post"> {% csrf_token %} <h2 class="title">Add Disbursement</h2>
           <br>
           <br>
-          <input type="hidden" name="entry-code" id="obligation-code">
+          <input type="hidden" name="entry-code" id="disbursement-code">
           <div class="input-div-new">
             <div class="div">
               <label for="disbursement_name" style="white-space: nowrap;">Disbursement Name</label>
@@ -323,7 +325,7 @@
 
     
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
-    <script src="search.js"></script>
+  
     <!-- PIE CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -386,9 +388,9 @@
 
     <!-- Disbursement js -->
     <script>
-      function showAddObligationForm(entryCode) {
-        document.getElementById('obligation-code').value = entryCode;
-        document.getElementById('obligation').style.display = 'block';
+      function showAddDisbursementForm(entryCode) {
+        document.getElementById('disbursement-code').value = entryCode;
+        document.getElementById('disbursement').style.display = 'block';
         document.getElementById('customers_table').style.filter = 'blur(10px)';
         document.getElementById('overlay').style.display = 'block';
       }
