@@ -509,7 +509,60 @@ def current_projects(request):
     })
 
 
+def obligations(request):
+    _, _, all_entries = get_project_entries()
+    query = request.GET.get('query', '')  # Default to empty string if query is None
+    paginator = Paginator(all_entries, 10)  # Show 10 projects per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    result = database.child('Data').get()
 
+    matched_entries = []
+
+    if result.val():
+        for key, value in result.val().items():
+            if key == 'placeholder':
+                continue  # Skip the placeholder entry
+            entry = {
+                'ppa': value.get('ppa'),
+                'implementing_unit': value.get('implementing_unit'),
+                'location': value.get('location'),
+                'appropriation': value.get('appropriation'),
+                'remarks': value.get('remarks'),
+                'start_date': value.get('start_date'),
+                'end_date': value.get('end_date'),
+                'code': value.get('code'),
+                'services': value.get('services'),
+                'year': value.get('year'),
+                'remaining_total_balance': value.get('remaining_total_balance'),
+                'total_spent': value.get('total_spent'),
+                'total_obligations': value.get('total_obligations'),
+                'remaining_obligations': value.get('remaining_obligations'),
+                'obligation': []  # Initialize obligation list
+               
+            }
+
+        
+            # Perform a case-insensitive search only if the fields are not None
+            if (query.lower() in str(entry['ppa']).lower() if entry['ppa'] else False or
+                query.lower() in str(entry['implementing_unit']).lower() if entry['implementing_unit'] else False or
+                query.lower() in str(entry['location']).lower() if entry['location'] else False or
+                query.lower() in str(entry['appropriation']).lower() if entry['appropriation'] else False or
+                query.lower() in str(entry['remarks']).lower() if entry['remarks'] else False or
+                query.lower() in str(entry['start_date']).lower() if entry['start_date'] else False or
+                query.lower() in str(entry['end_date']).lower() if entry['end_date'] else False or
+                query.lower() in str(entry['code']).lower() if entry['code'] else False or
+                query.lower() in str(entry['services']).lower() if entry['services'] else False):
+                
+                
+                    matched_entries.append(entry)
+
+    return render(request, 'KwentasApp/obligations.html', {
+        'page_obj': page_obj,
+        'all_entries': all_entries,  # Pass all_entries to the template
+        'matched_entries': matched_entries,
+        'query': query
+    })
 
 
 def search_continuing_projects(request):

@@ -5,8 +5,8 @@
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Continuing Projects</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Obligations</title>
+   
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+      <!-- Same Css as Continuing Projects -->
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/continuing.css' %}">
   </head>
   <body>
@@ -24,10 +26,10 @@
 
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
-        <h1>Continuing Projects</h1>
+        <h1>Obligations</h1>
         <div class="input-group">
-          <form method="GET" action="{% url 'search_continuing_projects' %}">
-            <input type="text" name="query" placeholder="Search Continuing Projects...">
+          <form method="GET" action="{% url 'obligations' %}">
+            <input type="text" name="query" placeholder="Search Obligations...">
         </div>
         <div class="export__file">
           <button type="submit" class="export__file-btn">Search</button>
@@ -42,6 +44,9 @@
                     <th>Implementing Unit</th>
                     <th>Code</th>
                     <th>Year</th>
+                    <th>Remaining Obligations</th>
+                    <th>Total Obligations</th>
+                   
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +57,9 @@
                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                   <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.remaining_obligations }}</td>
+                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
+                 
               </tr>
           {% endfor %}
           {% else %}
@@ -63,6 +71,10 @@
                         <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                         <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                         <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.remaining_obligations }}</td>
+                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
+                       
+                       
                     </tr>
                 {% endfor %}
 
@@ -80,7 +92,6 @@
       .left-align {
           text-align: left !important;
       }
-  
       .non-superuser .table th:nth-child(5), 
       .non-superuser .table th:nth-child(6),
       .non-superuser .table td:nth-child(5), 
@@ -131,100 +142,34 @@
 
     <!-- DETAILS  -->
     <div class="details" id="details">
-      <a href="{% url 'continuing_projects' %}">
+      <a href="{% url 'obligations' %}">
         <i class="material-icons x" id="exit">close</i>
       </a>
-      <a href="{% url 'continuing_projects' %}">
+      <a href="{% url 'obligations' %}">
         <h1 class="form-title">PROJECT DETAILS</h1>
       </a>
       <ul> {% for entry in all_entries %} <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
           <div class="details-container">
             <div class="main-user-info" id="main-detail">
+              
+           
               <div class="user-input-box">
-                <label for="fullName">PPA</label>
-                <p id="fullName" class="user-text">{{ entry.ppa }}</p>
+                <label for="remainingObligations">Remaining Obligation</label>
+                <p id="remainingObligations" class="user-text">₱{{ entry.remaining_obligations|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label for="username">Implementing Unit</label>
-                <p id="username" class="user-text">{{ entry.implementing_unit }}</p>
+                <label for="totalObligations">Total Obligation</label>
+                <p id="totalObligations" class="user-text">₱{{ entry.total_obligations|intcomma }}</p>
               </div>
-              <div class="user-input-box">
-                <label for="email">Location</label>
-                <p id="email" class="user-text">{{ entry.location }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="phoneNumber">Appropriation</label>
-                <p id="phoneNumber" class="user-text">₱{{ entry.appropriation|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="password">Remarks</label>
-                <p id="password" class="user-text">{{ entry.remarks }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="confirmPassword">Start Date</label>
-                <p id="confirmPassword" class="user-text">{{ entry.start_date }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="endDate">End Date</label>
-                <p id="endDate" class="user-text">{{ entry.end_date }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="code">Code</label>
-                <p id="code" class="user-text">{{ entry.code }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="services">Services</label>
-                <p id="services" class="user-text">{{ entry.services }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="year">Year</label>
-                <p id="year" class="user-text">{{ entry.year }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="totalBudget">Total Budget</label>
-                <p id="totalBudget" class="user-text">₱{{ entry.total_budget|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="totalSpent">Total Spent</label>
-                <p id="totalAddedBudget" class="user-text">₱{{ entry.total_spent|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="totalAddedBudget">Total Added Budget</label>
-                <p id="totalSpent" class="user-text">₱{{ entry.added_budget|intcomma }}</p>
-              </div>
-              <div class="user-input-box">
-                <label for="remainingBalance">Remaining Balance</label>
-                <p id="remainingBalance" class="user-text">₱{{ entry.remaining_balance|intcomma }}</p>
-              </div>
+
+
+
+
             </div>
-            <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
-              <div class="user-input-box">
-                <label for="fullName">Utilization Rate: </label>
-                <span class="utilizationRate">{{ entry.utilization_rate|floatformat:"-2" }} %</span>
-              </div>
-              <canvas class="pie-chart"></canvas>
-            </div>
+            
           </div>
           <div class="tables-container">
-            <div class="table-box">
-              <span class="table-title">Added Budget</span>
-              <div class="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Amount</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody> {% for budget in entry.budget_data %} <tr>
-                      <td>{{ budget.name|intcomma }}</td>
-                      <td>₱{{ budget.added_budget|intcomma }}</td>
-                      <td>{{ budget.date }}</td>
-                    </tr> {% endfor %} </tbody>
-                </table>
-              </div>
-            </div>
+            
             <div class="table-box">
               <span class="table-title">Added Obligation</span>
               <br>
@@ -239,98 +184,24 @@
                   </thead>
                   <tbody> {% for obligation in entry.obligation %} <tr>
                       <td>{{ obligation.name }}</td>
-                      <td>₱{{ obligation.spent|intcomma }}</td>
+                      <td>₱{{ obligation.obligation|intcomma }}</td>
                       <td>{{ obligation.date}}</td>
                     </tr> {% endfor %} </tbody>
                 </table>
               </div>
             </div>
+
+      
           </div>
         </li> {% endfor %} </ul>
     </div>
-  
-  
-    <!-- OBLIGATION -->
-    <div class="details" id="obligation">
-      <div class="login-content">
-        <form id="add-obligation-form" action="" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
-          <br>
-          <br>
-          <input type="hidden" name="entry-code" id="obligation-code">
-          <div class="input-div-new">
-            <div class="div">
-              <label for="obligation_name" style="white-space: nowrap;">Obligation Name</label>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="obligation_name" class="input">
-            </div>
-          </div>
-          <div class="input-div-new">
-            <div class="div">
-              <label for="obligation_date">Date</label>
-              <!-- Use label instead of h5 -->
-              <input type="date" name="obligation_date" class="input">
-            </div>
-          </div>
-          <div class="input-div-new">
-            <div class="div">
-              <label for="obligation_spent" style="white-space: nowrap;">Obligation Spent</label>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="obligation_spent" class="input">
-            </div>
-          </div>
-          <button type="submit" class="btn-add" value="Submit">Submit</button>
-          <a href="{% url 'continuing_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
-        </form>
-      </div>
-    </div>
-  
-
-    
+   
+   
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
-    <script src="search.js"></script>
+   
     <!-- PIE CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        var chartContainers = document.querySelectorAll('.chart-container');
-        chartContainers.forEach(function(container) {
-          var utilizationRateElement = container.querySelector('.utilizationRate');
-          var utilizationRate = parseFloat(utilizationRateElement.textContent);
-          var remainingPercentage = 100 - utilizationRate;
-          var canvas = container.querySelector('.pie-chart');
-          var ctx = canvas.getContext('2d');
-          new Chart(ctx, {
-            type: 'pie',
-            data: {
-              labels: ['Utilized', 'Remaining'],
-              datasets: [{
-                data: [utilizationRate, remainingPercentage],
-                backgroundColor: ['rgba(0, 123, 255, 0.6)', // Utilized (blue)
-                  'rgba(135, 206, 235, 0.6)' // Remaining (sky blue)
-                ],
-                borderColor: ['rgba(0, 123, 255, 1)', 'rgba(135, 206, 235, 1)'],
-                borderWidth: 1
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              legend: {
-                position: 'top',
-              },
-              title: {
-                display: true,
-                text: 'Utilization Rate'
-              },
-              animation: {
-                animateScale: true,
-                animateRotate: true
-              }
-            }
-          });
-        });
-      });
-    </script>
+  
     <!-- Details js -->
     <script>
       function showDetails(code) {
@@ -344,62 +215,6 @@
         document.getElementById('details').style.display = 'block';
       }
     </script>
-   
   
-
-
-    <!-- Obligation js -->
-    <script>
-      function showAddObligationForm(entryCode) {
-        document.getElementById('obligation-code').value = entryCode;
-        document.getElementById('obligation').style.display = 'block';
-        document.getElementById('customers_table').style.filter = 'blur(10px)';
-        document.getElementById('overlay').style.display = 'block';
-      }
-    </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Get the form element
-        var form = document.getElementById('add-obligation-form');
-        // Add submit event listener to the form
-        form.addEventListener('submit', function(event) {
-          event.preventDefault(); // Prevent the default form submission
-          // Show SweetAlert confirmation dialog
-          Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to add this obligation? This will alter data',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, submit',
-            cancelButtonText: 'No, cancel',
-            confirmButtonColor: '#28a745', // Green color for the confirm button
-            cancelButtonColor: '#dc3545' // Red color for the cancel button
-          }).then((result) => {
-            // If the user confirms, submit the form
-            if (result.isConfirmed) {
-              form.submit();
-            }
-          });
-        });
-      });
-    </script>
-      
-    <script>
-      function hideOverlay() {
-        document.getElementById('overlay').style.display = 'none';
-        document.getElementById('customers_table').style.filter = 'none';
-        var details = document.getElementById('details');
-        if (details) details.style.display = 'none';
-        var update = document.getElementById('update');
-        if (update) update.style.display = 'none';
-        var budget = document.getElementById('budget');
-        if (budget) budget.style.display = 'none';
-        var obligation = document.getElementById('obligation');
-        if (obligation) obligation.style.display = 'none';
-        var deleteForm = document.getElementById('delete');
-        if (deleteForm) deleteForm.style.display = 'none';
-      }
-      document.getElementById('overlay').addEventListener('click', hideOverlay);
-    </script>
   </body>
 </html>

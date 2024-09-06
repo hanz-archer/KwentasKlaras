@@ -117,8 +117,6 @@ def forgotpassword(request):
 
 
 
-def obligations(request):
-    return render(request, 'KwentasApp/obligations.html')
 
 @csrf_exempt
 def send_verification_code(request):

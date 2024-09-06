@@ -26,7 +26,7 @@
 
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
-        <h1>All Projects</h1>
+        <h1>Disbursements</h1>
         <div class="input-group">
           <form method="GET" action="{% url 'disbursements' %}">
             <input type="text" name="query" placeholder="Search Disbursements...">
