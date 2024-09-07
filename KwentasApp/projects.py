@@ -75,6 +75,7 @@ def create_entry(request):
         total_obligations = 0
         remaining_obligations = 0
        
+       
 
         # Calculate the utilization rate (initially 0 since total_spent is 0)
         utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
@@ -99,6 +100,8 @@ def create_entry(request):
                 "utilization_rate": utilization_rate,  # Include utilization rate
                 "total_obligations": total_obligations,
                 "remaining_obligations": remaining_obligations,
+              
+                
                
             })
 
@@ -157,8 +160,8 @@ def add_obligation(request, project_type):
                 return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
 
             # Update total spent for the entry
-            total_obligations = entry_data.get('total_spent', 0) + obligation
-            total_disbursements = entry_data.get('total_obligations')
+            total_obligations = entry_data.get('total_obligations', 0) + obligation
+            total_disbursements = entry_data.get('total_spent')
 
             # Calculate remaining balance
             total_budget = entry_data.get('total_budget', 0)

@@ -1,25 +1,30 @@
-{%load humanize%} {% load static %}
+{% load humanize %} {% load static %}
 <!DOCTYPE html>
 <html lang="en"> {% csrf_token %} <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Current Projects</title>
-    <meta name="viewport" >
+   
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Material Icons -->
   
+   
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/current.css' %}">
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
+
+
+
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
-        <h1>Current Projects</h1>
+        <h1>current Projects</h1>
         <div class="input-group">
           <form method="GET" action="{% url 'search_current_projects' %}">
             <input type="text" name="query" placeholder="Search current Projects...">
@@ -31,123 +36,126 @@
       </section>
       <section class="table__body">
         <table class="table">
-          <thead>
-            <tr>
-              <th class="left-align">PPA</th>
-              <th>Implementing Unit</th>
-              <th>Code</th>
-              <th>Year</th>
-              {% if request.user.is_superuser %}
+            <thead>
+                <tr>
+                  <th class="left-align">PPA</th>
+                    <th>Implementing Unit</th>
+                    <th>Code</th>
+                    <th>Year</th>
+                    {% if request.user.is_superuser %}
                         <th>Add</th>
                         <th>Action</th>
                     {% endif %}
-            </tr>
-          </thead>
-          <tbody>
-
-
-            {% if  matched_entries_2024_and_above %}
-            {% for entry in  matched_entries_2024_and_above %}
+                </tr>
+            </thead>
+            <tbody>
+              {% if matched_entries_2024_and_above %}
+              {% for entry in matched_entries_2024_and_above %}
               <tr style="cursor: pointer;">
-                <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                {% if request.user.is_superuser %}
-                <td>
-                    <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
-                    <br>
-                    <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
-                </td>
-                <td>
-                    <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                    <br>
-                    <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
-                </td>
-            {% endif %}
-              </tr>
-            {% endfor %}
-            {% else %}
-
-
-
-            {% if page_obj %}
-              {% for entry in page_obj %}
-                <tr style="cursor: pointer;">
-                  <td class="ppa" onclick="showDetails('{{ entry.code }}')" >{{ entry.ppa }}</td>
+                  <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                   <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                  <td>
-                    <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
-                    <br>
-                    <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
-                  </td>
-                  <td>
-                    <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
-                    <br>
-                    <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
-                  </td>
-                </tr>
-              {% endfor %}
-            {% else %}
-              <tr>
-                <td colspan="6">No projects found.</td>
+                  {% if request.user.is_superuser %}
+                      <td>
+                          <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
+                          <br>
+                          <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
+                      </td>
+                      <td>
+                          <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
+                          <br>
+                          <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+                      </td>
+                  {% endif %}
               </tr>
-            {% endif %}
-            {% endif %}
-          </tbody>
-        </table>
-      </section>
-
-
-
-
-
-
-      {% if not request.user.is_superuser %}
-      <style>
-        .left-align {
-            text-align: left !important;
-        }
-    
-        .non-superuser .table th:nth-child(5), 
-        .non-superuser .table th:nth-child(6),
-        .non-superuser .table td:nth-child(5), 
-        .non-superuser .table td:nth-child(6) {
-            display: none;
-        }
-    </style>
-  {% endif %}
-      <div class="back">
-        <a href="{% url 'homepage' %}">
-          <button class="back-btn">Back</button>
-        </a>
-      </div>
-
-      <div class="pagination">
-        <ul class="pagination-list">
-          {% if page_obj.has_previous %}
-            <li class="pagination-item"><a href="?page=1">&laquo; First</a></li>
-            <li class="pagination-item"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% endfor %}
           {% else %}
-            <li class="pagination-item disabled"><span>&laquo; First</span></li>
-            <li class="pagination-item disabled"><span>Previous</span></li>
+
+          {% if page_obj %}
+                {% for entry in page_obj %}
+                    <tr style="cursor: pointer;">
+                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                        <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                        <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                        {% if request.user.is_superuser %}
+                            <td>
+                                <p class="status obligation" onclick="showAddObligationForm('{{ entry.code }}')">Obligation</p>
+                                <br>
+                                <p class="status budget" onclick="showAddBudget('{{ entry.code }}')">Budget</p>
+                            </td>
+                            <td>
+                                <p class="status update" onclick="showUpdateForm('{{ entry.code }}')">Update</p>
+                                <br>
+                                <p class="status delete" onclick="showDeleteForm('{{ entry.code }}')">Delete</p>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+                {% else %}
+                <tr>
+                  <td colspan="6">No projects found.</td>
+                </tr>
+              {% endif %}
+                {% endif %}
+            </tbody>
+        </table>
+    </section>
+    {% if not request.user.is_superuser %}
+    <style>
+      .left-align {
+          text-align: left !important;
+      }
+      .non-superuser .table th:nth-child(5), 
+      .non-superuser .table th:nth-child(6),
+      .non-superuser .table td:nth-child(5), 
+      .non-superuser .table td:nth-child(6) {
+          display: none;
+      }
+  </style>
+{% endif %}
+
+
+
+
+
+
+  <div class="back">
+      <a href="{% url 'homepage' %}">
+          <button class="back-btn">Back</button>
+      </a>
+  </div>
+
+
+  <div class="pagination">
+      <ul class="pagination-list">
+          {% if page_obj.has_previous %}
+              <li class="pagination-item"><a href="?page=1">&laquo; First</a></li>
+              <li class="pagination-item"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          {% else %}
+              <li class="pagination-item disabled"><span>&laquo; First</span></li>
+              <li class="pagination-item disabled"><span>Previous</span></li>
           {% endif %}
           
           <li class="pagination-item active"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
           
           {% if page_obj.has_next %}
-            <li class="pagination-item"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
-            <li class="pagination-item"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+              <li class="pagination-item"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+              <li class="pagination-item"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
           {% else %}
-            <li class="pagination-item disabled"><span>Next</span></li>
-            <li class="pagination-item disabled"><span>Last &raquo;</span></li>
+              <li class="pagination-item disabled"><span>Next</span></li>
+              <li class="pagination-item disabled"><span>Last &raquo;</span></li>
           {% endif %}
-        </ul>
-      </div>
+      </ul>
+  </div>
+</main>
 
-    </main>
+
+
+
+
     <!-- DETAILS  -->
     <div class="details" id="details">
       <a href="{% url 'current_projects' %}">
@@ -160,77 +168,74 @@
           <div class="details-container">
             <div class="main-user-info" id="main-detail">
               <div class="user-input-box">
-                <label >PPA</label>
+                <p class="label">PPA</p>
                 <p id="fullName" class="user-text">{{ entry.ppa }}</p>
               </div>
               <div class="user-input-box">
-                <label >Implementing Unit</label>
+                <p class="label">Implementing Unit</p>
                 <p id="username" class="user-text">{{ entry.implementing_unit }}</p>
               </div>
               <div class="user-input-box">
-                <label >Location</label>
+                <p class="label">Location</p>
                 <p id="email" class="user-text">{{ entry.location }}</p>
               </div>
               <div class="user-input-box">
-                <label >Appropriation</label>
+                <p class="label">Appropriation</p>
                 <p id="phoneNumber" class="user-text">₱{{ entry.appropriation|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label >Remarks</label>
+                <p class="label">Remarks</p>
                 <p id="password" class="user-text">{{ entry.remarks }}</p>
               </div>
               <div class="user-input-box">
-                <label >Start Date</label>
+                <p class="label">Start Date</p>
                 <p id="confirmPassword" class="user-text">{{ entry.start_date }}</p>
               </div>
               <div class="user-input-box">
-                <label >End Date</label>
+                <p class="label">End Date</p>
                 <p id="endDate" class="user-text">{{ entry.end_date }}</p>
               </div>
               <div class="user-input-box">
-                <label >Code</label>
+                <p class="label">Code</p>
                 <p id="code" class="user-text">{{ entry.code }}</p>
               </div>
               <div class="user-input-box">
-                <label >Services</label>
+                <p class="label">Services</p>
                 <p id="services" class="user-text">{{ entry.services }}</p>
               </div>
               <div class="user-input-box">
-                <label >Year</label>
+                <p class="label">Year</p>
                 <p id="year" class="user-text">{{ entry.year }}</p>
               </div>
               <div class="user-input-box">
-                <label>Total Budget</label>
+                <p class="label">Total Budget</p>
                 <p id="totalBudget" class="user-text">₱{{ entry.total_budget|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label >Total Spent</label>
+                <p class="label">Total Spent</p>
                 <p id="totalAddedBudget" class="user-text">₱{{ entry.total_spent|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label>Total Added Budget</label>
+                <p class="label">Total Added Budget</p>
                 <p id="totalSpent" class="user-text">₱{{ entry.added_budget|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label>Remaining Balance</label>
+                <p class="label">Remaining Balance</p>
                 <p id="remainingBalance" class="user-text">₱{{ entry.remaining_total_balance|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label >Remaining Obligation</label>
+                <p class="label">Remaining Obligation</p>
                 <p id="remainingObligations" class="user-text">₱{{ entry.remaining_obligations|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label>Total Obligation</label>
+                <p class="label">Total Obligation</p>
                 <p id="totalObligations" class="user-text">₱{{ entry.total_obligations|intcomma }}</p>
               </div>
-
-
-
-
             </div>
+            
             <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
               <div class="user-input-box">
-                <label for="fullName">Utilization Rate: </label>
+                <p class="label">Utilization Rate: </p>
                 <span class="utilizationRate">{{ entry.utilization_rate|floatformat:"-2" }} %</span>
               </div>
               <canvas class="pie-chart"></canvas>
@@ -249,7 +254,7 @@
                     </tr>
                   </thead>
                   <tbody> {% for budget in entry.budget_data %} <tr>
-                      <td>{{ budget.name }}</td>
+                      <td>{{ budget.name|intcomma }}</td>
                       <td>₱{{ budget.added_budget|intcomma }}</td>
                       <td>{{ budget.date }}</td>
                     </tr> {% endfor %} </tbody>
@@ -271,7 +276,7 @@
                   <tbody> {% for obligation in entry.obligation %} <tr>
                       <td>{{ obligation.name }}</td>
                       <td>₱{{ obligation.obligation|intcomma }}</td>
-                      <td>{{ obligation.date }}</td>
+                      <td>{{ obligation.date}}</td>
                     </tr> {% endfor %} </tbody>
                 </table>
               </div>
@@ -300,17 +305,21 @@
 
 
 
+
+
+
+
           </div>
         </li> {% endfor %} </ul>
     </div>
     <!-- UPDATE -->
     <div class="details" id="update">
       <a href="{% url 'current_projects' %}">
-        <p class="x">X</p>
+      
       </a>
       <a href="{% url 'current_projects' %}">
         <h1 class="form-title">Update Project</h1>
-      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'update_entry' 'current' %}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
+      </a> {% for entry in all_entries %} <form id="updateForm_{{ entry.code }}" action="{% url 'update_entry' 'current'%}" method="post" onsubmit="handleSubmit(event)"> {% csrf_token %} <input type="hidden" name="entry_code" value="{{ entry.code }}">
         <div class="main-user-info" id="main-update">
           <div class="user-input-box">
             <label for="ppa_{{ entry.code }}">PPA</label>
@@ -384,7 +393,7 @@
         </div>
         <a href="{% url 'current_projects' %}">
           <div class="form-submit-btn">
-            <input type="text" value="Exit" style="background-color: red;text-align: center;">
+           <div class="exit" style="background-color: red;">Exit</div>
           </div>
         </a>
       </form> {% endfor %}
@@ -392,33 +401,31 @@
     <!-- BUDGET -->
     <div class="details" id="budget">
       <div class="login-content">
-        <form id="add-budget-form" action="{% url 'add_budget' %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 10px;">Add Project Budget</h2>
-          <br>
-          <br>
+        <form id="add-budget-form" action="{% url 'add_budget' %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
           <input type="hidden" name="entry_code" id="budget-code">
           <div class="input-div-new">
             <div class="div">
-              <label for="budget_name" style="white-space: nowrap;">Budget Name</label>
+             <p class="inputs-label" style="white-space: nowrap;">Budget Name</p>
               <!-- Use label instead of h5 -->
               <input type="text" name="budget_name" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="budget_date">Date</label>
+              <p class="inputs-label" >Date</p>
               <!-- Use label instead of h5 -->
               <input type="date" name="budget_date" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="added_budget" style="white-space: nowrap;">Added Budget</label>
+              <p class="inputs-label"  style="white-space: nowrap;">Added Budget</p>
               <!-- Use label instead of h5 -->
               <input type="text" name="added_budget" class="input">
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>
-          <a href="{% url 'current_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
+          <a href="{% url 'current_projects' %}" class="btn-cancel" style="color: white;">Exit</a>
         </form>
       </div>
     </div>
@@ -431,21 +438,21 @@
           <input type="hidden" name="entry-code" id="obligation-code">
           <div class="input-div-new">
             <div class="div">
-              <label for="obligation_name" style="white-space: nowrap;">Obligation Name</label>
+              <p class="inputs-label"  style="white-space: nowrap;">Obligation Name</p>
               <!-- Use label instead of h5 -->
               <input type="text" name="obligation_name" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="obligation_date">Date</label>
+              <p class="inputs-label" >Date</p>
               <!-- Use label instead of h5 -->
               <input type="date" name="obligation_date" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="obligation_input" style="white-space: nowrap;">Obligation Spent</label>
+              <p class="inputs-label"  style="white-space: nowrap;">Obligation Spent</p>
               <!-- Use label instead of h5 -->
               <input type="text" name="obligation_input" class="input">
             </div>
@@ -458,18 +465,22 @@
     <!-- Delete -->
     <div class="details" id="delete">
       <div class="login-content">
-        <form id="add-delete-form" action="{% url 'current_delete_entry' %}" method="post"> {% csrf_token %} <h2 class="title">Delete Project</h2>
+        <form id="deleteForm" action="{% url 'current_delete_entry' %}" method="post">
+          {% csrf_token %}
+          <h2 class="title">Delete Project</h2>
           <br>
           <br>
           <div class="input-div-new">
             <div class="div">
-              <label for="entry_code" style="white-space: nowrap;">Entry Code</label>
+              <label for="delete-code" style="white-space: nowrap;">Entry Code</label>
               <input type="text" name="entry_code" id="delete-code" readonly placeholder="1-121" class="input">
             </div>
           </div>
-          <button type="submit" class="btn-add" value="Submit">Delete</button>
+          <!-- No need for a submit button here -->
+          <button type="button" onclick="confirmDelete()" class="btn-add">Delete</button>
           <a href="{% url 'current_projects' %}" class="btn-cancel" style="text-decoration: none; color: white;">Exit</a>
         </form>
+        
       </div>
     </div>
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
@@ -517,7 +528,7 @@
         });
       });
     </script>
-    <!-- Details js-->
+    <!-- Details js -->
     <script>
       function showDetails(code) {
         document.getElementById('customers_table').style.filter = 'blur(10px)';
@@ -670,30 +681,26 @@
         document.getElementById('overlay').style.display = 'block';
       }
     </script>
-    <script>
-      // Sweeet Alert for Delete
-      document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('add-delete-form').addEventListener('submit', function(event) {
-          event.preventDefault(); // Prevent form submission
-          // Show SweetAlert confirmation dialog
-          Swal.fire({
-            title: 'Are you sure?',
-            text: 'You are about to delete this entry!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#dc3545', // Red color for the confirm button
-            cancelButtonColor: '#28a745' // Green color for the cancel button
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // If user confirms, submit the form
-              event.target.submit();
-            }
-          });
-        });
+   <script>
+    function confirmDelete() {
+      // Show SweetAlert confirmation dialog
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // If user confirms deletion, submit the form
+          var form = document.getElementById('deleteForm');
+          form.submit();
+        }
       });
-    </script>
+    }
+  </script>     
     <script>
       function hideOverlay() {
         document.getElementById('overlay').style.display = 'none';
