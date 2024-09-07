@@ -158,10 +158,12 @@ def add_obligation(request, project_type):
 
             # Update total spent for the entry
             total_obligations = entry_data.get('total_spent', 0) + obligation
+            total_disbursements = entry_data.get('total_obligations')
 
             # Calculate remaining balance
             total_budget = entry_data.get('total_budget', 0)
             remaining_total_balance = total_budget - total_obligations
+            remaining_obligations = total_obligations - total_disbursements
 
             if remaining_total_balance < 0:
                 return HttpResponse(f'<script>alert("Remaining Balance cannot be negative. Add Budget if you wish to continue"); window.location.href = "{redirect_url}";</script>', status=404)
@@ -176,7 +178,8 @@ def add_obligation(request, project_type):
             # Update total spent and remaining balance under the entry
             database.child('Data').child(entry_key).update({
                 "total_obligations": total_obligations,
-                "remaining_total_balance": remaining_total_balance
+                "remaining_obligations": remaining_obligations,
+               
             })
 
          

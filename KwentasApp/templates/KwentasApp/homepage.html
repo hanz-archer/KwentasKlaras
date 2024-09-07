@@ -302,13 +302,6 @@
         }
       }
 
-      document.getElementById('reports-link').addEventListener('click', showLoadingAlert);
-      window.addEventListener('pageshow', handlePageShow);
-      window.addEventListener('popstate', function () {
-        if (sessionStorage.getItem('showingSweetAlert') === 'true') {
-          sessionStorage.removeItem('showingSweetAlert');
-        }
-      });
     </script>
   </body>
 </html>
