@@ -1,69 +1,75 @@
-*{
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-body{
+body {
     font-family: 'Poppins', sans-serif;
+    background: #f2f2f2;
     overflow: hidden;
-	padding-top: 50px; /* Adjust the value as needed */
-
+    padding-top: 50px; /* Adjust the value as needed */
 }
+
+/* Center container */
 .container {
     position: absolute;
-    top: 50%; /* Adjusted to center vertically */
-    left: 58%; /* Center horizontally */
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 7rem;
-    max-width: 800px;
-    padding: 0 2rem;
-}
-
-.img{
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-}
-
-.login-content{
-	display: flex;
-    justify-content: center; /* Center horizontally */
+    display: flex;
+    justify-content: center;
     align-items: center;
+    width: 100%;
+    max-width: 100%; /* Allow full expansion of the card */
+    padding: 20px;
+}
+
+/* Card styling */
+.card {
+    width: 100%;
+    max-width: 1800px; /* Further increased width for larger screens */
+    min-height: 900px; /* Increased height for more vertical space */
+    padding: 80px; /* Increased padding for internal space */
+    background-color: #ffffff;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1); /* Enhanced shadow for better depth */
+    border-radius: 40px; /* Increased radius for smoother corners */
+    text-align: center; /* Center the text inside the card */
+    margin: 0 auto; /* Center the card horizontally */
+}
+
+/* Login content */
+.login-content {
     text-align: center;
-    width: 100%; /* Adjusted to take full width */
-    max-width: 400px; /* Added for responsive design */
-    margin: 0 auto; /* Center horizontally */
-    padding: 0 2rem; /* Added padding for better appearance */
+    width: 100%;
+    max-width: 560px; /* Slightly expanded width for login content */
+    margin: 0 auto; /* Center the login content inside the card */
+    padding: 30px; /* Increased padding for better spacing */
 }
 
-.img img{
-	width: 400px;
-}
-
-form{
-	width: 100%; /* Adjusted for responsiveness */
-    max-width: 400px; /* Added for responsive design */
+form {
+    width: 100%;
 }
 
 .login-content img {
-    height: 200px; /* Increase the height of the image */
-    width: auto; /* Let the width adjust proportionally */
+    height: 220px; /* Increased logo size */
+    width: auto;
+    margin-bottom: 20px;
 }
-
 
 .login-content h2.title {
-    margin: 15px 0 15px -60%; /* Adjust the negative left margin */
+    margin: 15px 0;
     color: #333;
     text-transform: uppercase;
-    font-size: 2.0rem;
-    white-space: nowrap; /* Prevent wrapping */
-    text-align: left; /* Left-align the text */
+    font-size: 2.2rem; /* Increased font size for title */
+    white-space: normal; /* Ensure text wraps within the card */
+    text-align: center;
+    line-height: 1.4;
 }
-.login-content .input-div{
-	position: relative;
+
+/* Input Fields */
+.input-div {
+    position: relative;
     display: grid;
     grid-template-columns: 7% 93%;
     margin: 25px 0;
@@ -71,216 +77,244 @@ form{
     border-bottom: 2px solid #d9d9d9;
 }
 
-.login-content .input-div.one{
-	margin-top: 0;
+.input-div.one {
+    margin-top: 0;
 }
 
-.i{
-	color: #d9d9d9;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+.i {
+    color: #d9d9d9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.i i{
-	transition: .3s;
+.i i {
+    transition: .3s;
 }
 
-.input-div > div{
+.input-div > div {
     position: relative;
-	height: 45px;
+    height: 45px;
 }
 
-.input-div > div > h5{
-	position: absolute;
-	left: 10px;
-	top: 50%;
-	transform: translateY(-50%);
-	color: #999;
-	font-size: 18px;
-	transition: .3s;
+.input-div > div > h5 {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 18px;
+    transition: .3s;
 }
 
-.input-div:before, .input-div:after{
-	content: '';
-	position: absolute;
-	bottom: -2px;
-	width: 0%;
-	height: 2px;
-	background-color: #007FFF;
-	transition: .4s;
+.input-div:before,
+.input-div:after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    width: 0%;
+    height: 2px;
+    background-color: #007FFF;
+    transition: .4s;
 }
 
-.input-div:before{
-	right: 50%;
+.input-div:before {
+    right: 50%;
 }
 
-.input-div:after{
-	left: 50%;
+.input-div:after {
+    left: 50%;
 }
 
-.input-div.focus:before, .input-div.focus:after {
-    content: "";  /* This is necessary for the pseudo-elements to be visible */
+.input-div.focus:before,
+.input-div.focus:after {
     width: 50%;
 }
 
-.input-div.focus > div > h5{
-	top: -5px;
-	font-size: 15px;
-}
-.input-div .div {
-    position: relative;  /* Add this if necessary */
+.input-div.focus > div > h5 {
+    top: -5px;
+    font-size: 15px;
 }
 
-.input-div.focus > .i > i{
-	color: #007FFF;
+.input-div.focus > .i > i {
+    color: #007FFF;
 }
 
-.input-div > div > input{
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	border: none;
-	outline: none;
-	background: none;
-	padding: 0.5rem 0.7rem;
-	font-size: 1.2rem;
-	color: #555;
-	font-family: 'poppins', sans-serif;
+.input-div > div > input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0.5rem 0.7rem;
+    font-size: 1.2rem;
+    color: #555;
+    font-family: 'Poppins', sans-serif;
 }
 
-.input-div.pass{
-	margin-bottom: 4px;
+.input-div.pass {
+    margin-bottom: 4px;
 }
 
-a{
-	display: block;
-	text-align: right;
-	text-decoration: none;
-	color: #999;
-	font-size: 0.9rem;
-	transition: .3s;
+a {
+    display: block;
+    text-align: right;
+    text-decoration: none;
+    color: #999;
+    font-size: 0.9rem;
+    transition: .3s;
 }
 
-a:hover{
-	color: #007FFF;
-}
-.btn{
-
-	transition: transform 0.3s ease; /* Smooth transition */
-	display: block;
-	width: 100%;
-	height: 50px;
-	border-radius: 25px;
-	outline: none;
-	border: none;
-	background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
-	background-size: 200%;
-	font-size: 1.2rem;
-	color: #fff;
-	font-family: 'Poppins', sans-serif;
-	text-transform: uppercase;
-	margin: 2rem 0 1.5rem 0; /* Adjusted margin top to 1.5rem */
-	cursor: pointer;
-	transition: .5s;
-}
-.btn:hover{
-	background-position: right;
-	transform: scale(1.15); /* Scale up on hover */
+a:hover {
+    color: #007FFF;
 }
 
-
-@media screen and (max-width: 1050px){
-	.container{
-		grid-gap: 5rem;
-	}
+/* Submit Button */
+.btn {
+    display: block;
+    width: 100%;
+    height: 50px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
+    background-size: 200%;
+    font-size: 1.2rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 2rem 0 1.5rem 0;
+    cursor: pointer;
+    transition: .5s;
 }
 
-@media screen and (max-width: 1000px){
-	form{
-		width: 290px;
-	}
-
-	.login-content h2{
-        font-size: 2.4rem;
-        margin: 8px 0;
-	}
-
-	.img img{
-		width: 400px;
-	}
+.btn:hover {
+    background-position: right;
+    transform: scale(1.15); /* Scale up on hover */
 }
 
-@media screen and (max-width: 900px){
-	.container{
-		grid-template-columns: 1fr;
-	}
+/* Media Queries for Responsiveness */
 
-	.img{
-		display: none;
-	}
+/* For screens between 700px and 1200px */
+@media screen and (min-width: 700px) and (max-width: 1200px) {
+    .card {
+        max-width: 1600px; /* Adjusted for this range */
+        min-height: 900px; /* Maintain height for larger screens */
+    }
 
-	.wave{
-		display: none;
-	}
-
-	.login-content{
-		justify-content: center;
-	}
+    .login-content h2.title {
+        font-size: 2rem; /* Adjusted title size for this range */
+    }
 }
+
+/* For larger desktops (above 1200px) */
+@media screen and (min-width: 1200px) {
+    .card {
+        max-width: 1800px; /* Adjusted for larger screens */
+        min-height: 900px; /* Maintain height for larger screens */
+    }
+}
+
+/* Laptops and smaller desktops */
+@media screen and (max-width: 1200px) {
+    .container {
+        max-width: 1000px; /* Increased container width for better card fit */
+    }
+
+    .login-content h2.title {
+        font-size: 1.8rem;
+    }
+
+    .card {
+        max-width: 1600px; /* Adjusted for laptops */
+        min-height: 900px; /* Maintain height */
+    }
+}
+
+/* Tablets and smaller screens */
+@media screen and (max-width: 1024px) {
+    .container {
+        max-width: 700px; /* Ensure enough width for the card */
+        padding: 15px;
+    }
+
+    .login-content h2.title {
+        font-size: 1.7rem;
+        white-space: normal; /* Allow text wrapping */
+    }
+
+    .login-content img {
+        height: 140px; /* Larger logo */
+    }
+
+    form {
+        padding: 0 15px;
+    }
+
+    .card {
+        max-width: 1600px; /* Wider card for tablets */
+        min-height: 900px; /* Maintain height */
+    }
+}
+
+/* Tablets and large mobile screens */
 @media screen and (max-width: 768px) {
     .container {
-        left: 50%; /* Center horizontally */
+        max-width: 600px;
     }
 
-    .login-content {
-        padding: 0 1rem; /* Adjusted padding for smaller screens */
-    }
-}
-/* Media Query for Mobile View */
-@media screen and (max-width: 768px) {
     .login-content h2.title {
-        margin: 15px auto; /* Center the text horizontally */
-        text-align: center; /* Center the text vertically */
-		white-space: wrap;
+        font-size: 1.6rem;
+    }
+
+    .login-content img {
+        height: 120px; /* Larger logo for tablets */
+    }
+
+    .input-div > div > input {
+        font-size: 1rem;
+    }
+
+    .btn {
+        font-size: 1rem;
+    }
+    
+    .card {
+        padding: 50px; /* Increased padding for better spacing */
+        max-width: 100%; /* Ensure card takes up full width on smaller screens */
+        min-height: 800px; /* Adjust height for better fit */
     }
 }
-:root {
-	--dark: #34495E;
-	--light: #ffffff;
-	--success: #0ABF30;
-	--error: #E24D4C;
-	--warning: #E9BD0C;
-	--info: #3498DB;
-  }
-  body{
-	background: #f2f2f2;
-  }
-  .buttons .btn {
-	border: none;
-	outline: none;
-	cursor: pointer;
-	margin: 0 5px;
-	color: var(--light);
-	font-size: 1.2rem;
-	padding: 10px 20px;
-	border-radius: 4px;
-  }
-  @media screen and (max-width: 530px) {
-	.notifications {
-	  width: 95%;
-	}
-	.notifications .toast {
-	  width: 100%;
-	  font-size: 1rem;
-	  margin-left: 20px;
-	}
-	.buttons .btn {
-	  margin: 0 1px;
-	  font-size: 1.1rem;
-	  padding: 8px 15px;
-	}
-  }
-  
+
+/* Mobile phones */
+@media screen and (max-width: 480px) {
+    .container {
+        max-width: 90%;
+        padding: 10px;
+    }
+
+    .login-content h2.title {
+        font-size: 1.4rem;
+    }
+
+    .login-content img {
+        height: 100px; /* Larger logo for mobile */
+    }
+
+    .input-div > div > input {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        height: 45px; /* Slightly smaller button */
+    }
+
+    .card {
+        max-width: 100%; /* Ensure full width on mobile */
+        min-height: 700px; /* Adjust height for better fit */
+    }
+}
