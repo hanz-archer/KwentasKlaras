@@ -92,9 +92,9 @@
 
                         {% for entry in all_entries %}
                         <div class="list hidden"  id="form-{{ entry.code }}">
-                            <form method="GET" action="{% url 'download_word' entry.code %}">
-                                <button type="submit" class="word-button">Download as Word</button>
-                           
+                            <form method="GET" action="{% url 'download_xlsx' entry.code %}">
+                                <button type="submit" class="xlsx-button">Download as XLSX</button>
+                            </form>                                                      
                             {% csrf_token %}
                         <ul class="user-list">
                             <li class="user-input-box">

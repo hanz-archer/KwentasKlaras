@@ -19,6 +19,65 @@ import string
 
 logger = logging.getLogger(__name__)
 
+from django.http import HttpResponse
+import openpyxl
+import os
+from io import BytesIO
+from django.conf import settings
+
+# Import your get_project_entries function
+from .projects import get_project_entries
+
+
+def download_xlsx(request, entry_code):
+    # Fetch the specific project entry based on the entry code
+    _, _, all_entries = get_project_entries()  # Fetch all project entries
+    selected_entry = None
+    
+    for entry in all_entries:
+        if entry['code'] == entry_code:
+            selected_entry = entry
+            break
+
+    if not selected_entry:
+        return HttpResponse("Entry not found", status=404)
+
+    # Define the path to your pre-designed template
+    template_path = os.path.join(settings.BASE_DIR, 'KwentasApp/static/KwentasApp/xls_templates/template_report.xlsx')
+
+    # Load the pre-designed XLSX template
+    wb = openpyxl.load_workbook(template_path)
+    ws = wb.active
+
+    # Modify the necessary cells with dynamic data
+    ws['A12'] = selected_entry.get('ppa', '')
+    ws['B12'] = selected_entry.get('location', '')
+    ws['D12'] = selected_entry.get('start_date', '')
+    ws['E12'] = selected_entry.get('end_date', '')
+    ws['I12'] = selected_entry.get('remarks', '')
+    ws['G12'] = selected_entry.get('total_spent', '')
+    ws['C12'] = selected_entry.get('total_budget', '')
+
+    # Add obligations data if available
+    obligations = selected_entry.get('obligations', [])
+    row_num = 10
+    for obligation in obligations:
+        ws[f'A{row_num}'] = obligation.get('name', '')
+        ws[f'B{row_num}'] = obligation.get('spent', '')
+        ws[f'C{row_num}'] = obligation.get('date', '')
+        row_num += 1
+
+    # Set up the response as an Excel file download
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={entry_code}_report.xlsx'
+
+    wb.save(response)
+    return response
+
+
+
+
+
 
 
 
