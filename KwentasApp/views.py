@@ -24,6 +24,7 @@ import openpyxl
 import os
 from io import BytesIO
 from django.conf import settings
+from openpyxl.styles import Font
 
 # Import your get_project_entries function
 from .projects import get_project_entries
@@ -49,14 +50,29 @@ def download_xlsx(request, entry_code):
     wb = openpyxl.load_workbook(template_path)
     ws = wb.active
 
+    calibri_bold_7 = Font(name='Calibri', bold=True, size=7)
+
     # Modify the necessary cells with dynamic data
     ws['A12'] = selected_entry.get('ppa', '')
+    ws['A12'].font = calibri_bold_7
+    
     ws['B12'] = selected_entry.get('location', '')
+    ws['B12'].font = calibri_bold_7
+    
     ws['D12'] = selected_entry.get('start_date', '')
+    ws['D12'].font = calibri_bold_7
+    
     ws['E12'] = selected_entry.get('end_date', '')
+    ws['E12'].font = calibri_bold_7
+    
     ws['I12'] = selected_entry.get('remarks', '')
+    ws['I12'].font = calibri_bold_7
+    
     ws['G12'] = selected_entry.get('total_spent', '')
+    ws['G12'].font = calibri_bold_7
+    
     ws['C12'] = selected_entry.get('total_budget', '')
+    ws['C12'].font = calibri_bold_7
 
     # Add obligations data if available
     obligations = selected_entry.get('obligations', [])
@@ -69,7 +85,7 @@ def download_xlsx(request, entry_code):
 
     # Set up the response as an Excel file download
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename={entry_code}_report.xlsx'
+    response['Content-Disposition'] = f'attachment; filename=Project-Code-{entry_code}-Report.xlsx'
 
     wb.save(response)
     return response
