@@ -69,16 +69,16 @@ def create_entry(request):
             return HttpResponse('<script>alert("Invalid year format. Please use YYYY."); window.location.href = "/create_entry";</script>', status=400)
 
         # Set remaining balance equal to appropriation
-        total_budget = appropriation
-        remaining_total_balance = total_budget
-        total_spent = 0
+        overall_budget = appropriation
+        remaining_total_balance = overall_budget
+        total_disbursements = 0
         total_obligations = 0
         remaining_obligations = 0
        
        
 
-        # Calculate the utilization rate (initially 0 since total_spent is 0)
-        utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
+        # Calculate the utilization rate (initially 0 since total_disbursements is 0)
+        utilization_rate = (total_disbursements / overall_budget) * 100 if overall_budget > 0 else 0
 
         try:
             # Save project entry with code as the key
@@ -94,9 +94,9 @@ def create_entry(request):
                 "services": services,
                 "year": year_str,
                 "remaining_total_balance": remaining_total_balance,
-                "total_spent": total_spent,  # Set total spent default value to 0
+                "total_disbursements": total_disbursements,  # Set total spent default value to 0
                 "added_budget": 0,  # Set added budget default value to 0
-                "total_budget": total_budget,
+                "overall_budget": overall_budget,
                 "utilization_rate": utilization_rate,  # Include utilization rate
                 "total_obligations": total_obligations,
                 "remaining_obligations": remaining_obligations,
@@ -161,11 +161,11 @@ def add_obligation(request, project_type):
 
             # Update total spent for the entry
             total_obligations = entry_data.get('total_obligations', 0) + obligation
-            total_disbursements = entry_data.get('total_spent')
+            total_disbursements = entry_data.get('total_disbursements')
 
             # Calculate remaining balance
-            total_budget = entry_data.get('total_budget', 0)
-            remaining_total_balance = total_budget - total_obligations
+            overall_budget = entry_data.get('overall_budget', 0)
+            remaining_total_balance = overall_budget - total_obligations
             remaining_obligations = total_obligations - total_disbursements
 
             if remaining_total_balance < 0:
@@ -235,11 +235,14 @@ def add_disbursement(request, project_type):
                 return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
 
             # Update total spent for the entry
-            total_spent = entry_data.get('total_spent', 0) + disbursement
+            remaining_balance = entry_data.get('remaining_total_balance')
+            total_disbursements = entry_data.get('total_disbursements', 0) + disbursement
             total_obligations = entry_data.get('total_obligations')
             # Calculate remaining balance of obligation
-            total_budget = entry_data.get('total_budget', 0)
-            remaining_obligations = total_obligations - total_spent
+            overall_budget = entry_data.get('overall_budget', 0)
+            remaining_obligations = total_obligations - total_disbursements
+            remaining_balance = overall_budget - total_disbursements
+            
 
             if remaining_obligations < 0:
                 return HttpResponse(f'<script>alert("Remaining Obligations cannot be negative. Add Obligation if you wish to continue"); window.location.href = "{redirect_url}";</script>', status=404)
@@ -253,12 +256,13 @@ def add_disbursement(request, project_type):
 
             # Update total spent and remaining balance under the entry
             database.child('Data').child(entry_key).update({
-                "total_spent": total_spent,
-                "remaining_obligations": remaining_obligations
+                "total_disbursements": total_disbursements,
+                "remaining_obligations": remaining_obligations,
+                "remaining_total_balance": remaining_balance
             })
 
             # Calculate and update utilization rate
-            utilization_rate = (total_spent / total_budget) * 100 if total_budget > 0 else 0
+            utilization_rate = (total_disbursements / overall_budget) * 100 if overall_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
             # Invalidate the cache
@@ -303,7 +307,7 @@ def disbursements(request):
                 'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_spent': value.get('total_spent'),
+                'total_disbursements': value.get('total_disbursements'),
                 'total_obligations': value.get('total_obligations'),
                 'remaining_obligations': value.get('remaining_obligations'),
                 'obligation': []  # Initialize obligation list
@@ -368,8 +372,8 @@ def add_budget(request):
             total_added_budget = entry_data.get('added_budget', 0) + added_budget
 
             # Calculate overall total budget
-            total_budget = entry_data.get('total_budget', 0)
-            overall_budget = total_budget + added_budget
+            overall_budget = entry_data.get('overall_budget', 0)
+            overall_budget = overall_budget + added_budget
 
             # Calculate remaining balance
             remaining_total_balance = entry_data.get('remaining_total_balance', 0) + added_budget
@@ -385,16 +389,16 @@ def add_budget(request):
                 'date': date
             })
 
-            # Update added_budget, total_budget, and remaining_total_balance under the entry
+            # Update added_budget, overall_budget, and remaining_total_balance under the entry
             database.child('Data').child(entry_key).update({
                 "added_budget": total_added_budget,
-                "total_budget": overall_budget,
+                "overall_budget": overall_budget,
                 "remaining_total_balance": remaining_total_balance
             })
 
             # Calculate and update utilization rate
-            total_spent = entry_data.get('total_spent', 0)
-            utilization_rate = (total_spent / overall_budget) * 100 if overall_budget > 0 else 0
+            total_disbursements = entry_data.get('total_disbursements', 0)
+            utilization_rate = (total_disbursements / overall_budget) * 100 if overall_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
             # Invalidate the cache
@@ -438,9 +442,9 @@ def get_project_entries():
                 'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_spent': value.get('total_spent'),
+                'total_disbursements': value.get('total_disbursements'),
                 'added_budget': value.get('added_budget'),
-                'total_budget': value.get('total_budget'),
+                'overall_budget': value.get('overall_budget'),
                 'utilization_rate': value.get('utilization_rate'),
                 'total_obligations': value.get('total_obligations'),
                 'remaining_obligations': value.get('remaining_obligations'),
@@ -541,7 +545,7 @@ def obligations(request):
                 'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_spent': value.get('total_spent'),
+                'total_disbursements': value.get('total_disbursements'),
                 'total_obligations': value.get('total_obligations'),
                 'remaining_obligations': value.get('remaining_obligations'),
                 'obligation': []  # Initialize obligation list
@@ -595,7 +599,7 @@ def search_continuing_projects(request):
                 'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_spent': value.get('total_spent')
+                'total_disbursements': value.get('total_disbursements')
                
             }
             
@@ -647,7 +651,7 @@ def search_current_projects(request):
                 'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_spent': value.get('total_spent')
+                'total_disbursements': value.get('total_disbursements')
                
             }
         
@@ -887,9 +891,9 @@ def all_projects(request):
                 search_query.lower() in str(entry['code']).lower() or
                 search_query.lower() in str(entry['services']).lower() or
                 search_query.lower() in str(entry['remaining_total_balance']).lower() or
-                search_query.lower() in str(entry['total_spent']).lower() or
+                search_query.lower() in str(entry['total_disbursements']).lower() or
                 search_query.lower() in str(entry['added_budget']).lower() or
-                search_query.lower() in str(entry['total_budget']).lower() or
+                search_query.lower() in str(entry['overall_budget']).lower() or
                 search_query.lower() in str(entry['utilization_rate']).lower())
         ]
 
@@ -930,9 +934,9 @@ def download_word(request, project_code):
     doc.add_paragraph(f"End Date: {selected_entry['end_date']}")
     doc.add_paragraph(f"Remarks: {selected_entry['remarks']}")
     doc.add_paragraph(f"Remaining Balance: {selected_entry['remaining_total_balance']}")
-    doc.add_paragraph(f"Total Spent: {selected_entry['total_spent']}")
+    doc.add_paragraph(f"Total Spent: {selected_entry['total_disbursements']}")
     doc.add_paragraph(f"Added Budget: {selected_entry['added_budget']}")
-    doc.add_paragraph(f"Total Budget: {selected_entry['total_budget']}")
+    doc.add_paragraph(f"Total Budget: {selected_entry['overall_budget']}")
     doc.add_paragraph(f"Utilization Rate: {selected_entry['utilization_rate']}")
 
     # Obligations and Budget Data as Lists
