@@ -25,10 +25,7 @@ import os
 from io import BytesIO
 from django.conf import settings
 from openpyxl.styles import Font
-
-# Import your get_project_entries function
-from .projects import get_project_entries
-
+from .projects import get_project_entries 
 
 def download_xlsx(request, entry_code):
     # Fetch the specific project entry based on the entry code
@@ -53,26 +50,39 @@ def download_xlsx(request, entry_code):
     calibri_bold_7 = Font(name='Calibri', bold=True, size=7)
 
     # Modify the necessary cells with dynamic data
-    ws['A12'] = selected_entry.get('ppa', '')
-    ws['A12'].font = calibri_bold_7
+    service_type = selected_entry.get('services', 'General')
+
+    # Define different cell positions based on the service type
+    if service_type == 'General':
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
+    elif service_type == 'Social':
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
+    elif service_type == 'Economic':
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
+    elif service_type == 'Environmental':
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
+
+    # Populate the cells with the dynamic data
+    ws[ppa_cell] = selected_entry.get('ppa', '')
+    ws[ppa_cell].font = calibri_bold_7
     
-    ws['B12'] = selected_entry.get('location', '')
-    ws['B12'].font = calibri_bold_7
+    ws[location_cell] = selected_entry.get('location', '')
+    ws[location_cell].font = calibri_bold_7
     
-    ws['D12'] = selected_entry.get('start_date', '')
-    ws['D12'].font = calibri_bold_7
+    ws[start_date_cell] = selected_entry.get('start_date', '')
+    ws[start_date_cell].font = calibri_bold_7
     
-    ws['E12'] = selected_entry.get('end_date', '')
-    ws['E12'].font = calibri_bold_7
+    ws[end_date_cell] = selected_entry.get('end_date', '')
+    ws[end_date_cell].font = calibri_bold_7
     
-    ws['I12'] = selected_entry.get('remarks', '')
-    ws['I12'].font = calibri_bold_7
+    ws[remarks_cell] = selected_entry.get('remarks', '')
+    ws[remarks_cell].font = calibri_bold_7
     
-    ws['G12'] = selected_entry.get('total_spent', '')
-    ws['G12'].font = calibri_bold_7
+    ws[total_spent_cell] = selected_entry.get('total_spent', '')
+    ws[total_spent_cell].font = calibri_bold_7
     
-    ws['C12'] = selected_entry.get('total_budget', '')
-    ws['C12'].font = calibri_bold_7
+    ws[total_budget_cell] = selected_entry.get('total_budget', '')
+    ws[total_budget_cell].font = calibri_bold_7
 
     # Add obligations data if available
     obligations = selected_entry.get('obligations', [])
@@ -89,12 +99,6 @@ def download_xlsx(request, entry_code):
 
     wb.save(response)
     return response
-
-
-
-
-
-
 
 
 print("KwentasApp.views module loaded")  # Debugging print
