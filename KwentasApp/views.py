@@ -16,9 +16,6 @@ import logging
 import json
 import random
 import string
-
-logger = logging.getLogger(__name__)
-
 from django.http import HttpResponse
 import openpyxl
 import os
@@ -26,6 +23,8 @@ from io import BytesIO
 from django.conf import settings
 from openpyxl.styles import Font
 from .projects import get_project_entries 
+
+logger = logging.getLogger(__name__)
 
 def download_xlsx(request, entry_code):
     # Fetch the specific project entry based on the entry code
@@ -54,13 +53,13 @@ def download_xlsx(request, entry_code):
 
     # Define different cell positions based on the service type
     if service_type == 'General':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
     elif service_type == 'Social':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
     elif service_type == 'Economic':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
     elif service_type == 'Environmental':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_spent_cell, total_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
+        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
 
     # Populate the cells with the dynamic data
     ws[ppa_cell] = selected_entry.get('ppa', '')
@@ -78,11 +77,11 @@ def download_xlsx(request, entry_code):
     ws[remarks_cell] = selected_entry.get('remarks', '')
     ws[remarks_cell].font = calibri_bold_7
     
-    ws[total_spent_cell] = selected_entry.get('total_spent', '')
-    ws[total_spent_cell].font = calibri_bold_7
+    ws[total_disbursements_cell] = selected_entry.get('total_disbursements', '')
+    ws[total_disbursements_cell].font = calibri_bold_7
     
-    ws[total_budget_cell] = selected_entry.get('total_budget', '')
-    ws[total_budget_cell].font = calibri_bold_7
+    ws[overall_budget_cell] = selected_entry.get('overall_budget', '')
+    ws[overall_budget_cell].font = calibri_bold_7
 
     # Add obligations data if available
     obligations = selected_entry.get('obligations', [])
