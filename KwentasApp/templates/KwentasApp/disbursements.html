@@ -146,77 +146,73 @@
           <div class="details-container">
             <div class="main-user-info" id="main-detail">
               <div class="user-input-box">
-                <label>PPA</label>
+                <p class="label">PPA</p>
                 <p id="fullName" class="user-text">{{ entry.ppa }}</p>
               </div>
               <div class="user-input-box">
-                <label >Implementing Unit</label>
+                <p class="label">Implementing Unit</p>
                 <p id="username" class="user-text">{{ entry.implementing_unit }}</p>
               </div>
               <div class="user-input-box">
-                <label >Location</label>
+                <p class="label">Location</p>
                 <p id="email" class="user-text">{{ entry.location }}</p>
               </div>
               <div class="user-input-box">
-                <label >Appropriation</label>
+                <p class="label">Appropriation</p>
                 <p id="phoneNumber" class="user-text">₱{{ entry.appropriation|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label >Remarks</label>
+                <p class="label">Remarks</p>
                 <p id="password" class="user-text">{{ entry.remarks }}</p>
               </div>
               <div class="user-input-box">
-                <label >Start Date</label>
+                <p class="label">Start Date</p>
                 <p id="confirmPassword" class="user-text">{{ entry.start_date }}</p>
               </div>
               <div class="user-input-box">
-                <label >End Date</label>
+                <p class="label">End Date</p>
                 <p id="endDate" class="user-text">{{ entry.end_date }}</p>
               </div>
               <div class="user-input-box">
-                <label >Code</label>
+                <p class="label">Code</p>
                 <p id="code" class="user-text">{{ entry.code }}</p>
               </div>
               <div class="user-input-box">
-                <label >Services</label>
+                <p class="label">Services</p>
                 <p id="services" class="user-text">{{ entry.services }}</p>
               </div>
               <div class="user-input-box">
-                <label >Year</label>
+                <p class="label">Year</p>
                 <p id="year" class="user-text">{{ entry.year }}</p>
               </div>
               <div class="user-input-box">
-                <label>Total Budget</label>
-                <p id="totalBudget" class="user-text">₱{{ entry.total_budget|intcomma }}</p>
+                <p class="label">Total Budget</p>
+                <p id="totalBudget" class="user-text">₱{{ entry.overall_budget|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label >Total Spent</label>
-                <p id="totalAddedBudget" class="user-text">₱{{ entry.overall_budget|intcomma }}</p>
+                <p class="label">Total Spent</p>
+                <p id="totalAddedBudget" class="user-text">₱{{ entry.total_disbursements|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label>Total Added Budget</label>
+                <p class="label">Total Added Budget</p>
                 <p id="totalSpent" class="user-text">₱{{ entry.added_budget|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label>Remaining Balance</label>
+                <p class="label">Remaining Balance</p>
                 <p id="remainingBalance" class="user-text">₱{{ entry.remaining_total_balance|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label >Remaining Obligation</label>
+                <p class="label">Remaining Obligation</p>
                 <p id="remainingObligations" class="user-text">₱{{ entry.remaining_obligations|intcomma }}</p>
               </div>
               <div class="user-input-box">
-                <label >Total Obligation</label>
+                <p class="label">Total Obligation</p>
                 <p id="totalObligations" class="user-text">₱{{ entry.total_obligations|intcomma }}</p>
               </div>
-
-
-
-
             </div>
             <div class="chart-container" data-entry-code="{{ entry.code }}" id="chart">
               <div class="user-input-box">
-                <label for="fullName">Utilization Rate: </label>
+                <p class="label">Utilization Rate: </label></p>
                 <span class="utilizationRate">{{ entry.utilization_rate|floatformat:"-2" }} %</span>
               </div>
               <canvas class="pie-chart"></canvas>
@@ -298,21 +294,21 @@
           <input type="hidden" name="entry-code" id="disbursement-code">
           <div class="input-div-new">
             <div class="div">
-              <label for="disbursement_name" style="white-space: nowrap;">Disbursement Name</label>
+              <p class="inputs-label" style="white-space: nowrap;">Disbursement Name</p>
               <!-- Use label instead of h5 -->
               <input type="text" name="disbursement_name" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="disbursement_date">Date</label>
+              <p class="inputs-label">Date</p>
               <!-- Use label instead of h5 -->
               <input type="date" name="disbursement_date" class="input">
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <label for="disbursement_input" style="white-space: nowrap;">Disbursement Amount</label>
+              <p class="inputs-label" style="white-space: nowrap;">Disbursement Amount</p>
               <!-- Use label instead of h5 -->
               <input type="text" name="disbursement_input" class="input">
             </div>
@@ -429,14 +425,11 @@
         document.getElementById('customers_table').style.filter = 'none';
         var details = document.getElementById('details');
         if (details) details.style.display = 'none';
-        var update = document.getElementById('update');
-        if (update) update.style.display = 'none';
-        var budget = document.getElementById('budget');
-        if (budget) budget.style.display = 'none';
-        var obligation = document.getElementById('obligation');
-        if (obligation) obligation.style.display = 'none';
-        var deleteForm = document.getElementById('delete');
-        if (deleteForm) deleteForm.style.display = 'none';
+        
+       
+        var disbursement = document.getElementById('disbursement');
+        if (disbursement) disbursement.style.display = 'none';
+       
       }
       document.getElementById('overlay').addEventListener('click', hideOverlay);
     </script>
