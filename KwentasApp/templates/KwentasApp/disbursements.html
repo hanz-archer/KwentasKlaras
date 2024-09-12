@@ -58,7 +58,11 @@
                   <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
                   {% if request.user.is_superuser %}
                       <td>
+                        {% if entry.is_awarded %}
                           <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
+                          {% else %}
+                          Project needs to be Awarded
+                          {% endif %}
                       </td>
                   {% endif %}
               </tr>
@@ -72,7 +76,11 @@
                       <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
                       {% if request.user.is_superuser and request.user.department == 'Accountant Office' %}
                           <td>
-                              <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
+                            {% if entry.is_awarded %}
+                            <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
+                            {% else %}
+                            Project needs to be Awarded
+                            {% endif %}
                           </td>
                       {% endif %}
                   </tr>

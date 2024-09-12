@@ -16,6 +16,8 @@
       <div class="navbar">
         <div class="navbar-left">
             <span>Welcome to Kwentas Klaras Digital PMIS v1.0</span>
+           
+        
         </div>
         <div class="navbar-right">
             <div id="datetime" class="datetime-display"></div>
@@ -120,7 +122,7 @@
               </form>
               {% endif %}
               {% if user.is_superuser %}
-              <form action="{% url 'register' %}" method="post">
+              <form action="{% url 'register_page' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn"><i class="fas fa-add"></i> Add Account</button>
               </form>

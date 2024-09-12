@@ -295,6 +295,9 @@ def disbursements(request):
         for key, value in result.val().items():
             if key == 'placeholder':
                 continue  # Skip the placeholder entry
+
+            remarks = value.get('remarks')
+            is_awarded = remarks == "Awarded Already"  # Determine if awarded
             entry = {
                 'ppa': value.get('ppa'),
                 'implementing_unit': value.get('implementing_unit'),
@@ -310,6 +313,7 @@ def disbursements(request):
                 'total_disbursements': value.get('total_disbursements'),
                 'total_obligations': value.get('total_obligations'),
                 'remaining_obligations': value.get('remaining_obligations'),
+                'is_awarded': is_awarded,  # Include awarded status
                 'obligation': []  # Initialize obligation list
                
             }
@@ -430,16 +434,19 @@ def get_project_entries():
         for key, value in result.val().items():
             if key == 'placeholder':
                 continue  # Skip the placeholder entry
+
+            remarks = value.get('remarks')  # Extract remarks
+            is_awarded = remarks == "Awarded Already"  # Determine if awarded
+
             entry = {
                 'ppa': value.get('ppa'),
                 'implementing_unit': value.get('implementing_unit'),
                 'location': value.get('location'),
                 'appropriation': value.get('appropriation'),
-                'remarks': value.get('remarks'),
+                'remarks': remarks,
                 'start_date': value.get('start_date'),
                 'end_date': value.get('end_date'),
                 'code': value.get('code'),
-                'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
                 'total_disbursements': value.get('total_disbursements'),
@@ -448,9 +455,10 @@ def get_project_entries():
                 'utilization_rate': value.get('utilization_rate'),
                 'total_obligations': value.get('total_obligations'),
                 'remaining_obligations': value.get('remaining_obligations'),
-                'disbursement':[],
+                'disbursement': [],
                 'obligation': [],  # Initialize obligation list
-                'budget_data': []  # Initialize budget data list
+                'budget_data': [],  # Initialize budget data list
+                'is_awarded': is_awarded  # Include awarded status
             }
 
             # Check if obligation node exists
@@ -461,7 +469,8 @@ def get_project_entries():
                         'obligation': obligation_value.get('obligation'),
                         'date': obligation_value.get('date')
                     })
-             # Check if obligation node exists
+
+            # Check if disbursement node exists
             if 'disbursement' in value:
                 for disbursement_key, disbursement_value in value['disbursement'].items():
                     entry['disbursement'].append({
@@ -494,8 +503,10 @@ def get_project_entries():
 
     return entries_below_2024, entries_2024_and_above, all_entries
 
+
 def continuing_projects(request):
     entries_below_2024, _, all_entries = get_project_entries()
+   
 
     paginator = Paginator(entries_below_2024, 10)  # Show 10 projects per page
     page_number = request.GET.get('page')
@@ -587,6 +598,9 @@ def search_continuing_projects(request):
         for key, value in result.val().items():
             if key == 'placeholder':
                 continue  # Skip the placeholder entry
+
+            remarks = value.get('remarks')
+            is_awarded = remarks == "Awarded Already"  # Determine if awarded
             entry = {
                 'ppa': value.get('ppa'),
                 'implementing_unit': value.get('implementing_unit'),
@@ -599,7 +613,8 @@ def search_continuing_projects(request):
                 'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_disbursements': value.get('total_disbursements')
+                'total_disbursements': value.get('total_disbursements'),
+                'is_awarded': is_awarded  # Include awarded status
                
             }
             
@@ -639,6 +654,9 @@ def search_current_projects(request):
         for key, value in result.val().items():
             if key == 'placeholder':
                 continue  # Skip the placeholder entry
+
+            remarks = value.get('remarks')
+            is_awarded = remarks == "Awarded Already"  # Determine if awarded
             entry = {
                 'ppa': value.get('ppa'),
                 'implementing_unit': value.get('implementing_unit'),
@@ -651,7 +669,8 @@ def search_current_projects(request):
                 'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_disbursements': value.get('total_disbursements')
+                'total_disbursements': value.get('total_disbursements'),
+                'is_awarded': is_awarded  # Include awarded status
                
             }
         

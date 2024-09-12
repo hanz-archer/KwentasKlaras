@@ -143,6 +143,7 @@ def base_view(request):
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
+
 @user_passes_test(lambda u: u.is_superuser, login_url='login')
 def registration_view(request):
     if request.method == 'POST':
@@ -150,15 +151,36 @@ def registration_view(request):
         if form.is_valid():
             try:
                 form.save()
-                messages.success(request, 'Your account has been created successfully!')
-                return redirect('homepage')  # Use the name of your homepage URL pattern
+                response = {
+                    'status': 'success',
+                    'message': 'Your account has been created successfully!',
+                   
+                }
+                return JsonResponse(response)
             except Exception as e:
-                messages.error(request, f'An error occurred: {e}')
+                response = {
+                    'status': 'error',
+                    'message': f'An error occurred: {e}'
+                }
+                return JsonResponse(response)
         else:
-            messages.error(request, 'Form is invalid. Please correct the errors.')
+            # Passing form errors back as JSON
+            response = {
+                'status': 'error',
+                'message': 'Form is invalid. Please correct the errors.',
+                'errors': form.errors  # Contains specific form field errors
+            }
+            return JsonResponse(response)
     else:
         form = RegistrationForm()
     return render(request, 'KwentasApp/register.html', {'form': form})
+
+
+
+
+
+def register_page(request):
+    return render(request,'KwentasApp/register.html')
 
 
 
