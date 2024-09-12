@@ -87,20 +87,41 @@
     });
 </script>
 
-<!-- Script for toast notifications -->
-{% if error %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // SweetAlert for displaying error message
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: '{{ error }}',
-            confirmButtonColor: '#3085d6' // Blue color for the confirm button
+
+
+{% if messages %}
+{% for message in messages %}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create an array to hold messages
+            var messages = [];
+
+            // Push each message into the array
+            
+                messages.push({
+                    'tag': '{{ message.tags|escapejs }}',
+                    'text': '{{ message|escapejs }}'
+                });
+            
+
+            // Iterate through the messages array and display SweetAlert for errors
+            messages.forEach(function(message) {
+                if (message.tag === 'error') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: message.text,
+                        confirmButtonColor: '#3085d6'
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
+    {% endfor %}
 {% endif %}
+
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

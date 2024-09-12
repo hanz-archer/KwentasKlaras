@@ -44,6 +44,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.urls import reverse
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -137,21 +138,26 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
+            logger.info(f'Successful login for user: {username}')
             login(request, user)
-            
+            request.session['just_logged_in'] = True
+
             try:
                 # Check if the user has 2FA enabled
                 user_profile = UserProfile.objects.get(user=user)
                 if user_profile.two_factor_enabled:
                     return redirect('verify_otp')
-                
             except UserProfile.DoesNotExist:
-                # Handle the case where UserProfile does not exist
-                # This should not normally happen if signals are set up correctly
+                logger.warning(f'UserProfile does not exist for user: {username}')
                 pass
-            
-            return redirect('homepage')  # Or the page the user should land on after login
-    
+
+            return redirect('homepage')
+        
+        else:
+            logger.warning(f'Invalid login attempt for user: {username}')
+            messages.error(request, 'Invalid credentials. Please try again.')
+            return redirect('login')  # Redirect after a failed login attempt
+
     return render(request, 'KwentasApp/login.html')
 
 
