@@ -1,10 +1,13 @@
 # KwentasApp/models.py
-from django.contrib.auth.models import AbstractUser
+
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+import pyotp
 
 class CustomUser(AbstractUser):
     department = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True)
+    totp_secret = models.CharField(max_length=32, default=pyotp.random_base32, blank=True, null=True)
 
     def __str__(self):
         return self.username
@@ -12,14 +15,26 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         # Set a default name based on the chosen department
         if not self.name and self.department:
-            # Customize this logic based on your requirements
-            default_name = f'Default Name for {self.department}'
-            self.name = default_name
+            self.name = f'Default Name for {self.department}'
+        
+        # Ensure that totp_secret is generated if not already set
+        if not self.totp_secret:
+            self.totp_secret = pyotp.random_base32()
 
         super().save(*args, **kwargs)
 
 
+from django.conf import settings
 from django.db import models
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    two_factor_enabled = models.BooleanField(default=False)
+    qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
+    totp_secret = models.CharField(max_length=32, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
 
 class Entry(models.Model):
     code = models.CharField(max_length=100)
@@ -37,3 +52,5 @@ class Entry(models.Model):
     utilization_rate = models.DecimalField(max_digits=5, decimal_places=2)
     # Add other fields and relationships as needed
 
+    def __str__(self):
+        return self.code

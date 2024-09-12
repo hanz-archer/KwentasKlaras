@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 900px; /* Increased max-width */
+            width: 100%;
+            padding: 100px 80px; /* Increased padding */
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card h2 {
+            margin-bottom: 60px; /* Larger space between title and form */
+            color: #343a40;
+            font-size: 44px; /* Increased font size */
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 45px; /* Increased margin for more space */
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 14px;
+            font-size: 24px; /* Larger label font */
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 22px; /* Larger input padding */
+            font-size: 22px; /* Larger input font size */
+            border: 1px solid #ced4da;
+            border-radius: 12px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            appearance: textfield; /* Hide number input arrows in Chrome */
+        }
+
+        /* Hide the up/down arrows for number input */
+        /* For Chrome, Safari, Edge, Opera */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* For Firefox */
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #80bdff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 20px; /* Larger button padding */
+            border: none;
+            border-radius: 12px;
+            background-color: #007FFF;
+            color: white;
+            font-size: 22px; /* Larger button font size */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 600px) {
+            .card {
+                padding: 60px 40px; /* Adjusted padding for small screens */
+            }
+
+            .card h2 {
+                font-size: 36px; /* Smaller font size on mobile */
+            }
+
+            .form-group input, .form-group button {
+                padding: 18px; /* Adjusted padding for inputs and buttons */
+                font-size: 20px; /* Font size for inputs and buttons */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Before we proceed</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="otp">Enter your 6-digit OTP Code from Google authenticator:</label>
+                <input type="number" name="otp" id="otp" maxlength="7" required placeholder="XXX-XXX" oninput="formatOTP(this)">
+            </div>
+            <div class="form-group">
+                <button type="submit">Verify</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

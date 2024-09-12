@@ -1,9 +1,12 @@
+# KwentasApp/admin.py
+
 from django.contrib import admin
-from .models import CustomUser 
+from .models import CustomUser
 from unfold.admin import ModelAdmin
 
 class CustomUserAdmin(ModelAdmin):
     list_display = ('username', 'email', 'department', 'is_staff')
+    
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('email', 'department', 'name')}),  # Include 'name' here
@@ -12,6 +15,7 @@ class CustomUserAdmin(ModelAdmin):
         }),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
+    
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -19,5 +23,4 @@ class CustomUserAdmin(ModelAdmin):
         }),
     )
 
-# Ensure the CustomUserAdmin class is defined before this line
 admin.site.register(CustomUser, CustomUserAdmin)

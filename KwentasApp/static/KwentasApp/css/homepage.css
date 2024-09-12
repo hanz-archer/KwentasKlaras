@@ -132,8 +132,8 @@ p {
 
 .btn {
   display: block;
-  width: auto;
-  min-width: 60%;
+  width: auto; /* Adjust as needed */
+  min-width: 40%; /* Reduced min-width */
   position: relative;
   height: 30px;
   border-radius: 25px;
@@ -149,6 +149,7 @@ p {
   cursor: pointer;
   transition: 0.5s;
 }
+
 
 .btn:hover {
   transform: scale(1.15); /* Hover scaling effect */
@@ -376,4 +377,65 @@ body.page-loaded {
       font-size: 14px;
   }
 }
+
+
+/* Dropdown Styles */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  display: block;
+  width: auto;
+  min-width: 60%; /* Adjust min-width if needed */
+  border-radius: 25px;
+  outline: none;
+  border: none;
+  background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
+  background-size: 200%;
+  font-size: 1.0rem;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.dropdown-toggle:hover {
+  transform: scale(1.15); /* Hover scaling effect */
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  top: 42px; /* Move the menu up */
+  left: -80px;
+  width: 200%; /* Expand the width as needed */
+  z-index: 9999;
+}
+
+.dropdown-menu .dropdown-item {
+  display: block;
+  padding: 10px 20px;
+  text-align: left;
+  font-size: 1.0rem;
+  color: #007FFF;
+  text-decoration: none;
+  border: none;
+  background: none;
+  width: 100%;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 

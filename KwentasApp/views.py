@@ -23,6 +23,27 @@ from io import BytesIO
 from django.conf import settings
 from openpyxl.styles import Font
 from .projects import get_project_entries 
+from django.core.files.base import ContentFile
+from io import BytesIO
+import qrcode
+import pyotp
+import pyotp
+import qrcode
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.conf import settings
+from io import BytesIO
+from django.core.files.base import ContentFile
+import pyotp
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http import JsonResponse
+from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login as auth_login
+from django.urls import reverse
+from .models import UserProfile
+from django.contrib.auth.decorators import login_required
 
 logger = logging.getLogger(__name__)
 
@@ -112,19 +133,25 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        logger.info(f'Attempting login for user: {username}')  # Add logging
-
+        
         user = authenticate(request, username=username, password=password)
-
+        
         if user is not None:
-            logger.info(f'Successful login for user: {username}')
             login(request, user)
-            request.session['just_logged_in'] = True
-            return redirect(reverse('homepage'))
-        else:
-            logger.warning(f'Invalid login attempt for user: {username}')
-            error = 'Invalid credentials. Please try again.'
-            return render(request, 'KwentasApp/login.html', {'error': error})
+            
+            try:
+                # Check if the user has 2FA enabled
+                user_profile = UserProfile.objects.get(user=user)
+                if user_profile.two_factor_enabled:
+                    return redirect('verify_otp')
+                
+            except UserProfile.DoesNotExist:
+                # Handle the case where UserProfile does not exist
+                # This should not normally happen if signals are set up correctly
+                pass
+            
+            return redirect('homepage')  # Or the page the user should land on after login
+    
     return render(request, 'KwentasApp/login.html')
 
 
@@ -314,6 +341,137 @@ def verify_and_change_password(request):
     else:
         logger.warning('Invalid request method for password change.')
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+    
+
+@login_required
+def generate_qr_code(request):
+    if request.method == 'POST':
+        user_profile = request.user.userprofile  # Ensure userprofile exists
+        
+        if request.POST.get('confirm_2fa') == 'true':
+            user_profile.two_factor_enabled = True
+            
+            # Generate new TOTP secret key
+            secret_key = pyotp.random_base32()
+            user_profile.totp_secret = secret_key
+            
+            # Create TOTP URL for authenticator apps
+            totp = pyotp.TOTP(secret_key)
+            otp_uri = totp.provisioning_uri(name=request.user.username, issuer_name='Kwentas Klaras')
+            
+            # Generate QR code
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4
+            )
+            qr.add_data(otp_uri)
+            qr.make(fit=True)
+
+            # Save QR code image
+            img = qr.make_image(fill='black', back_color='white')
+            buffer = BytesIO()
+            img.save(buffer, format='PNG')
+            user_profile.qr_code.save('qr_code.png', ContentFile(buffer.getvalue()))
+            
+            user_profile.save()
+            
+            return JsonResponse({'success': True, 'qr_code_url': user_profile.qr_code.url})
+        else:
+            user_profile.two_factor_enabled = False
+            user_profile.save()
+            return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
+
+@login_required
+def enable_2fa(request):
+    if request.method == 'POST':
+        user_profile = request.user.userprofile
+
+        if request.POST.get('confirm_2fa') == 'true':
+            user_profile.two_factor_enabled = True
+        else:
+            user_profile.two_factor_enabled = False
+        
+        if user_profile.two_factor_enabled:
+            # Generate TOTP secret and URI
+            totp = pyotp.TOTP(pyotp.random_base32())
+            secret = totp.secret
+            otp_uri = totp.provisioning_uri(name=request.user.email, issuer_name='Kwentas Klaras')
+
+            # Save the secret to the user profile
+            user_profile.totp_secret = secret
+            user_profile.save()
+
+            # Generate QR code
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(otp_uri)
+            qr.make(fit=True)
+            img = qr.make_image(fill='black', back_color='white')
+
+            # Save QR code to a file-like object
+            buffer = BytesIO()
+            img.save(buffer, format='PNG')
+            buffer.seek(0)
+            user_profile.qr_code.save('qr_code.png', ContentFile(buffer.read()), save=True)
+        
+        user_profile.save()
+        return JsonResponse({'success': True})
+
+    return render(request, 'enable_2fa.html', {'qr_code': request.user.userprofile.qr_code.url})
+
+@login_required
+def verify_otp(request):
+    if request.method == 'POST':
+        otp_code = request.POST.get('otp')
+        user = request.user
+        
+        # Ensure 2FA is enabled
+        if not user.userprofile.two_factor_enabled:
+            messages.error(request, '2FA is not enabled for your account.')
+            return redirect('homepage')
+        
+        # Check if TOTP secret exists
+        if not user.userprofile.totp_secret:
+            messages.error(request, 'No TOTP secret found.')
+            return redirect('homepage')
+        
+        # Create TOTP object and verify OTP
+        totp = pyotp.TOTP(user.userprofile.totp_secret)
+        if totp.verify(otp_code):
+            messages.success(request, 'OTP Verified Successfully!')
+            return redirect('homepage')
+        else:
+            messages.error(request, 'Invalid OTP, please try again.')
+
+    return render(request, 'KwentasApp/verify_otp.html')
+
+@login_required
+def get_2fa_status(request):
+    user_profile = request.user.userprofile
+    return JsonResponse({'is_2fa_enabled': user_profile.two_factor_enabled})
+
+def validate_password(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user = request.user  # Assuming the user is already authenticated
+
+        if user.is_authenticated:
+            # Authenticate the user with the provided password
+            user_check = authenticate(request, username=user.username, password=password)
+            if user_check is not None:
+                return JsonResponse({'valid': True})  # Password is correct
+            else:
+                return JsonResponse({'valid': False})  # Incorrect password
+        else:
+            return JsonResponse({'valid': False, 'error': 'User not authenticated'})
+    return JsonResponse({'valid': False, 'error': 'Invalid request method'})
     
 
 

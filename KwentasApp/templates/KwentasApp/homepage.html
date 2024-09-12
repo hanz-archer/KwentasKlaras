@@ -16,8 +16,6 @@
       <div class="navbar">
         <div class="navbar-left">
             <span>Welcome to Kwentas Klaras Digital PMIS v1.0</span>
-           
-        
         </div>
         <div class="navbar-right">
             <div id="datetime" class="datetime-display"></div>
@@ -115,27 +113,203 @@
             </div>
             <h3>Logged in as {{ user_name }}</h3>
             <p>
-              {% if user.is_superuser %}
-              <form action="{% url 'admin:index' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn"><i class="fas fa-person"></i> Admin</button>
-              </form>
-              {% endif %}
-              {% if user.is_superuser %}
-              <form action="{% url 'register_page' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn"><i class="fas fa-add"></i> Add Account</button>
-              </form>
-              {% endif %}
-              <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-              </form>
-            </p>
+              <div class="dropdown">
+                <button class="btn dropdown-toggle"><i class="fas fa-arrow-down-1-9"></i> Account Settings</button>
+                <div class="dropdown-menu">
+                  {% if user.is_superuser %}
+                  <form action="{% url 'admin:index' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn dropdown-item"><i class="fas fa-person"></i> Admin Dashboard</button>
+                  </form>
+                  {% endif %}
+                  {% if user.is_superuser %}
+                  <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn dropdown-item"><i class="fas fa-add"></i> Add Account</button>
+                  </form>
+                  {% endif %}
+                  <form action="{% url 'generate_qr_code' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="confirm_2fa" value="true"> <!-- Hidden input to confirm 2FA activation -->
+                    <button type="submit" class="btn dropdown-item">
+                        <i class="fas fa-sign-out-alt"></i> Enable Two Factor Authentication
+                    </button>
+                </form>                
+                  <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                  </form>
+                </div>
+              </div>
+              
+            </p>            
           </div>
         </div>
       </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateQRCodeUrl = "{% url 'generate_qr_code' %}";
+            const get2FAStatusUrl = "{% url 'get_2fa_status' %}";
+            const validatePasswordUrl = "{% url 'validate_password' %}"; // Adjust this to the correct URL for validating the password
+
+            const form = document.querySelector(`form[action="${generateQRCodeUrl}"]`);
+
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    // Ask for password first
+                    Swal.fire({
+                        title: 'Enter Password First',
+                        html: `<input type="password" id="password-input" class="swal2-input" placeholder="Your password">`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Submit',
+                        cancelButtonText: 'Cancel',
+                        preConfirm: () => {
+                            const password = document.getElementById('password-input').value;
+
+                            if (!password) {
+                                Swal.showValidationMessage('Password is required');
+                                return;
+                            }
+
+                            // Validate the password
+                            return fetch(validatePasswordUrl, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/x-www-form-urlencoded',
+                                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                                },
+                                body: new URLSearchParams({ 'password': password }).toString()
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.valid) {
+                                    Swal.showValidationMessage('Incorrect password');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error validating password:', error);
+                                Swal.showValidationMessage('Unable to validate password');
+                            });
+                        }
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            // Fetch 2FA status after password validation
+                            fetch(get2FAStatusUrl)
+                                .then(response => response.json())
+                                .then(data => {
+                                    const is2FAEnabled = data.is_2fa_enabled;
+
+                                    // Show SweetAlert with the 2FA checkbox
+                                    Swal.fire({
+                                        title: is2FAEnabled ? '2FA is already enabled' : 'Enable Two-Factor Authentication',
+                                        html: `
+                                            <p>${is2FAEnabled ? '2FA is already enabled for your account.' : 'Are you sure you want to enable 2FA?'}</p>
+                                            <input type="checkbox" id="enable-2fa-checkbox" ${is2FAEnabled ? 'checked' : ''}>
+                                            <label for="enable-2fa-checkbox">${is2FAEnabled ? '2FA Enabled' : 'Enable 2FA'}</label>
+                                        `,
+                                        icon: is2FAEnabled ? 'info' : 'warning',
+                                        showCancelButton: !is2FAEnabled,
+                                        confirmButtonText: is2FAEnabled ? 'Close' : 'Proceed',
+                                        cancelButtonText: 'Cancel',
+                                        preConfirm: () => {
+                                            // Check if the checkbox is checked
+                                            const checkbox = document.getElementById('enable-2fa-checkbox');
+                                            if (checkbox.checked && !is2FAEnabled) {
+                                                // If checked and 2FA is not already enabled, enable 2FA
+                                                return fetch(generateQRCodeUrl, {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                                                    },
+                                                    body: new URLSearchParams({ 'confirm_2fa': 'true' }).toString()
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        Swal.fire({
+                                                            title: 'Scan this QR code with your authenticator app',
+                                                            imageUrl: data.qr_code_url,
+                                                            imageAlt: 'QR Code',
+                                                            confirmButtonText: 'Got it!',
+                                                            showCancelButton: true,
+                                                            cancelButtonText: 'Cancel 2FA'
+                                                        }).then(result => {
+                                                            if (result.dismiss === Swal.DismissReason.cancel) {
+                                                                // Handle cancellation and disable 2FA
+                                                                fetch(generateQRCodeUrl, {
+                                                                    method: 'POST',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                                                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                                                                    },
+                                                                    body: new URLSearchParams({ 'confirm_2fa': 'false' }).toString()
+                                                                })
+                                                                .then(response => response.json())
+                                                                .then(data => {
+                                                                    if (data.success) {
+                                                                        Swal.fire('Cancelled', 'Two-Factor Authentication was not enabled.', 'info');
+                                                                    } else {
+                                                                        Swal.fire('Error', `Failed to cancel 2FA: ${data.error || 'Unknown error'}`, 'error');
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    } else {
+                                                        Swal.fire('Error', `Failed to enable 2FA: ${data.error || 'Unknown error'}`, 'error');
+                                                    }
+                                                });
+                                            } else if (!checkbox.checked && is2FAEnabled) {
+                                                // If unchecked and 2FA is enabled, disable 2FA
+                                                return fetch(generateQRCodeUrl, {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                                                    },
+                                                    body: new URLSearchParams({ 'confirm_2fa': 'false' }).toString()
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        Swal.fire('2FA Disabled', 'Two-Factor Authentication has been disabled.', 'info');
+                                                    } else {
+                                                        Swal.fire('Error', `Failed to disable 2FA: ${data.error || 'Unknown error'}`, 'error');
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                                })
+                                .catch(error => {
+                                    console.error('Error fetching 2FA status:', error);
+                                    Swal.fire('Error', 'Unable to check 2FA status. Please try again later.', 'error');
+                                });
+                        }
+                    });
+                });
+            }
+        });
+</script>
+
+    
+    
+      
+      
+      
+      
+      
+      
+    
+      
+
     <script>
       function showLoadingAlert(event) {
         event.preventDefault(); // Prevent the form from submitting immediately
