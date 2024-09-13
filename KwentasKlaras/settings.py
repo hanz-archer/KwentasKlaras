@@ -25,7 +25,7 @@ SECRET_KEY = '!#rx%wi3#35boq)q&9e9me)&83*bwvy(@t9q1*t293-@_sh%-g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['KwentasKlarasPMIS.pythonanywhere.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['KwentasKlarasPMIS.pythonanywhere.com', '127.0.0.1', 'KwentasKlaras.onrender.com' 'localhost']
 
 
 # Application definition

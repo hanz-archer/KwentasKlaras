@@ -43,4 +43,4 @@ urlpatterns = [
     path('verify-otp/', views.verify_otp, name='verify_otp'),
     path('get_2fa_status/', views.get_2fa_status, name='get_2fa_status'),
     path('validate_password/', views.validate_password, name='validate_password'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
