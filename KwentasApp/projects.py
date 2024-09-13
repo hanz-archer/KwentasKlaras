@@ -12,6 +12,10 @@ import firebase_admin
 from firebase_admin import credentials, db
 import datetime
 import re
+from easyaudit.models import CRUDEvent
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
+from KwentasApp.models import FirebaseEntry
 
 
 def create_entry(request):
@@ -100,10 +104,16 @@ def create_entry(request):
                 "utilization_rate": utilization_rate,  # Include utilization rate
                 "total_obligations": total_obligations,
                 "remaining_obligations": remaining_obligations,
-              
-                
                
             })
+
+            CRUDEvent.objects.create(
+                event_type=CRUDEvent.CREATE,
+                object_id=code,  # Reference the Firebase "code" as object_id
+                object_repr=f"Project Entry: {code}",  # Description of the object
+                content_type=ContentType.objects.get(app_label='KwentasApp', model='firebaseentry'),  # Use FirebaseEntry model for logging
+                user=request.user if request.user.is_authenticated else None,
+            )
 
             # Refresh the cache with the new entry
             cache.delete('project_entries')

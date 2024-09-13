@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Manila'
 
 USE_I18N = True
 
@@ -180,6 +180,23 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kwentasklarasboljoon@gmail.com'
 EMAIL_HOST_PASSWORD = 'erzk qbyp jkmn cmxr'
+
+# Enable all events for auditing
+DJANGO_EASY_AUDIT_WATCH_LOGIN_EVENTS = True  # For login/logout events
+DJANGO_EASY_AUDIT_WATCH_CRUD_EVENTS = True  # For Create/Update/Delete events
+
+# To record IP addresses for login events
+DJANGO_EASY_AUDIT_REMOTE_IP_ADDRESS_FIELD = 'REMOTE_ADDR'
+
+# Exclude specific models (e.g., login/registration) from CRUD auditing
+DJANGO_EASY_AUDIT_EXCLUDED_MODELS = ['auth.User']  # Exclude User model to avoid login/register CRUD tracking
+# Enable request event tracking
+DJANGO_EASY_AUDIT_WATCH_REQUEST_EVENTS = True
+# Example: Exclude requests to static files and Django admin
+DJANGO_EASY_AUDIT_EXCLUDE_REQUESTS = [
+    r'^/static/',
+    r'^/admin/',
+]
 
 
 

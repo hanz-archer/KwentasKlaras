@@ -54,3 +54,12 @@ class Entry(models.Model):
 
     def __str__(self):
         return self.code
+    
+
+from django.db import models
+
+class FirebaseEntry(models.Model):
+    code = models.CharField(max_length=255)
+    ppa = models.CharField(max_length=255)
+    # Add other relevant fields here if needed
+
