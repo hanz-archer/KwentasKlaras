@@ -208,25 +208,12 @@ def registration_view(request):
         form = RegistrationForm()
     return render(request, 'KwentasApp/register.html', {'form': form})
 
-
-
-
-
 def register_page(request):
     return render(request,'KwentasApp/register.html')
-
-
-
-
-
-
 
 def logout_view(request):
     logout(request)
     return redirect(reverse('login'))
-
-
-
 
 @login_required
 def homepage(request):
@@ -246,10 +233,6 @@ def forgotpassword(request):
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
      return render(request, 'KwentasApp/forgot-password.html')
-
-
-
-
 
 @csrf_exempt
 def send_verification_code(request):
@@ -295,9 +278,7 @@ def send_verification_code(request):
     else:
         logger.warning('Invalid request method.')
         return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
-
-
-
+    
 @csrf_exempt
 def verify_and_change_password(request):
     if request.method == 'POST':

@@ -57,8 +57,8 @@
                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                   <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.remaining_obligations }}</td>
-                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
+                  <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.remaining_obligations|intcomma }}</td>
+                  <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.total_obligations|intcomma }}</td>
                  
               </tr>
           {% endfor %}
@@ -71,8 +71,8 @@
                         <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                         <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
                         <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.remaining_obligations }}</td>
-                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
+                        <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.remaining_obligations|intcomma }}</td>
+                        <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.total_obligations|intcomma }}</td>
                        
                        
                     </tr>
