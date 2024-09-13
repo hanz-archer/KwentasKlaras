@@ -5,6 +5,7 @@ from django.contrib import admin
 from .projects import *
 from .views import login_view, unset_just_logged_in
 from .views import *
+from django.conf.urls.static import static
 
 print("KwentasApp.urls module loaded")  # Debugging print
 
@@ -38,4 +39,8 @@ urlpatterns = [
     path('add_disbursement/<str:project_type>/', add_disbursement, name='add_disbursement'),
     path('obligations/', obligations, name='obligations'),
     path('download_xlsx/<str:entry_code>/', views.download_xlsx, name='download_xlsx'),
-]
+    path('enable-2fa/', views.generate_qr_code, name='generate_qr_code'),
+    path('verify-otp/', views.verify_otp, name='verify_otp'),
+    path('get_2fa_status/', views.get_2fa_status, name='get_2fa_status'),
+    path('validate_password/', views.validate_password, name='validate_password'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
