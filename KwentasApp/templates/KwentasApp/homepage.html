@@ -123,7 +123,7 @@
                   </form>
                   {% endif %}
                   {% if user.is_superuser %}
-                  <form action="{% url 'register' %}" method="post">
+                  <form action="{% url 'register_page' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn dropdown-item"><i class="fas fa-add"></i> Add Account</button>
                   </form>

@@ -891,29 +891,31 @@ form{
 .swal2-container {
   z-index: 10000 !important; /* Ensure SweetAlert is on top */
 }
-
 .pagination {
   text-align: center;
   position: fixed;
-  bottom: -5px; /* Minimum distance from bottom */
+  bottom: 0; /* Stick to the bottom with small space */
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   z-index: 1000;
   padding: 10px 0;
+  background-color: rgba(255, 255, 255, 0.9); /* Ensure it is readable even on busy backgrounds */
 }
 
 .pagination-list {
   list-style: none;
   padding: 0;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allow wrapping of pagination items on smaller screens */
 }
 
 .pagination-item {
-  display: inline-block;
-  margin-right: 5px;
+  margin: 0 5px;
   border-radius: 20px;
   overflow: hidden;
+  flex-shrink: 0; /* Ensure items don't shrink too much */
 }
 
 .pagination-item a,
@@ -947,50 +949,40 @@ form{
   cursor: not-allowed;
 }
 
+/* Responsive adjustments for smaller screens */
 @media (max-width: 600px) {
   .pagination {
-    padding: 5px 0; /* Reduce padding for smaller screens */
-    bottom: 30px; /* Adjust bottom spacing to prevent overlap with back button */
-    font-size: 14px; /* Reduce font size for pagination items */
+    padding: 5px 0; /* Reduce padding */
+    bottom: 30px; /* Keep space at the bottom */
+    font-size: 14px; /* Reduce font size */
+  }
+
+  .pagination-item {
+    margin: 0 3px; /* Reduce margin between items */
   }
 
   .pagination-item a,
   .pagination-item span {
-    padding: 6px 10px; /* Adjust padding for smaller links */
+    padding: 6px 10px; /* Reduce padding */
   }
 
-  .back {
-    bottom: 2px; /* Adjust bottom spacing for the "Back" button */
-    left: 52%; /* Center horizontally */
-    transform: translateX(-50%);
-    z-index: 1100; /* Ensure back button is above pagination */
-  }
-
-  .back-btn {
-    width: 80px; /* Adjust width of the back button for smaller screens */
-    height: 32px; /* Adjust height of the back button for smaller screens */
-    font-size: 12px; /* Reduce font size of the back button for smaller screens */
-    line-height: 32px; /* Center text vertically in the smaller button */
+  /* Adjust text and button size */
+  .pagination-item a,
+  .pagination-item span {
+    font-size: 12px;
+    padding: 5px 8px;
   }
 }
 
+/* Further reduce spacing for very small devices */
+@media (max-width: 400px) {
+  .pagination-item a,
+  .pagination-item span {
+    font-size: 11px;
+    padding: 4px 6px;
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  .pagination-item {
+    margin: 0 2px;
+  }
+}
