@@ -195,8 +195,13 @@ def add_obligation(request, project_type):
                
             })
 
-         
-
+            CRUDEvent.objects.create(
+                event_type=CRUDEvent.UPDATE,
+                object_id=entry_key,  # Reference the Firebase "code" as object_id
+                object_repr=f"Project Entry: {entry_key} - Obligation Name: {name} with Amount of: {obligation})",  # Include both name and amount in the log
+                content_type=ContentType.objects.get(app_label='KwentasApp', model='firebaseentry'),  # Replace with your actual model
+                user=request.user if request.user.is_authenticated else None
+            )
             # Invalidate the cache
             cache.delete('project_entries')
 
@@ -275,6 +280,15 @@ def add_disbursement(request, project_type):
             utilization_rate = (total_disbursements / overall_budget) * 100 if overall_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
+            content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Replace 'firebaseentry' with the actual model name
+            CRUDEvent.objects.create(
+                event_type=CRUDEvent.UPDATE,
+                object_id=entry_key,  # Reference the Firebase "code" as object_id
+                object_repr=f"Project Entry: {entry_key} - Disbursement Name: {name} (with Amount of: {disbursement})",  # Include both name and amount in the log
+                content_type=content_type,  # Use the content type for the model
+                user=request.user if request.user.is_authenticated else None
+            )
+
             # Invalidate the cache
             cache.delete('project_entries')
 
@@ -351,22 +365,6 @@ def disbursements(request):
     })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def add_budget(request):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
@@ -414,6 +412,15 @@ def add_budget(request):
             total_disbursements = entry_data.get('total_disbursements', 0)
             utilization_rate = (total_disbursements / overall_budget) * 100 if overall_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
+
+            content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Replace 'firebaseentry' with the actual model name
+            CRUDEvent.objects.create(
+                event_type=CRUDEvent.UPDATE,
+                object_id=entry_key,  # Reference the Firebase "code" as object_id
+                object_repr=f"Project Entry: {entry_key} - Budget Added: {name} (with Amount of: {added_budget})",  # Include both name and amount in the log
+                content_type=content_type,  # Use the content type for the model
+                user=request.user if request.user.is_authenticated else None
+            )
 
             # Invalidate the cache
             cache.delete('project_entries')
@@ -706,10 +713,6 @@ def search_current_projects(request):
     })
 
 
-
-
-
-
 def update_entry(request, project_type):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
@@ -777,7 +780,43 @@ def update_entry(request, project_type):
             if not year_str:
                 year_str = entry_data.get('year', '')
 
-            # Update other fields if provided
+            # Define a list to hold the fields that have changed
+            updated_fields = []
+
+            # Compare each field and add to the list if it was updated
+            if ppa != entry_data.get('ppa', ''):
+                updated_fields.append(f"PPA: {entry_data.get('ppa', '')} → {ppa}")
+            if implementing_unit != entry_data.get('implementing_unit', ''):
+                updated_fields.append(f"Implementing Unit: {entry_data.get('implementing_unit', '')} → {implementing_unit}")
+            if start_date_str != entry_data.get('start_date', ''):
+                updated_fields.append(f"Start Date: {entry_data.get('start_date', '')} → {start_date_str}")
+            if end_date_str != entry_data.get('end_date', ''):
+                updated_fields.append(f"End Date: {entry_data.get('end_date', '')} → {end_date_str}")
+            if year_str != entry_data.get('year', ''):
+                updated_fields.append(f"Year: {entry_data.get('year', '')} → {year_str}")
+            if code != entry_key:
+                updated_fields.append(f"Code: {entry_key} → {code}")
+            if services != entry_data.get('services', ''):
+                updated_fields.append(f"Services: {entry_data.get('services', '')} → {services}")
+            if location != entry_data.get('location', ''):
+                updated_fields.append(f"Location: {entry_data.get('location', '')} → {location}")
+            if remarks != entry_data.get('remarks', ''):
+                updated_fields.append(f"Remarks: {entry_data.get('remarks', '')} → {remarks}")
+
+            # Join the updated fields into a single string for the audit log
+            updated_fields_str = ', '.join(updated_fields) if updated_fields else 'No fields updated'
+
+            # Log the CRUD event for the entry update
+            content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Replace 'firebaseentry' with your model name
+            CRUDEvent.objects.create(
+                event_type=CRUDEvent.UPDATE,
+                object_id=entry_key,  # Reference the Firebase "code" as object_id
+                object_repr=f"Project Entry: {entry_key} - Updated Fields: {updated_fields_str}",  # Log the updated fields
+                content_type=content_type,
+                user=request.user if request.user.is_authenticated else None
+            )
+
+            # Update the fields in the Firebase database
             database.child('Data').child(entry_key).update({
                 "ppa": ppa,
                 "implementing_unit": implementing_unit,
@@ -798,6 +837,7 @@ def update_entry(request, project_type):
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "{redirect_url}";</script>', status=500)
     else:
         return HttpResponse(f'<script>alert("Method not allowed"); window.location.href = "{redirect_url}";</script>', status=405)
+
 
     
 
