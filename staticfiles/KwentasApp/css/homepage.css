@@ -155,24 +155,24 @@ p {
   transform: scale(1.15); /* Hover scaling effect */
 }
 
-.btn-bottom-right {
+.btn {
   display: block;
-  width: auto;
-  padding: 0.75rem 2rem;
-  height: 50px;
+  width: auto; /* Adjust as needed */
+  min-width: 55%; /* Increased min-width for wider buttons */
+  position: relative;
+  height: 30px;
   border-radius: 25px;
   outline: none;
   border: none;
   background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
   background-size: 200%;
-  font-size: 1.2rem;
-  color: #fff;
+  font-size: 1.0rem;
+  color: #ffffff;
   font-family: 'Poppins', sans-serif;
   text-transform: uppercase;
-  margin: 1rem 0;
+  margin: 1rem auto;
   cursor: pointer;
   transition: 0.5s;
-  z-index: 9999;
 }
 
 .btn-bottom-right:hover {
@@ -222,6 +222,12 @@ body.page-loaded {
     margin: 0 1px;
     font-size: 1.1rem;
     padding: 8px 15px;
+  }
+  .btn {
+    min-width: 60%; /* Adjusted min-width for wider buttons on small screens */
+  }
+  .dropdown-toggle {
+    min-width: 75%; /* Adjusted min-width for wider dropdown button on small screens */
   }
 }
 
@@ -388,7 +394,7 @@ body.page-loaded {
 .dropdown-toggle {
   display: block;
   width: auto;
-  min-width: 60%; /* Adjust min-width if needed */
+  min-width: 70%; /* Adjusted for a slightly wider dropdown button */
   border-radius: 25px;
   outline: none;
   border: none;
