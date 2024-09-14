@@ -870,6 +870,16 @@ def continuing_delete_entry(request):
             # Refresh the cache after deletion
             cache.delete('project_entries')
 
+            # Log the deletion event
+            content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Adjust model name if necessary
+            CRUDEvent.objects.create(
+                event_type=CRUDEvent.DELETE,
+                object_id=entry_key,  # Reference the Firebase "code" as object_id
+                object_repr=f"Project Entry: {entry_key} is Deleted",
+                content_type=content_type,
+                user=request.user if request.user.is_authenticated else None
+            )
+
             return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "/continuing_projects";</script>', status=500)
@@ -890,6 +900,16 @@ def current_delete_entry(request):
 
             # Refresh the cache after deletion
             cache.delete('project_entries')
+
+            # Log the deletion event
+            content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Adjust model name if necessary
+            CRUDEvent.objects.create(
+                event_type=CRUDEvent.DELETE,
+                object_id=entry_key,  # Reference the Firebase "code" as object_id
+                object_repr=f"Project Entry: {entry_key} is Deleted",
+                content_type=content_type,
+                user=request.user if request.user.is_authenticated else None
+            )
 
             return redirect(request.META.get('HTTP_REFERER', '/'))
         except Exception as e:
