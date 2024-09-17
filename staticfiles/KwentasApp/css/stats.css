@@ -428,8 +428,8 @@ canvas {
 
 /* Styles for content with utilization between 20% and 30% */
 .accordion-content.yellow {
-    background-color: #FFFFE5; /* Smooth/Cool yellow background */
-    border-color: #f1f100; /* Slightly darker yellow border */
+    background-color: #f8f8e8; /* Smooth/Cool yellow background */
+    border-color: #ffff00; /* Slightly darker yellow border */
 }
 
 /* Header Styles */
@@ -467,7 +467,7 @@ canvas {
 
 /* Status for 20% to 30% utilization */
 .accordion-content.yellow .status {
-    color: #FBC02D; /* Cool yellow color */
+    color: #f3b20f; /* Cool yellow color */
 }
 
 .accordion-content header .arrow {
