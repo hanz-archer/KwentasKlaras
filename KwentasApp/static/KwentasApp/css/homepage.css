@@ -327,6 +327,19 @@ body.page-loaded {
     border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
+
+  .navbar {
+    flex-direction: column; /* Stack the navbar content vertically */
+    text-align: center; /* Center-align the text */
+  }
+
+  .navbar-left,
+  .navbar-right {
+    width: 100%; /* Take up full width */
+    margin: 0.5rem 0; /* Add some vertical margin */
+    font-size: 0.9rem; /* Make the font size smaller */
+  }
+}
   
   .navbar-menu.active {
     display: flex; /* Show the menu when active */
@@ -384,17 +397,29 @@ body.page-loaded {
   }
 }
 
-
-/* Dropdown Styles */
-.dropdown {
-  position: relative;
-  display: inline-block;
+.account-buttons-container {
+  display: flex;
+  flex-direction: column; /* Stacks items vertically */
+  align-items: center; /* Centers the buttons horizontally */
+  gap: 20px; /* Adds consistent spacing between the buttons */
 }
 
-.dropdown-toggle {
+/* Dropdown and Non-Dropdown Container Styles */
+.dropdown {
+  position: relative;
+  width: 100%; /* Full width for the dropdown container */
+}
+
+.non-dropdown {
+  width: 100%; /* Full width for non-dropdown buttons */
+  text-align: center;
+}
+
+/* Button Styles (account and dropdown toggle) */
+.account, .dropdown-toggle {
   display: block;
-  width: auto;
-  min-width: 70%; /* Adjusted for a slightly wider dropdown button */
+  width: 100%; /* Full width within the container */
+  max-width: 250px; /* Set a wider max width for buttons */
   border-radius: 25px;
   outline: none;
   border: none;
@@ -408,40 +433,69 @@ body.page-loaded {
   transition: 0.5s;
 }
 
+.account-buttons-container button {
+  width: 100%;
+  max-width: 250px; /* Ensure consistent button size */
+  margin: 0 auto;
+}
+
+/* Hover effect for buttons */
 .dropdown-toggle:hover {
   transform: scale(1.15); /* Hover scaling effect */
 }
 
+/* Dropdown Menu Styling */
 .dropdown-menu {
   display: none;
   position: absolute;
-  background-color: #ffffff;
+  top: 100%;
+  left: 100;
+  background-color: #fff;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  top: 42px; /* Move the menu up */
-  left: -80px;
-  width: 200%; /* Expand the width as needed */
-  z-index: 9999;
+  z-index: 99999;
+  width: 110%; /* Fixed smaller width for the dropdown menu */
+  padding: 10px; /* Add some padding for a clean look */
+  border-radius: 25px;
 }
 
+/* Dropdown Menu Items */
 .dropdown-menu .dropdown-item {
   display: block;
   padding: 10px 20px;
   text-align: left;
+  align-items: left;
+  margin-right: 500px;
   font-size: 1.0rem;
+  text-wrap: nowrap;
   color: #007FFF;
   text-decoration: none;
   border: none;
   background: none;
-  width: 100%;
+  width: 70%; /* Full width within the dropdown menu */
 }
 
 .dropdown-menu .dropdown-item:hover {
-  background-color: #f1f1f1;
+  background-color: #f1f1f1; /* Hover effect on items */
 }
 
+/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-menu {
   display: block;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .account-buttons-container {
+    gap: 10px; /* Adjust gap for smaller screens */
+  }
+
+  .account, .dropdown-toggle {
+    max-width: 100%; /* Buttons take full width on smaller screens */
+  }
+
+  .dropdown-menu {
+    width: 100%; /* Full width dropdown menu on smaller screens */
+  }
 }
 
 /* Target Notyf container for all notifications */

@@ -14,7 +14,7 @@
     <section>
       <div class="navbar">
         <div class="navbar-left">
-            <span>Welcome to Kwentas Klaras Digital PMIS v1.0</span>
+            <span>Kwentas Klaras Digital PMIS v1.0</span>
         </div>
         <div class="navbar-right">
             <div id="datetime" class="datetime-display"></div>
@@ -112,32 +112,46 @@
             </div>
             <h3>Logged in as {{ user_name }}</h3>
             <p>
-              <div class="dropdown">
-                <button class="btn dropdown-toggle"><i class="fas fa-arrow-down-1-9"></i> Account Settings</button>
-                <div class="dropdown-menu">
+              <div class="account-buttons-container">
+                <!-- Non-Dropdown Button -->
+                <div class="non-dropdown">
                   {% if user.is_superuser %}
                   <form action="{% url 'admin:index' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn dropdown-item"><i class="fas fa-person"></i> Admin Dashboard</button>
+                  <button class="btn account">
+                    <i class="fas fa-person"></i> Admin Dashboard
+                  </button>
                   </form>
                   {% endif %}
-                  {% if user.is_superuser %}
-                  <form action="{% url 'register_page' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn dropdown-item"><i class="fas fa-add"></i> Add Account</button>
-                  </form>
-                  {% endif %}
-                  <form action="{% url 'generate_qr_code' %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="confirm_2fa" value="true"> <!-- Hidden input to confirm 2FA activation -->
-                    <button type="submit" class="btn dropdown-item">
+                </div>
+              
+                <!-- Dropdown Button -->
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle">
+                    <i class="fas fa-arrow-down"></i> Account Settings
+                  </button>
+                  <div class="dropdown-menu">
+              
+                    {% if user.is_superuser %}
+                    <form action="{% url 'register_page' %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="btn dropdown-item"><i class="fas fa-add"></i> Add Account</button>
+                    </form>
+                    {% endif %}
+              
+                    <form action="{% url 'generate_qr_code' %}" method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="confirm_2fa" value="true">
+                      <button type="submit" class="btn dropdown-item">
                         <i class="fas fa-sign-out-alt"></i> Enable Two Factor Authentication
-                    </button>
-                </form>                
-                  <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                  </form>
+                      </button>
+                    </form>
+              
+                    <form action="{% url 'logout' %}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="btn dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </form>
+                  </div>
                 </div>
               </div>
               
