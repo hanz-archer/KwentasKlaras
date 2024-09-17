@@ -444,4 +444,12 @@ body.page-loaded {
   display: block;
 }
 
+/* Target Notyf container for all notifications */
+.notyf {
+  right: 60px !important; /* Moves the notification further to the left */
+  top: 20px !important;    
+}
+
+
+
 

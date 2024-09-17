@@ -219,10 +219,15 @@ def logout_view(request):
 def homepage(request):
     print("homepage view called")  # Debugging print
     user_name = request.user.name if request.user.is_authenticated else "Guest"
+    
     context = {
         'user_name': user_name,
-        }
+    }
+    print("Context:", context)  # Debugging print
     return render(request, 'KwentasApp/homepage.html', context)
+
+
+
 
 
 

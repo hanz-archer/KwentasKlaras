@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <title>Kwentas Klaras - Home</title>
-    <!-- Font Awesome CDN-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="{% static 'KwentasApp/css/homepage.css' %}" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
   </head>
   <body>
     <section>
@@ -149,6 +148,7 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -299,17 +299,6 @@
         });
 </script>
 
-    
-    
-      
-      
-      
-      
-      
-      
-    
-      
-
     <script>
       function showLoadingAlert(event) {
         event.preventDefault(); // Prevent the form from submitting immediately
@@ -360,22 +349,22 @@
       });
       </script>
 
-      {% if request.session.just_logged_in %}
-      <script>
-          const Toast = Swal.mixin({
-        toast: true,
-        position: window.innerWidth <= 480 ? "center" : "top-end",  // Center the toast on very small screens
-        showConfirmButton: false,
-        timer: 3700,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
-        customClass: {
-            container: 'custom-toast-container'
+{% if request.session.just_logged_in %}
+<script>
+var notyf = new Notyf({
+    duration: 3700,
+    position: {
+        x: 'right',  // Keep it right-aligned
+        y: 'top',
+    },
+    types: [
+        {
+            type: 'success',
+            background: '#33b249',  // Custom color
+            duration: 3700,
         }
-    });
+    ]
+});
 
     function showWelcomeMessage(userName) {
         const now = new Date();
@@ -390,28 +379,23 @@
             greeting = 'Good Evening';
         }
 
-        Toast.fire({
-            icon: 'success',
-            title: `${greeting}, Welcome to Kwentas Klaras`,
-            text: `${userName}`
-        });
+        notyf.success(`${greeting}, Welcome to Kwentas Klaras ${userName}`);
     }
 
-
-      function updateClock() {
+    function updateClock() {
         const now = new Date();
         const timeElement = document.getElementById('clock');
         timeElement.textContent = now.toLocaleTimeString();
-      }
+    }
 
-      window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', () => {
         const userName = '{{ request.user.name }}';
         showWelcomeMessage(userName);
         fetch("{% url 'unset_just_logged_in' %}");
         setInterval(updateClock, 1000);
-      });
-    </script>
-    {% endif %}
+    });
+</script>
+{% endif %}
     <style>
             .navbar {
           display: flex;
