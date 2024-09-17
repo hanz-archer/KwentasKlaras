@@ -263,58 +263,72 @@ a:hover {
 /* Tablets and large mobile screens */
 @media screen and (max-width: 768px) {
     .container {
-        max-width: 600px;
+        max-width: 90%; /* Increase container width for better fit on tablets and large mobiles */
+    }
+
+    .login-content {
+        width: 100%; /* Expand login content to full width */
+        max-width: 100%; /* Ensure no maximum width restriction */
     }
 
     .login-content h2.title {
-        font-size: 1.6rem;
+        font-size: 1.6rem; /* Adjust font size for better readability on tablets */
     }
 
     .login-content img {
-        height: 120px; /* Larger logo for tablets */
+        height: 120px; /* Adjust logo size for tablets */
     }
 
     .input-div > div > input {
-        font-size: 1rem;
+        font-size: 1rem; /* Adjust font size of input fields */
     }
 
     .btn {
-        font-size: 1rem;
+        font-size: 1rem; /* Adjust font size of button */
     }
-    
+
     .card {
-        padding: 50px; /* Increased padding for better spacing */
-        max-width: 100%; /* Ensure card takes up full width on smaller screens */
+        padding: 40px; /* Adjust padding for better spacing on tablets */
+        max-width: 100%; /* Ensure card takes up full width */
         min-height: 800px; /* Adjust height for better fit */
     }
 }
 
+
+/* Mobile phones */
 /* Mobile phones */
 @media screen and (max-width: 480px) {
     .container {
-        max-width: 90%;
-        padding: 10px;
+        max-width: 100%; /* Ensure full width of container */
+        padding: 10px; /* Adjust padding for mobile view */
     }
 
-    .login-content h2.title {
-        font-size: 1.4rem;
+    .login-content {
+        width: 100%; /* Expand login content to full width */
+        max-width: 100%; /* Ensure no maximum width restriction */
     }
 
     .login-content img {
-        height: 100px; /* Larger logo for mobile */
+        height: 100px; /* Adjust logo size for mobile */
+    }
+
+    .login-content h2.title {
+        font-size: 1.4rem; /* Adjust font size for mobile */
     }
 
     .input-div > div > input {
-        font-size: 0.9rem;
+        font-size: 0.9rem; /* Adjust font size of input fields */
     }
 
     .btn {
-        font-size: 0.9rem;
-        height: 45px; /* Slightly smaller button */
+        font-size: 0.9rem; /* Adjust font size of button */
+        height: 45px; /* Slightly smaller button height */
     }
 
     .card {
-        max-width: 100%; /* Ensure full width on mobile */
+        padding: 30px; /* Adjust padding for better fit on mobile */
+        max-width: 100%; /* Ensure card takes up full width */
         min-height: 700px; /* Adjust height for better fit */
     }
 }
+
