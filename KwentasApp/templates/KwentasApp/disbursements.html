@@ -39,10 +39,10 @@
             <thead>
                 <tr>
                   <th class="left-align">PPA</th>
-                    <th>Implementing Unit</th>
+                 
                     <th>Remaining Obligations</th>
                     <th>Total Obligation</th>
-                    {% if request.user.is_superuser %}
+                    {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
                         <th>Add</th>
                        
                     {% endif %}
@@ -53,10 +53,10 @@
               {% for entry in matched_entries %}
               <tr style="cursor: pointer;">
                   <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                  <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                 
                   <td class="code" onclick="showDetails('{{ entry.code }}')">₱{{ entry.remaining_obligations|intcomma }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.total_obligations|intcomma }}</td>
-                  {% if request.user.is_superuser %}
+                  {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
                       <td>
                         {% if entry.is_awarded %}
                           <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>
@@ -71,10 +71,10 @@
               {% for entry in page_obj %}
                   <tr style="cursor: pointer;">
                       <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                      <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                    
                       <td class="code" onclick="showDetails('{{ entry.code }}')">{{  entry.remaining_obligations }}</td>
                       <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.total_obligations }}</td>
-                      {% if request.user.is_superuser and request.user.department == 'Accountant Office' %}
+                      {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
                           <td>
                             {% if entry.is_awarded %}
                             <p class="status obligation" onclick="showAddDisbursementForm('{{ entry.code }}')">Disburse</p>

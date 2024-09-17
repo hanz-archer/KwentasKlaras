@@ -768,7 +768,10 @@ def update_entry(request, project_type):
             if code != entry_key and database.child('Data').child(code).get().val() is not None:
                 return HttpResponse(f'<script>alert("Code already exists."); window.location.href = "{redirect_url}";</script>', status=400)
 
-            # Populate with previous values if fields are empty
+            # Define a list to hold the fields that have changed
+            updated_fields = []
+
+            # Populate with previous values if fields are empty and track changes
             if not ppa:
                 ppa = entry_data.get('ppa', '')
             if not implementing_unit:
@@ -780,10 +783,6 @@ def update_entry(request, project_type):
             if not year_str:
                 year_str = entry_data.get('year', '')
 
-            # Define a list to hold the fields that have changed
-            updated_fields = []
-
-            # Compare each field and add to the list if it was updated
             if ppa != entry_data.get('ppa', ''):
                 updated_fields.append(f"PPA: {entry_data.get('ppa', '')} → {ppa}")
             if implementing_unit != entry_data.get('implementing_unit', ''):
@@ -803,8 +802,49 @@ def update_entry(request, project_type):
             if remarks != entry_data.get('remarks', ''):
                 updated_fields.append(f"Remarks: {entry_data.get('remarks', '')} → {remarks}")
 
-            # Join the updated fields into a single string for the audit log
             updated_fields_str = ', '.join(updated_fields) if updated_fields else 'No fields updated'
+
+            # If the code is updated, create a new entry with the new code and delete the old one
+            if code != entry_key:
+                # Copy the old entry's data
+                new_entry_data = {
+                    "ppa": ppa,
+                    "implementing_unit": implementing_unit,
+                    "start_date": start_date_str,
+                    "end_date": end_date_str,
+                    "year": year_str,
+                    "code": code,
+                    "services": services,
+                    "location": location,
+                    "remarks": remarks,
+                    "remaining_total_balance": entry_data.get('remaining_total_balance', 0),
+                    "total_disbursements": entry_data.get('total_disbursements', 0),
+                    "added_budget": entry_data.get('added_budget', 0),
+                    "overall_budget": entry_data.get('overall_budget', 0),
+                    "utilization_rate": entry_data.get('utilization_rate', 0),
+                    "total_obligations": entry_data.get('total_obligations', 0),
+                    "remaining_obligations": entry_data.get('remaining_obligations', 0),
+                }
+
+                # Create the new entry with the new code
+                database.child('Data').child(code).set(new_entry_data)
+
+                # Delete the old entry with the old code
+                database.child('Data').child(entry_key).remove()
+
+            else:
+                # Update the entry in Firebase
+                database.child('Data').child(entry_key).update({
+                    "ppa": ppa,
+                    "implementing_unit": implementing_unit,
+                    "start_date": start_date_str,
+                    "end_date": end_date_str,
+                    "year": year_str,
+                    "code": code,  
+                    "services": services,
+                    "location": location,
+                    "remarks": remarks
+                })
 
             # Log the CRUD event for the entry update
             content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Replace 'firebaseentry' with your model name
@@ -816,19 +856,6 @@ def update_entry(request, project_type):
                 user=request.user if request.user.is_authenticated else None
             )
 
-            # Update the fields in the Firebase database
-            database.child('Data').child(entry_key).update({
-                "ppa": ppa,
-                "implementing_unit": implementing_unit,
-                "start_date": start_date_str,
-                "end_date": end_date_str,
-                "year": year_str,
-                "code": code,  
-                "services": services,
-                "location": location,
-                "remarks": remarks
-            })
-
             # Invalidate the cache
             cache.delete('project_entries')
 
@@ -837,6 +864,7 @@ def update_entry(request, project_type):
             return HttpResponse(f'<script>alert("Error: {str(e)}"); window.location.href = "{redirect_url}";</script>', status=500)
     else:
         return HttpResponse(f'<script>alert("Method not allowed"); window.location.href = "{redirect_url}";</script>', status=405)
+
 
 
     
