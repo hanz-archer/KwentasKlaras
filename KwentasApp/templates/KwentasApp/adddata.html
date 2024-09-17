@@ -93,6 +93,7 @@
                         </div>
                         <div class="div">
                             <input type="date" name="start_date" class="input" placeholder="&#8203" required>
+                            <h6 id="userNote" style="margin-top: 10px; white-space: nowrap;text-align: left; color: #33b249;">Project Start Date</h6>
                         </div>
                     </div>
         
@@ -102,6 +103,7 @@
                         </div>
                         <div class="div">
                             <input type="date" name="end_date" class="input" placeholder="" required>
+                            <h6 id="userNote" style="margin-top: 10px; white-space: nowrap;text-align: left; color: #33b249;">Project End Date</h6>
                         </div>
                     </div>
 
@@ -158,7 +160,7 @@
         
                 <div class="form-buttons">
                     <button type="submit" class="btn-add" value="Submit">Submit</button>
-                    <a href="{% url 'homepage' %}" id="cancelButton" class="btn-cancel">Cancel</a>
+                    <a href="{% url 'homepage' %}" id="cancelButton" class="btn-cancel">Back to Home</a>
                 </div>                
             </form>     
         </div>

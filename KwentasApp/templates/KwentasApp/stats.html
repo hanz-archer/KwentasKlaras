@@ -4,14 +4,14 @@
 <html lang="en">
 
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/stats.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Kwentas Klaras Reports</title>
-
+    
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -91,35 +91,55 @@
                         <i class='bx bx-line-chart'></i>
                         <h3>Projects Below 50% Utilization Rate</h3>
                     </div>
-                
-                    <div id="project-list" class="project-list">
+                    <div class="accordion">
                         {% for entry in below_50_utilization %}
-                        <div class="project-item" onclick="selectProject('{{ entry.code }}')">
-                            <div class="project-entry">
-                                <h2>Project Code: {{ entry.code }}</h2>
-                                <p><strong>PPA:</strong> {{ entry.ppa }}</p>
+                        <div class="accordion-content {% if entry.utilization_rate < 20 %}red{% elif 20 <= entry.utilization_rate <= 50 %}yellow{% endif %}">
+                            <header onclick="toggleAccordion(this)">
+                                <div class="title">
+                                    <strong>Project Code {{ entry.code }} by ({{ entry.implementing_unit }}):</strong> {{ entry.ppa }}
+                                </div>
+                                <div class="status">
+                                    {% if entry.utilization_rate < 20 %}Budget Underutilization{% elif 20 <= entry.utilization_rate <= 50 %}Above 20% Utilization{% endif %}
+                                </div>
+                                <span class="arrow">▼</span>
+                            </header>
+                            <div class="description">
+                                <p><strong>Project Budget:</strong> ₱{{ entry.overall_budget }}</p>
+                                <p><strong>Project Obligation:</strong> ₱{{ entry.total_obligations }}</p>
+                                <p><strong>Project Remaining Balance:</strong> ₱{{ entry.remaining_total_balance }}</p>
                                 <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate|floatformat:"-2" }}%</p>
                             </div>
                         </div>
                         {% endfor %}
-                    </div>
-                </div>                
+                    </div>                    
+                </div>
+                
+                
+                
+                                
     
                 <div class="card" id="above">
                     <div class="header">
                         <i class='bx bx-line-chart'></i>
-                        <h3>Projects Above 50% utilization Rate</h3>
+                        <h3>Projects Above 50% Utilization Rate</h3>
                     </div>
-                    {% for entry in above_50_utilization %}
-                            <div class="project-item">
-                                <div class="project-entry" onclick="selectProject('{{ entry.code }}')">
-                                    <h2>Project Code: {{ entry.code }}</h2>
-                                    <p><strong>PPA:</strong> {{ entry.ppa }}</p>
-                                    <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate }}%</p>
+                    <div class="accordion">
+                        {% for entry in above_50_utilization %}
+                            <div class="accordion-item">
+                                <div class="accordion-header" onclick="toggleAccordion(this)">
+                                    <h4>Project Code: {{ entry.code }} ({{entry.implementing_unit}})</h4>
+                                    <span class="arrow">▼</span>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="project-entry">
+                                        <p><strong>Budget:</strong> {{ entry.total }}</p>
+                                        <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate }}%</p>
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}
-                </div>
+                    </div>
+                </div>                
             </div>
         </main>
     </div>
@@ -131,7 +151,23 @@
    
 
     <script>
-      
+function toggleAccordion(header) {
+    const content = header.parentElement;
+    const isOpen = content.classList.contains('open');
+
+    // Close all other accordions
+    document.querySelectorAll('.accordion-content').forEach(item => {
+        if (item !== content) {
+            item.classList.remove('open');
+        }
+    });
+
+    // Toggle the clicked accordion
+    content.classList.toggle('open', !isOpen);
+}
+
+
+
     
         // New chart for overall utilization rate
         document.addEventListener("DOMContentLoaded", function() {

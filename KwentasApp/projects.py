@@ -110,7 +110,7 @@ def create_entry(request):
             CRUDEvent.objects.create(
                 event_type=CRUDEvent.CREATE,
                 object_id=code,  # Reference the Firebase "code" as object_id
-                object_repr=f"Project Entry: {code}",  # Description of the object
+                object_repr=f"Project Entry: {code} is added",  # Description of the object
                 content_type=ContentType.objects.get(app_label='KwentasApp', model='firebaseentry'),  # Use FirebaseEntry model for logging
                 user=request.user if request.user.is_authenticated else None,
             )
