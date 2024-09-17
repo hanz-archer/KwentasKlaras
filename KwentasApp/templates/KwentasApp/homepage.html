@@ -368,17 +368,20 @@
 var notyf = new Notyf({
     duration: 3700,
     position: {
-        x: 'right',  // Keep it right-aligned
+        x: 'right',
         y: 'top',
     },
     types: [
         {
             type: 'success',
-            background: '#33b249',  // Custom color
+            background: '#33b249', // Custom color
             duration: 3700,
+            className: 'mobile-top-notyf' // Add this custom class
         }
     ]
 });
+
+
 
     function showWelcomeMessage(userName) {
         const now = new Date();

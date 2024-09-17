@@ -315,7 +315,25 @@ body.page-loaded {
 }
 
 /* Mobile Navbar Styles */
+/* Mobile Navbar Styles */
 @media (max-width: 768px) {
+  .navbar {
+    flex-direction: column; /* Stack the navbar content vertically */
+    text-align: center; /* Center-align the text */
+    padding: 0.5rem 1rem; /* Reduce padding */
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem; /* Reduce brand font size */
+  }
+
+  .navbar-left,
+  .navbar-right {
+    width: 100%; /* Take up full width */
+    margin: 0.25rem 0; /* Reduce vertical margin */
+    font-size: 0.8rem; /* Make the font size smaller */
+  }
+
   .navbar-menu {
     display: none; /* Hide the menu by default on small screens */
     flex-direction: column;
@@ -326,20 +344,19 @@ body.page-loaded {
     width: 100%;
     border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem; /* Reduce padding inside the menu */
   }
 
-  .navbar {
-    flex-direction: column; /* Stack the navbar content vertically */
-    text-align: center; /* Center-align the text */
+  .navbar-menu li {
+    margin-bottom: 0.25rem; /* Less space between menu items */
   }
 
-  .navbar-left,
-  .navbar-right {
-    width: 100%; /* Take up full width */
-    margin: 0.5rem 0; /* Add some vertical margin */
-    font-size: 0.9rem; /* Make the font size smaller */
+  .navbar-menu li a {
+    padding: 0.5rem 0.75rem; /* Smaller padding for menu items */
+    font-size: 0.9rem; /* Smaller text size for menu items */
   }
 }
+
   
   .navbar-menu.active {
     display: flex; /* Show the menu when active */
@@ -368,7 +385,7 @@ body.page-loaded {
     color: #fff;
     cursor: pointer;
   }
-}
+
 
 /* Hamburger Menu Icon */
 .navbar-toggler::before {
@@ -494,7 +511,8 @@ body.page-loaded {
   }
 
   .dropdown-menu {
-    width: 100%; /* Full width dropdown menu on smaller screens */
+    text-wrap:wrap;
+    width: 110%; /* Full width dropdown menu on smaller screens */
   }
 }
 
@@ -503,6 +521,15 @@ body.page-loaded {
   right: 60px !important; /* Moves the notification further to the left */
   top: 20px !important;    
 }
+
+/* Mobile and Tablet View: Positioning the notification at the very top */
+@media (max-width: 768px) {
+  .mobile-top-notyf .notyf__toast {
+      top: 0 !important; /* Override any existing 'top' values */
+  }
+}
+
+
 
 
 
