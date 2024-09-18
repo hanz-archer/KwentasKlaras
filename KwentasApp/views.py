@@ -48,78 +48,121 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def download_xlsx(request, entry_code):
-    # Fetch the specific project entry based on the entry code
-    _, _, all_entries = get_project_entries()  # Fetch all project entries
-    selected_entry = None
-    
-    for entry in all_entries:
-        if entry['code'] == entry_code:
-            selected_entry = entry
-            break
+import os
+import openpyxl
+from django.http import HttpResponse, JsonResponse
+from django.conf import settings
+from openpyxl.styles import Font, Alignment, Border, Side
 
-    if not selected_entry:
-        return HttpResponse("Entry not found", status=404)
+def bulk_download_xlsx(request):
+    if request.method == 'POST':
+        selected_codes = request.POST.getlist('selected_entries')
 
-    # Define the path to your pre-designed template
-    template_path = os.path.join(settings.BASE_DIR, 'KwentasApp/static/KwentasApp/xls_templates/template_report.xlsx')
+        if len(selected_codes) > 5:
+            return JsonResponse({"error": "You can select a maximum of 5 entries"}, status=400)
 
-    # Load the pre-designed XLSX template
-    wb = openpyxl.load_workbook(template_path)
-    ws = wb.active
+        if not selected_codes:
+            return JsonResponse({"error": "No entries selected"}, status=400)
 
-    calibri_bold_7 = Font(name='Calibri', bold=True, size=7)
+        # Define the path to your pre-designed template
+        template_path = os.path.join(settings.BASE_DIR, 'KwentasApp/static/KwentasApp/xls_templates/template_report.xlsx')
 
-    # Modify the necessary cells with dynamic data
-    service_type = selected_entry.get('services', 'General')
+        # Load the pre-designed template
+        wb = openpyxl.load_workbook(template_path)
+        ws = wb.active
 
-    # Define different cell positions based on the service type
-    if service_type == 'General':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
-    elif service_type == 'Social':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A12', 'B12', 'D12', 'E12', 'I12', 'G12', 'C12'
-    elif service_type == 'Economic':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
-    elif service_type == 'Environmental':
-        ppa_cell, location_cell, start_date_cell, end_date_cell, remarks_cell, total_disbursements_cell, overall_budget_cell = 'A19', 'B19', 'D19', 'E19', 'I19', 'G19', 'C19'
+        # Define starting rows based on service type
+        def get_start_row(service_type, row_offset):
+            if service_type in ['General', 'Social']:
+                return 12 + row_offset
+            elif service_type in ['Economic', 'Environmental']:
+                return 19 + row_offset
+            return 12 + row_offset  # Default to row 12
 
-    # Populate the cells with the dynamic data
-    ws[ppa_cell] = selected_entry.get('ppa', '')
-    ws[ppa_cell].font = calibri_bold_7
-    
-    ws[location_cell] = selected_entry.get('location', '')
-    ws[location_cell].font = calibri_bold_7
-    
-    ws[start_date_cell] = selected_entry.get('start_date', '')
-    ws[start_date_cell].font = calibri_bold_7
-    
-    ws[end_date_cell] = selected_entry.get('end_date', '')
-    ws[end_date_cell].font = calibri_bold_7
-    
-    ws[remarks_cell] = selected_entry.get('remarks', '')
-    ws[remarks_cell].font = calibri_bold_7
-    
-    ws[total_disbursements_cell] = selected_entry.get('total_disbursements', '')
-    ws[total_disbursements_cell].font = calibri_bold_7
-    
-    ws[overall_budget_cell] = selected_entry.get('overall_budget', '')
-    ws[overall_budget_cell].font = calibri_bold_7
+        # Format row function excluding 'J' column
+        def format_row(row_num):
+            for cell in ws[row_num]:
+                if cell.column_letter != 'J':  # Exclude the 'J' column
+                    cell.font = Font(name='Calibri', size=10)
+                    cell.alignment = Alignment(horizontal='left', vertical='center')
+                    cell.border = Border(
+                        left=Side(border_style="thin"),
+                        right=Side(border_style="thin"),
+                        top=Side(border_style="thin"),
+                        bottom=Side(border_style="thin")
+                    )
 
-    # Add obligations data if available
-    obligations = selected_entry.get('obligations', [])
-    row_num = 10
-    for obligation in obligations:
-        ws[f'A{row_num}'] = obligation.get('name', '')
-        ws[f'B{row_num}'] = obligation.get('spent', '')
-        ws[f'C{row_num}'] = obligation.get('date', '')
-        row_num += 1
+        row_offset = 0
 
-    # Set up the response as an Excel file download
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename=Project-Code-{entry_code}-Report.xlsx'
+        for code in selected_codes:
+            _, _, all_entries = get_project_entries()
+            selected_entry = None
 
-    wb.save(response)
-    return response
+            for entry in all_entries:
+                if entry['code'] == code:
+                    selected_entry = entry
+                    break
+
+            if selected_entry:
+                service_type = selected_entry.get('services', 'General')
+
+                start_row = get_start_row(service_type, row_offset)
+
+                # Define cell positions based on the service type
+                ppa_cell, location_cell, start_date_cell, end_date_cell, overall_budget_cell, total_disbursements_cell, remarks_cell = 'A', 'B', 'C', 'D', 'E', 'G', 'I'
+
+                data = [
+                    selected_entry.get('ppa', ''),
+                    selected_entry.get('location', ''),
+                    selected_entry.get('overall_budget', ''),
+                    selected_entry.get('start_date', ''),
+                    selected_entry.get('end_date', ''),
+                    selected_entry.get('total_disbursements', ''),
+                    selected_entry.get('remarks', ''),
+                ]
+
+                columns = [ppa_cell, location_cell, start_date_cell, end_date_cell, overall_budget_cell, total_disbursements_cell, remarks_cell]
+
+                # Write data to the appropriate cells in the template
+                for col_letter, value in zip(columns, data):
+                    ws[f"{col_letter}{start_row}"].value = value
+
+                # Format the newly added row
+                format_row(start_row)
+
+                # Increment the row offset for the next entry
+                row_offset += 1
+
+        # Set up the response as an Excel file download
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=Selected-Projects-Report.xlsx'
+
+        wb.save(response)
+        return response
+
+    return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 print("KwentasApp.views module loaded")  # Debugging print

@@ -15,133 +15,122 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/continuing.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/projreports.css' %}">
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-
-
-
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
-        <h1>Generate Project Reports</h1>
-        <div class="input-group">
-          <form method="GET" action="{% url 'search_continuing_projects' %}">
-            <input type="text" name="query" placeholder="Search Continuing Projects...">
-        </div>
-        <div class="export__file">
-          <button type="submit" class="export__file-btn">Search</button>
-          </form>
-        </div>
+          <h1>Generate Project Reports</h1>
+          <div class="input-group">
+              <form method="GET" action="{% url 'search_continuing_projects' %}">
+                  <input type="text" name="query" placeholder="Search Continuing Projects...">
+                  <div class="export__file">
+                      <button type="submit" class="search">Search</button>
+                  </div>
+              </form>
+          </div>
       </section>
       <section class="table__body">
-        <table class="table">
-            <thead>
-                <tr>
-                  <th class="left-align">PPA</th>
-                    <th>Implementing Unit</th>
-                    <th>Code</th>
-                    <th>Year</th>
-                    {% if request.user.is_superuser %}
-                        <th>Generate Data</th>
-                    {% endif %}
-                </tr>
-            </thead>
-            <tbody>
-              {% if matched_entries_below_2024 %}
-              {% for entry in matched_entries_below_2024 %}
-              <tr style="cursor: pointer;">
-                  <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                  <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                  <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                  {% if request.user.is_superuser %}
-                  <td>
-                    <form id="download-form-{{ entry.code }}" action="{% url 'download_xlsx' entry.code %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                    </form>
-                    <p class="status obligation" onclick="document.getElementById('download-form-{{ entry.code }}').submit();">Download</p>
-                </td>
-                  {% endif %}
-              </tr>
-          {% endfor %}
-          {% else %}
-
-          {% if page_obj %}
-                {% for entry in page_obj %}
-                    <tr style="cursor: pointer;">
-                        <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
-                        <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
-                        <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                        <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
-                        {% if request.user.is_superuser %}
-                        <td>
-                            <form id="download-form-{{ entry.code }}" action="{% url 'download_xlsx' entry.code %}" method="post" style="display: inline;">
-                                {% csrf_token %}
-                            </form>
-                            <p class="status obligation" onclick="document.getElementById('download-form-{{ entry.code }}').submit();">Download</p>
-                        </td>
-                        {% endif %}
-                    </tr>
-                {% endfor %}
-
-                {% else %}
-                <tr>
-                  <td colspan="6">No projects found.</td>
-                </tr>
+          <form id="bulk-download-form" method="POST" action="{% url 'bulk_download_xlsx' %}">
+              {% csrf_token %}
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th class="left-align">PPA</th>
+                          <th>Implementing Unit</th>
+                          <th>Code</th>
+                          <th>Year</th>
+                          {% if request.user.is_superuser %}
+                              <th style="width: 100px;">Generate Data</th>
+                          {% endif %}
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% if matched_entries_below_2024 %}
+                          {% for entry in matched_entries_below_2024 %}
+                              <tr>
+                                  <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                                  <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                                  <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                                  {% if request.user.is_superuser %}
+                                      <td style="text-align: center;">
+                                          <input type="checkbox" name="selected_entries" value="{{ entry.code }}" style="margin: 0;">
+                                      </td>
+                                  {% endif %}
+                              </tr>
+                          {% endfor %}
+                      {% else %}
+                          {% if page_obj %}
+                              {% for entry in page_obj %}
+                                  <tr>
+                                      <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
+                                      <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
+                                      <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
+                                      <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                                      {% if request.user.is_superuser %}
+                                          <td style="text-align: center;">
+                                              <input type="checkbox" name="selected_entries" value="{{ entry.code }}" style="margin: 0;">
+                                          </td>
+                                      {% endif %}
+                                  </tr>
+                              {% endfor %}
+                          {% else %}
+                              <tr>
+                                  <td colspan="6">No projects found.</td>
+                              </tr>
+                          {% endif %}
+                      {% endif %}
+                  </tbody>
+              </table>
+              {% if request.user.is_superuser %}
+                  <div class="export__file">
+                      <button type="submit" class="export__file-btn">Download Selected</button>
+                  </div>
               {% endif %}
-                {% endif %}
-            </tbody>
-        </table>
-    </section>
-    {% if not request.user.is_superuser %}
-    <style>
-      .left-align {
-          text-align: left !important;
-      }
-      .non-superuser .table th:nth-child(5), 
-      .non-superuser .table th:nth-child(6),
-      .non-superuser .table td:nth-child(5), 
-      .non-superuser .table td:nth-child(6) {
-          display: none;
-      }
-  </style>
-{% endif %}
-
-
-
-
-
-
-  <div class="back">
-      <a href="{% url 'homepage' %}">
-          <button class="back-btn">Back</button>
-      </a>
-  </div>
-
-
-  <div class="pagination">
-      <ul class="pagination-list">
-          {% if page_obj.has_previous %}
-              <li class="pagination-item"><a href="?page=1">&laquo; First</a></li>
-              <li class="pagination-item"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
-          {% else %}
-              <li class="pagination-item disabled"><span>&laquo; First</span></li>
-              <li class="pagination-item disabled"><span>Previous</span></li>
-          {% endif %}
-          
-          <li class="pagination-item active"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
-          
-          {% if page_obj.has_next %}
-              <li class="pagination-item"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
-              <li class="pagination-item"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
-          {% else %}
-              <li class="pagination-item disabled"><span>Next</span></li>
-              <li class="pagination-item disabled"><span>Last &raquo;</span></li>
-          {% endif %}
-      </ul>
-  </div>
-</main>
+          </form>
+      </section>
+      {% if not request.user.is_superuser %}
+          <style>
+              .left-align {
+                  text-align: left !important;
+              }
+              .non-superuser .table th:nth-child(5),
+              .non-superuser .table td:nth-child(5) {
+                  display: none;
+              }
+          </style>
+      {% endif %}
+      <div class="back">
+          <a href="{% url 'homepage' %}">
+              <button class="back-btn">Back</button>
+          </a>
+      </div>
+      <div class="pagination">
+          <ul class="pagination-list">
+              {% if page_obj.has_previous %}
+                  <li class="pagination-item"><a href="?page=1">&laquo; First</a></li>
+                  <li class="pagination-item"><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+              {% else %}
+                  <li class="pagination-item disabled"><span>&laquo; First</span></li>
+                  <li class="pagination-item disabled"><span>Previous</span></li>
+              {% endif %}
+              <li class="pagination-item active"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+              {% if page_obj.has_next %}
+                  <li class="pagination-item"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                  <li class="pagination-item"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
+              {% else %}
+                  <li class="pagination-item disabled"><span>Next</span></li>
+                  <li class="pagination-item disabled"><span>Last &raquo;</span></li>
+              {% endif %}
+          </ul>
+      </div>
+  </main>
+  
+  
+  
+  
 
 
 
@@ -520,6 +509,8 @@
       });
     </script>
     <!-- Details js -->
+     <!-- Add this in your HTML template where you include scripts -->
+
     <script>
       function showDetails(code) {
         document.getElementById('customers_table').style.filter = 'blur(10px)';
@@ -709,5 +700,72 @@
       }
       document.getElementById('overlay').addEventListener('click', hideOverlay);
     </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('your-form-id'); // Replace with your form ID
+  
+      form.addEventListener('submit', function(event) {
+          event.preventDefault(); // Prevent the default form submission
+  
+          // Get the selected entries (this might vary based on your form setup)
+          const selectedEntries = Array.from(document.querySelectorAll('input[name="selected_entries"]:checked')).map(el => el.value);
+  
+          if (selectedEntries.length > 5) {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'You can select a maximum of 5 entries',
+                  confirmButtonText: 'OK'
+              });
+              return; // Exit the function to prevent form submission
+          }
+  
+          // If valid, submit the form
+          form.submit();
+      });
+  });
+  </script>
+
+  <!-- Add this in your HTML template -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#your-form-id').on('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var form = $(this);
+        var formData = new FormData(form[0]);
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                // Handle success response
+                window.location.href = data.file_url; // Or handle the file download
+            },
+            error: function(xhr) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.error,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
+
+
+
   </body>
 </html>
