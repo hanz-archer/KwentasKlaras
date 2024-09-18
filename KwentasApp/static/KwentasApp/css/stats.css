@@ -443,7 +443,7 @@ canvas {
 }
 
 .accordion-content header:hover {
-    background-color: #E0E0E0;
+    background-color: #ffffff;
 }
 
 .accordion-content header .title {
@@ -452,6 +452,7 @@ canvas {
     color: #333;
     flex: 1; /* Ensures title takes up remaining space */
 }
+
 
 .accordion-content header .status {
     font-size: 14px;
