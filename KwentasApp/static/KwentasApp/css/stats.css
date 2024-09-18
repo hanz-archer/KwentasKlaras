@@ -363,6 +363,15 @@ canvas {
     bottom: 20px;
     right: 20px;
     z-index: 1000;
+    width: 7.5rem;
+    height: 2.9rem;
+    font-weight: 700;
+    border-radius: 2rem;
+    transition: 0.2s ease-in-out;
+    background-color: #007bff; /* Blue color */
+    color: white;
+    border: 2px solid #007bff; /* Same as background color */
+
   }
   
   @media (max-width: 480px) {
@@ -427,10 +436,11 @@ canvas {
 }
 
 /* Styles for content with utilization between 20% and 30% */
-.accordion-content.yellow {
-    background-color: #f8f8e8; /* Smooth/Cool yellow background */
-    border-color: #ffff00; /* Slightly darker yellow border */
+.accordion-content.orange {
+    background-color: #f9f4e7; /* Smooth/Cool orange background */
+    border-color: #ffa500; /* Slightly darker orange border */
 }
+
 
 /* Header Styles */
 .accordion-content header {
@@ -468,8 +478,9 @@ canvas {
 
 /* Status for 20% to 30% utilization */
 .accordion-content.yellow .status {
-    color: #f3b20f; /* Cool yellow color */
+    color: #ff8c00; /* Cool orange color */
 }
+
 
 .accordion-content header .arrow {
     font-size: 15px;
@@ -492,6 +503,47 @@ canvas {
 .accordion-content.open .description {
     height: auto;
     padding: 15px; /* Adjust padding as needed */
+}
+
+/* Responsive Styles for Mobile */
+@media (max-width: 768px) {
+    .accordion-content header {
+        flex-direction: column; /* Stack title and status vertically */
+        align-items: flex-start; /* Align items to the start */
+        padding: 10px; /* Adjust padding */
+    }
+    
+    .accordion-content header .title {
+        font-size: 15px; /* Slightly smaller title font */
+    }
+    
+    .accordion-content header .status {
+        font-size: 13px; /* Slightly smaller status font */
+        margin-left: 0; /* Remove the left margin */
+        margin-top: 5px; /* Add margin to the top for spacing */
+    }
+    
+    .accordion-content .description {
+        font-size: 16px; /* Smaller description font for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .accordion-content header {
+        padding: 8px; /* Further adjust padding for small screens */
+    }
+    
+    .accordion-content header .title {
+        font-size: 14px; /* Smaller title font for very small screens */
+    }
+    
+    .accordion-content header .status {
+        font-size: 12px; /* Smaller status font */
+    }
+    
+    .accordion-content .description {
+        font-size: 14px; /* Smaller description font */
+    }
 }
 
 
