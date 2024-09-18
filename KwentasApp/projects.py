@@ -952,6 +952,8 @@ def current_delete_entry(request):
 
 
 
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def reports_view(request):
     _, _, all_entries = get_project_entries()
@@ -962,6 +964,9 @@ def reports_view(request):
     below_50_utilization = []
     above_50_utilization = []
 
+    count_below_50 = 0  # Count for projects below 50% utilization
+    count_above_50 = 0  # Count for projects above 50% utilization
+
     for entry in all_entries:
         if 'utilization_rate' in entry and entry['utilization_rate'] is not None:
             utilization_rate = entry['utilization_rate']
@@ -971,24 +976,25 @@ def reports_view(request):
             # Categorize projects based on utilization rate
             if utilization_rate < 50:
                 below_50_utilization.append(entry)
+                count_below_50 += 1  # Increment the below 50 count
             else:
                 above_50_utilization.append(entry)
+                count_above_50 += 1  # Increment the above 50 count
 
     average_utilization = total_utilization / total_entries if total_entries > 0 else 0
 
-    # Debugging statement to ensure average_utilization is calculated
+    # Debugging statement to ensure average_utilization and counts are calculated
     print(f"Average Utilization: {average_utilization}")
+    print(f"Projects Below 50%: {count_below_50}")
+    print(f"Projects Above 50%: {count_above_50}")
 
     return render(request, 'KwentasApp/stats.html', {
         'average_utilization': average_utilization,
         'below_50_utilization': below_50_utilization,
         'above_50_utilization': above_50_utilization,
+        'count_below_50': count_below_50,
+        'count_above_50': count_above_50,
     })
-
-
-
-
-
 
 def all_projects(request):
     _, _, all_entries = get_project_entries()
