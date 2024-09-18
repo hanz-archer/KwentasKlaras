@@ -25,10 +25,6 @@
                 <div class="left">
                     <h1>Dashboard</h1>
                 </div>
-                <a href="#" class="report">
-                    <i class='bx bx-cloud-download'></i>
-                    <span>Download Reports</span>
-                </a>
             </div>
     
             <!-- Insights -->
@@ -90,6 +86,10 @@
                     <div class="header">
                         <i class='bx bx-line-chart'></i>
                         <h3>Projects Below 50% Utilization Rate</h3>
+                        <a href="#" class="report">
+                            <i class='bx bx-video'></i>
+                            <span>Switch to visual reports mode</span>
+                        </a>
                     </div>
                     <div class="accordion">
                         {% for entry in below_50_utilization %}
@@ -99,14 +99,14 @@
                                     <strong>Project Code {{ entry.code }} by ({{ entry.implementing_unit }}):</strong> {{ entry.ppa }}
                                 </div>
                                 <div class="status">
-                                    {% if entry.utilization_rate < 20 %}Budget Underutilization{% elif 20 <= entry.utilization_rate <= 50 %}Above 20% Utilization{% endif %}
+                                    {% if entry.utilization_rate < 20 %}Budget Underutilized{% elif 20 <= entry.utilization_rate <= 50 %}Above 20% Utilization{% endif %}
                                 </div>
                                 <span class="arrow">▼</span>
                             </header>
                             <div class="description">
-                                <p><strong>Project Budget:</strong> ₱{{ entry.overall_budget }}</p>
-                                <p><strong>Project Obligation:</strong> ₱{{ entry.total_obligations }}</p>
-                                <p><strong>Project Remaining Balance:</strong> ₱{{ entry.remaining_total_balance }}</p>
+                                <p><strong>Project Budget:</strong> ₱{{ entry.overall_budget|intcomma }}</p>
+                                <p><strong>Project Obligation:</strong> ₱{{ entry.total_obligations|intcomma }}</p>
+                                <p><strong>Project Remaining Balance:</strong> ₱{{ entry.remaining_total_balance|intcomma }}</p>
                                 <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate|floatformat:"-2" }}%</p>
                             </div>
                         </div>
@@ -114,10 +114,6 @@
                     </div>                    
                 </div>
                 
-                
-                
-                                
-    
                 <div class="card" id="above">
                     <div class="header">
                         <i class='bx bx-line-chart'></i>
@@ -142,14 +138,8 @@
                 </div>                
             </div>
         </main>
-    </div>
-    
-  
-    
-    
+    </div> 
     <form action="{%url 'homepage' %}"> {% csrf_token %}<input type="submit" value="Back" class="btn sticky-btn"/></form>
-   
-
     <script>
 function toggleAccordion(header) {
     const content = header.parentElement;
@@ -193,19 +183,6 @@ function toggleAccordion(header) {
                        
                     }
                 }
-            });
-        });
-    </script>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector('.report').addEventListener('click', function () {
-                html2canvas(document.body).then(function (canvas) {
-                    var link = document.createElement('a');
-                    link.download = 'dashboard.png';
-                    link.href = canvas.toDataURL();
-                    link.click();
-                });
             });
         });
     </script>
