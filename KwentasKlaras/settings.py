@@ -156,6 +156,11 @@ CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+# Make sure the HttpOnly flag is set for the session cookie
+SESSION_COOKIE_HTTPONLY = True
+
+# Make sure the HttpOnly flag is set for the CSRF cookie
+CSRF_COOKIE_HTTPONLY = True
 
 
 
