@@ -464,6 +464,7 @@ def get_project_entries():
                 'start_date': value.get('start_date'),
                 'end_date': value.get('end_date'),
                 'code': value.get('code'),
+                'services': value.get('services'),
                 'year': value.get('year'),
                 'remaining_total_balance': value.get('remaining_total_balance'),
                 'total_disbursements': value.get('total_disbursements'),
