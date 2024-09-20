@@ -58,9 +58,6 @@ def bulk_download_xlsx(request):
     if request.method == 'POST':
         selected_codes = request.POST.getlist('selected_entries')
 
-        if len(selected_codes) > 5:
-            return JsonResponse({"error": "You can select a maximum of 5 entries"}, status=400)
-
         if not selected_codes:
             return JsonResponse({"error": "No entries selected"}, status=400)
 
@@ -92,7 +89,9 @@ def bulk_download_xlsx(request):
                         bottom=Side(border_style="thin")
                     )
 
+        # Initialize row offset and a constant for max entries per template
         row_offset = 0
+        max_entries_per_template = 5
 
         for code in selected_codes:
             _, _, all_entries = get_project_entries()
@@ -107,6 +106,10 @@ def bulk_download_xlsx(request):
                 service_type = selected_entry.get('services', 'General')
 
                 start_row = get_start_row(service_type, row_offset)
+
+                # Insert one additional row for spacing if necessary
+                if row_offset >= max_entries_per_template:
+                    ws.insert_rows(start_row)  # Insert only 1 row
 
                 # Define cell positions based on the service type
                 ppa_cell, location_cell, start_date_cell, end_date_cell, overall_budget_cell, total_disbursements_cell, remarks_cell = 'A', 'B', 'C', 'D', 'E', 'G', 'I'
@@ -141,6 +144,9 @@ def bulk_download_xlsx(request):
         return response
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
 
 
 
