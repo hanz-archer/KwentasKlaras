@@ -68,13 +68,18 @@ def bulk_download_xlsx(request):
         wb = openpyxl.load_workbook(template_path)
         ws = wb.active
 
-        # Define starting rows based on service type
-        def get_start_row(service_type, row_offset):
+        # Define starting rows and maximum entries based on service type
+        def get_start_row(service_type, entry_count):
             if service_type in ['General', 'Social']:
-                return 12 + row_offset
+                start_row = 12 + entry_count
+                max_entries = 5
             elif service_type in ['Economic', 'Environmental']:
-                return 19 + row_offset
-            return 12 + row_offset  # Default to row 12
+                start_row = 19 + entry_count
+                max_entries = 2
+            else:
+                start_row = 12 + entry_count  # Default to row 12
+                max_entries = 5
+            return start_row, max_entries
 
         # Format row function excluding 'J' column
         def format_row(row_num):
@@ -89,27 +94,26 @@ def bulk_download_xlsx(request):
                         bottom=Side(border_style="thin")
                     )
 
-        # Initialize row offset and a constant for max entries per template
-        row_offset = 0
-        max_entries_per_template = 5
+        # Initialize entry counters for each service type
+        entry_counts = {'General': 0, 'Social': 0, 'Economic': 0, 'Environmental': 0}
 
         for code in selected_codes:
             _, _, all_entries = get_project_entries()
-            selected_entry = None
-
-            for entry in all_entries:
-                if entry['code'] == code:
-                    selected_entry = entry
-                    break
+            selected_entry = next((entry for entry in all_entries if entry['code'] == code), None)
 
             if selected_entry:
                 service_type = selected_entry.get('services', 'General')
 
-                start_row = get_start_row(service_type, row_offset)
+                # Get the starting row and max entries for the service type
+                entry_count = entry_counts[service_type]
+                start_row, max_entries = get_start_row(service_type, entry_count)
 
-                # Insert one additional row for spacing if necessary
-                if row_offset >= max_entries_per_template:
-                    ws.insert_rows(start_row)  # Insert only 1 row
+                # If the entry count exceeds max_entries, add a new row
+                if entry_count >= max_entries:
+                    start_row += 1
+
+                # Insert a new entire row after the current start_row
+                ws.insert_rows(start_row)
 
                 # Define cell positions based on the service type
                 ppa_cell, location_cell, start_date_cell, end_date_cell, overall_budget_cell, total_disbursements_cell, remarks_cell = 'A', 'B', 'C', 'D', 'E', 'G', 'I'
@@ -117,9 +121,9 @@ def bulk_download_xlsx(request):
                 data = [
                     selected_entry.get('ppa', ''),
                     selected_entry.get('location', ''),
-                    selected_entry.get('overall_budget', ''),
                     selected_entry.get('start_date', ''),
                     selected_entry.get('end_date', ''),
+                    selected_entry.get('overall_budget', ''),
                     selected_entry.get('total_disbursements', ''),
                     selected_entry.get('remarks', ''),
                 ]
@@ -133,8 +137,8 @@ def bulk_download_xlsx(request):
                 # Format the newly added row
                 format_row(start_row)
 
-                # Increment the row offset for the next entry
-                row_offset += 1
+                # Increment the entry count for the service type
+                entry_counts[service_type] += 1
 
         # Set up the response as an Excel file download
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -144,6 +148,11 @@ def bulk_download_xlsx(request):
         return response
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
+
+
 
 
 

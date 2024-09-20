@@ -40,7 +40,7 @@
                           <th class="left-align">PPA</th>
                           <th>Implementing Unit</th>
                           <th>Code</th>
-                          <th>Year</th>
+                          <th>Services</th>
                           {% if request.user.is_superuser %}
                               <th style="width: 100px;">Generate Data</th>
                           {% endif %}
@@ -53,7 +53,7 @@
                                   <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                                   <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                                   <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                                  <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.services }}</td>
                                   {% if request.user.is_superuser %}
                                       <td style="text-align: center;">
                                         <input type="checkbox" name="selected_entries" value="{{ entry.code }}" style="transform: scale(2.0); margin: 0;">
@@ -68,7 +68,7 @@
                                       <td class="ppa" onclick="showDetails('{{ entry.code }}')">{{ entry.ppa }}</td>
                                       <td class="implementing-unit" onclick="showDetails('{{ entry.code }}')">{{ entry.implementing_unit }}</td>
                                       <td class="code" onclick="showDetails('{{ entry.code }}')">{{ entry.code }}</td>
-                                      <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
+                                      <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.services }}</td>
                                       {% if request.user.is_superuser %}
                                         <td style="text-align: center;">
                                             <input type="checkbox" name="selected_entries" value="{{ entry.code }}" style="transform: scale(2.0); margin: 0;">
