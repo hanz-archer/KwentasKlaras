@@ -77,7 +77,7 @@ def bulk_download_xlsx(request):
         }
         max_entries = {'General': 5, 'Social': 5, 'Economic': 2, 'Environmental': 2}
 
-        last_used_row = {'General': 12, 'Social': 12, 'Economic': 19, 'Environmental': 19}
+        last_used_row = service_type_rows.copy()
 
         # Format row function excluding 'J' column
         def format_row(row_num):
@@ -93,7 +93,7 @@ def bulk_download_xlsx(request):
                     )
 
         # Initialize entry counters for each service type
-        entry_counts = {'General': 0, 'Social': 0, 'Economic': 0, 'Environmental': 0}
+        entry_counts = {key: 0 for key in service_type_rows.keys()}
 
         for code in selected_codes:
             _, _, all_entries = get_project_entries()
@@ -105,7 +105,7 @@ def bulk_download_xlsx(request):
                 # Get the last used row for the service type
                 start_row = last_used_row[service_type]
 
-                # Insert a new row at the current last used row
+                # Write data directly into the existing row without inserting a new one
                 ws.insert_rows(start_row)
 
                 # Define cell positions based on the service type
@@ -134,10 +134,6 @@ def bulk_download_xlsx(request):
                 last_used_row[service_type] += 1
                 entry_counts[service_type] += 1
 
-                # After reaching the max entries, move to the next row
-                if entry_counts[service_type] % max_entries[service_type] == 0:
-                    last_used_row[service_type] += 1
-
         # Insert a new row after the last entry, regardless of service type
         ws.insert_rows(max(last_used_row.values()) + 1)
 
@@ -149,6 +145,8 @@ def bulk_download_xlsx(request):
         return response
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
 
 
 
