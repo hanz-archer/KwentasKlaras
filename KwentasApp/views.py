@@ -68,18 +68,16 @@ def bulk_download_xlsx(request):
         wb = openpyxl.load_workbook(template_path)
         ws = wb.active
 
-        # Define starting rows and maximum entries based on service type
-        def get_start_row(service_type, entry_count):
-            if service_type in ['General', 'Social']:
-                start_row = 12 + entry_count
-                max_entries = 5
-            elif service_type in ['Economic', 'Environmental']:
-                start_row = 19 + entry_count
-                max_entries = 2
-            else:
-                start_row = 12 + entry_count  # Default to row 12
-                max_entries = 5
-            return start_row, max_entries
+        # Define service types and initial row positions
+        service_type_rows = {
+            'General': 12,
+            'Social': 12,
+            'Economic': 19,
+            'Environmental': 19,
+        }
+        max_entries = {'General': 5, 'Social': 5, 'Economic': 2, 'Environmental': 2}
+
+        last_used_row = {'General': 12, 'Social': 12, 'Economic': 19, 'Environmental': 19}
 
         # Format row function excluding 'J' column
         def format_row(row_num):
@@ -104,15 +102,10 @@ def bulk_download_xlsx(request):
             if selected_entry:
                 service_type = selected_entry.get('services', 'General')
 
-                # Get the starting row and max entries for the service type
-                entry_count = entry_counts[service_type]
-                start_row, max_entries = get_start_row(service_type, entry_count)
+                # Get the last used row for the service type
+                start_row = last_used_row[service_type]
 
-                # If the entry count exceeds max_entries, add a new row
-                if entry_count >= max_entries:
-                    start_row += 1
-
-                # Insert a new entire row after the current start_row
+                # Insert a new row at the current last used row
                 ws.insert_rows(start_row)
 
                 # Define cell positions based on the service type
@@ -137,8 +130,16 @@ def bulk_download_xlsx(request):
                 # Format the newly added row
                 format_row(start_row)
 
-                # Increment the entry count for the service type
+                # Update the last used row for the service type, ensuring no empty rows are skipped
+                last_used_row[service_type] += 1
                 entry_counts[service_type] += 1
+
+                # After reaching the max entries, move to the next row
+                if entry_counts[service_type] % max_entries[service_type] == 0:
+                    last_used_row[service_type] += 1
+
+        # Insert a new row after the last entry, regardless of service type
+        ws.insert_rows(max(last_used_row.values()) + 1)
 
         # Set up the response as an Excel file download
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -148,6 +149,13 @@ def bulk_download_xlsx(request):
         return response
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
+
+
+
+
+
 
 
 
