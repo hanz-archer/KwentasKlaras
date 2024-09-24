@@ -167,7 +167,19 @@ def add_obligation(request, project_type):
 
             # Check if entry_data is None
             if entry_data is None:
-                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
+                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "{redirect_url}"";</script>', status=404)
+            
+            start_date = entry_data.get('start_date')
+            end_date = entry_data.get('end_date')
+
+
+            if date < start_date:
+                return HttpResponse(f'<script>alert("Date must not be before projects start date"); window.location.href = "{redirect_url}"";</script>', status=404)
+            
+
+            if date > end_date:
+                return HttpResponse(f'<script>alert("Date must not be after projects end date"); window.location.href = "{redirect_url}"";</script>', status=404)
+
 
             # Update total spent for the entry
             total_obligations = entry_data.get('total_obligations', 0) + obligation
@@ -247,7 +259,18 @@ def add_disbursement(request, project_type):
 
             # Check if entry_data is None
             if entry_data is None:
-                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
+                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "{redirect_url}"";</script>', status=404)
+            
+            start_date = entry_data.get('start_date')
+            end_date = entry_data.get('end_date')
+
+
+            if date < start_date:
+                return HttpResponse(f'<script>alert("Date must not be before projects start date"); window.location.href = "{redirect_url}"";</script>', status=404)
+            
+
+            if date > end_date:
+                return HttpResponse(f'<script>alert("Date must not be after projects end date"); window.location.href = "{redirect_url}"";</script>', status=404)
 
             # Update total spent for the entry
             remaining_balance = entry_data.get('remaining_total_balance')
@@ -365,34 +388,64 @@ def disbursements(request):
     })
 
 
-def add_budget(request):
+
+def add_budget(request, project_type):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
         name = request.POST.get('budget_name')
-        added_budget = float(request.POST.get('added_budget', 0))
+        added_budget = request.POST.get('added_budget', '0')  # Fetching it as a string for validation
         date = request.POST.get('budget_date')
 
+
+         # Determine redirect URL based on project type
+        if project_type == 'continuing':
+            redirect_url = '/continuing_projects'
+        elif project_type == 'current':
+            redirect_url = '/current_projects'
+        else:
+            redirect_url = '/'
+
+       
+
         try:
+             # Validate that added_budget is a positive number
+            if not re.match(r'^\d+(\.\d{1,2})?$', added_budget):
+                  return HttpResponse(f'<script>alert("Invalid Input, Please Input a valid positive number"); window.location.href = "{redirect_url}";</script>', status=404)
+            added_budget = float(added_budget)
+            
+            if added_budget <= 0:
+                       return HttpResponse(f'<script>alert("Added Budget must be a positive number"); window.location.href = "{redirect_url}";</script>', status=404)
+
             # Get data for the entry
             entry_data = database.child('Data').child(entry_key).get().val()
 
             # Check if entry_data is None
             if entry_data is None:
-                return HttpResponse('<script>alert("Entry not found."); window.location.href = "/";</script>', status=404)
+                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "{redirect_url}";</script>', status=404)
+            
+            start_date = entry_data.get('start_date')
+            end_date = entry_data.get('end_date')
+
+
+            if date < start_date:
+                return HttpResponse(f'<script>alert("Date must not be before projects start date"); window.location.href = "{redirect_url}"";</script>', status=404)
+            
+
+            if date > end_date:
+                return HttpResponse(f'<script>alert("Date must not be after projects end date"); window.location.href = "{redirect_url}"";</script>', status=404)
 
             # Calculate total added budget
             total_added_budget = entry_data.get('added_budget', 0) + added_budget
 
             # Calculate overall total budget
-            overall_budget = entry_data.get('overall_budget', 0)
-            overall_budget = overall_budget + added_budget
+            overall_budget = entry_data.get('overall_budget', 0) + added_budget
 
             # Calculate remaining balance
             remaining_total_balance = entry_data.get('remaining_total_balance', 0) + added_budget
 
             # Check if remaining balance would go below 0
             if remaining_total_balance < 0:
-                return HttpResponse('<script>alert("Remaining balance cannot go below 0."); window.location.href = "/";</script>', status=400)
+                return HttpResponse(f'<script>alert("Remaining balance cannot go below 0."); window.location.href = "{redirect_url}"";</script>', status=400)
 
             # Push a new child node with a unique key for the budget under the chosen entry
             new_budget_ref = database.child('Data').child(entry_key).child('budget').push({
@@ -430,6 +483,7 @@ def add_budget(request):
             return HttpResponse(f"Error: {str(e)}", status=500)
     else:
         return HttpResponse("Method not allowed", status=405)
+
 
 
 
