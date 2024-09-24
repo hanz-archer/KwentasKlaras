@@ -414,7 +414,7 @@
     <!-- BUDGET -->
     <div class="details" id="budget">
       <div class="login-content">
-        <form id="add-budget-form" action="{% url 'add_budget' %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
+        <form id="add-budget-form" action="{% url 'add_budget' 'current' %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
           <input type="hidden" name="entry_code" id="budget-code">
           <div class="input-div-new">
             <div class="div">
