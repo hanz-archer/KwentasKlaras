@@ -198,9 +198,9 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
+
         user = authenticate(request, username=username, password=password)
-        
+
         if user is not None:
             logger.info(f'Successful login for user: {username}')
             login(request, user)
@@ -210,19 +210,22 @@ def login_view(request):
                 # Check if the user has 2FA enabled
                 user_profile = UserProfile.objects.get(user=user)
                 if user_profile.two_factor_enabled:
+                    request.session['otp_required'] = True  # Set flag in session
                     return redirect('verify_otp')
             except UserProfile.DoesNotExist:
                 logger.warning(f'UserProfile does not exist for user: {username}')
                 pass
 
+            request.session['otp_verified'] = True  # Set OTP verified if no 2FA
             return redirect('homepage')
-        
+
         else:
             logger.warning(f'Invalid login attempt for user: {username}')
             messages.error(request, 'Invalid credentials. Please try again.')
             return redirect('login')  # Redirect after a failed login attempt
 
     return render(request, 'KwentasApp/login.html')
+
 
 
 def admin_view(request):
@@ -281,13 +284,19 @@ def logout_view(request):
 
 @login_required
 def homepage(request):
+    # Check if OTP is required and not verified
+    if request.session.get('otp_required') and not request.session.get('otp_verified'):
+        messages.error(request, 'You must verify the OTP to access the homepage.')
+        return redirect('verify_otp')
+
     print("homepage view called")  # Debugging print
     user_name = request.user.name if request.user.is_authenticated else "Guest"
-    
+
     context = {
         'user_name': user_name,
     }
     print("Context:", context)  # Debugging print
+
     return render(request, 'KwentasApp/homepage.html', context)
 
 
@@ -482,31 +491,34 @@ def enable_2fa(request):
 
     return render(request, 'enable_2fa.html', {'qr_code': request.user.userprofile.qr_code.url})
 
-@login_required
 def verify_otp(request):
     if request.method == 'POST':
         otp_code = request.POST.get('otp')
         user = request.user
-        
+
         # Ensure 2FA is enabled
         if not user.userprofile.two_factor_enabled:
             messages.error(request, '2FA is not enabled for your account.')
             return redirect('homepage')
-        
+
         # Check if TOTP secret exists
         if not user.userprofile.totp_secret:
             messages.error(request, 'No TOTP secret found.')
             return redirect('homepage')
-        
+
         # Create TOTP object and verify OTP
         totp = pyotp.TOTP(user.userprofile.totp_secret)
         if totp.verify(otp_code):
+            request.session['otp_verified'] = True
+            request.session.pop('otp_required', None)  # Clear OTP requirement
             messages.success(request, 'OTP Verified Successfully!')
             return redirect('homepage')
         else:
             messages.error(request, 'Invalid OTP, please try again.')
 
     return render(request, 'KwentasApp/verify_otp.html')
+
+
 
 @login_required
 def get_2fa_status(request):
