@@ -266,9 +266,11 @@ body.page-loaded {
 /* General Navbar Styles */
 .navbar {
   width: 100%;
-  background-color: #007FFF; /* Blue background */
-  padding: 0.75rem 2rem; /* Padding for the navbar */
+  background: rgba(255, 255, 255, 0.2); /* Transparent background for glass effect */
+  backdrop-filter: blur(10px); /* Frosted glass blur */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for definition */
   border-radius: 10px; /* Rounded corners */
+  padding: 0.75rem 2rem; /* Padding for the navbar */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -315,7 +317,6 @@ body.page-loaded {
 }
 
 /* Mobile Navbar Styles */
-/* Mobile Navbar Styles */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column; /* Stack the navbar content vertically */
@@ -340,7 +341,9 @@ body.page-loaded {
     position: absolute;
     top: 100%;
     right: 0;
-    background-color: #007FFF;
+    background: rgba(255, 255, 255, 0.2); /* Transparent background */
+    backdrop-filter: blur(10px); /* Frosted glass blur */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border */
     width: 100%;
     border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -357,35 +360,33 @@ body.page-loaded {
   }
 }
 
-  
-  .navbar-menu.active {
-    display: flex; /* Show the menu when active */
-  }
+.navbar-menu.active {
+  display: flex; /* Show the menu when active */
+}
 
-  .navbar-menu li {
-    display: block; /* Stack the menu items vertically */
-    padding: 1rem;
-    text-align: center;
-  }
+.navbar-menu li {
+  display: block; /* Stack the menu items vertically */
+  padding: 1rem;
+  text-align: center;
+}
 
-  .navbar-menu li a {
-    font-size: 1.2rem;
-  }
+.navbar-menu li a {
+  font-size: 1.2rem;
+}
 
-  .navbar-search {
-    display: none; /* Hide the search icon on small screens if needed */
-  }
+.navbar-search {
+  display: none; /* Hide the search icon on small screens if needed */
+}
 
-  /* Hamburger Menu */
-  .navbar-toggler {
-    display: block;
-    background-color: transparent;
-    border: none;
-    font-size: 1.5rem;
-    color: #fff;
-    cursor: pointer;
-  }
-
+/* Hamburger Menu */
+.navbar-toggler {
+  display: block;
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+}
 
 /* Hamburger Menu Icon */
 .navbar-toggler::before {

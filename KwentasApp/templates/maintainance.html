@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwentas Klaras - Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/login.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="login-content">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <img src="{% static 'KwentasApp/img/logo.png' %}" alt="User Avatar">
+                    <h2 class="title">Kwentas Klaras <br>(Digital PMIS) <br>v1.0 <br><br>is under maintainace, Please try again later.</h2>
+                    <h5>Please contact system administrator for more information.</h5>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'KwentasApp',
     'django.contrib.humanize',
     'easyaudit',
+    'maintenance_mode'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'easyaudit.middleware.easyaudit.EasyAuditMiddleware',
+    'maintenance_mode.middleware.MaintenanceModeMiddleware'
 ]
 
 ROOT_URLCONF = 'KwentasKlaras.urls'
@@ -211,6 +213,14 @@ DJANGO_EASY_AUDIT_EXCLUDE_REQUESTS = [
     r'^/static/',
     r'^/admin/',
 ]
+
+MAINTENANCE_MODE = False
+MAINTENANCE_MODE_TEMPLATE = "maintainance.html"  # Fix typo here: 'maintainance' -> 'maintenance'
+MAINTENANCE_MODE_IGNORE_ADMIN_SITE = False
+MAINTENANCE_MODE_STATE_FILE_PATH = "C:/Users/Hanz Archer/Desktop/KwentasKlaras/maintenance_mode_state.txt"
+
+
+
 
 
 
