@@ -18,6 +18,7 @@
         </div>
         <div class="navbar-right">
             <div id="datetime" class="datetime-display"></div>
+            <h3 class="logged-in">Logged in as {{ user_name }}</h3>
         </div>
     </div>
     </div>
@@ -110,7 +111,7 @@
             <div class="icon-wrapper">
               <i class="fas fa-person"></i>
             </div>
-            <h3>Logged in as {{ user_name }}</h3>
+            <h3>Account Management</h3>
             <p>
               <div class="account-buttons-container">
                 <!-- Non-Dropdown Button -->
@@ -418,19 +419,19 @@ var notyf = new Notyf({
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 9.1px;
+          padding: 10px;
           background-color: #007FFF; /* Adjust background color as needed */
           color: #fff; /* Adjust text color as needed */
       }
 
       .navbar-left, .navbar-right {
           display: flex;
-          align-items: le;
+          align-items: center;
       }
-
+      
       .navbar-left {
-          justify-content: left;
-          margin-left: 10px;
+          justify-content: center;
+          margin-left: 9px;
           flex: 1;
       }
       .navbar-left span {
@@ -440,15 +441,23 @@ var notyf = new Notyf({
       }
 
       .navbar-right {
-          justify-content: right;
-          margin-right: 10px;
+          justify-content: center;
+          margin-right: 20px;
           flex: 1;
       }
 
       .datetime-display {
           font-size: 18px;
           color: #fff; /* Adjust color as needed */
+          margin-right: 30px;
       }
+
+      .logged-in {
+        font-size: 18px;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        color: white;
+    }
     </style>
     <script>
       function showLoadingAlertReports(event) {
