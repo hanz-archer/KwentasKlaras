@@ -315,35 +315,38 @@
 </script>
 
     <script>
-      function showLoadingAlert(event) {
-        event.preventDefault(); // Prevent the form from submitting immediately
-    
-        Swal.fire({
-            title: 'Loading...',
-            text: 'Fetching data from realtime database.',
-            html: `
-                <div style="display: flex; justify-content: center; align-items: center;">
-                    <img src="{% static 'KwentasApp/img/download.gif' %}" style="width: 100px; height: 100px;" />
-                </div>
-                <p>Fetching data from database.</p>
-            `,  
-            allowOutsideClick: false,
-            showConfirmButton: false
-        });
-    
-        sessionStorage.setItem('showingSweetAlert', 'true');
-    
-        setTimeout(() => {
-          event.target.submit();
-        }, 500);
-      }
-    
-      window.addEventListener('pageshow', function () {
-        if (sessionStorage.getItem('showingSweetAlert') === 'true') {
-          Swal.close();
-          sessionStorage.removeItem('showingSweetAlert');
-        }
-      });
+        function showLoadingAlert(event) {
+    event.preventDefault(); // Prevent the form from submitting immediately
+
+    Swal.fire({
+      html: `
+          <div style="display: flex; justify-content: center; align-items: center;">
+              <img src="{% static 'KwentasApp/img/loader.gif' %}" style="width: 350px; height: 350px;" />  <!-- Bigger GIF -->
+          </div>
+      `,  
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      customClass: {
+        popup: 'transparent-swal',  // Custom class to make the popup transparent
+      },
+      backdrop: `
+        blur(10px)           /* The blur effect */
+      `,
+    });
+
+    sessionStorage.setItem('showingSweetAlert', 'true');
+
+    setTimeout(() => {
+      event.target.submit();
+    }, 500);
+  }
+
+  window.addEventListener('pageshow', function () {
+    if (sessionStorage.getItem('showingSweetAlert') === 'true') {
+      Swal.close();
+      sessionStorage.removeItem('showingSweetAlert');
+    }
+  });
 
       document.addEventListener('DOMContentLoaded', function () {
         const body = document.querySelector('body');
@@ -459,37 +462,42 @@ var notyf = new Notyf({
         color: white;
     }
     </style>
-    <script>
-      function showLoadingAlertReports(event) {
-        event.preventDefault();
-        Swal.fire({
-          html: `
-              <h2>Generating Report from database</h2>
-              <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
-                <img src="{% static 'KwentasApp/img/printer.gif' %}" style="width: 100px; height: 100px; margin-bottom: 35px" />
-              </div>
-              <p>Fetching data from database.</p>
-          `,
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          didOpen: () => {
-              sessionStorage.setItem('showingSweetAlert', 'true');
-          }
-        });
-
-        const link = event.currentTarget;
-        setTimeout(() => {
-          window.location.href = link.href;
-        }, 500);
+<script>
+  function showLoadingAlertReports(event) {
+    event.preventDefault();
+    Swal.fire({
+      html: `
+          <div style="display: flex; justify-content: center; align-items: center;">
+            <img src="{% static 'KwentasApp/img/loader.gif' %}" style="width: 350px; height: 350px;" />
+          </div>
+      `,
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      customClass: {
+        popup: 'transparent-swal',  // Custom class for removing the white box
+      },
+      backdrop: `
+        blur(10px)           /* The blur effect */
+      `,
+      didOpen: () => {
+          sessionStorage.setItem('showingSweetAlert', 'true');
       }
+    });
 
-      function handlePageShow(event) {
-        if (sessionStorage.getItem('showingSweetAlert') === 'true') {
-          Swal.close();
-          sessionStorage.removeItem('showingSweetAlert');
-        }
-      }
+    const link = event.currentTarget;
+    setTimeout(() => {
+      window.location.href = link.href;
+    }, 500);
+  }
 
-    </script>
+  function handlePageShow(event) {
+    if (sessionStorage.getItem('showingSweetAlert') === 'true') {
+      Swal.close();
+      sessionStorage.removeItem('showingSweetAlert');
+    }
+  }
+</script>
+
+
   </body>
 </html>
