@@ -37,7 +37,7 @@
               </form>
               {% if request.user.is_superuser %}
               <form action="{% url 'create_entry' %}" method="get">
-                <button type="submit" class="btn"><i class="fas fa-search"></i> Add Data</button>
+                <button type="submit" class="btn"><i class="fas fa-search"></i> Add Project</button>
               </form>
               {% endif %}
             </p>
@@ -368,7 +368,7 @@
 var notyf = new Notyf({
     duration: 3700,
     position: {
-        x: 'right',
+        x: 'center',
         y: 'top',
     },
     types: [
@@ -396,7 +396,7 @@ var notyf = new Notyf({
             greeting = 'Good Evening';
         }
 
-        notyf.success(`${greeting}, Welcome to Kwentas Klaras ${userName}`);
+        notyf.success(`Logged in Successfully`);
     }
 
     function updateClock() {
@@ -414,22 +414,23 @@ var notyf = new Notyf({
 </script>
 {% endif %}
     <style>
-            .navbar {
+          .navbar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 10px;
+          padding: 9.1px;
           background-color: #007FFF; /* Adjust background color as needed */
           color: #fff; /* Adjust text color as needed */
       }
 
       .navbar-left, .navbar-right {
           display: flex;
-          align-items: center;
+          align-items: le;
       }
 
       .navbar-left {
-          justify-content: center;
+          justify-content: left;
+          margin-left: 10px;
           flex: 1;
       }
       .navbar-left span {
@@ -439,7 +440,8 @@ var notyf = new Notyf({
       }
 
       .navbar-right {
-          justify-content: center;
+          justify-content: right;
+          margin-right: 10px;
           flex: 1;
       }
 
