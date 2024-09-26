@@ -3,6 +3,12 @@
 
 Bachelor of Science in Information Technology Capstone 1 & 2
 
+Team Godspeed:
+Josh Daniel Sara
+Hans Archer M. Dalubatan
+Joshua Remoroza
+Christian Dave Quijoy
+
 
 
 
