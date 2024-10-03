@@ -262,58 +262,55 @@ body.page-loaded {
 }
 
 
-
-/* General Navbar Styles */
 .navbar {
+  display: flex;
   width: 100%;
-  background-color: #007FFF; /* Blue background */
+  justify-content: space-between;
+  align-items: center;
   padding: 0.75rem 2rem; /* Padding for the navbar */
   border-radius: 10px; /* Rounded corners */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  background-color: #007FFF; /* Adjust background color as needed */
+  color: #fff; /* Adjust text color as needed */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   position: relative; /* Ensure positioning context for the mobile menu */
 }
 
-/* Navbar Brand */
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-}
 
-/* Navbar Menu */
-.navbar-menu {
-  list-style: none;
+
+.navbar-left, .navbar-right {
   display: flex;
-  gap: 2rem; /* Space between menu items */
+  align-items: center;
 }
 
-/* Navbar Menu Items */
-.navbar-menu li {
-  display: inline-block;
+.navbar-left {
+  justify-content: center;
+  margin-left: 9px;
+  flex: 1;
+}
+.navbar-left span {
+  font-size: 25px; /* Adjust size as needed */
+  font-weight: bold; /* Makes text bold */
+  font-family: 'Poppins', sans-serif; /* Choose a heavier font family if needed */
 }
 
-.navbar-menu li a {
-  text-decoration: none;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.navbar-right {
+  justify-content: center;
+  margin-right: 20px;
+  flex: 1;
 }
 
-.navbar-menu li a:hover {
-  color: #cce7ff; /* Lighter blue on hover */
+.datetime-display {
+  font-size: 18px;
+  color: #fff; /* Adjust color as needed */
+  margin-right: 30px;
 }
 
-/* Navbar Search */
-.navbar-search {
-  font-size: 1.2rem;
-  color: #fff;
-  cursor: pointer;
+.logged-in {
+font-size: 18px;
+font-family: 'Poppins', sans-serif;
+margin: 0;
+color: white;
 }
-
 /* Mobile Navbar Styles */
 /* Mobile Navbar Styles */
 @media (max-width: 768px) {
@@ -534,6 +531,56 @@ body.page-loaded {
   box-shadow: none !important; /* Removes the box shadow */
   padding: 0 !important; /* Removes padding */
 }
+
+/* Loader Styles */
+#loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Use viewport width */
+  height: 100vh; /* Use viewport height */
+  background: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+  backdrop-filter: blur(10px); /* Apply background blur */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* High z-index to overlay everything */
+}
+
+.loader {
+  border: 8px solid #f3f3f3; /* Light gray border */
+  border-top: 8px solid #3498db; /* Blue border for the top */
+  border-radius: 50%;
+  width: 60px; /* Default size for desktop */
+  height: 60px; /* Default size for desktop */
+  animation: spin 1s linear infinite; /* Spinning effect */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Hide the loader after page load */
+.page-loaded #loader-container {
+  display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .loader {
+    width: 40px; /* Smaller size for mobile */
+    height: 40px; /* Smaller size for mobile */
+    border-width: 6px; /* Thinner border for mobile */
+  }
+}
+
+
+
+
+
+
+
 
 
 
