@@ -105,7 +105,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #0095E6           ;
+	background-color: #4267B2            ;
 	transition: .4s;
 }
 
@@ -132,7 +132,7 @@ form{
 }
 
 .input-div.focus > .i > i{
-	color: #0095E6           ;
+	color: #4267B2            ;
 }
 
 .input-div > div > input{
@@ -171,7 +171,7 @@ a{
 	border-radius: 25px;
 	outline: none;
 	border: none;
-	background-image: linear-gradient(to right, #0095E6           , #0095E6           , #0095E6           );
+	background-image: linear-gradient(to right, #4267B2            , #4267B2            , #4267B2            );
 	background-size: 200%;
 	font-size: 1.2rem;
 	color: #fff;
@@ -321,7 +321,7 @@ a{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: #0095E6           ;
+	background-color: #4267B2            ;
 	padding: 15px 30px;
 }
 
