@@ -262,12 +262,13 @@ body.page-loaded {
 }
 
 
+/* Base Navbar Styles */
 .navbar {
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-between; /* Keep space between left and right */
   align-items: center;
-  padding: 0.75rem 2rem; /* Padding for the navbar */
+  padding: 0.75rem 2rem; /* Default padding for the navbar */
   border-radius: 10px; /* Rounded corners */
   background-color: #007FFF; /* Adjust background color as needed */
   color: #fff; /* Adjust text color as needed */
@@ -275,8 +276,7 @@ body.page-loaded {
   position: relative; /* Ensure positioning context for the mobile menu */
 }
 
-
-
+/* Navbar Left and Right Styles */
 .navbar-left, .navbar-right {
   display: flex;
   align-items: center;
@@ -287,6 +287,7 @@ body.page-loaded {
   margin-left: 9px;
   flex: 1;
 }
+
 .navbar-left span {
   font-size: 25px; /* Adjust size as needed */
   font-weight: bold; /* Makes text bold */
@@ -306,76 +307,47 @@ body.page-loaded {
 }
 
 .logged-in {
-font-size: 18px;
-font-family: 'Poppins', sans-serif;
-margin: 0;
-color: white;
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  color: white;
 }
-/* Mobile Navbar Styles */
+
 /* Mobile Navbar Styles */
 @media (max-width: 768px) {
   .navbar {
-    flex-direction: column; /* Stack the navbar content vertically */
-    text-align: center; /* Center-align the text */
-    padding: 0.5rem 1rem; /* Reduce padding */
+    justify-content: flex-start; /* Align items to the left */
+    padding: 0.25rem 1rem; /* Reduce padding for a smaller height */
   }
 
-  .navbar-brand {
-    font-size: 1.2rem; /* Reduce brand font size */
-  }
-
-  .navbar-left,
   .navbar-right {
+    display: none; /* Hide the right section on mobile */
+  }
+
+  .navbar-left {
     width: 100%; /* Take up full width */
-    margin: 0.25rem 0; /* Reduce vertical margin */
-    font-size: 0.8rem; /* Make the font size smaller */
+    margin: 0; /* Remove margin */
+  }
+
+  .navbar-left span {
+    font-size: 18px; /* Reduce brand font size for mobile */
+  }
+
+  .datetime-display {
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  .logged-in {
+    font-size: 14px; /* Smaller font size for mobile */
   }
 
   .navbar-menu {
-    display: none; /* Hide the menu by default on small screens */
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: #007FFF;
-    width: 100%;
-    border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem 1rem; /* Reduce padding inside the menu */
-  }
-
-  .navbar-menu li {
-    margin-bottom: 0.25rem; /* Less space between menu items */
-  }
-
-  .navbar-menu li a {
-    padding: 0.5rem 0.75rem; /* Smaller padding for menu items */
-    font-size: 0.9rem; /* Smaller text size for menu items */
-  }
-}
-
-  
-  .navbar-menu.active {
-    display: flex; /* Show the menu when active */
-  }
-
-  .navbar-menu li {
-    display: block; /* Stack the menu items vertically */
-    padding: 1rem;
-    text-align: center;
-  }
-
-  .navbar-menu li a {
-    font-size: 1.2rem;
-  }
-
-  .navbar-search {
-    display: none; /* Hide the search icon on small screens if needed */
+    display: none; /* Hide the menu by default */
   }
 
   /* Hamburger Menu */
   .navbar-toggler {
-    display: block;
+    display: block; /* Show hamburger menu on mobile */
     background-color: transparent;
     border: none;
     font-size: 1.5rem;
@@ -383,18 +355,21 @@ color: white;
     cursor: pointer;
   }
 
-
-/* Hamburger Menu Icon */
-.navbar-toggler::before {
-  content: '☰'; /* Hamburger icon */
+  /* Hamburger Menu Icon */
+  .navbar-toggler::before {
+    content: '☰'; /* Hamburger icon */
+  }
 }
 
 /* Ensure navbar-toggler is hidden on larger screens */
 @media (min-width: 769px) {
   .navbar-toggler {
-    display: none;
+    display: none; /* Hide on larger screens */
   }
 }
+
+
+
 
 .custom-toast-container {
   margin-right: 60px;
