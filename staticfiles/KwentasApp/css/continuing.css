@@ -489,7 +489,7 @@ margin-left: 30%;
   border: none;
   border-radius: 30px;
   color: #fff;
-  background:#007EDD            ;
+  background:#007FFF            ;
   transition: .2s ease-in-out;
 }
 
@@ -743,7 +743,7 @@ form{
 }
 
 .btn-add {
-  background-color: #007EDD            ; /* Example button color */
+  background-color: #007FFF            ; /* Example button color */
   color: white;
   border: none;
   border-radius: 50px;

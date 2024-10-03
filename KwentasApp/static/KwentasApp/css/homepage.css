@@ -61,7 +61,7 @@ p {
 }
 
 .icon-wrapper {
-  background-color: #007EDD            ;
+  background-color: #007FFF            ;
   position: relative;
   margin: auto;
   font-size: 30px;
@@ -80,7 +80,7 @@ p {
 }
 
 .card:hover .icon-wrapper {
-  background-color: #007EDD            ; /* Keeping the original background color */
+  background-color: #007FFF            ; /* Keeping the original background color */
   color: #ffffff; /* Keeping the original icon color */
 }
 
@@ -139,7 +139,7 @@ p {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #007EDD            , #007EDD            , #007EDD            );
+  background-image: linear-gradient(to right, #007FFF            , #007FFF            , #007FFF            );
   background-size: 200%;
   font-size: 1.0rem;
   color: #ffffff;
@@ -164,7 +164,7 @@ p {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #007EDD            , #007EDD            , #007EDD            );
+  background-image: linear-gradient(to right, #007FFF            , #007FFF            , #007FFF            );
   background-size: 200%;
   font-size: 1.0rem;
   color: #ffffff;
@@ -270,7 +270,7 @@ body.page-loaded {
   align-items: center;
   padding: 0.75rem 2rem; /* Default padding for the navbar */
   border-radius: 10px; /* Rounded corners */
-  background-color: #007EDD            ; /* Adjust background color as needed */
+  background-color: #007FFF            ; /* Adjust background color as needed */
   color: #fff; /* Adjust text color as needed */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   position: relative; /* Ensure positioning context for the mobile menu */
@@ -412,7 +412,7 @@ body.page-loaded {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #007EDD            , #007EDD            , #007EDD            );
+  background-image: linear-gradient(to right, #007FFF            , #007FFF            , #007FFF            );
   background-size: 200%;
   font-size: 1.0rem;
   color: #ffffff;
@@ -456,7 +456,7 @@ body.page-loaded {
   margin-right: 500px;
   font-size: 1.0rem;
   text-wrap: nowrap;
-  color: #007EDD            ;
+  color: #007FFF            ;
   text-decoration: none;
   border: none;
   background: none;

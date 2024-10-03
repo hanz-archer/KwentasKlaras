@@ -555,16 +555,16 @@
       }
       
       .content-table tbody tr:last-of-type {
-          border-bottom: 2px solid #007EDD            ;
+          border-bottom: 2px solid #007FFF            ;
       }
       
       .content-table tbody tr.active-row {
           font-weight: bold;
-          color: #007EDD            ;
+          color: #007FFF            ;
       }
       
       .nav_list.active .nav-link {
-          color: #007EDD            ;
+          color: #007FFF            ;
       }
       
       .div {
@@ -592,7 +592,7 @@
       }
       
       .input[type="text"]:focus {
-          border-color: #007EDD            ;
+          border-color: #007FFF            ;
           outline: none;
       }
       
@@ -768,7 +768,7 @@
             bottom: -2px;
             width: 0%;
             height: 2px;
-            background-color: #007EDD            ;
+            background-color: #007FFF            ;
             transition: .4s;
         }
         
@@ -791,7 +791,7 @@
         }
         
         .addentry .addentry-input-div.focus > .i > i {
-            color: #007EDD            ;
+            color: #007FFF            ;
         }
         
         .addentry .addentry-input-div > div > input {
@@ -820,7 +820,7 @@
             border-radius: 25px;
             outline: none;
             border: none;
-            background-image: linear-gradient(to right, #007EDD            , #007EDD            , #007EDD            );
+            background-image: linear-gradient(to right, #007FFF            , #007FFF            , #007FFF            );
             background-size: 200%;
             font-size: 1.2rem;
             color: #fff;
@@ -901,7 +901,7 @@
         
         /* Change color of dropdown links on hover */
         .dropdown-content a:hover {
-            background-color: #007EDD            ;
+            background-color: #007FFF            ;
             color: white;
         }
         
@@ -912,7 +912,7 @@
         
         /* Style the dropdown button on hover */
         .dropdown:hover .dropbtn {
-            background-color: #007EDD            ;
+            background-color: #007FFF            ;
         }
         
         
@@ -1032,7 +1032,7 @@
         }
         
         .tabled th {
-            background-color:  #007EDD            ;
+            background-color:  #007FFF            ;
             color: white;
         }
       
@@ -1680,7 +1680,7 @@ h3 {
 }
 
 .content-table thead tr {
-    background-color: #007EDD            ;
+    background-color: #007FFF            ;
     color: #ffffff;
     text-align: center; /* Center align header text */
     font-weight: bold;
@@ -1701,16 +1701,16 @@ h3 {
 }
 
 .content-table tbody tr:last-of-type {
-    border-bottom: 2px solid #007EDD            ;
+    border-bottom: 2px solid #007FFF            ;
 }
 
 .content-table tbody tr.active-row {
     font-weight: bold;
-    color: #007EDD            ;
+    color: #007FFF            ;
 }
 
 .nav_list.active .nav-link {
-    color: #007EDD            ; /* Change to the desired highlight color */
+    color: #007FFF            ; /* Change to the desired highlight color */
 }
 
 /* Styles for the input div */
@@ -1737,7 +1737,7 @@ h3 {
 }
 
 .input[type="text"]:focus {
-    border-color: #007EDD            ; /* Border color when input is focused */
+    border-color: #007FFF            ; /* Border color when input is focused */
     outline: none; /* Remove default focus outline */
 }
 
@@ -1763,7 +1763,7 @@ h3 {
     transition: .5s;
 
     /* Override specific properties */
-    background-color: #007EDD            ; /* Change button background color */
+    background-color: #007FFF            ; /* Change button background color */
     width: auto; /* Allow button to expand based on content */
     padding: 0 15px; /* Add padding to adjust button width */
 }
@@ -1875,7 +1875,7 @@ right: 110%;
     bottom: -2px;
     width: 0%;
     height: 2px;
-    background-color: #007EDD            ;
+    background-color: #007FFF            ;
     transition: .4s;
 }
 
@@ -1898,7 +1898,7 @@ right: 110%;
 }
 
 .addentry .addentry-input-div.focus > .i > i {
-    color: #007EDD            ;
+    color: #007FFF            ;
 }
 
 .addentry .addentry-input-div > div > input {
@@ -1927,7 +1927,7 @@ right: 110%;
     border-radius: 25px;
     outline: none;
     border: none;
-    background-image: linear-gradient(to right, #007EDD            , #007EDD            , #007EDD            );
+    background-image: linear-gradient(to right, #007FFF            , #007FFF            , #007FFF            );
     background-size: 200%;
     font-size: 1.2rem;
     color: #fff;
@@ -1960,7 +1960,7 @@ right: 110%;
        transition: .5s;
    
        /* Override specific properties */
-       background-color: #007EDD            ; /* Change button background color */
+       background-color: #007FFF            ; /* Change button background color */
        width: auto; /* Allow button to expand based on content */
        padding: 0 15px; /* Add padding to adjust button width */
 }
@@ -2087,7 +2087,7 @@ margin-top: -5%;
 }
 
 .tabled th {
-    background-color:  #007EDD            ;
+    background-color:  #007FFF            ;
     color: white;
 }
 
