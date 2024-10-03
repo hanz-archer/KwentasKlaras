@@ -335,7 +335,7 @@ tbody tr.hide td img {
 }
 
 .status.delivered {
-  background-color: #007FFF;
+  background-color: #0095E6           ;
   color: #fff;
 }
 
@@ -392,15 +392,15 @@ thead th span.icon-arrow {
 }
 
 thead th:hover span.icon-arrow{
-  border: 1.4px solid #007FFF;
+  border: 1.4px solid #0095E6           ;
 }
 
 thead th:hover {
-  color: #007FFF;
+  color: #0095E6           ;
 }
 
 thead th.active span.icon-arrow{
-  background-color: #007FFF;
+  background-color: #0095E6           ;
   color: #fff;
 }
 
@@ -409,7 +409,7 @@ thead th.asc span.icon-arrow{
 }
 
 thead th.active,tbody td.active {
-  color: #007FFF;
+  color: #0095E6           ;
 }
 
 .export__file {
@@ -671,7 +671,7 @@ thead th.active,tbody td.active {
   padding: 0 24px;
   margin-bottom: 100px;
   margin-right: 44px;
-  background: #007FFF;
+  background: #0095E6           ;
   border: none;
   outline: none;
   border-radius: 30px;
@@ -686,11 +686,11 @@ thead th.active,tbody td.active {
 }
 
 .button:hover {
-  background: #007FFF;
+  background: #0095E6           ;
 }
 
 .button:active {
-  background: #007FFF;
+  background: #0095E6           ;
 }
 
 .button__icon {
@@ -1106,7 +1106,7 @@ position: absolute;
 bottom: -2px;
 width: 0%;
 height: 2px;
-background-color: #007FFF;
+background-color: #0095E6           ;
 transition: .4s;
 }
 
@@ -1133,7 +1133,7 @@ font-size: 15px;
 }
 
 .input-div.focus > .i > i{
-color: #007FFF;
+color: #0095E6           ;
 }
 
 .input-div > div > input{
@@ -1363,7 +1363,7 @@ margin-top: 3%;
   overflow: hidden;
   transition-duration: .3s;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
-  background-color: #007FFF;
+  background-color: #0095E6           ;
 }
 
 /* plus sign */

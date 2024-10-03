@@ -118,7 +118,7 @@ form {
     bottom: -2px;
     width: 0%;
     height: 2px;
-    background-color: #007FFF;
+    background-color: #0095E6           ;
     transition: .4s;
 }
 
@@ -145,7 +145,7 @@ form {
 }
 
 .input-div.focus > .i > i {
-    color: #007FFF;
+    color: #0095E6           ;
 }
 
 .input-div > div > input {
@@ -254,7 +254,7 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #007FFF;
+    background-color: #0095E6           ;
     padding: 15px 30px;
 }
 

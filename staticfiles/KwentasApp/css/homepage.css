@@ -61,7 +61,7 @@ p {
 }
 
 .icon-wrapper {
-  background-color: #007FFF;
+  background-color: #0095E6           ;
   position: relative;
   margin: auto;
   font-size: 30px;
@@ -80,7 +80,7 @@ p {
 }
 
 .card:hover .icon-wrapper {
-  background-color: #007FFF; /* Keeping the original background color */
+  background-color: #0095E6           ; /* Keeping the original background color */
   color: #ffffff; /* Keeping the original icon color */
 }
 
@@ -139,7 +139,7 @@ p {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
+  background-image: linear-gradient(to right, #0095E6           , #0095E6           , #0095E6           );
   background-size: 200%;
   font-size: 1.0rem;
   color: #ffffff;
@@ -164,7 +164,7 @@ p {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
+  background-image: linear-gradient(to right, #0095E6           , #0095E6           , #0095E6           );
   background-size: 200%;
   font-size: 1.0rem;
   color: #ffffff;
@@ -442,7 +442,7 @@ body.page-loaded {
   border-radius: 25px;
   outline: none;
   border: none;
-  background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
+  background-image: linear-gradient(to right, #0095E6           , #0095E6           , #0095E6           );
   background-size: 200%;
   font-size: 1.0rem;
   color: #ffffff;
@@ -486,7 +486,7 @@ body.page-loaded {
   margin-right: 500px;
   font-size: 1.0rem;
   text-wrap: nowrap;
-  color: #007FFF;
+  color: #0095E6           ;
   text-decoration: none;
   border: none;
   background: none;
