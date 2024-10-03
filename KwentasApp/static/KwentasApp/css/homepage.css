@@ -542,23 +542,32 @@ color: white;
   background: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
   backdrop-filter: blur(10px); /* Apply background blur */
   display: flex;
+  flex-direction: column; /* Stack items vertically */
   justify-content: center;
   align-items: center;
   z-index: 9999; /* High z-index to overlay everything */
 }
 
 .loader {
-  border: 8px solid #f3f3f3; /* Light gray border */
-  border-top: 8px solid #3498db; /* Blue border for the top */
+  border: 10px solid #f3f3f3; /* Light gray border */
+  border-top: 10px solid #3498db; /* Blue border for the top */
   border-radius: 50%;
-  width: 60px; /* Default size for desktop */
-  height: 60px; /* Default size for desktop */
+  width: 80px; /* Increased size for desktop */
+  height: 80px; /* Increased size for desktop */
   animation: spin 1s linear infinite; /* Spinning effect */
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Loading text styles */
+.loading-text {
+  margin-top: 20px; /* Space between loader and text */
+  font-size: 18px; /* Font size for loading text */
+  color: #3498db; /* Color for loading text */
+  text-align: center; /* Center align the text */
 }
 
 /* Hide the loader after page load */
@@ -569,11 +578,17 @@ color: white;
 /* Responsive styles */
 @media (max-width: 768px) {
   .loader {
-    width: 40px; /* Smaller size for mobile */
-    height: 40px; /* Smaller size for mobile */
-    border-width: 6px; /* Thinner border for mobile */
+    width: 60px; /* Larger size for mobile */
+    height: 60px; /* Larger size for mobile */
+    border-width: 8px; /* Thinner border for mobile */
+  }
+  
+  .loading-text {
+    font-size: 16px; /* Smaller font size for mobile */
   }
 }
+
+
 
 
 

@@ -14,7 +14,9 @@
   <body>
     <div id="loader-container">
       <div class="loader"></div>
+      <div class="loading-text">Loading, please wait.</div>
   </div>
+  
     <section>
       <div class="navbar">
         <div class="navbar-left">
@@ -37,11 +39,11 @@
             <form action="{% url 'continuing_projects' %}" method="get" onsubmit="showLoader()">
               <button type="submit" class="btn"><i class="fas fa-table"></i> Continuing</button>
             </form>
-            <form action="{% url 'current_projects' %}" method="get">
+            <form action="{% url 'current_projects' %}" method="get" onsubmit="showLoader()">
               <button type="submit" class="btn"><i class="fas fa-table"></i> Current </button>
             </form>
             {% if request.user.is_superuser %}
-            <form action="{% url 'create_entry' %}" method="get">
+            <form action="{% url 'create_entry' %}" method="get" onsubmit="showLoader()">
               <button type="submit" class="btn"><i class="fas fa-search"></i> Add Project</button>
             </form>
             {% endif %}
@@ -67,14 +69,14 @@
               <i class="fas fa-money-check-alt"></i>
             </div>
             <h3>OBLIGATIONS / DISBURSEMENTS</h3>
-            <form action="{% url 'obligations' %}" method="get">
+            <form action="{% url 'obligations' %}" method="get" onsubmit="showLoader()">
               <button type="submit" class="btn">Obligations</button>
             </form>
          
-              <form action="{% url 'disbursements' %}" method="get">
+              <form action="{% url 'disbursements' %}" method="get" onsubmit="showLoader()">
                 <button type="submit" class="btn">Disbursement</button>
               </form>
-              <form action="" method="get">
+              <form action="" method="get" onsubmit="showLoader()">
                 <button type="submit" class="btn">Check Payment</button>
               </form>
           </div>
@@ -115,7 +117,7 @@
                 <!-- Non-Dropdown Button -->
                 <div class="non-dropdown">
                   {% if user.is_superuser %}
-                  <form action="{% url 'admin:index' %}" method="post">
+                  <form action="{% url 'admin:index' %}" method="post" class="no-loader">
                     {% csrf_token %}
                   <button class="btn account">
                     <i class="fas fa-person"></i> Admin Dashboard
@@ -132,13 +134,13 @@
                   <div class="dropdown-menu">
               
                     {% if user.is_superuser %}
-                    <form action="{% url 'register_page' %}" method="post">
+                    <form action="{% url 'register_page' %}" method="post" class="no-loader">
                       {% csrf_token %}
                       <button type="submit" class="btn dropdown-item"><i class="fas fa-add"></i> Add Account</button>
                     </form>
                     {% endif %}
               
-                    <form action="{% url 'generate_qr_code' %}" method="post">
+                    <form action="{% url 'generate_qr_code' %}" method="post" class="no-loader">
                       {% csrf_token %}
                       <input type="hidden" name="confirm_2fa" value="true">
                       <button type="submit" class="btn dropdown-item">
@@ -372,27 +374,59 @@
       });
     </script>
     {% endif %}
+
+
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-    // Add 'page-loaded' class to body after the page is fully loaded
-    window.addEventListener('load', function () {
-        document.querySelector('body').classList.add('page-loaded');
-    });
-
-    // Function to show loader during form submission
-    function showLoader() {
-        document.querySelector('#loader-container').style.display = 'flex';
-    }
-
-    // Attach loader to forms on submit (example for specific forms)
-    document.querySelectorAll('form').forEach(function(form) {
-        form.addEventListener('submit', function() {
-            showLoader();
-        });
-    });
-});
-
-
-    </script>
+          // Hide the loader initially
+          const loaderContainer = document.querySelector('#loader-container');
+          loaderContainer.style.display = 'none'; // Ensure loader is hidden on page load
+      
+          // Function to show loader during form submission or link click
+          function showLoader() {
+              loaderContainer.style.display = 'flex';
+          }
+      
+          // Attach loader to forms on submit
+          document.querySelectorAll('form').forEach(function(form) {
+              // Check if the form should show the loader
+              if (!form.classList.contains('no-loader')) {
+                  form.addEventListener('submit', function() {
+                      showLoader();
+                  });
+              }
+          });
+      
+          // Attach loader to specific links in the columns
+          document.querySelectorAll('.column a').forEach(function(link) {
+              link.addEventListener('click', function() {
+                  showLoader();
+              });
+          });
+      
+          // Attach loader to the PROCUREMENTS card click
+          document.querySelectorAll('.card').forEach(function(card) {
+              card.addEventListener('click', function() {
+                  showLoader();
+              });
+          });
+      
+          // Reset loader visibility when navigating back to the homepage
+          window.addEventListener('pageshow', function(event) {
+              if (event.persisted) {
+                  // The page was loaded from the bfcache (back-forward cache)
+                  loaderContainer.style.display = 'none'; // Hide loader
+              }
+          });
+      
+          // Hide the loader on page load
+          window.addEventListener('load', function() {
+              loaderContainer.style.display = 'none'; // Ensure the loader is hidden when the page is loaded
+          });
+      });
+      </script>
+      
+      
+      
   </body>
 </html>
