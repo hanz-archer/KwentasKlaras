@@ -93,7 +93,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #4267B2            ;
+	background-color: #007EDD            ;
 	transition: .4s;
 }
 
@@ -151,7 +151,7 @@ a{
 	border-radius: 25px;
 	outline: none;
 	border: none;
-	background-image: linear-gradient(to right, #4267B2            , #4267B2            , #4267B2            );
+	background-image: linear-gradient(to right, #007EDD            , #007EDD            , #007EDD            );
 	background-size: 200%;
 	font-size: 1.2rem;
 	color: #fff;
