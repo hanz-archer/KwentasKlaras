@@ -373,7 +373,11 @@
     <!-- BUDGET -->
     <div class="details" id="budget">
       <div class="login-content">
-        <form id="add-budget-form" action="{% url 'add_budget' %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
+        {% if project_type %}
+        <form id="add-budget-form" action="{% url 'add_budget' project_type %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
+          {% else %}
+          <p>Project type is missing!</p>
+          {% endif %}          
           <input type="hidden" name="entry_code" id="budget-code">
           <div class="input-div-new">
             <div class="div">
