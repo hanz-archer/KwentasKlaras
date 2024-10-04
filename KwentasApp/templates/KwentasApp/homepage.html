@@ -9,14 +9,12 @@
     <link rel="stylesheet" href="{% static 'KwentasApp/css/homepage.css' %}" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    
   </head>
   <body>
     <div id="loader-container">
       <div class="loader"></div>
       <div class="loading-text">Loading, please wait.</div>
   </div>
-  
     <section>
       <div class="navbar">
         <div class="navbar-left">
@@ -62,7 +60,6 @@
             </p>
           </div>
         </div>
-
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">
@@ -81,7 +78,6 @@
               </form>
           </div>
         </div>
-
         <div class="column">
           <a href="{% url 'all_projects' %}" style="text-decoration: none;">
             <div class="card">
@@ -93,7 +89,6 @@
             </div>
           </a>
         </div>
-
         <div class="column">
           <a href="{% url 'reports' %}" style="text-decoration: none;">
             <div class="card">
@@ -105,7 +100,6 @@
             </div>
           </a>
         </div>
-
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">
@@ -125,7 +119,6 @@
                   </form>
                   {% endif %}
                 </div>
-              
                 <!-- Dropdown Button -->
                 <div class="dropdown">
                   <button class="btn dropdown-toggle">
@@ -155,7 +148,6 @@
                   </div>
                 </div>
               </div>
-              
             </p>            
           </div>
         </div>
@@ -312,7 +304,6 @@
             }
         });
 </script>
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const body = document.querySelector('body');
@@ -327,12 +318,10 @@
       const time = now.toLocaleTimeString();
       document.getElementById('datetime').textContent = `${day}, ${date} - ${time}`;
     }
-
     updateDateTime();
     setInterval(updateDateTime, 1000); // Update every second
   });
 </script>
-
 {% if request.session.just_logged_in %}
     <script>
       var notyf = new Notyf({
@@ -350,12 +339,10 @@
               }
           ]
       });
-
       function showWelcomeMessage(userName) {
           const now = new Date();
           const hours = now.getHours();
           let greeting = '';
-
           if (hours >= 5 && hours < 12) {
               greeting = 'Good Morning';
           } else if (hours >= 12 && hours < 18) {
@@ -363,10 +350,8 @@
           } else {
               greeting = 'Good Evening';
           }
-
           notyf.success(`Logged in Successfully`);
       }
-
       window.addEventListener('DOMContentLoaded', () => {
           const userName = '{{ request.user.name }}';
           showWelcomeMessage(userName);
@@ -374,8 +359,6 @@
       });
     </script>
     {% endif %}
-
-
     <script>
       document.addEventListener('DOMContentLoaded', function () {
           // Hide the loader initially
@@ -425,8 +408,5 @@
           });
       });
       </script>
-      
-      
-      
   </body>
 </html>

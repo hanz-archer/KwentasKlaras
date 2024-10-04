@@ -10,13 +10,10 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/stats.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>Kwentas Klaras Reports</title>
-    
-   
+    <title>Kwentas Klaras Reports</title>  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
-
 <body>
     <!-- Main Content -->
     <div class="content no-sidebar">
@@ -26,7 +23,6 @@
                     <h1>Dashboard</h1>
                 </div>
             </div>
-    
             <!-- Insights -->
             <ul class="insights">
                 <li onclick="showCard('ur')">
@@ -58,7 +54,6 @@
                     </span>
                 </li>
             </ul>
-    
             <!-- Cards -->
             <div class="bottom-data">
                 <div class="card" id="ur">
@@ -155,10 +150,6 @@ function toggleAccordion(header) {
     // Toggle the clicked accordion
     content.classList.toggle('open', !isOpen);
 }
-
-
-
-    
         // New chart for overall utilization rate
         document.addEventListener("DOMContentLoaded", function() {
             var averageUtilization = document.getElementById("averageUtilization").textContent;
@@ -233,8 +224,6 @@ function toggleAccordion(header) {
             .catch(error => console.error('Error fetching data:', error));
     });
     </script>
-
-
 <script>
     function showCard(cardId) {
   // Hide all cards except the one to show
@@ -256,9 +245,6 @@ function toggleAccordion(header) {
 document.addEventListener('DOMContentLoaded', function() {
   showCard('ur');
 });
-
-
-  </script>
+</script>
 </body>
-
 </html>

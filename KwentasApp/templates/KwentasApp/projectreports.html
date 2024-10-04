@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Monitoring & Evaluation</title>
-   
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Material Icons -->
-  
-   
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -127,7 +123,6 @@
           </ul>
       </div>
   </main>
-  
     <!-- DETAILS  -->
     <div class="details" id="details">
       <a href="{% url 'all_projects' %}">
@@ -274,20 +269,12 @@
                 </table>
               </div>
             </div>
-
-
-
-
-
-
-
           </div>
         </li> {% endfor %} </ul>
     </div>
     <!-- UPDATE -->
     <div class="details" id="update">
-      <a href="{% url 'continuing_projects' %}">
-      
+      <a href="{% url 'continuing_projects' %}">   
       </a>
       <a href="{% url 'continuing_projects' %}">
         <h1 class="form-title">Update Project</h1>
@@ -460,7 +447,6 @@
       </div>
     </div>
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
-   
     <!-- PIE CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -506,7 +492,6 @@
     </script>
     <!-- Details js -->
      <!-- Add this in your HTML template where you include scripts -->
-
     <script>
       function showDetails(code) {
         document.getElementById('customers_table').style.filter = 'blur(10px)';
@@ -760,8 +745,5 @@ $(document).ready(function() {
     });
 });
 </script>
-
-
-
   </body>
 </html>

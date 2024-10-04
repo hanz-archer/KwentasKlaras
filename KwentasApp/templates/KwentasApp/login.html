@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/login.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 </head>
@@ -50,7 +49,6 @@
         </div>
     </div>
 <script type="text/javascript" src="{% static 'KwentasApp/js/main.js' %}"></script>
-
 <script>
     document.getElementById('show-password').addEventListener('click', function () {
         var passwordInput = document.getElementById('password-input');
@@ -86,9 +84,6 @@
         input.addEventListener("blur", remcl);
     });
 </script>
-
-
-
 {% if messages %}
 {% for message in messages %}
     <script type="text/javascript">
@@ -119,10 +114,6 @@
     </script>
     {% endfor %}
 {% endif %}
-
-
-
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const passwordInput = document.getElementById('password-input');
@@ -148,7 +139,6 @@
         });
     });
 </script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const usernameInput = document.getElementById('username-input');

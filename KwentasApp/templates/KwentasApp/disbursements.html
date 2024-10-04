@@ -6,22 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Disbursements</title>
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Material Icons -->
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
-    <!-- Same CSS as Continuing Projects-->
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/continuing.css' %}">
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-
-
-
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
         <h1>Disbursements</h1>
@@ -39,7 +31,6 @@
             <thead>
                 <tr>
                   <th class="left-align">PPA</th>
-                 
                     <th>Remaining Obligations</th>
                     <th>Total Obligation</th>
                     {% if request.user.is_superuser or request.user.department == 'Accountant Office' %}
@@ -107,14 +98,12 @@
           display: none;
       }
   </style>
-{% endif %}
-  <div class="back">
-      <a href="{% url 'homepage' %}">
-          <button class="back-btn">Back</button>
-      </a>
-  </div>
-
-
+  {% endif %}
+    <div class="back">
+        <a href="{% url 'homepage' %}">
+            <button class="back-btn">Back</button>
+        </a>
+    </div>
   <div class="pagination">
       <ul class="pagination-list">
           {% if page_obj.has_previous %}
@@ -137,11 +126,6 @@
       </ul>
   </div>
 </main>
-
-
-
-
-
     <!-- DETAILS  -->
     <div class="details" id="details">
       <a href="{% url 'disbursements' %}">
@@ -291,8 +275,6 @@
           </div>
         </li> {% endfor %} </ul>
     </div>
-  
-  
     <!-- Disbursement-->
     <div class="details" id="disbursement">
       <div class="login-content">
@@ -326,11 +308,7 @@
         </form>
       </div>
     </div>
-  
-
-    
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
-  
     <!-- PIE CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -387,10 +365,6 @@
         document.getElementById('details').style.display = 'block';
       }
     </script>
-   
-  
-
-
     <!-- Disbursement js -->
     <script>
       function showAddDisbursementForm(entryCode) {
@@ -425,8 +399,7 @@
           });
         });
       });
-    </script>
-      
+    </script>   
     <script>
       function hideOverlay() {
         document.getElementById('overlay').style.display = 'none';
@@ -437,7 +410,6 @@
        
         var disbursement = document.getElementById('disbursement');
         if (disbursement) disbursement.style.display = 'none';
-       
       }
       document.getElementById('overlay').addEventListener('click', hideOverlay);
     </script>

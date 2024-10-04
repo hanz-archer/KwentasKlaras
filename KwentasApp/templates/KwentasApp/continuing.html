@@ -5,12 +5,8 @@
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-       <title>Continuing Projects</title>
-   
+    <title>Continuing Projects</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-  
-   
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -19,9 +15,6 @@
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-
-
-
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
         <h1>Continuing Projects</h1>
@@ -152,7 +145,6 @@
       </ul>
   </div>
 </main>
-
     <!-- DETAILS  -->
     <div class="details" id="details">
       <a href="{% url 'continuing_projects' %}">
@@ -278,7 +270,6 @@
                 </table>
               </div>
             </div>
-
             <div class="table-box">
               <span class="table-title">Added Disbursement</span>
               <br>
@@ -299,20 +290,12 @@
                 </table>
               </div>
             </div>
-
-
-
-
-
-
-
           </div>
         </li> {% endfor %} </ul>
     </div>
     <!-- UPDATE -->
     <div class="details" id="update">
       <a href="{% url 'continuing_projects' %}">
-      
       </a>
       <a href="{% url 'continuing_projects' %}">
         <h1 class="form-title">Update Project</h1>

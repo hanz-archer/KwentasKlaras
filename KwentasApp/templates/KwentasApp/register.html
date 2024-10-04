@@ -9,13 +9,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/register.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-  
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-   
 </head>
 <body>
     <div class="container">
@@ -34,7 +29,6 @@
                         <h5>Account Username</h5>
                         <input type="text" name="username" class="input" required>
                         <h6 id="usernameNote" style="display: none; margin-top: 55px; text-align: left; white-space: nowrap; color: #cc0000;">Note: Dont use username as your password.</h6>
-
                     </div>
                 </div>
                 <div class="input-div">
@@ -112,14 +106,10 @@
             </form>
         </div>
     </div>
-
-  
     <script>
   document.getElementById('dataForm').addEventListener('submit', function(event) {
     event.preventDefault();  // Prevent default form submission
-
     const formData = new FormData(this);
-    
     // Make an AJAX request to submit the form
     fetch(this.action, {
         method: 'POST',
@@ -161,10 +151,6 @@
         });
     });
 });
-
-
-
-
         document.getElementById('cancelButton').addEventListener('click', function(event) {
             event.preventDefault();
             Swal.fire({
@@ -266,7 +252,6 @@
         });
     });
 </script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const passwordInput1 = document.getElementById('password-input');
@@ -307,6 +292,5 @@
         });
     });
 </script>
-
 </body>
 </html>

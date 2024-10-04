@@ -5,8 +5,7 @@
     <link rel="shortcut icon" type="x-icon" href="{% static 'KwentasApp/img/logobrowser.jpg' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Current Projects</title>
-   
+    <title>Current Projects</title> 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -16,9 +15,6 @@
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-
-
-
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
         <h1>Current Projects</h1>
@@ -72,7 +68,6 @@
               </tr>
           {% endfor %}
           {% else %}
-
           {% if page_obj %}
                 {% for entry in page_obj %}
                     <tr style="cursor: pointer;">
@@ -121,19 +116,11 @@
       }
   </style>
 {% endif %}
-
-
-
-
-
-
   <div class="back">
       <a href="{% url 'homepage' %}">
           <button class="back-btn">Back</button>
       </a>
   </div>
-
-
   <div class="pagination">
       <ul class="pagination-list">
           {% if page_obj.has_previous %}
@@ -156,11 +143,6 @@
       </ul>
   </div>
 </main>
-
-
-
-
-
     <!-- DETAILS  -->
     <div class="details" id="details">
       <a href="{% url 'current_projects' %}">
@@ -307,13 +289,6 @@
                 </table>
               </div>
             </div>
-
-
-
-
-
-
-
           </div>
         </li> {% endfor %} </ul>
     </div>

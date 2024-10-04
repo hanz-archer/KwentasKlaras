@@ -6,24 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Obligations</title>
-   
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-
-      <!-- Same Css as Continuing Projects -->
     <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/continuing.css' %}">
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
-
-
-
     <main class="table{% if not request.user.is_superuser %} non-superuser{% endif %}" id="customers_table">
       <section class="table__header">
         <h1>Obligations</h1>
@@ -46,7 +39,6 @@
                     <th>Year</th>
                     <th>Remaining Obligations</th>
                     <th>Total Obligations</th>
-                   
                 </tr>
             </thead>
             <tbody>
@@ -59,11 +51,9 @@
                   <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.remaining_obligations|intcomma }}</td>
                   <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.total_obligations|intcomma }}</td>
-                 
               </tr>
           {% endfor %}
           {% else %}
-
           {% if page_obj %}
                 {% for entry in page_obj %}
                     <tr style="cursor: pointer;">
@@ -73,11 +63,8 @@
                         <td class="year" onclick="showDetails('{{ entry.code }}')">{{ entry.year }}</td>
                         <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.remaining_obligations|intcomma }}</td>
                         <td class="year" onclick="showDetails('{{ entry.code }}')">₱{{ entry.total_obligations|intcomma }}</td>
-                       
-                       
                     </tr>
                 {% endfor %}
-
                 {% else %}
                 <tr>
                   <td colspan="6">No projects found.</td>
@@ -100,19 +87,11 @@
       }
   </style>
 {% endif %}
-
-
-
-
-
-
   <div class="back">
       <a href="{% url 'homepage' %}">
           <button class="back-btn">Back</button>
       </a>
   </div>
-
-
   <div class="pagination">
       <ul class="pagination-list">
           {% if page_obj.has_previous %}
@@ -122,9 +101,7 @@
               <li class="pagination-item disabled"><span>&laquo; First</span></li>
               <li class="pagination-item disabled"><span>Previous</span></li>
           {% endif %}
-          
           <li class="pagination-item active"><span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
-          
           {% if page_obj.has_next %}
               <li class="pagination-item"><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
               <li class="pagination-item"><a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a></li>
@@ -135,11 +112,6 @@
       </ul>
   </div>
 </main>
-
-
-
-
-
     <!-- DETAILS  -->
     <div class="details" id="details">
       <a href="{% url 'obligations' %}">
@@ -150,9 +122,7 @@
       </a>
       <ul> {% for entry in all_entries %} <li class="entry-item" id="details-{{ entry.code }}" style="display: none;">
           <div class="details-container">
-            <div class="main-user-info" id="main-detail">
-              
-           
+            <div class="main-user-info" id="main-detail">          
               <div class="user-input-box">
                 <label >Remaining Obligation</label>
                 <p id="remainingObligations" class="user-text">₱{{ entry.remaining_obligations|intcomma }}</p>
@@ -161,15 +131,9 @@
                 <label >Total Obligation</label>
                 <p id="totalObligations" class="user-text">₱{{ entry.total_obligations|intcomma }}</p>
               </div>
-
-
-
-
             </div>
-            
           </div>
           <div class="tables-container">
-            
             <div class="table-box">
               <span class="table-title">Added Obligation</span>
               <br>
@@ -190,18 +154,12 @@
                 </table>
               </div>
             </div>
-
-      
           </div>
         </li> {% endfor %} </ul>
     </div>
-   
-   
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
-   
     <!-- PIE CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
     <!-- Details js -->
     <script>
       function showDetails(code) {
