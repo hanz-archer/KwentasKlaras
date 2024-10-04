@@ -578,43 +578,53 @@ body.page-loaded {
   cursor: pointer;
 }
 
-/* Normal SweetAlert size on larger screens (default settings) */
-.swal2-popup {
-  max-width: 500px; /* Default max width for larger screens */
-  width: auto; /* Let the content determine the width */
-  padding: 1.25rem; /* Default padding */
-  box-sizing: border-box; /* Include padding and borders in the element's width */
-}
-
-/* Center the input field */
+/* Customizing only the input field for SweetAlert */
 .swal2-input {
-  display: block; /* Make input block-level for full width */
-  margin: 10px auto; /* Center the input by setting auto margins */
-  width: 80%; /* Set width of the input */
-  font-size: 16px; /* Ensure readability */
-  box-sizing: border-box; /* Include padding in width calculation */
+  display: block; /* Full-width input */
+  margin: 10px auto;
+  width: 80%;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
-/* Responsive design specifically for smaller screens (mobile) */
+/* Additional responsive design specifically for smaller screens (mobile) */
 @media only screen and (max-width: 600px) {
-  /* Adjust modal size for mobile */
-  .swal2-popup {
-      max-width: 90%; /* Make modal fit within mobile screen */
-      padding: 15px; /* Reduce padding for mobile */
-  }
-
-  /* Ensure input fields stay centered and responsive on mobile */
   .swal2-input {
-      width: 90%; /* Make input fields take more width on smaller screens */
-      margin: 10px auto; /* Keep the input centered */
-      font-size: 16px; /* Font size for readability */
+    width: 90%; /* Wider input for smaller screens */
   }
 
   /* Center content inside the modal */
   .swal2-html-container {
-      text-align: center; /* Center the text content */
+    text-align: center;
+  }
+
+  /* Refine SweetAlert popup styling to prevent movement */
+  .swal2-popup {
+    position: fixed !important; /* Fix the modal in place */
+    top: 50% !important; /* Center vertically */
+    left: 50% !important; /* Center horizontally */
+    transform: translate(-50%, -50%) !important; /* Ensure exact centering */
+    width: 90% !important; /* Adjust width for mobile */
+    max-width: 400px; /* Set a max-width for larger screens */
+    margin: 0; /* No extra margins */
+  }
+
+  /* Prevent content overflow and maintain center alignment */
+  .swal2-content {
+    text-align: center;
+    overflow-wrap: break-word;
+  }
+
+  /* Ensure buttons are also responsive */
+  .swal2-actions {
+    flex-direction: column; /* Stack buttons vertically */
   }
 }
+
+
+
+
+
 
 
 
