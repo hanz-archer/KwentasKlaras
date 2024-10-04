@@ -6,6 +6,7 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
 section {
   height: 100vh;
   width: 100%;
@@ -500,6 +501,12 @@ body.page-loaded {
   }
 }
 
+.transparent-swal {
+  background: transparent !important; /* Makes the background transparent */
+  box-shadow: none !important; /* Removes the box shadow */
+  padding: 0 !important; /* Removes padding */
+}
+
 /* Loader Styles */
 #loader-container {
   position: fixed;
@@ -555,14 +562,6 @@ body.page-loaded {
     font-size: 16px; /* Smaller font size for mobile */
   }
 }
-
-
-
-
-
-
-
-
 
 
 

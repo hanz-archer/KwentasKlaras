@@ -6,7 +6,6 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
-
 section {
   height: 100vh;
   width: 100%;
@@ -262,144 +261,111 @@ body.page-loaded {
 }
 
 
-
-/* General Navbar Styles */
+/* Base Navbar Styles */
 .navbar {
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white for frosted effect */
-  padding: 0.75rem 2rem; /* Padding for the navbar */
-  border-radius: 10px; /* Rounded corners */
   display: flex;
+  width: 100%;
+  justify-content: space-between; /* Keep space between left and right */
   align-items: center;
-  justify-content: space-between;
+  padding: 0.75rem 2rem; /* Default padding for the navbar */
+  border-radius: 10px; /* Rounded corners */
+  background-color: #007FFF            ; /* Adjust background color as needed */
+  color: #fff; /* Adjust text color as needed */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   position: relative; /* Ensure positioning context for the mobile menu */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
-  -webkit-backdrop-filter: blur(10px); /* Frosted glass effect for Safari */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border for the frosted look */
 }
 
-/* Navbar Brand */
-.navbar-brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: black; /* Changed to black */
-}
-
-/* Navbar Menu */
-.navbar-menu {
-  list-style: none;
+/* Navbar Left and Right Styles */
+.navbar-left, .navbar-right {
   display: flex;
-  gap: 2rem; /* Space between menu items */
+  align-items: center;
 }
 
-/* Navbar Menu Items */
-.navbar-menu li {
-  display: inline-block;
+.navbar-left {
+  justify-content: center;
+  margin-left: 9px;
+  flex: 1;
 }
 
-.navbar-menu li a {
-  text-decoration: none;
-  color: black; /* Changed to black */
-  font-size: 1rem;
-  font-weight: 500;
-  transition: color 0.3s ease;
+.navbar-left span {
+  font-size: 25px; /* Adjust size as needed */
+  font-weight: bold; /* Makes text bold */
+  font-family: 'Poppins', sans-serif; /* Choose a heavier font family if needed */
 }
 
-.navbar-menu li a:hover {
-  color: rgba(0, 0, 0, 0.7); /* Slightly darker on hover */
+.navbar-right {
+  justify-content: center;
+  margin-right: 20px;
+  flex: 1;
 }
 
-/* Navbar Search */
-.navbar-search {
-  font-size: 1.2rem;
-  color: black; /* Changed to black */
-  cursor: pointer;
+.datetime-display {
+  font-size: 18px;
+  color: #fff; /* Adjust color as needed */
+  margin-right: 30px;
+}
+
+.logged-in {
+  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  color: white;
 }
 
 /* Mobile Navbar Styles */
 @media (max-width: 768px) {
   .navbar {
-    flex-direction: column; /* Stack the navbar content vertically */
-    text-align: center; /* Center-align the text */
-    padding: 0.5rem 1rem; /* Reduce padding */
+    justify-content: flex-start; /* Align items to the left */
+    padding: 0.25rem 1rem; /* Reduce padding for a smaller height */
   }
 
-  .navbar-brand {
-    font-size: 1.2rem; /* Reduce brand font size */
-  }
-
-  .navbar-left,
   .navbar-right {
+    display: none; /* Hide the right section on mobile */
+  }
+
+  .navbar-left {
     width: 100%; /* Take up full width */
-    margin: 0.25rem 0; /* Reduce vertical margin */
-    font-size: 0.8rem; /* Make the font size smaller */
+    margin: 0; /* Remove margin */
+  }
+
+  .navbar-left span {
+    font-size: 18px; /* Reduce brand font size for mobile */
+  }
+
+  .datetime-display {
+    font-size: 14px; /* Smaller font size for mobile */
+  }
+
+  .logged-in {
+    font-size: 14px; /* Smaller font size for mobile */
   }
 
   .navbar-menu {
-    display: none; /* Hide the menu by default on small screens */
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent white for mobile */
-    width: 100%;
-    border-radius: 0 0 10px 10px; /* Rounded corners at the bottom */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 0.5rem 1rem; /* Reduce padding inside the menu */
-    backdrop-filter: blur(10px); /* Frosted glass effect on mobile */
+    display: none; /* Hide the menu by default */
   }
 
-  .navbar-menu li {
-    margin-bottom: 0.25rem; /* Less space between menu items */
+  /* Hamburger Menu */
+  .navbar-toggler {
+    display: block; /* Show hamburger menu on mobile */
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
   }
 
-  .navbar-menu li a {
-    padding: 0.5rem 0.75rem; /* Smaller padding for menu items */
-    font-size: 0.9rem; /* Smaller text size for menu items */
+  /* Hamburger Menu Icon */
+  .navbar-toggler::before {
+    content: '☰'; /* Hamburger icon */
   }
-}
-
-.navbar-menu.active {
-  display: flex; /* Show the menu when active */
-}
-
-.navbar-menu li {
-  display: block; /* Stack the menu items vertically */
-  padding: 1rem;
-  text-align: center;
-}
-
-.navbar-menu li a {
-  font-size: 1.2rem;
-}
-
-.navbar-search {
-  display: none; /* Hide the search icon on small screens if needed */
-}
-
-/* Hamburger Menu */
-.navbar-toggler {
-  display: block;
-  background-color: transparent;
-  border: none;
-  font-size: 1.5rem;
-  color: black; /* Changed to black */
-  cursor: pointer;
-}
-
-/* Hamburger Menu Icon */
-.navbar-toggler::before {
-  content: '☰'; /* Hamburger icon */
 }
 
 /* Ensure navbar-toggler is hidden on larger screens */
 @media (min-width: 769px) {
   .navbar-toggler {
-    display: none;
+    display: none; /* Hide on larger screens */
   }
 }
-
 
 .custom-toast-container {
   margin-right: 60px;
@@ -530,6 +496,81 @@ body.page-loaded {
       top: 0 !important; /* Override any existing 'top' values */
   }
 }
+
+/* Loader Styles */
+#loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Use viewport width */
+  height: 100vh; /* Use viewport height */
+  background: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+  backdrop-filter: blur(10px); /* Apply background blur */
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* High z-index to overlay everything */
+}
+
+.loader {
+  border: 10px solid #f3f3f3; /* Light gray border */
+  border-top: 10px solid #3498db; /* Blue border for the top */
+  border-radius: 50%;
+  width: 80px; /* Increased size for desktop */
+  height: 80px; /* Increased size for desktop */
+  animation: spin 1s linear infinite; /* Spinning effect */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Loading text styles */
+.loading-text {
+  margin-top: 20px; /* Space between loader and text */
+  font-size: 18px; /* Font size for loading text */
+  color: #3498db; /* Color for loading text */
+  text-align: center; /* Center align the text */
+}
+
+/* Hide the loader after page load */
+.page-loaded #loader-container {
+  display: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .loader {
+    width: 60px; /* Larger size for mobile */
+    height: 60px; /* Larger size for mobile */
+    border-width: 8px; /* Thinner border for mobile */
+  }
+  
+  .loading-text {
+    font-size: 16px; /* Smaller font size for mobile */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

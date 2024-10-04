@@ -1,3 +1,4 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,52 +26,56 @@
             background-color: #fff;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            max-width: 900px; /* Increased max-width */
+            max-width: 900px;
             width: 100%;
-            padding: 100px 80px; /* Increased padding */
+            padding: 80px 60px;
             text-align: center;
-            transition: transform 0.3s ease;
+        }
+
+        .card img {
+            max-width: 150px; /* Set a max-width for the logo */
+            margin-bottom: 30px; /* Space below the logo */
         }
 
         .card h2 {
-            margin-bottom: 60px; /* Larger space between title and form */
+            margin-bottom: 40px;
             color: #343a40;
-            font-size: 44px; /* Increased font size */
+            font-size: 36px;
             font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 45px; /* Increased margin for more space */
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: left;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 14px;
-            font-size: 24px; /* Larger label font */
+            margin-bottom: 10px;
+            font-size: 20px;
             font-weight: 500;
             color: #6c757d;
         }
 
         .form-group input {
             width: 100%;
-            padding: 22px; /* Larger input padding */
-            font-size: 22px; /* Larger input font size */
+            max-width: 400px;
+            padding: 12px;
+            font-size: 18px;
             border: 1px solid #ced4da;
-            border-radius: 12px;
+            border-radius: 8px;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            appearance: textfield; /* Hide number input arrows in Chrome */
+            appearance: textfield;
         }
 
-        /* Hide the up/down arrows for number input */
-        /* For Chrome, Safari, Edge, Opera */
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        /* For Firefox */
         input[type="number"] {
             -moz-appearance: textfield;
         }
@@ -83,12 +88,13 @@
 
         .form-group button {
             width: 100%;
-            padding: 20px; /* Larger button padding */
+            max-width: 400px;
+            padding: 12px;
             border: none;
-            border-radius: 12px;
-            background-color: #007FFF            ;
+            border-radius: 8px;
+            background-color: #007FFF;
             color: white;
-            font-size: 22px; /* Larger button font size */
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
@@ -99,25 +105,25 @@
             transform: scale(1.05);
         }
 
-        /* Media query for smaller screens */
         @media (max-width: 600px) {
             .card {
-                padding: 60px 40px; /* Adjusted padding for small screens */
+                padding: 40px 20px;
             }
 
             .card h2 {
-                font-size: 36px; /* Smaller font size on mobile */
+                font-size: 28px;
             }
 
             .form-group input, .form-group button {
-                padding: 18px; /* Adjusted padding for inputs and buttons */
-                font-size: 20px; /* Font size for inputs and buttons */
+                padding: 10px;
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
     <div class="card">
+        <img src="{% static 'KwentasApp/img/logo.png' %}" alt="Logo"> <!-- Add your logo path here -->
         <h2>Before we proceed</h2>
         <form method="POST">
             {% csrf_token %}

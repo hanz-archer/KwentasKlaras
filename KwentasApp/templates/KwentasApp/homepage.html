@@ -163,16 +163,16 @@
           const generateQRCodeUrl = "{% url 'generate_qr_code' %}";
           const get2FAStatusUrl = "{% url 'get_2fa_status' %}";
           const validatePasswordUrl = "{% url 'validate_password' %}"; // Adjust this to the correct URL for validating the password
-
+      
           const form = document.querySelector(`form[action="${generateQRCodeUrl}"]`);
-
+      
           if (form) {
-              form.addEventListener('submit', function(event) { 
+              form.addEventListener('submit', function(event) {
                   event.preventDefault();
-
+      
                   // Ask for password first
                   Swal.fire({
-                      title: 'To enable two factor please enter your password first',
+                      title: 'To enable two-factor authentication, please enter your password',
                       html: `<input type="password" id="password-input" class="swal2-input" placeholder="Your password">`,
                       icon: 'warning',
                       showCancelButton: true,
@@ -180,12 +180,12 @@
                       cancelButtonText: 'Cancel',
                       preConfirm: () => {
                           const password = document.getElementById('password-input').value;
-
+      
                           if (!password) {
                               Swal.showValidationMessage('Password is required');
                               return;
                           }
-
+      
                           // Validate the password
                           return fetch(validatePasswordUrl, {
                               method: 'POST',
@@ -213,7 +213,7 @@
                               .then(response => response.json())
                               .then(data => {
                                   const is2FAEnabled = data.is_2fa_enabled;
-
+      
                                   // Show SweetAlert with the 2FA checkbox
                                   Swal.fire({
                                       title: is2FAEnabled ? '2FA is already enabled' : 'Enable Two-Factor Authentication',
@@ -305,9 +305,8 @@
               });
           }
       });
-  </script>
-  
-  
+      </script>
+      
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const body = document.querySelector('body');
