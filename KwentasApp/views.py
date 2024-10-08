@@ -45,6 +45,11 @@ from django.urls import reverse
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 import logging
+from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.views.decorators.csrf import csrf_exempt
+import random
+from django.views.decorators.http import require_POST
 
 logger = logging.getLogger(__name__)
 
@@ -146,46 +151,6 @@ def bulk_download_xlsx(request):
 
     return JsonResponse({"error": "Invalid request"}, status=400)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 print("KwentasApp.views module loaded")  # Debugging print
 
 #this def ensures the Sweet Alert in Homepage just shows after loggin in only
@@ -236,12 +201,56 @@ def base_view(request):
     logout(request)
     return redirect(reverse('login'))
 
-
-
-
-
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
+
+
+
+
+# Email verification code
+@csrf_exempt
+def send_verification_code(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            email = data.get('email')
+
+            if email:
+                code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+                subject = 'Your Verification Code'
+                text_content = f'Your verification code is: {code}'
+
+                try:
+                    html_content = render_to_string('KwentasApp/verification_email.html', {'code': code})
+                except Exception as e:
+                    logger.error(f'Error rendering email template: {str(e)}')
+                    return JsonResponse({'success': False, 'error': 'Error rendering email template.'}, status=500)
+
+                try:
+                    msg = EmailMultiAlternatives(subject, text_content, 'kwentasklarasboljoon@gmail.com', [email])
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+
+                    request.session['verification_code'] = code
+                    request.session['email'] = email
+                    logger.info(f'Verification code sent to {email}')
+                    return JsonResponse({'success': True})
+                except BadHeaderError:
+                    logger.error(f'Invalid header found when sending email to {email}')
+                    return JsonResponse({'success': False, 'error': 'Invalid header found.'}, status=400)
+                except Exception as e:
+                    logger.error(f'Error sending email to {email}: {str(e)}')
+                    return JsonResponse({'success': False, 'error': 'Error sending email.'}, status=500)
+
+            logger.warning('No email provided in the request.')
+            return JsonResponse({'success': False, 'error': 'Invalid email'}, status=400)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Invalid JSON format.'}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+
+
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='login')
@@ -249,31 +258,45 @@ def registration_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            try:
-                form.save()
-                response = {
-                    'status': 'success',
-                    'message': 'Your account has been created successfully!',
-                   
-                }
-                return JsonResponse(response)
-            except Exception as e:
+            entered_code = request.POST.get('verification_code')
+            generated_code = form.generated_code  # Access the generated code from the form
+
+            if entered_code == str(generated_code):
+                try:
+                    form.save()
+                    response = {
+                        'status': 'success',
+                        'message': 'Your account has been created successfully!',
+                    }
+                    return JsonResponse(response)
+                except Exception as e:
+                    response = {
+                        'status': 'error',
+                        'message': f'An error occurred: {e}'
+                    }
+                    return JsonResponse(response)
+            else:
                 response = {
                     'status': 'error',
-                    'message': f'An error occurred: {e}'
+                    'message': 'Verification code does not match.',
                 }
                 return JsonResponse(response)
         else:
-            # Passing form errors back as JSON
+            # Log form errors
+            print(form.errors)  # This will print form errors to your console
             response = {
                 'status': 'error',
                 'message': 'Form is invalid. Please correct the errors.',
-                'errors': form.errors  # Contains specific form field errors
+                'errors': form.errors
             }
             return JsonResponse(response)
     else:
         form = RegistrationForm()
     return render(request, 'KwentasApp/register.html', {'form': form})
+
+
+
+
 
 def register_page(request):
     return render(request,'KwentasApp/register.html')
@@ -299,11 +322,6 @@ def homepage(request):
 
     return render(request, 'KwentasApp/homepage.html', context)
 
-
-
-
-
-
 def forgotpassword(request):
      if request.method == 'POST':
         email = request.POST.get('email')
@@ -311,51 +329,6 @@ def forgotpassword(request):
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
      return render(request, 'KwentasApp/forgot-password.html')
-
-@csrf_exempt
-def send_verification_code(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            email = data.get('email')
-            if email:
-                code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
-                subject = 'Your Verification Code'
-                from_email = 'kwentasklarasboljoon@gmail.com'
-                text_content = f'Your verification code is: {code}'
-
-                try:
-                    html_content = render_to_string('KwentasApp/verification_email.html', {'code': code})
-                except Exception as e:
-                    logger.error(f'Error rendering email template: {str(e)}')
-                    return JsonResponse({'success': False, 'error': 'Error rendering email template.'}, status=500)
-
-                try:
-                    msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
-                    msg.attach_alternative(html_content, "text/html")
-                    msg.send()
-                    request.session['verification_code'] = code  # Store the code in the session
-                    request.session['email'] = email  # Store the email in the session
-                    logger.info(f'Verification code sent to {email}')
-                    return JsonResponse({'success': True})
-                except BadHeaderError:
-                    logger.error(f'Invalid header found when sending email to {email}')
-                    return JsonResponse({'success': False, 'error': 'Invalid header found.'}, status=400)
-                except Exception as e:
-                    logger.error(f'Error sending email to {email}: {str(e)}')
-                    return JsonResponse({'success': False, 'error': 'Error sending email.'}, status=500)
-            else:
-                logger.warning('No email provided in the request.')
-                return JsonResponse({'success': False, 'error': 'Invalid email'}, status=400)
-        except json.JSONDecodeError:
-            logger.warning('JSON decode error.')
-            return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
-        except Exception as e:
-            logger.error(f'Unexpected error: {str(e)}')
-            return JsonResponse({'success': False, 'error': 'Internal server error.'}, status=500)
-    else:
-        logger.warning('Invalid request method.')
-        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
     
 @csrf_exempt
 def verify_and_change_password(request):

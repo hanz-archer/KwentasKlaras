@@ -195,7 +195,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kwentasklarasboljoon@gmail.com'
-EMAIL_HOST_PASSWORD = 'erzk qbyp jkmn cmxr'
+EMAIL_HOST_PASSWORD = 'hvab euhu zpvu syvg'
 
 # Enable all events for auditing
 DJANGO_EASY_AUDIT_WATCH_LOGIN_EVENTS = True  # For login/logout events

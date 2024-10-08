@@ -101,11 +101,111 @@
                         <h6 id="capsLockNote2" style="display: none; margin-top: 55px; white-space: nowrap; text-align: left; color: #cc0000;">Caps Lock is ON</h6>
                     </div>
                 </div>
+                <div class="input-div">
+                    <div class="i">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <div class="div">
+                        <h5>Your Verification Code</h5>
+                        {% csrf_token %}
+                        <input type="text" id="verificationCode" required>
+                        <button type="button" class="trigger-button" onclick="requestVerificationCode()">Send Code</button>
+                    </div>
+                </div> 
+                {% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+                                          
                 <input type="submit" class="btn" value="Submit">
                 <a href="#" id="cancelButton" class="btn-cancel">Cancel</a>
             </form>
         </div>
     </div>
+
+    <script>
+        function requestVerificationCode() {
+            const email = document.querySelector('input[name="email"]').value;  // Get email from the input field
+
+            // Validate email format (optional)
+            if (!validateEmail(email)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Email',
+                    text: 'Please enter a valid email address.',
+                });
+                return;
+            }
+
+            // Send a POST request to the backend to send the verification code
+            fetch('/send_verification_code/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  // Include CSRF token
+                },
+                body: JSON.stringify({ email: email })  // Send the email to the server
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response Data:', data);  // Log the response data for debugging
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Code Sent!',
+                        text: data.message,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message,
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Network Error:', error);  // Log network errors
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Network Error!',
+                    text: 'Unable to connect to the server. Please check your internet connection.',
+                });
+            });
+        }
+
+        // Function to validate email format
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+    
+        
+
+
     <script>
   document.getElementById('dataForm').addEventListener('submit', function(event) {
     event.preventDefault();  // Prevent default form submission
