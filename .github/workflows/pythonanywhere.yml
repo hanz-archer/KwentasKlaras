@@ -34,5 +34,5 @@ jobs:
         PYTHONANYWHERE_USERNAME: ${{ 'KwentasKlarasPMIS' }}  # Use your PythonAnywhere username
         PYTHONANYWHERE_APP_NAME: ${{ 'KwentasKlarasPMIS' }}  # Use your app name
       run: |
-        https://www.pythonanywhere.com/api/v0/user/KwentasKlarasPMIS/webapps/KwentasKlarasPMIS/reload/
+        curl -X POST https://www.pythonanywhere.com/api/v0/user/KwentasKlarasPMIS/webapps/KwentasKlarasPMIS/reload/
         -H "Authorization: Token $API_TOKEN"
