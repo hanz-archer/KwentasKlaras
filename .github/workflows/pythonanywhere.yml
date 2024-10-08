@@ -1,4 +1,4 @@
-name: Deploy Django to PythonAnywhere
+name: KwentasKlarasPMIS
 
 on:
   push:
