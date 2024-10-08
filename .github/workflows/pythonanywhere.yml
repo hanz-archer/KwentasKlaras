@@ -30,9 +30,8 @@ jobs:
 
     - name: Deploy to PythonAnywhere
       env:  # Define environment variables
-        API_TOKEN: ${{ '5b7f14b1f4e0b1229c4d9f98a16c4d4e36efe36d' }}  # Use the secret here
-        PYTHONANYWHERE_USERNAME: ${{ 'KwentasKlarasPMIS' }}  # Use your PythonAnywhere username
-        PYTHONANYWHERE_APP_NAME: ${{ 'KwentasKlarasPMIS' }}  # Use your app name
+        API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}  # Use the secret here
+        PYTHONANYWHERE_USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}  # Use your PythonAnywhere username
+        PYTHONANYWHERE_APP_NAME: ${{ secrets.PYTHONANYWHERE_APP_NAME }}  # Use your app name
       run: |
-        curl -X POST https://www.pythonanywhere.com/api/v0/user/KwentasKlarasPMIS/webapps/KwentasKlarasPMIS/reload/
-        -H "Authorization: Token $API_TOKEN"
+        curl -X POST https://www.pythonanywhere.com/api/v0/user/${{ secrets.PYTHONANYWHERE_USERNAME }}/webapps/${{ secrets.PYTHONANYWHERE_APP_NAME }}/reload/ -H "Authorization: Token $API_TOKEN"
