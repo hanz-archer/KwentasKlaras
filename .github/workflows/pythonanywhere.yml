@@ -29,9 +29,10 @@ jobs:
         python manage.py migrate --noinput
 
     - name: Deploy to PythonAnywhere
-      env:  # Define environment variables
-        API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}  # Use the secret here
-        PYTHONANYWHERE_USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}  # Use your PythonAnywhere username
-        PYTHONANYWHERE_APP_NAME: ${{ secrets.PYTHONANYWHERE_APP_NAME }}  # Use your app name
+      env:
+        API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
+        PYTHONANYWHERE_USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+        PYTHONANYWHERE_APP_NAME: ${{ secrets.PYTHONANYWHERE_APP_NAME }}
       run: |
-        curl -X POST https://www.pythonanywhere.com/api/v0/user/${{ secrets.PYTHONANYWHERE_USERNAME }}/webapps/${{ secrets.PYTHONANYWHERE_APP_NAME }}/reload/ -H "Authorization: Token $API_TOKEN"
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST https://www.pythonanywhere.com/api/v0/user/${{ secrets.PYTHONANYWHERE_USERNAME }}/webapps/${{ secrets.PYTHONANYWHERE_APP_NAME }}/reload/ -H "Authorization: Token $API_TOKEN")
+        echo "Reload response: $RESPONSE"
