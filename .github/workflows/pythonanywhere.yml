@@ -1,4 +1,4 @@
-name: KwentasKlarasPMIS
+name: Deploy Django to PythonAnywhere
 
 on:
   push:
@@ -28,11 +28,10 @@ jobs:
         python manage.py collectstatic --noinput
         python manage.py migrate --noinput
 
-    - name: Deploy to PythonAnywhere
-      env:
-        API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
-        PYTHONANYWHERE_USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
-        PYTHONANYWHERE_APP_NAME: ${{ secrets.PYTHONANYWHERE_APP_NAME }}
-      run: |
-        curl -X POST https://www.pythonanywhere.com/api/v0/user/${{ secrets.PYTHONANYWHERE_USERNAME }}/webapps/${{ secrets.PYTHONANYWHERE_APP_NAME }}/reload/ -H "Authorization: Token $API_TOKEN"
-        echo "Reload response: $RESPONSE"
+    - name: Reload PythonAnywhere webapp
+      uses: jensvog/pythonanywhere-webapp-reload-action@v1
+      with:
+        host: www.pythonanywhere.com  # or eu.pythonanywhere.com
+        username: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+        api-token: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
+        domain-name: ${{ secrets.PYTHONANYWHERE_DOMAIN_NAME }}
