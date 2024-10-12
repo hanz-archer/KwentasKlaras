@@ -255,5 +255,75 @@
             input.addEventListener("blur", remcl);
         });
     </script>
+
+<script>
+    // SweetAlert confirmation before form submission
+    document.getElementById('dataForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Collecting form data
+        const formData = {
+            ppa: document.querySelector('input[name="ppa"]').value,
+            implementing_unit: document.getElementById('departmentInput').value,
+            location: document.querySelector('input[name="location"]').value,
+            appropriation: document.querySelector('input[name="appropriation"]').value,
+            start_date: document.querySelector('input[name="start_date"]').value,
+            end_date: document.querySelector('input[name="end_date"]').value,
+            remarks: document.getElementById('remarksInput').value,
+            code: document.querySelector('input[name="code"]').value,
+            services: document.getElementById('servicesInput').value,
+            year: document.querySelector('input[name="year"]').value,
+        };
+
+        // Constructing confirmation message in invoice format
+        const confirmationMessage = `
+            <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.5;">
+                <h2 style="text-align: center; font-size: 24px; margin-bottom: 20px;">Add Project Confirmation</h2>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 18px; margin-bottom: 5px;">PPA: ${formData.ppa}</h4>
+                    <p style="margin: 0; font-size: 14px;">Implementing Unit: ${formData.implementing_unit}</p>
+                    <p style="margin: 0; font-size: 14px;">Location: ${formData.location}</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 18px; margin-bottom: 5px;">Details</h4>
+                    <p style="margin: 0; font-size: 14px;"><strong>Appropriation:</strong> ${formData.appropriation}</p>
+                    <p style="margin: 0; font-size: 14px;"><strong>Start Date:</strong> ${formData.start_date}</p>
+                    <p style="margin: 0; font-size: 14px;"><strong>End Date:</strong> ${formData.end_date}</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 18px; margin-bottom: 5px;">Remarks</h4>
+                    <p style="margin: 0; font-size: 14px;">${formData.remarks}</p>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h4 style="font-size: 18px; margin-bottom: 5px;">Code & Services</h4>
+                    <p style="margin: 0; font-size: 14px;"><strong>Code:</strong> ${formData.code}</p>
+                    <p style="margin: 0; font-size: 14px;"><strong>Services:</strong> ${formData.services}</p>
+                    <p style="margin: 0; font-size: 14px;"><strong>Year:</strong> ${formData.year}</p>
+                </div>
+                <div style="border-top: 1px solid #ddd; margin-top: 20px; padding-top: 10px;">
+                    <p style="font-weight: bold; font-size: 16px; text-align: center;">Please confirm your data</p>
+                </div>
+            </div>
+        `;
+
+        // Display SweetAlert
+        Swal.fire({
+            html: confirmationMessage,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel',
+            customClass: {
+                popup: 'custom-popup' // Add a custom class for further styling if needed
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit(); // Submit the form if confirmed
+            }
+        });
+    });
+</script>
 </body>
 </html>
