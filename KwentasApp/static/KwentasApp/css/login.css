@@ -114,7 +114,7 @@ form {
     bottom: -2px;
     width: 0%;
     height: 2px;
-    background-color: #007FFF            ;
+    background-color: #007FFF;
     transition: .4s;
 }
 
@@ -137,7 +137,7 @@ form {
 }
 
 .input-div.focus > .i > i {
-    color: #007FFF            ;
+    color: #007FFF;
 }
 
 .input-div > div > input {
@@ -169,7 +169,7 @@ a {
 }
 
 a:hover {
-    color: #007FFF            ;
+    color: #007FFF;
 }
 
 /* Submit Button */
@@ -180,7 +180,7 @@ a:hover {
     border-radius: 25px;
     outline: none;
     border: none;
-    background-image: linear-gradient(to right, #007FFF                 , #007FFF                , #007FFF                 );
+    background-image: linear-gradient(to right, #007FFF, #007FFF, #007FFF);
     background-size: 200%;
     font-size: 1.2rem;
     color: #fff;
@@ -294,8 +294,6 @@ a:hover {
     }
 }
 
-
-/* Mobile phones */
 /* Mobile phones */
 @media screen and (max-width: 480px) {
     .container {
@@ -308,27 +306,24 @@ a:hover {
         max-width: 100%; /* Ensure no maximum width restriction */
     }
 
+    .login-content h2.title {
+        font-size: 1.4rem; /* Smaller title size for mobile */
+    }
+
     .login-content img {
         height: 100px; /* Adjust logo size for mobile */
     }
 
-    .login-content h2.title {
-        font-size: 1.4rem; /* Adjust font size for mobile */
-    }
-
     .input-div > div > input {
-        font-size: 0.9rem; /* Adjust font size of input fields */
+        font-size: 0.9rem; /* Smaller font size for input fields */
     }
 
     .btn {
-        font-size: 0.9rem; /* Adjust font size of button */
-        height: 45px; /* Slightly smaller button height */
+        font-size: 0.9rem; /* Smaller button font size */
     }
 
     .card {
-        padding: 30px; /* Adjust padding for better fit on mobile */
-        max-width: 100%; /* Ensure card takes up full width */
+        padding: 20px; /* Reduced padding for mobile */
         min-height: 700px; /* Adjust height for better fit */
     }
 }
-

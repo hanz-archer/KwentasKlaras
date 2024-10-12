@@ -60,6 +60,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.views.decorators.csrf import csrf_exempt
+import traceback
 
 logger = logging.getLogger(__name__)
 
@@ -214,6 +215,7 @@ def base_view(request):
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
+
 @csrf_exempt
 def send_verification_code(request):
     if request.method == 'POST':
@@ -230,6 +232,7 @@ def send_verification_code(request):
                 try:
                     html_content = render_to_string('KwentasApp/verification_email.html', {'code': code})
                 except Exception as e:
+                    logger.error(f'Error rendering email template: {str(e)}')
                     return JsonResponse({'success': False, 'error': 'Error rendering email template.'}, status=500)
 
                 try:
@@ -240,15 +243,19 @@ def send_verification_code(request):
                     # Store the verification code and email in session
                     request.session['verification_code'] = code
                     request.session['email'] = email
+                    logger.info(f'Sent verification code to {email}')
                     return JsonResponse({'success': True})
                 except Exception as e:
+                    logger.error(f'Error sending email to {email}: {str(e)}')
                     return JsonResponse({'success': False, 'error': 'Error sending email.'}, status=500)
 
             return JsonResponse({'success': False, 'error': 'Invalid email'}, status=400)
 
         except json.JSONDecodeError:
+            logger.warning('Invalid JSON format received in send_verification_code.')
             return JsonResponse({'success': False, 'error': 'Invalid JSON format.'}, status=400)
 
+    logger.warning('Invalid request method for sending verification code.')
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
 @user_passes_test(lambda u: u.is_superuser, login_url='login')
@@ -356,45 +363,51 @@ def verify_and_change_password(request):
             password = data.get('password')
             stored_code = request.session.get('verification_code')
 
+            logger.info(f'Received request to change password for {email}')
+            logger.info(f'Stored code: {stored_code}, Session email: {request.session.get("email")}')
+
             if code and code == stored_code and email == request.session.get('email'):
-                user = CustomUser.objects.get(email=email)
-                hashed_password = make_password(password)
-                user.password = hashed_password
-                user.save()
+                try:
+                    user = CustomUser.objects.get(email=email)
+                    hashed_password = make_password(password)
+                    user.password = hashed_password
+                    user.save()
 
-                # Log the user password hash
-                logger.info(f'Password hash for user {email}: {hashed_password}')
-                
-                # Clear the session data
-                del request.session['verification_code']
-                del request.session['email']
-                
-                # Log successful password change
-                logger.info(f'Password changed for user: {email}')
+                    # Log the user password hash
+                    logger.info(f'Password hash for user {email}: {hashed_password}')
 
-                # Attempt to log in the user with the new password
-                user = authenticate(username=user.username, password=password)
-                if user is not None:
-                    login(request, user)
-                    return JsonResponse({'success': True})
-                else:
-                    logger.error(f'Authentication failed for user after password change: {email}')
-                    return JsonResponse({'success': False, 'error': 'Authentication failed after password change'}, status=400)
-            else:
-                logger.warning(f'Invalid code or email mismatch for user: {email}')
-                return JsonResponse({'success': False, 'error': 'Invalid code or email mismatch'}, status=400)
+                    # Clear the session data
+                    del request.session['verification_code']
+                    del request.session['email']
+
+                    # Log successful password change
+                    logger.info(f'Password changed for user: {email}')
+
+                    # Attempt to log in the user with the new password
+                    user = authenticate(username=user.username, password=password)
+                    if user is not None:
+                        login(request, user)
+                        logger.info(f'User {email} logged in successfully after password change.')
+                        return JsonResponse({'success': True})
+                    else:
+                        logger.error(f'Authentication failed for user after password change: {email}')
+                        return JsonResponse({'success': False, 'error': 'Authentication failed after password change'}, status=400)
+                except CustomUser.DoesNotExist:
+                    logger.error(f'User not found for email: {email}')
+                    return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+
+            logger.warning(f'Invalid code or email mismatch for user: {email}')
+            return JsonResponse({'success': False, 'error': 'Invalid code or email mismatch'}, status=400)
+
         except json.JSONDecodeError:
             logger.warning('JSON decode error during password change process.')
             return JsonResponse({'success': False, 'error': 'Invalid JSON'}, status=400)
-        except CustomUser.DoesNotExist:
-            logger.error(f'User not found for email: {email}')
-            return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
         except Exception as e:
-            logger.error(f'Unexpected error during password change process: {str(e)}')
+            logger.error(f'Unexpected error during password change process: {str(e)}\n{traceback.format_exc()}')
             return JsonResponse({'success': False, 'error': 'Internal server error.'}, status=500)
-    else:
-        logger.warning('Invalid request method for password change.')
-        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+
+    logger.warning('Invalid request method for password change.')
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
     
 
 @login_required
