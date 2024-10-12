@@ -108,22 +108,10 @@
                     <div class="div">
                         <h5>Your Verification Code</h5>
                         {% csrf_token %}
-                        <input type="text" id="verificationCode" required>
+                        <input type="text" name="verification_code" id="verificationCode" class="input" required>
                         <button type="button" class="trigger-button" onclick="requestVerificationCode()">Send Code</button>
                     </div>
-                </div> 
-                {% if form.errors %}
-    <div class="alert alert-danger">
-        <ul>
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ field.label }}: {{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
-                                          
+                </div>       
                 <input type="submit" class="btn" value="Submit">
                 <a href="#" id="cancelButton" class="btn-cancel">Cancel</a>
             </form>
@@ -155,23 +143,21 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Response Data:', data);  // Log the response data for debugging
-                if (data.status === 'success') {
+                if (data.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Code Sent!',
-                        text: data.message,
+                        text: 'The verification code has been sent to your email.',
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: data.message,
+                        text: data.error,
                     });
                 }
             })
             .catch(error => {
-                console.error('Network Error:', error);  // Log network errors
                 Swal.fire({
                     icon: 'error',
                     title: 'Network Error!',
@@ -201,6 +187,7 @@
             }
             return cookieValue;
         }
+
     </script>
     
         
@@ -392,5 +379,7 @@
         });
     });
 </script>
+
+
 </body>
 </html>

@@ -50,6 +50,16 @@ from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 import random
 from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.csrf import csrf_exempt
+import random
+import json
+from django.core.mail import EmailMultiAlternatives
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
 
 logger = logging.getLogger(__name__)
 
@@ -204,10 +214,6 @@ def base_view(request):
 def is_superuser(user):
     return user.is_authenticated and user.is_superuser
 
-
-
-
-# Email verification code
 @csrf_exempt
 def send_verification_code(request):
     if request.method == 'POST':
@@ -216,14 +222,14 @@ def send_verification_code(request):
             email = data.get('email')
 
             if email:
-                code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+                # Generate a 6-digit numeric verification code
+                code = ''.join(random.choices('0123456789', k=6))
                 subject = 'Your Verification Code'
                 text_content = f'Your verification code is: {code}'
 
                 try:
                     html_content = render_to_string('KwentasApp/verification_email.html', {'code': code})
                 except Exception as e:
-                    logger.error(f'Error rendering email template: {str(e)}')
                     return JsonResponse({'success': False, 'error': 'Error rendering email template.'}, status=500)
 
                 try:
@@ -231,18 +237,13 @@ def send_verification_code(request):
                     msg.attach_alternative(html_content, "text/html")
                     msg.send()
 
+                    # Store the verification code and email in session
                     request.session['verification_code'] = code
                     request.session['email'] = email
-                    logger.info(f'Verification code sent to {email}')
                     return JsonResponse({'success': True})
-                except BadHeaderError:
-                    logger.error(f'Invalid header found when sending email to {email}')
-                    return JsonResponse({'success': False, 'error': 'Invalid header found.'}, status=400)
                 except Exception as e:
-                    logger.error(f'Error sending email to {email}: {str(e)}')
                     return JsonResponse({'success': False, 'error': 'Error sending email.'}, status=500)
 
-            logger.warning('No email provided in the request.')
             return JsonResponse({'success': False, 'error': 'Invalid email'}, status=400)
 
         except json.JSONDecodeError:
@@ -250,20 +251,34 @@ def send_verification_code(request):
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
 
-
-
-
 @user_passes_test(lambda u: u.is_superuser, login_url='login')
+@csrf_exempt
 def registration_view(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
             entered_code = request.POST.get('verification_code')
-            generated_code = form.generated_code  # Access the generated code from the form
+            # Retrieve the verification code and email from session
+            generated_code = request.session.get('verification_code')
+            session_email = request.session.get('email')
+            entered_email = form.cleaned_data.get('email')
 
-            if entered_code == str(generated_code):
+            # Check if the entered email matches the session email
+            if entered_email != session_email:
+                response = {
+                    'status': 'error',
+                    'message': 'Email mismatch. Please use the verified email.'
+                }
+                return JsonResponse(response)
+
+            # Check if the verification code matches
+            if entered_code == generated_code:
                 try:
+                    # Create the account if both email and code are correct
                     form.save()
+                    # Clear session after successful registration
+                    request.session.pop('verification_code', None)
+                    request.session.pop('email', None)
                     response = {
                         'status': 'success',
                         'message': 'Your account has been created successfully!',
@@ -282,8 +297,7 @@ def registration_view(request):
                 }
                 return JsonResponse(response)
         else:
-            # Log form errors
-            print(form.errors)  # This will print form errors to your console
+            print(form.errors)  # Log form errors for debugging
             response = {
                 'status': 'error',
                 'message': 'Form is invalid. Please correct the errors.',
@@ -293,6 +307,8 @@ def registration_view(request):
     else:
         form = RegistrationForm()
     return render(request, 'KwentasApp/register.html', {'form': form})
+
+
 
 
 
