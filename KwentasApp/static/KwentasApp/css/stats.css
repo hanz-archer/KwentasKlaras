@@ -153,13 +153,26 @@ ul.insights li .info p {
 }
 
 .content main .insights li i {
-    width: 64px;
-    height: 64px;
+    width: 50px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
+}
+
+.day {
+    stroke: #ffffff;
+    stroke-width: 1;
+}
+.label {
+    font-size: 10px;
+    text-anchor: middle;
+    fill: #666;
+}
+select {
+    margin-bottom: 20px;
 }
 
 .content main .insights li .info h3 {

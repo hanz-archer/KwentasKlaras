@@ -13,6 +13,8 @@
     <title>Kwentas Klaras Reports</title>  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <!-- Main Content -->
@@ -47,6 +49,15 @@
                     </span>
                 </li>
                 <li onclick="showCard('below')">
+                    <i class='bx bx-check-circle'></i>
+                    <span class="info">
+                        <h3>{{ count_below_50 }}</h3>
+                        <p><strong>Projects Below 50% Utilization Rate</strong></p>
+                    </span>
+                </li>
+
+
+                <li onclick="showCard('calendar')">
                     <i class='bx bx-check-circle'></i>
                     <span class="info">
                         <h3>{{ count_below_50 }}</h3>
@@ -108,7 +119,25 @@
                         {% endfor %}
                     </div>                    
                 </div>
-                
+
+
+
+
+
+
+                <div class="card" id="calendar">
+            
+                    Disbursements
+                    <select id="year-select"></select> <!-- Year filter -->
+                  <svg id="contributionChart" width="1000" height="1000"></svg>
+                </div>
+
+
+
+
+
+
+
                 <div class="card" id="above">
                     <div class="header">
                         <i class='bx bx-line-chart'></i>
@@ -135,6 +164,87 @@
         </main>
     </div> 
     <form action="{%url 'homepage' %}"> {% csrf_token %}<input type="submit" value="Back" class="btn sticky-btn"/></form>
+    <script>
+        // Sample contribution data for different years
+        const contributionData = {
+            2023: [0, 1, 3, 5, 8, 2, 0, 1, 4, 0, 0, 10, 7, 1, 0, 0, 0, 3, 5, 0, 2, 4, 0, 6, 8, 9, 3, 0, 0, 1, 4, 6, 3, 5, 0, 2, 3, 7, 1, 8, 4, 5],
+            2024: [2, 2, 3, 4, 1, 0, 0, 3, 5, 1, 0, 7, 0, 0, 0, 3, 5, 0, 0, 8, 6, 2, 0, 4, 5, 7, 1, 0, 3, 4, 8, 9, 3, 0, 1, 2, 3, 5, 0, 0, 0, 0],
+            2025: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        };
+
+        // Dates for the current year
+        const getDateLabels = (year) => {
+            return Array.from({ length: 365 }, (_, i) => {
+                const date = new Date(year, 0, 1); // Start from January 1st
+                date.setDate(i + 1); // Move to each day
+               
+            });
+        };
+
+        // Set up the initial year selection
+        const yearSelect = d3.select("#year-select");
+        Object.keys(contributionData).forEach(year => {
+            yearSelect.append("option").attr("value", year).text(year);
+        });
+        yearSelect.on("change", updateChart);
+
+        // Function to update the chart based on selected year
+        function updateChart() {
+            const selectedYear = +yearSelect.property("value");
+            const data = contributionData[selectedYear];
+            const dateLabels = getDateLabels(selectedYear);
+
+            // Define dimensions
+            const cellSize = 50;  // Size of each square
+            const gridWidth = 30; // Width of the grid (number of columns)
+            const gridHeight = Math.ceil(data.length / gridWidth); // Height based on data length
+
+            // Create SVG container
+            const svg = d3.select("#contributionChart").html(""); // Clear previous chart
+
+            // Create squares for the contributions
+            svg.selectAll(".day")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("class", "day")
+                .attr("x", (d, i) => (i % gridWidth) * cellSize)  // X position based on week
+                .attr("y", (d, i) => Math.floor(i / gridWidth) * cellSize)  // Y position based on day
+                .attr("width", cellSize)
+                .attr("height", cellSize)
+                .attr("fill", d => {
+                    // Set fill color based on contribution value
+                    if (d === 0) return "#ebedf0"; // No contribution
+                    if (d <= 3) return "#c6e48b"; // Low contribution
+                    if (d <= 6) return "#7bc96f"; // Medium contribution
+                    if (d <= 9) return "#239a3b"; // High contribution
+                    return "#196127"; // Very high contribution
+                });
+
+            // Add date labels
+            svg.selectAll(".label")
+                .data(dateLabels)
+                .enter()
+                .append("text")
+                .attr("class", "label")
+                .attr("x", (d, i) => (i % gridWidth) * cellSize + cellSize / 2) // Centered in each square
+                .attr("y", (d, i) => Math.floor(i / gridWidth) * cellSize + cellSize - 5) // Positioned near the bottom
+                .text(d => d)
+                .style("font-size", "10px")
+                .attr("text-anchor", "middle");
+        }
+
+        // Initialize chart with the first year
+        updateChart();
+    </script>
+
+
+
+
+
+
+
+
     <script>
 function toggleAccordion(header) {
     const content = header.parentElement;

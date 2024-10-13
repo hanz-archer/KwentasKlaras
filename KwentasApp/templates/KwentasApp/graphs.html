@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {% load static %}
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'KwentasApp/css/graphs.css' %}">
+  </head>
+  <body>
+    <div class="grid-container">
+
+      <!-- Header -->
+      <header class="header">
+        <div class="menu-icon" onclick="openSidebar()">
+          <span class="material-icons-outlined">menu</span>
+        </div>
+      </header>
+      <!-- End Header -->
+
+      <!-- Sidebar -->
+      <aside id="sidebar">
+        <div class="sidebar-title">
+          <div class="sidebar-brand">
+            <span class="material-icons-outlined">dashboard</span> Statistics
+          </div>
+          <span class="material-icons-outlined" onclick="closeSidebar()">close</span>
+        </div>
+
+        <ul class="sidebar-list">
+          <li class="sidebar-list-item" onclick="showSection('utilization')">
+            <a href="#">
+              <span class="material-icons-outlined">payments</span> Utilization Rate: <h3>{{ average_utilization|floatformat:"-2"  }} %</h3>
+            </a>
+          </li>
+
+          <li class="sidebar-list-item" onclick="showSection('spent')">
+            <a href="#">
+              <span class="material-icons-outlined">money</span> Spent
+            </a>
+          </li>
+
+          <li class="sidebar-list-item" onclick="showSection('comparison')" id="comparison_button">
+            <a href="#">
+              <span class="material-icons-outlined">query_stats</span> Comparisons
+            </a>
+          </li>
+
+          <li class="sidebar-list-item" onclick="showSection('department')">
+            <a href="#">
+              <span class="material-icons-outlined">diversity_3</span> Department
+            </a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End Sidebar -->
+
+      <!-- Main -->
+      <main class="main-container">
+
+
+        <!-- Comparison Section -->
+        <div class="charts" id="comparison" style="display: none;">
+        
+
+          <div class="charts-card">
+            <h2 class="chart-title">Comparison</h2>
+            <div id="comparison-chart"></div>
+          </div>
+        </div>
+        <span id="averageUtilization" style="display: none;">{{ average_utilization }}</span>
+        <!-- Utilization Rate Section -->
+        <div class="charts" id="utilization" style="display: none;">
+           
+            <div class="charts-card">
+              <h2 class="chart-title">Utilization Rate</h2>
+              <div id="utilization-chart"></div>
+            </div>
+          </div>
+
+        <!-- Spent Section -->
+       <!-- Spent Section -->
+<div class="charts" id="spent">
+  <div class="charts-card">
+    <h2 class="chart-title">Spent</h2>
+    <button id="toggle-view">Switch to Daily View</button>  <!-- Toggle button -->
+    <div id="spent-chart"></div>
+  </div>
+</div>
+
+        <!-- Department Section -->
+        <div class="charts" id="department" style="display: block;">
+          <div class="charts-card">
+              <h2 class="chart-title">Department Utilization Rates</h2>
+              <div id="department-chart"></div>
+          </div>
+      </div>
+
+        <div class="back-button-container">
+            <a href="{% url 'homepage' %}">
+                <button class="back-btn">Back</button>
+            </a>
+        </div>
+      </main>
+      <!-- End Main -->
+
+    </div>
+
+    <!-- Scripts -->
+    <!-- ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <!-- Custom JS -->
+
+
+    <script>
+   
+      // Function to show the selected section and hide others
+      function showSection(sectionId) {
+        // List of all section IDs
+        const sections = ['comparison', 'utilization', 'spent', 'department'];
+
+        sections.forEach(id => {
+          const section = document.getElementById(id);
+          if (id === sectionId) {
+            section.style.display = 'grid';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+
+        // Optional: Highlight the active sidebar button
+        highlightActiveButton(sectionId);
+      }
+
+   // Function to highlight the active sidebar button
+function highlightActiveButton(activeId) {
+  const buttons = document.querySelectorAll('.sidebar-list-item');
+  
+  buttons.forEach(button => {
+    // Reset background color and text color for all buttons and <a> elements
+    button.style.backgroundColor = '';
+    const link = button.querySelector('a');
+    if (link) {
+      link.style.color = ''; // Reset the link color
+    }
+  });
+
+  // Set background color for the active button
+  const activeButton = document.querySelector(`.sidebar-list-item[onclick="showSection('${activeId}')"]`);
+  if (activeButton) {
+    activeButton.style.backgroundColor = 'blue'; // Change to desired color
+
+    const activeLink = activeButton.querySelector('a');
+    if (activeLink) {
+      activeLink.style.color = 'white'; // Set the link color to white
+    }
+  }
+}
+
+
+      // Initialize by showing the main section
+      document.addEventListener('DOMContentLoaded', () => {
+        showSection('utilization');
+      });
+    </script>
+
+
+
+<!-- Utilization rate chart -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Get the average utilization from the context in your template
+    var utilizationValue = parseFloat(document.getElementById("averageUtilization").textContent);
+
+
+
+    // Check if the value is valid
+    if (isNaN(utilizationValue) || utilizationValue < 0 || utilizationValue > 100) {
+        console.error("Invalid utilization value!");
+        utilizationValue = 0; // Fallback value if invalid
+    }
+
+    // UTILIZATION RATE CHART (Utilization Section)
+    const utilizationChartOptions = {
+        series: [utilizationValue], // Use the fetched utilization value
+        chart: {
+            type: 'radialBar',
+            background: 'transparent',
+            height: 350,
+            toolbar: {
+                show: false,
+            },
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '70%',
+                },
+                track: {
+                    background: '#89CFF0', // Color for the remaining portion (track)
+                    strokeWidth: '100%',
+                },
+                dataLabels: {
+                    name: {
+                        show: true,
+                        fontSize: '16px',
+                        color: '#000',
+                        offsetY: -10,
+                    },
+                    value: {
+                        show: true,
+                        fontSize: '22px',
+                        color: '#000',
+                        formatter: function (val) {
+                            return val + '%';
+                        },
+                    },
+                },
+            },
+        },
+        colors: ['#0000FF'], // Color for the utilized portion
+        labels: ['Overall Utilization Rate'],
+        tooltip: {
+            theme: 'dark',
+        },
+    };
+
+    // Ensure the chart element is in the DOM
+    const chartElement = document.querySelector('#utilization-chart');
+    if (chartElement) {
+        const utilizationChart = new ApexCharts(chartElement, utilizationChartOptions);
+        utilizationChart.render();
+    } else {
+        console.error("Chart element not found!");
+    }
+});
+
+</script>
+<!--Spent Chart-->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const toggleButton = document.getElementById('toggle-view');
+      let currentView = 'monthly';  // Track the current view (monthly or daily)
+      
+      function fetchAndRenderData(view) {
+          const apiUrl = view === 'monthly' ? '/api/get_monthly_expenses/' : '/api/get_daily_expenses/';
+
+          fetch(apiUrl)
+              .then(response => response.json())
+              .then(expenses => {
+                  let labels, data;
+
+                  if (view === 'monthly') {
+                      // Monthly view: convert month labels to human-readable format
+                      const monthNames = ["January", "February", "March", "April", "May", "June",
+                                          "July", "August", "September", "October", "November", "December"];
+                      const sortedMonths = Object.keys(expenses).sort((a, b) => new Date(a) - new Date(b));
+                      labels = sortedMonths.map(date => {
+                          const [year, month] = date.split('-');
+                          return `${monthNames[parseInt(month) - 1]} ${year}`;
+                      });
+                      data = sortedMonths.map(date => expenses[date]);
+
+                  } else {
+                      // Daily view: display daily dates directly
+                      const sortedDays = Object.keys(expenses).sort((a, b) => new Date(a) - new Date(b));
+                      labels = sortedDays;  // Use the dates directly for daily view
+                      data = sortedDays.map(date => expenses[date]);
+                  }
+
+                  // Configure ApexCharts options
+                  const options = {
+                      chart: {
+                          type: 'line',
+                          height: 350,
+                          background: 'transparent'
+                      },
+                      series: [{
+                          name: 'Total Spent',
+                          data: data
+                      }],
+                      xaxis: {
+                          categories: labels,
+                          title: {
+                              text: view === 'monthly' ? 'Months' : 'Days',
+                              style: {
+                                  color: '#333'
+                              }
+                          }
+                      },
+                      yaxis: {
+                          title: {
+                              text: 'Total Spent',
+                              style: {
+                                  color: '#333'
+                              }
+                          },
+                          labels: {
+                              formatter: function (val) {
+                                  return `₱${val.toFixed(2)}`;
+                              }
+                          }
+                      },
+                      stroke: {
+                          curve: 'smooth'
+                      },
+                      markers: {
+                          size: 4
+                      },
+                      dataLabels: {
+                          enabled: false
+                      },
+                      tooltip: {
+                          theme: 'dark',
+                          y: {
+                              formatter: function (val) {
+                                  return `₱${val.toFixed(2)}`;
+                              }
+                          },
+                          style: {
+                              fontSize: '12px',
+                              color: '#000'
+                          }
+                      },
+                      colors: ['#4bc0c0'],
+                      legend: {
+                          labels: {
+                              colors: '#000'
+                          },
+                          markers: {
+                              hover: {
+                                  fillColor: '#000'
+                              }
+                          }
+                      }
+                  };
+
+                  // Ensure the chart element is in the DOM
+                  const chartElement = document.querySelector('#spent-chart');
+                  if (chartElement) {
+                      const spentChart = new ApexCharts(chartElement, options);
+                      spentChart.render();
+                  } else {
+                      console.error("Chart element not found!");
+                  }
+              })
+              .catch(error => console.error('Error fetching data:', error));
+      }
+
+      // Initial render with monthly data
+      fetchAndRenderData(currentView);
+
+      // Toggle between monthly and daily views
+      toggleButton.addEventListener('click', function () {
+          currentView = currentView === 'monthly' ? 'daily' : 'monthly';
+          toggleButton.textContent = currentView === 'monthly' ? 'Switch to Monthly View' : 'Switch to Daily View';
+          fetchAndRenderData(currentView);
+      });
+  });
+</script>
+
+<!--Comparison Chart-->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      // Fetch monthly comparison data
+      fetch('/api/get_monthly_comparison/')  // Adjust this URL to your Django endpoint
+          .then(response => response.json())
+          .then(data => {
+              // Prepare data for the chart
+              const months = data.months;
+              const totalDisbursements = months.map(month => data.total_disbursements[month] || 0);
+              const totalObligations = months.map(month => data.total_obligations[month] || 0);
+  
+              // Create the chart
+              const options = {
+                  chart: {
+                      height: 400,
+                      type: 'line',
+                      zoom: {
+                          enabled: false
+                      },
+                      toolbar: {
+                          show: true
+                      }
+                  },
+                  colors: ['#008FFB', '#FF4560'], // Colors for the lines
+                  series: [
+                      {
+                          name: 'Total Disbursements',
+                          type: 'line',
+                          data: totalDisbursements
+                      },
+                      {
+                          name: 'Total Obligations',
+                          type: 'line',
+                          data: totalObligations
+                      }
+                  ],
+                  xaxis: {
+                      categories: months,
+                      title: {
+                          text: 'Months',
+                          style: {
+                              fontSize: '12px',
+                              color: '#888'
+                          }
+                      }
+                  },
+                  yaxis: {
+                      title: {
+                          text: 'Amount',
+                          style: {
+                              fontSize: '12px',
+                              color: '#888'
+                          }
+                      },
+                      min: 0,
+                      forceNiceScale: true
+                  },
+                  tooltip: {
+                    theme: 'dark',
+                      shared: true,
+                      intersect: false,
+                      x: {
+                          formatter: function (val) {
+                              return 'Month: ' + val;
+                          }
+                      },
+                      y: {
+                          formatter: function (val) {
+                              return '₱' + val.toFixed(2); // Formatting y values
+                          }
+                      }
+                  },
+                  markers: {
+                      size: 4,
+                      hover: {
+                          size: 7
+                      }
+                  },
+                  title: {
+                      text: 'Monthly Comparison of Disbursements and Obligations',
+                      align: 'center',
+                      style: {
+                          fontSize: '20px',
+                          color: '#333',
+                          fontWeight: 'bold'
+                      }
+                  },
+                  grid: {
+                      borderColor: '#e7e7e7',
+                      row: {
+                          colors: ['#f3f3f3', 'transparent'], // alternate row colors
+                          opacity: 0.5
+                      }
+                  }
+              };
+  
+              const chart = new ApexCharts(document.querySelector("#comparison-chart"), options);
+              chart.render();
+          })
+          .catch(error => console.error('Error fetching comparison data:', error));
+  });
+</script>
+  
+<!--Department utilization rate-->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Function to fetch the department utilization rate data
+      async function fetchDepartmentUtilizationRate() {
+          try {
+              const response = await fetch('/api/get_department_utilization_rate/');
+              const data = await response.json();
+              
+              console.log(data);  // Log data for debugging
+
+              // Convert data to chart format
+              const departments = Object.keys(data);
+              const utilizationRates = Object.values(data);
+
+              if (departments.length && utilizationRates.length) {
+                  // Create the chart
+                  createDepartmentChart(departments, utilizationRates);
+              } else {
+                  console.error("No data found for departments or utilization rates.");
+              }
+
+          } catch (error) {
+              console.error('Error fetching department utilization data:', error);
+          }
+      }
+
+      // Function to create the ApexCharts bar chart
+      function createDepartmentChart(departments, utilizationRates) {
+          try {
+              var options = {
+                  chart: {
+                      type: 'bar',
+                      height: 350,
+                      background: 'transparent'
+                  },
+                  series: [{
+                      name: 'Utilization Rate',
+                      data: utilizationRates
+                  }],
+                  xaxis: {
+                      categories: departments,
+                      title: {
+                          text: 'Departments',
+                          style: {
+                              color: '#333'
+                          }
+                      }
+                  },
+                  yaxis: {
+                      title: {
+                          text: 'Utilization Rate (%)',
+                          style: {
+                              color: '#333'
+                          }
+                      }
+                  },
+                  title: {
+                      text: 'Utilization Rate by Department',
+                      align: 'center'
+                  },
+                  tooltip: {
+                      y: {
+                          formatter: function (value) {
+                              return value + '%';  // Append % to the tooltip value
+                          }
+                      }
+                  },
+                  colors: ['#4bc0c0'],
+                  legend: {
+                      labels: {
+                          colors: '#000'
+                      }
+                  }
+              };
+
+              var chart = new ApexCharts(document.querySelector("#department-chart"), options);
+              chart.render();
+          } catch (error) {
+              console.error("Error rendering the chart:", error);
+          }
+      }
+
+      // Fetch and render the department utilization rate chart when the page loads
+      fetchDepartmentUtilizationRate();
+  });
+</script>
+</body>
+</html>
