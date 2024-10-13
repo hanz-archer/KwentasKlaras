@@ -1043,7 +1043,7 @@ def reports_view(request):
     print(f"Projects Below 50%: {count_below_50}")
     print(f"Projects Above 50%: {count_above_50}")
 
-    return render(request, 'KwentasApp/stats.html', {
+    return render(request, 'KwentasApp/graphs.html', {
         'average_utilization': average_utilization,
         'below_50_utilization': below_50_utilization,
         'above_50_utilization': above_50_utilization,
@@ -1199,7 +1199,134 @@ def get_monthly_expenses_view(request):
     return JsonResponse(monthly_expenses)
 
 
-def samplechart(request):
-    return render(request, 'KwentasApp/samplecharts.html')
 
 
+
+from django.http import JsonResponse
+from datetime import datetime
+
+def get_daily_expenses():
+    result = database.child('Data').get()
+
+    daily_expenses = {}
+
+    if result.val():
+        for key, value in result.val().items():
+            if key == 'placeholder':
+                continue
+
+            # Check if disbursement node exists and aggregate the spent amounts by day
+            if 'disbursement' in value:
+                for disbursement_key, disbursement_value in value['disbursement'].items():
+                    date = disbursement_value.get('date')
+                    spent = disbursement_value.get('disbursement')
+
+                    if date and spent:
+                        day = date[:10]  # Extract YYYY-MM-DD from date
+                        spent = float(spent)  # Ensure spent is a float number
+
+                        # Aggregate spent by day
+                        if day in daily_expenses:
+                            daily_expenses[day] += spent
+                        else:
+                            daily_expenses[day] = spent
+
+    return daily_expenses
+
+
+def get_daily_expenses_view(request):
+    daily_expenses = get_daily_expenses()
+    return JsonResponse(daily_expenses)
+
+
+def get_monthly_comparison():
+    result = database.child('Data').get()
+
+    monthly_comparison = {
+        'months': [],
+        'total_disbursements': {},
+        'total_obligations': {}
+    }
+
+    if result.val():
+        for key, value in result.val().items():
+            if key == 'placeholder':
+                continue
+
+            # Aggregate disbursements
+            if 'disbursement' in value:
+                for obligation_key, obligation_value in value['disbursement'].items():
+                    date = obligation_value.get('date')
+                    disbursement_amount = obligation_value.get('disbursement')
+
+                    if date and disbursement_amount:
+                        month = date[:7]  # Extract YYYY-MM from date
+                        disbursement_amount = float(disbursement_amount)
+
+                        if month in monthly_comparison['total_disbursements']:
+                            monthly_comparison['total_disbursements'][month] += disbursement_amount
+                        else:
+                            monthly_comparison['total_disbursements'][month] = disbursement_amount
+
+            # Aggregate obligations (assumed similar structure, adjust based on actual data)
+            if 'obligation' in value:
+                for obligation_key, obligation_value in value['obligation'].items():
+                    date = obligation_value.get('date')
+                    obligation_amount = obligation_value.get('obligation')
+
+                    if date and obligation_amount:
+                        month = date[:7]  # Extract YYYY-MM from date
+                        obligation_amount = float(obligation_amount)
+
+                        if month in monthly_comparison['total_obligations']:
+                            monthly_comparison['total_obligations'][month] += obligation_amount
+                        else:
+                            monthly_comparison['total_obligations'][month] = obligation_amount
+
+        # Sort months to maintain chronological order
+        monthly_comparison['months'] = sorted(set(monthly_comparison['total_disbursements'].keys()) | set(monthly_comparison['total_obligations'].keys()))
+
+    return monthly_comparison
+
+
+def get_monthly_comparison_view(request):
+    monthly_comparison = get_monthly_comparison()
+    return JsonResponse(monthly_comparison)
+
+
+
+
+
+
+
+
+from collections import defaultdict
+
+def get_department_utilization_rate():
+    # Get project entries
+    entries_below_2024, entries_2024_and_above, all_entries = get_project_entries()
+
+    # Dictionary to store total utilization and count per department
+    department_data = defaultdict(lambda: {'total_utilization': 0, 'count': 0})
+
+    # Iterate through all entries
+    for entry in all_entries:
+        department = entry['implementing_unit']
+        utilization_rate = entry.get('utilization_rate', 0)  # Default to 0 if utilization_rate is missing
+
+        # Add utilization rate to the department's total
+        department_data[department]['total_utilization'] += float(utilization_rate)
+        department_data[department]['count'] += 1
+
+    # Calculate average utilization rate per department
+    department_utilization_rates = {}
+    for department, data in department_data.items():
+        if data['count'] > 0:
+            average_utilization = data['total_utilization'] / data['count']
+            department_utilization_rates[department] = round(average_utilization, 2)
+
+    return department_utilization_rates
+
+def get_department_utilization_rate_view(request):
+    department_utilization_rate = get_department_utilization_rate()
+    return JsonResponse(department_utilization_rate)
