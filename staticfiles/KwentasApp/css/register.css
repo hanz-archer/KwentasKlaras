@@ -277,5 +277,34 @@ a{
     background: #f0f0f0;
 }
 
+.input-wrapper {
+    position: relative;
+}
+
+.input {
+    width: calc(100% - 100px); /* Adjust width to accommodate the button */
+    padding-right: 100px; /* Space for the button */
+}
+
+.trigger-button {
+    position: absolute;
+    right: 10px; /* Adjust positioning */
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #007BFF; /* Adjust button color */
+    color: white; /* Text color */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.trigger-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+
+
+
 
 

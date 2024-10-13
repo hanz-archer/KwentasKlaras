@@ -315,12 +315,6 @@ def registration_view(request):
         form = RegistrationForm()
     return render(request, 'KwentasApp/register.html', {'form': form})
 
-
-
-
-
-
-
 def register_page(request):
     return render(request,'KwentasApp/register.html')
 
