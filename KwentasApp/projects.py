@@ -1043,13 +1043,49 @@ def reports_view(request):
     print(f"Projects Below 50%: {count_below_50}")
     print(f"Projects Above 50%: {count_above_50}")
 
-    return render(request, 'KwentasApp/graphs.html', {
+    return render(request, 'KwentasApp/stats.html', {
         'average_utilization': average_utilization,
         'below_50_utilization': below_50_utilization,
         'above_50_utilization': above_50_utilization,
         'count_below_50': count_below_50,
         'count_above_50': count_above_50,
     })
+
+
+
+@login_required
+def graphs(request):
+    _, _, all_entries = get_project_entries()
+
+    utilization_rates = []  # List to hold utilization rates
+    total_utilization = 0
+    total_entries = 0
+
+    for entry in all_entries:
+        if 'utilization_rate' in entry and entry['utilization_rate'] is not None:
+            utilization_rate = entry['utilization_rate']
+            utilization_rates.append(utilization_rate)  # Collect utilization rates
+            total_utilization += utilization_rate  # Sum up utilization rates
+            total_entries += 1  # Count entries
+
+    # Calculate average utilization rate
+    average_utilization = total_utilization / total_entries if total_entries > 0 else 0
+
+
+    return render(request, 'KwentasApp/graphs.html', {
+        'utilization_rates': utilization_rates,
+        'average_utilization': average_utilization,  # Pass average utilization to the template
+    })
+
+
+
+
+
+
+
+
+
+
 
 def all_projects(request):
     _, _, all_entries = get_project_entries()

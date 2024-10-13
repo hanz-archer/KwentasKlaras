@@ -27,6 +27,7 @@ urlpatterns = [
     path('register_page/', views.register_page, name='register_page'),
     path('logout/', views.logout_view, name='logout'),
     path('reports/', reports_view, name='reports'),
+     path('graphs/', graphs, name='graphs'),
     path('homepage/', views.homepage, name='homepage'),
     path('unset_just_logged_in/', unset_just_logged_in, name='unset_just_logged_in'),
     path('forgot-password/', views.forgotpassword, name='forgot-password'),
