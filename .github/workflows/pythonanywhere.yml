@@ -1,0 +1,38 @@
+name: Deploy to PythonAnywhere
+
+on:
+  push:
+    branches:
+      - master  # Change this to your main branch if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'  # Specify your Python version
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Adjust if necessary
+
+    - name: Deploy to PythonAnywhere
+      env:
+        PYTHONANYWHERE_USERNAME: ${{ secrets.PYTHONANYWHERE_USERNAME }}
+        PYTHONANYWHERE_API_TOKEN: ${{ secrets.PYTHONANYWHERE_API_TOKEN }}
+        PYTHONANYWHERE_APP_NAME: ${{ secrets.PYTHONANYWHERE_APP_NAME }}
+        PYTHONANYWHERE_DOMAIN_NAME: ${{ secrets.PYTHONANYWHERE_DOMAIN_NAME }}
+      run: |
+        curl --user "${PYTHONANYWHERE_USERNAME}:${PYTHONANYWHERE_API_TOKEN}" \
+             --data "source=git" \
+             --data "url=https://github.com/hanz-archer/KwentasKlaras.git" \
+             --data "branch=master" \
+             --data "app=${PYTHONANYWHERE_APP_NAME}" \
+             https://www.pythonanywhere.com/api/v0/user/${PYTHONANYWHERE_USERNAME}/webapps/${PYTHONANYWHERE_APP_NAME}/reload/

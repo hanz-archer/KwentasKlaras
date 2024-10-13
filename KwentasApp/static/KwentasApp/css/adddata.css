@@ -397,5 +397,12 @@ a {
     background: #f0f0f0;
 }
 
+    .custom-popup {
+        font-family: 'Poppins', sans-serif; /* Ensure modern font usage */
+        width: 90%; /* Responsive width */
+        max-width: 500px; /* Limit the max width */
+    }
+
+
 
 

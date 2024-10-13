@@ -46,4 +46,5 @@ path('api/get_department_utilization_rate/', get_department_utilization_rate_vie
     path('verify-otp/', views.verify_otp, name='verify_otp'),
     path('get_2fa_status/', views.get_2fa_status, name='get_2fa_status'),
     path('validate_password/', views.validate_password, name='validate_password'),
+     path('send_verification_code/', send_verification_code, name='send_verification_code'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
