@@ -58,6 +58,12 @@
               <span class="material-icons-outlined">diversity_3</span> Department
             </a>
           </li>
+
+          <li class="sidebar-list-item">
+            <a href="{% url 'homepage' %}">
+              <span class="material-icons-outlined">arrow_back</span> Homepage
+            </a>
+          </li>          
         </ul>
       </aside>
       <!-- End Sidebar -->
@@ -75,7 +81,7 @@
             <div id="comparison-chart"></div>
           </div>
         </div>
-        <span id="averageUtilization" style="display: none;">{{ average_utilization }}</span>
+        <span id="averageUtilization" style="display: none;">{{ average_utilization|floatformat:"-2" }}</span>
         <!-- Utilization Rate Section -->
         <div class="charts" id="utilization" style="display: none;">
            
@@ -101,12 +107,6 @@
                 <h2 class="chart-title">Department Utilization Rates</h2>
                 <div id="department-chart"></div>
             </div>
-        </div>
-
-        <div class="back-button-container">
-            <a href="{% url 'homepage' %}">
-                <button class="back-btn">Back</button>
-            </a>
         </div>
       </main>
       <!-- End Main -->

@@ -116,22 +116,17 @@ body {
     padding: 20px 20px;
     color: rgba(255, 255, 255, 0.95);
   }
-  
-  
   .charts {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    max-height: 350px;
   }
   
   .charts .charts-card:only-child {
     grid-column: 1 / -1; /* Span the entire width */
   }
-  
-  
-  
-  
-  
+
   .charts-card {
     background-color: white;
     margin-bottom: 5px;
@@ -147,7 +142,6 @@ body {
     align-items: center;
     justify-content: center;
     color: black;
-  
   
   }
 
@@ -171,27 +165,6 @@ transition: 0.3s;
     
   
   }
-  
-  .back-btn {
-    background-color: blue;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s, transform 0.3s; /* Added transform for smooth scaling */
-  
-    font-weight: 700;
-  }
-  
-  .back-btn:hover {
-  
-    transform: scale(1.2); /* Scale the button to 110% on hover */
-  }
-  
-  
-  
   /* ---------- MEDIA QUERIES ---------- */
   
   /* Medium <= 992px */
