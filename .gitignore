@@ -1,1 +1,10 @@
+# Ignore the SQLite database file
 db.sqlite3
+
+# Ignore database migration files (optional, but helpful)
+**/migrations/*
+!**/migrations/__init__.py
+
+# Ignore Python bytecode and cache files
+*.pyc
+__pycache__/
