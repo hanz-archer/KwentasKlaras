@@ -81,47 +81,56 @@
                     <div class="header">
                         <i class='bx bx-line-chart'></i>
                         <h3>Projects Above 50% Utilization Rate</h3>
+                        <a href="#" class="report">
+                            <i class='bx bx-video'></i>
+                            <span>Switch to visual reports mode</span>
+                        </a>
                     </div>
                     <div class="accordion">
                         {% for entry in above_50_utilization %}
-                            <div class="accordion-item">
-                                <div class="accordion-header" onclick="toggleAccordion(this)">
-                                    <h4>Project Code: {{ entry.code }} ({{entry.implementing_unit}})</h4>
-                                    <span class="arrow">▼</span>
+                        <div class="accordion-content {% if entry.utilization_rate < 20 %}red{% elif 20 <= entry.utilization_rate < 50 %}green{% endif %}">
+                            <header onclick="toggleAccordion(this)">
+                                <div class="title">
+                                    <strong>Project Code {{ entry.code }} by ({{ entry.implementing_unit }}):</strong> {{ entry.ppa }}
                                 </div>
-                                <div class="accordion-content">
-                                    <div class="project-entry">
-                                        <p><strong>Budget:</strong> {{ entry.total }}</p>
-                                        <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate }}%</p>
-                                    </div>
+                                <div class="status">
+                                    {% if entry.utilization_rate < 20 %}Budget Underutilized{% elif 20 <= entry.utilization_rate <= 50 %}Above 20% Utilization{% endif %}
                                 </div>
+                                <span class="arrow">▼</span>
+                            </header>
+                            <div class="description">
+                                <p><strong>Project Budget:</strong> ₱{{ entry.overall_budget|intcomma }}</p>
+                                <p><strong>Project Obligation:</strong> ₱{{ entry.total_obligations|intcomma }}</p>
+                                <p><strong>Project Remaining Balance:</strong> ₱{{ entry.remaining_total_balance|intcomma }}</p>
+                                <p><strong>Utilization Rate:</strong> {{ entry.utilization_rate|floatformat:"-2" }}%</p>
                             </div>
+                        </div>
                         {% endfor %}
-                    </div>
+                    </div>   
                 </div>                
             </div>
         </main>
     </div> 
     <form action="{%url 'homepage' %}"> {% csrf_token %}<input type="submit" value="Back" class="btn sticky-btn"/></form>
-    <script>
-function toggleAccordion(header) {
-    const content = header.parentElement;
-    const isOpen = content.classList.contains('open');
+            <script>
+        function toggleAccordion(header) {
+            const content = header.parentElement;
+            const isOpen = content.classList.contains('open');
 
-    // Close all other accordions
-    document.querySelectorAll('.accordion-content').forEach(item => {
-        if (item !== content) {
-            item.classList.remove('open');
+            // Close all other accordions
+            document.querySelectorAll('.accordion-content').forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('open');
+                }
+            });
+
+            // Toggle the clicked accordion
+            content.classList.toggle('open', !isOpen);
         }
-    });
-
-    // Toggle the clicked accordion
-    content.classList.toggle('open', !isOpen);
-}
-       ;
- 
-   
-    </script>
+            ;
+        
+        
+            </script>
 <script>
     function showCard(cardId) {
   // Hide all cards except the one to show

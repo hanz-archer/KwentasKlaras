@@ -476,7 +476,10 @@ canvas {
     border-color: #ffa500; /* Slightly darker orange border */
 }
 
-
+.accordion-content.green {
+    background-color: #c8e6c9; /* Soft, minty green background */
+    border-color: #a5d6a7; /* Slightly darker mint green border */
+}
 /* Header Styles */
 .accordion-content header {
     display: flex;
@@ -498,7 +501,6 @@ canvas {
     flex: 1; /* Ensures title takes up remaining space */
 }
 
-
 .accordion-content header .status {
     font-size: 14px;
     font-weight: 400;
@@ -515,6 +517,12 @@ canvas {
 .accordion-content.yellow .status {
     color: #ff8c00; /* Cool orange color */
 }
+
+/* Status for above 50% utilization */
+.accordion-content.green .status {
+    color: #2e7d32; /* Cool green color */
+}
+
 
 
 .accordion-content header .arrow {
