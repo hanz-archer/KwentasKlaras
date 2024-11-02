@@ -69,14 +69,14 @@
             </div>
             <h3>OBLIGATIONS / DISBURSEMENTS</h3>
             <form action="{% url 'obligations' %}" method="get" onsubmit="showLoader()">
-              <button type="submit" class="btn">Obligations</button>
+              <button type="submit" class="btn"><i class="fas fa-money-bill"></i> Obligations</button>
             </form>
          
               <form action="{% url 'disbursements' %}" method="get" onsubmit="showLoader()">
-                <button type="submit" class="btn">Disbursement</button>
+                <button type="submit" class="btn"><i class="fas fa-money-check-dollar"></i> Disbursement</button>
               </form>
               <form action="" method="get" onsubmit="showLoader()">
-                <button type="submit" class="btn">Check Payment</button>
+                <button type="submit" class="btn"><i class="fas fa-check"></i> Check Payment</button>
               </form>
           </div>
         </div>
@@ -94,15 +94,15 @@
         <div class="column">
           <div class="card">
             <div class="icon-wrapper">
-              <i class="fas fa-money-check-alt"></i>
+              <i class="fas fa-line-chart"></i>
             </div>
             <h3>Reports</h3>
             <form action="{% url 'graphs' %}" method="get" onsubmit="showLoader()">
-              <button type="submit" class="btn">Dashboard</button>
+              <button type="submit" class="btn"><i class="fas fa-dashboard"></i> Dashboard</button>
             </form>
          
               <form action="{% url 'all_projects' %}" method="get" onsubmit="showLoader()">
-                <button type="submit" class="btn">Generate Reports</button>
+                <button type="submit" class="btn"><i class="fas fa-download"></i> Generate Reports</button>
               </form>
              
           </div>
