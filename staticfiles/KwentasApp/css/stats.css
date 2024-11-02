@@ -116,7 +116,6 @@ ul.insights li {
 
 ul.insights li:hover {
     background-color: #e0e0e0; /* Background color on hover */
-    transform: scale(1.15); /* Scale effect on hover */
 }
 
 ul.insights li i {
@@ -352,10 +351,6 @@ canvas {
     background-color: #f9f9f9; /* Light background for each item */
     cursor: pointer;
 }
-
-
-
-
 .project-entry h2, .project-entry p {
     margin: 0;
     padding: 5px 0; 
@@ -476,7 +471,10 @@ canvas {
     border-color: #ffa500; /* Slightly darker orange border */
 }
 
-
+.accordion-content.green {
+    background-color: #c8e6c9; /* Soft, minty green background */
+    border-color: #a5d6a7; /* Slightly darker mint green border */
+}
 /* Header Styles */
 .accordion-content header {
     display: flex;
@@ -497,7 +495,6 @@ canvas {
     color: #333;
     flex: 1; /* Ensures title takes up remaining space */
 }
-
 
 .accordion-content header .status {
     font-size: 14px;
