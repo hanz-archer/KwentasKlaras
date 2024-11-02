@@ -116,7 +116,6 @@ ul.insights li {
 
 ul.insights li:hover {
     background-color: #e0e0e0; /* Background color on hover */
-    transform: scale(1.15); /* Scale effect on hover */
 }
 
 ul.insights li i {
@@ -352,10 +351,6 @@ canvas {
     background-color: #f9f9f9; /* Light background for each item */
     cursor: pointer;
 }
-
-
-
-
 .project-entry h2, .project-entry p {
     margin: 0;
     padding: 5px 0; 

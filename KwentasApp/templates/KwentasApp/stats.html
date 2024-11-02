@@ -94,7 +94,7 @@
                                     <strong>Project Code {{ entry.code }} by ({{ entry.implementing_unit }}):</strong> {{ entry.ppa }}
                                 </div>
                                 <div class="status">
-                                    {% if entry.utilization_rate < 20 %}Budget Underutilized{% elif 20 <= entry.utilization_rate <= 50 %}Above 20% Utilization{% endif %}
+                                    {% if entry.utilization_rate < 20 %}Budget Underutilized{% elif 20 <= entry.utilization_rate <= 50 %}Above 50% Utilization{% endif %}
                                 </div>
                                 <span class="arrow">▼</span>
                             </header>
@@ -112,7 +112,7 @@
         </main>
     </div> 
     <form action="{%url 'homepage' %}"> {% csrf_token %}<input type="submit" value="Back" class="btn sticky-btn"/></form>
-            <script>
+    <script>
         function toggleAccordion(header) {
             const content = header.parentElement;
             const isOpen = content.classList.contains('open');
@@ -132,25 +132,25 @@
         
             </script>
 <script>
-    function showCard(cardId) {
-  // Hide all cards except the one to show
-  var cards = document.querySelectorAll('.bottom-data .card');
-  cards.forEach(function(card) {
-      if (card.id !== cardId) {
-          card.style.display = 'none';
-      }
-  });
+function showCard(cardId) {
+    // Hide all cards except the one to show
+    var cards = document.querySelectorAll('.bottom-data .card');
+    cards.forEach(function(card) {
+        if (card.id !== cardId) {
+            card.style.display = 'none';
+        }
+    });
 
-  // Show the selected card
-  var selectedCard = document.getElementById(cardId);
-  if (selectedCard) {
-      selectedCard.style.display = 'flex';
-  }
+    // Show the selected card
+    var selectedCard = document.getElementById(cardId);
+    if (selectedCard) {
+        selectedCard.style.display = 'block'; // Set display to block
+    }
 }
 
 // Show the 'ur' card by default when the page loads
 document.addEventListener('DOMContentLoaded', function() {
-  showCard('below');
+    showCard('below');
 });
 </script>
 </body>
