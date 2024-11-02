@@ -112,25 +112,6 @@
         </main>
     </div> 
     <form action="{%url 'homepage' %}"> {% csrf_token %}<input type="submit" value="Back" class="btn sticky-btn"/></form>
-    <script>
-        function toggleAccordion(header) {
-            const content = header.parentElement;
-            const isOpen = content.classList.contains('open');
-
-            // Close all other accordions
-            document.querySelectorAll('.accordion-content').forEach(item => {
-                if (item !== content) {
-                    item.classList.remove('open');
-                }
-            });
-
-            // Toggle the clicked accordion
-            content.classList.toggle('open', !isOpen);
-        }
-            ;
-        
-        
-            </script>
 <script>
 function showCard(cardId) {
     // Hide all cards except the one to show
@@ -152,6 +133,25 @@ function showCard(cardId) {
 document.addEventListener('DOMContentLoaded', function() {
     showCard('below');
 });
+</script>
+<script>
+    function toggleAccordion(header) {
+        const content = header.parentElement;
+        const isOpen = content.classList.contains('open');
+
+        // Close all other accordions
+        document.querySelectorAll('.accordion-content').forEach(item => {
+            if (item !== content) {
+                item.classList.remove('open');
+            }
+        });
+
+        // Toggle the clicked accordion
+        content.classList.toggle('open', !isOpen);
+    }
+        ;
+    
+    
 </script>
 </body>
 </html>
