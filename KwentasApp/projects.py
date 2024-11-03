@@ -1,21 +1,21 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.db.models import F, ExpressionWrapper, FloatField
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
-from django.core.cache import cache
-from django.core.cache import cache
-from io import BytesIO
-from docx import Document
-from .firebase import database
-import firebase_admin
-from firebase_admin import credentials, db
-import datetime
-import re
-from easyaudit.models import CRUDEvent
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
-from KwentasApp.models import FirebaseEntry
+from django.shortcuts import render, redirect, get_object_or_404  # Render templates, redirect views, retrieve an object or 404 if not found
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse  # HTTP response types for returning plain text, redirection, JSON data
+from django.db.models import F, ExpressionWrapper, FloatField  # Allows field expressions and calculations directly in database queries
+from django.contrib.auth.decorators import login_required  # Decorator to restrict view access to authenticated users only
+from django.core.paginator import Paginator  # Paginator for splitting large datasets across multiple pages
+from django.core.cache import cache  # Cache framework to store and retrieve data for performance optimization
+from io import BytesIO  # In-memory byte streams, useful for temporary file handling
+from docx import Document  # For creating and manipulating Word documents
+from .firebase import database  # Imports Firebase database helper functions from local `firebase` module
+import firebase_admin  # Firebase Admin SDK for managing Firebase services
+from firebase_admin import credentials, db  # For Firebase credentials and accessing the Firebase database
+import datetime  # Module for handling date and time operations
+import re  # Regular expressions for pattern matching in strings
+from easyaudit.models import CRUDEvent  # Model for logging Create, Read, Update, Delete (CRUD) events
+from django.contrib.contenttypes.models import ContentType  # Allows referencing Django models generically using content types
+from django.contrib.auth.models import User  # Django's built-in User model for user management
+from KwentasApp.models import FirebaseEntry  # Custom model representing an entry in Firebase database
+
 
 
 def create_entry(request):
@@ -532,13 +532,6 @@ def add_budget(request, project_type):
     else:
         return HttpResponse("Method not allowed", status=405)
 
-
-
-
-
-
-
-
 def obligations(request):
     _, _, all_entries = get_project_entries()
     query = request.GET.get('query', '')  # Default to empty string if query is None
@@ -915,11 +908,6 @@ def update_entry(request, project_type):
     else:
         return HttpResponse(f'<script>alert("Method not allowed"); window.location.href = "{redirect_url}";</script>', status=405)
 
-
-
-    
-
-
 # Function to ensure the placeholder exists
 def ensure_placeholder():
     data = database.child('Data').get().val()
@@ -995,15 +983,7 @@ def current_delete_entry(request):
     else:
         return redirect('current_projects')
 
-    
-
-
-
-
-
-
 from django.contrib.auth.decorators import login_required
-
 @login_required
 def reports_view(request):
     _, _, all_entries = get_project_entries()
@@ -1046,8 +1026,6 @@ def reports_view(request):
         'count_above_50': count_above_50,
     })
 
-
-
 @login_required
 def graphs(request):
     _, _, all_entries = get_project_entries()
@@ -1071,16 +1049,6 @@ def graphs(request):
         'utilization_rates': utilization_rates,
         'average_utilization': average_utilization,  # Pass average utilization to the template
     })
-
-
-
-
-
-
-
-
-
-
 
 def all_projects(request):
     _, _, all_entries = get_project_entries()
@@ -1137,11 +1105,6 @@ def all_projects(request):
         'query': query
     })
 
-
-  
-
-
-
 def download_word(request, project_code):
     # Fetch the specific project entry based on the project code
     _, _, all_entries = get_project_entries()  # Fetch all project entries
@@ -1194,8 +1157,6 @@ def download_word(request, project_code):
     
     return response
 
-
-
 def get_monthly_expenses():
     result = database.child('Data').get()
 
@@ -1223,14 +1184,9 @@ def get_monthly_expenses():
 
     return monthly_expenses
 
-
-
 def get_monthly_expenses_view(request):
     monthly_expenses = get_monthly_expenses()
     return JsonResponse(monthly_expenses)
-
-
-
 
 def get_daily_expenses():
     result = database.child('Data').get()
@@ -1259,9 +1215,6 @@ def get_daily_expenses():
                             daily_expenses[day] = spent
 
     return daily_expenses
-
-
-
 
 def get_monthly_comparison():
     result = database.child('Data').get()
@@ -1312,17 +1265,9 @@ def get_monthly_comparison():
 
     return monthly_comparison
 
-
 def get_monthly_comparison_view(request):
     monthly_comparison = get_monthly_comparison()
     return JsonResponse(monthly_comparison)
-
-
-
-
-
-
-
 
 from collections import defaultdict
 

@@ -1,74 +1,71 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, logout, authenticate
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.hashers import make_password
-from django.core.mail import EmailMultiAlternatives, BadHeaderError
-from django.template.loader import render_to_string
-from .forms import RegistrationForm
-from .models import CustomUser  # Assuming you have a CustomUser model
-import logging
-import json
-import random
-import string
-from django.http import HttpResponse
-import openpyxl
-import os
-from io import BytesIO
-from django.conf import settings
-from openpyxl.styles import Font
-from .projects import get_project_entries 
-from django.core.files.base import ContentFile
-from io import BytesIO
-import qrcode
-import pyotp
-import pyotp
-import qrcode
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.conf import settings
-from io import BytesIO
-from django.core.files.base import ContentFile
-import pyotp
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.http import JsonResponse
-from django.contrib.auth import authenticate
-from django.contrib.auth import authenticate, login as auth_login
-from django.urls import reverse
-from .models import UserProfile
-from django.contrib.auth.decorators import login_required
-import logging
-from django.http import JsonResponse
-from django.core.mail import send_mail
-from django.views.decorators.csrf import csrf_exempt
-import random
-from django.views.decorators.http import require_POST
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
-from django.views.decorators.csrf import csrf_exempt
-import random
-import json
-from django.core.mail import EmailMultiAlternatives
-from django.http import JsonResponse
-from django.template.loader import render_to_string
-from django.views.decorators.csrf import csrf_exempt
-import traceback
+from django.shortcuts import render, redirect  # Renders HTML templates and redirects to a new view or URL
+from django.contrib.auth.forms import UserCreationForm  # Form for creating a new user account
+from django.contrib.auth import login, logout, authenticate  # Functions for handling login, logout, and authentication
+from django.contrib import messages  # Django messages framework for displaying feedback messages to users
+from django.contrib.auth.decorators import login_required, user_passes_test  # Decorators for restricting access to logged-in users or users passing a test
+from django.urls import reverse  # Generates URLs based on view names
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse  # HTTP responses for plain text, redirection, or JSON data
+from django.views.decorators.cache import never_cache  # Prevents caching of the decorated view's response
+from django.views.decorators.csrf import csrf_exempt  # Exempts a view from CSRF protection
+from django.contrib.auth.hashers import make_password  # Hashes passwords securely
+from django.core.mail import EmailMultiAlternatives, BadHeaderError  # For sending multipart email messages and handling header errors
+from django.template.loader import render_to_string  # Renders templates to a string, useful for email templates
+from .forms import RegistrationForm  # Custom registration form specific to your app
+from .models import CustomUser  # Custom user model if using an extension of Django’s default User model
+import logging  # Logging module for tracking events or errors
+import json  # Provides functions to parse and write JSON data
+import random  # Provides utilities for random number generation
+import string  # Includes constants and utilities for string manipulation
+from django.http import HttpResponse  # Returns HTTP responses with plain text or HTML
+import openpyxl  # Library for working with Excel files
+import os  # OS utilities for interacting with the file system
+from io import BytesIO  # In-memory byte stream, useful for creating temporary files
+from django.conf import settings  # Accesses Django project settings
+from openpyxl.styles import Font  # Styling fonts in Excel cells
+from .projects import get_project_entries  # Imports a custom function to retrieve project entries
+from django.core.files.base import ContentFile  # For working with file-like objects in memory
+import qrcode  # Library for generating QR codes
+import pyotp  # Library for creating and verifying time-based OTPs (One-Time Passwords)
+import qrcode  # For generating QR codes
+from django.http import JsonResponse  # Returns JSON responses
+from django.shortcuts import render  # Renders HTML templates
+from django.conf import settings  # Accesses project settings configuration
+from io import BytesIO  # In-memory file-like object
+from django.core.files.base import ContentFile  # In-memory file storage
+import pyotp  # Library for generating one-time passwords (OTPs)
+from django.shortcuts import render, redirect  # For rendering templates and redirecting views
+from django.contrib.auth.decorators import login_required  # Restricts view access to logged-in users only
+from django.contrib import messages  # Displays one-time messages to the user
+from django.http import JsonResponse  # Returns JSON response
+from django.contrib.auth import authenticate  # Authenticates users
+from django.contrib.auth import authenticate, login as auth_login  # Authenticates and logs in a user
+from django.urls import reverse  # Generates URLs dynamically based on view names
+from .models import UserProfile  # Custom user profile model (if defined in your app)
+from django.contrib.auth.decorators import login_required  # Ensures view access only for logged-in users
+import logging  # For logging application events
+from django.http import JsonResponse  # JSON response generation
+from django.core.mail import send_mail  # Function for sending emails via Django’s email backend
+from django.views.decorators.csrf import csrf_exempt  # CSRF exemption for specific views
+import random  # Random number generation
+from django.views.decorators.http import require_POST  # Restricts a view to POST requests only
+from django.http import JsonResponse  # Returns a JSON response
+from django.shortcuts import render  # Renders HTML templates for views
+from django.contrib.auth.decorators import user_passes_test  # Allows access to users meeting specific conditions
+from django.views.decorators.csrf import csrf_exempt  # Exempts a view from CSRF protection
+import random  # Random utilities
+import json  # JSON data handling
+from django.core.mail import EmailMultiAlternatives  # Email utility for multi-part messages
+from django.http import JsonResponse  # JSON response for AJAX or API endpoints
+from django.template.loader import render_to_string  # Renders templates to strings for emails
+from django.views.decorators.csrf import csrf_exempt  # CSRF exemption decorator
+import traceback  # Module for extracting, formatting, and printing exception tracebacks
+import os  # For file system interaction
+import openpyxl  # Excel file handling
+from django.http import HttpResponse, JsonResponse  # HTTP and JSON responses
+from django.conf import settings  # Accesses Django configuration settings
+from openpyxl.styles import Font, Alignment, Border, Side  # Cell styling for Excel spreadsheets
 
-logger = logging.getLogger(__name__)
-
-import os
-import openpyxl
-from django.http import HttpResponse, JsonResponse
-from django.conf import settings
-from openpyxl.styles import Font, Alignment, Border, Side
+logger = logging.getLogger(__name__)  # Initializes logger for tracking events or errors
 
 def bulk_download_xlsx(request):
     if request.method == 'POST':
