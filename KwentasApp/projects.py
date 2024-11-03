@@ -1245,6 +1245,12 @@ def get_monthly_expenses_view(request):
     monthly_expenses = get_monthly_expenses()
     return JsonResponse(monthly_expenses)
 
+
+
+def get_daily_expenses_view(request):
+    daily_expenses = get_daily_expenses()
+    return JsonResponse(daily_expenses)
+
 def get_daily_expenses():
     result = database.child('Data').get()
 

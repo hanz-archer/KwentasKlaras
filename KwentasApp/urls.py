@@ -35,6 +35,7 @@ urlpatterns = [
     path('verify-and-change-password/', views.verify_and_change_password, name='verify_and_change_password'),
    
 
+    path('api/get_daily_expenses/', get_daily_expenses_view, name='get_daily_expenses'),
     path('api/get_monthly_expenses/', get_monthly_expenses_view, name='get_monthly_expenses'),
 path('api/get_department_utilization_rate/', get_department_utilization_rate_view, name='get_department_utilization_rate'),
        path('api/get_monthly_comparison/', get_monthly_comparison_view, name='get_monthly_comparison'),
