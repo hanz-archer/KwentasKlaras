@@ -153,7 +153,7 @@ def bulk_download_xlsx(request):
 
         # Set up the response as an Excel file download
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=Selected-Projects-Report.xlsx'
+        response['Content-Disposition'] = 'attachment; filename=Projects Report.xlsx'
 
         wb.save(response)
         return response

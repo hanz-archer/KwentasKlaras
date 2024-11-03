@@ -269,11 +269,14 @@ def add_obligation(request, project_type):
 
             # Validate that the cleaned input is a valid number
             if not re.match(r'^\d+(\.\d{1,2})?$', spent_cleaned):
-                return HttpResponse(f'<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "{redirect_url}";</script>', status=400)
-            
+                return HttpResponse(
+                    f'<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
+
             # Convert the cleaned and validated string to a float
             obligation = float(spent_cleaned)
-            
+
             entry_ref = database.child('Data').child(entry_key)  # Assigning database child to entry_ref
 
             # Get data for the entry
@@ -281,19 +284,37 @@ def add_obligation(request, project_type):
 
             # Check if entry_data is None
             if entry_data is None:
-                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "{redirect_url}"";</script>', status=404)
-            
+                return HttpResponse(
+                    f'<script>alert("Entry not found."); window.location.href = "{redirect_url}";</script>',
+                    status=404
+                )
+
             start_date = entry_data.get('start_date')
             end_date = entry_data.get('end_date')
 
+            # Ensure date, start_date, and end_date are properly formatted as date objects
+            try:
+                date = datetime.strptime(date, '%Y-%m-%d').date()
+                start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+                end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+            except ValueError:
+                return HttpResponse(
+                    f'<script>alert("Invalid date format. Please use YYYY-MM-DD."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
+            # Validate date range
             if date < start_date:
-                return HttpResponse(f'<script>alert("Date must not be before projects start date"); window.location.href = "{redirect_url}"";</script>', status=404)
-            
+                return HttpResponse(
+                    f'<script>alert("Date must not be before the project\'s start date."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
             if date > end_date:
-                return HttpResponse(f'<script>alert("Date must not be after projects end date"); window.location.href = "{redirect_url}"";</script>', status=404)
-
+                return HttpResponse(
+                    f'<script>alert("Date must not be after the project\'s end date."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
             # Update total spent for the entry
             total_obligations = entry_data.get('total_obligations', 0) + obligation
@@ -305,26 +326,28 @@ def add_obligation(request, project_type):
             remaining_obligations = total_obligations - total_disbursements
 
             if remaining_total_balance < 0:
-                return HttpResponse(f'<script>alert("Remaining Balance cannot be negative. Add Budget if you wish to continue"); window.location.href = "{redirect_url}";</script>', status=404)
+                return HttpResponse(
+                    f'<script>alert("Remaining Balance cannot be negative. Add Budget if you wish to continue."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
             # Push a new child node with a unique key for the obligation under the chosen entry
             new_obligation_ref = database.child('Data').child(entry_key).child('obligation').push({
                 'name': name,
                 'obligation': obligation,
-                'date': date
+                'date': date.strftime('%Y-%m-%d')  # Store the date as a string
             })
 
             # Update total spent and remaining balance under the entry
             database.child('Data').child(entry_key).update({
                 "total_obligations": total_obligations,
                 "remaining_obligations": remaining_obligations,
-               
             })
 
             CRUDEvent.objects.create(
                 event_type=CRUDEvent.UPDATE,
                 object_id=entry_key,  # Reference the Firebase "code" as object_id
-                object_repr=f"Project Entry: {entry_key} - Obligation Name: {name} with Amount of: {obligation})",  # Include both name and amount in the log
+                object_repr=f"Project Entry: {entry_key} - Obligation Name: {name} with Amount of: {obligation}",  # Include both name and amount in the log
                 content_type=ContentType.objects.get(app_label='KwentasApp', model='firebaseentry'),  # Replace with your actual model
                 user=request.user if request.user.is_authenticated else None
             )
@@ -338,8 +361,8 @@ def add_obligation(request, project_type):
     else:
         return HttpResponse("Method not allowed", status=405)
 
-
-
+from datetime import datetime
+import re
 
 def add_disbursement(request, project_type):
     if request.method == 'POST':
@@ -351,7 +374,6 @@ def add_disbursement(request, project_type):
         # Determine redirect URL based on project type
         if project_type == 'disbursement':
             redirect_url = '/disbursements'
-       
         else:
             redirect_url = '/'
 
@@ -361,8 +383,11 @@ def add_disbursement(request, project_type):
 
             # Validate that the cleaned input is a valid number
             if not re.match(r'^\d+(\.\d{1,2})?$', spent_cleaned):
-                return HttpResponse(f'<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "{redirect_url}";</script>', status=400)
-            
+                return HttpResponse(
+                    f'<script>alert("Invalid \'spent\' value. It should only contain numbers, without commas or spaces."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
+
             # Convert the cleaned and validated string to a float
             disbursement = float(spent_cleaned)
             
@@ -373,40 +398,62 @@ def add_disbursement(request, project_type):
 
             # Check if entry_data is None
             if entry_data is None:
-                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "{redirect_url}"";</script>', status=404)
-            
+                return HttpResponse(
+                    f'<script>alert("Entry not found."); window.location.href = "{redirect_url}";</script>',
+                    status=404
+                )
+
             start_date = entry_data.get('start_date')
             end_date = entry_data.get('end_date')
 
+            # Ensure date, start_date, and end_date are properly formatted as date objects
+            try:
+                date = datetime.strptime(date, '%Y-%m-%d').date()
+                start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+                end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+            except ValueError:
+                return HttpResponse(
+                    f'<script>alert("Invalid date format. Please use YYYY-MM-DD."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
+            # Validate date range
             if date < start_date:
-                return HttpResponse(f'<script>alert("Date must not be before projects start date"); window.location.href = "{redirect_url}"";</script>', status=404)
-            
+                return HttpResponse(
+                    f'<script>alert("Date must not be before the project\'s start date."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
             if date > end_date:
-                return HttpResponse(f'<script>alert("Date must not be after projects end date"); window.location.href = "{redirect_url}"";</script>', status=404)
+                return HttpResponse(
+                    f'<script>alert("Date must not be after the project\'s end date."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
             # Update total spent for the entry
             remaining_balance = entry_data.get('remaining_total_balance')
             total_disbursements = entry_data.get('total_disbursements', 0) + disbursement
             total_obligations = entry_data.get('total_obligations')
+            
             # Calculate remaining balance of obligation
             overall_budget = entry_data.get('overall_budget', 0)
             remaining_obligations = total_obligations - total_disbursements
             remaining_balance = overall_budget - total_disbursements
             
-
             if remaining_obligations < 0:
-                return HttpResponse(f'<script>alert("Remaining Obligations cannot be negative. Add Obligation if you wish to continue"); window.location.href = "{redirect_url}";</script>', status=404)
+                return HttpResponse(
+                    f'<script>alert("Remaining Obligations cannot be negative. Add Obligation if you wish to continue."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
-            # Push a new child node with a unique key for the obligation under the chosen entry
-            new_obligation_ref = database.child('Data').child(entry_key).child('disbursement').push({
+            # Push a new child node with a unique key for the disbursement under the chosen entry
+            new_disbursement_ref = database.child('Data').child(entry_key).child('disbursement').push({
                 'name': name,
                 'disbursement': disbursement,
-                'date': date
+                'date': date.strftime('%Y-%m-%d')  # Store the date as a string
             })
 
-            # Update total spent and remaining balance under the entry
+            # Update total disbursements and remaining balance under the entry
             database.child('Data').child(entry_key).update({
                 "total_disbursements": total_disbursements,
                 "remaining_obligations": remaining_obligations,
@@ -417,12 +464,13 @@ def add_disbursement(request, project_type):
             utilization_rate = (total_disbursements / overall_budget) * 100 if overall_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
+            # Log the CRUD event
             content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Replace 'firebaseentry' with the actual model name
             CRUDEvent.objects.create(
                 event_type=CRUDEvent.UPDATE,
                 object_id=entry_key,  # Reference the Firebase "code" as object_id
                 object_repr=f"Project Entry: {entry_key} - Disbursement Name: {name} (with Amount of: {disbursement})",  # Include both name and amount in the log
-                content_type=content_type,  # Use the content type for the model
+                content_type=content_type,
                 user=request.user if request.user.is_authenticated else None
             )
 
@@ -444,8 +492,7 @@ def add_budget(request, project_type):
         added_budget = request.POST.get('added_budget', '0')  # Fetching it as a string for validation
         date = request.POST.get('budget_date')
 
-
-         # Determine redirect URL based on project type
+        # Determine redirect URL based on project type
         if project_type == 'continuing':
             redirect_url = '/continuing_projects'
         elif project_type == 'current':
@@ -453,34 +500,40 @@ def add_budget(request, project_type):
         else:
             redirect_url = '/'
 
-       
-
         try:
-             # Validate that added_budget is a positive number
+            # Validate that added_budget is a positive number
             if not re.match(r'^\d+(\.\d{1,2})?$', added_budget):
-                  return HttpResponse(f'<script>alert("Invalid Input, Please Input a valid positive number"); window.location.href = "{redirect_url}";</script>', status=404)
+                return HttpResponse(
+                    f'<script>alert("Invalid Input, Please Input a valid positive number"); window.location.href = "{redirect_url}";</script>',
+                    status=404
+                )
             added_budget = float(added_budget)
             
             if added_budget <= 0:
-                       return HttpResponse(f'<script>alert("Added Budget must be a positive number"); window.location.href = "{redirect_url}";</script>', status=404)
+                return HttpResponse(
+                    f'<script>alert("Added Budget must be a positive number"); window.location.href = "{redirect_url}";</script>',
+                    status=404
+                )
 
             # Get data for the entry
             entry_data = database.child('Data').child(entry_key).get().val()
 
             # Check if entry_data is None
             if entry_data is None:
-                return HttpResponse(f'<script>alert("Entry not found."); window.location.href = "{redirect_url}";</script>', status=404)
+                return HttpResponse(
+                    f'<script>alert("Entry not found."); window.location.href = "{redirect_url}";</script>',
+                    status=404
+                )
             
             start_date = entry_data.get('start_date')
             end_date = entry_data.get('end_date')
 
-
-            if date < start_date:
-                return HttpResponse(f'<script>alert("Date must not be before projects start date"); window.location.href = "{redirect_url}"";</script>', status=404)
-            
-
-            if date > end_date:
-                return HttpResponse(f'<script>alert("Date must not be after projects end date"); window.location.href = "{redirect_url}"";</script>', status=404)
+            # Validate the budget date is within the project’s start and end dates
+            if not (start_date <= date <= end_date):
+                return HttpResponse(
+                    f'<script>alert("Date must be within the project’s start and end dates."); window.location.href = "{redirect_url}";</script>',
+                    status=404
+                )
 
             # Calculate total added budget
             total_added_budget = entry_data.get('added_budget', 0) + added_budget
@@ -493,7 +546,10 @@ def add_budget(request, project_type):
 
             # Check if remaining balance would go below 0
             if remaining_total_balance < 0:
-                return HttpResponse(f'<script>alert("Remaining balance cannot go below 0."); window.location.href = "{redirect_url}"";</script>', status=400)
+                return HttpResponse(
+                    f'<script>alert("Remaining balance cannot go below 0."); window.location.href = "{redirect_url}";</script>',
+                    status=400
+                )
 
             # Push a new child node with a unique key for the budget under the chosen entry
             new_budget_ref = database.child('Data').child(entry_key).child('budget').push({
@@ -514,12 +570,13 @@ def add_budget(request, project_type):
             utilization_rate = (total_disbursements / overall_budget) * 100 if overall_budget > 0 else 0
             database.child('Data').child(entry_key).update({"utilization_rate": utilization_rate})
 
-            content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Replace 'firebaseentry' with the actual model name
+            # Log the event
+            content_type = ContentType.objects.get(app_label='KwentasApp', model='firebaseentry')  # Adjust model name
             CRUDEvent.objects.create(
                 event_type=CRUDEvent.UPDATE,
                 object_id=entry_key,  # Reference the Firebase "code" as object_id
-                object_repr=f"Project Entry: {entry_key} - Budget Added: {name} (with Amount of: {added_budget})",  # Include both name and amount in the log
-                content_type=content_type,  # Use the content type for the model
+                object_repr=f"Project Entry: {entry_key} - Budget Added: {name} (with Amount of: {added_budget})",
+                content_type=content_type,
                 user=request.user if request.user.is_authenticated else None
             )
 
