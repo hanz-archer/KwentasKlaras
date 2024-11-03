@@ -66,6 +66,7 @@ from django.conf import settings  # Accesses Django configuration settings
 from openpyxl.styles import Font, Alignment, Border, Side  # Cell styling for Excel spreadsheets
 
 logger = logging.getLogger(__name__)  # Initializes logger for tracking events or errors
+print("KwentasApp.views module loaded")  # Debugging print
 
 def bulk_download_xlsx(request):
     if request.method == 'POST':
@@ -158,8 +159,6 @@ def bulk_download_xlsx(request):
         return response
 
     return JsonResponse({"error": "Invalid request"}, status=400)
-
-print("KwentasApp.views module loaded")  # Debugging print
 
 #this def ensures the Sweet Alert in Homepage just shows after loggin in only
 def unset_just_logged_in(request):
@@ -510,8 +509,6 @@ def verify_otp(request):
             messages.error(request, 'Invalid OTP, please try again.')
 
     return render(request, 'KwentasApp/verify_otp.html')
-
-
 
 @login_required
 def get_2fa_status(request):
