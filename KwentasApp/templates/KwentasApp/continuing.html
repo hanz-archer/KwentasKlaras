@@ -386,27 +386,26 @@
     <!-- BUDGET -->
     <div class="details" id="budget">
       <div class="login-content">
-        <form id="add-budget-form" action="{% url 'add_budget' 'continuing' %}" method="post"> {% csrf_token %} <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
+        <form id="add-budget-form" action="{% url 'add_budget' 'continuing' %}" method="post">
+          {% csrf_token %}
+          <h2 class="title" style="margin-bottom: 45px;">Add Project Budget</h2>
           <input type="hidden" name="entry_code" id="budget-code">
           <div class="input-div-new">
             <div class="div">
-             <p class="inputs-label" style="white-space: nowrap;">Budget Name</p>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="budget_name" class="input">
+              <p class="inputs-label" style="white-space: nowrap;">Budget Name</p>
+              <input type="text" name="budget_name" class="input" required>
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <p class="inputs-label" >Date</p>
-              <!-- Use label instead of h5 -->
-              <input type="date" name="budget_date" class="input">
+              <p class="inputs-label">Date</p>
+              <input type="date" name="budget_date" class="input" required>
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <p class="inputs-label"  style="white-space: nowrap;">Added Budget</p>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="added_budget" class="input">
+              <p class="inputs-label" style="white-space: nowrap;">Added Budget</p>
+              <input type="text" name="added_budget" class="input" required>
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>
@@ -417,29 +416,27 @@
     <!-- OBLIGATION -->
     <div class="details" id="obligation">
       <div class="login-content">
-        <form id="add-obligation-form" action="{% url 'add_obligation' 'continuing' %}" method="post"> {% csrf_token %} <h2 class="title">Add Project Obligation</h2>
-          <br>
-          <br>
+        <form id="add-obligation-form" action="{% url 'add_obligation' 'continuing' %}" method="post">
+          {% csrf_token %}
+          <h2 class="title">Add Project Obligation</h2>
+          <br><br>
           <input type="hidden" name="entry-code" id="obligation-code">
           <div class="input-div-new">
             <div class="div">
-              <p class="inputs-label"  style="white-space: nowrap;">Obligation Name</p>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="obligation_name" class="input">
+              <p class="inputs-label" style="white-space: nowrap;">Obligation Name</p>
+              <input type="text" name="obligation_name" class="input" required>
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <p class="inputs-label" >Date</p>
-              <!-- Use label instead of h5 -->
-              <input type="date" name="obligation_date" class="input">
+              <p class="inputs-label">Date</p>
+              <input type="date" name="obligation_date" class="input" required>
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
-              <p class="inputs-label"  style="white-space: nowrap;">Obligation Spent</p>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="obligation_input" class="input">
+              <p class="inputs-label" style="white-space: nowrap;">Obligation Spent</p>
+              <input type="text" name="obligation_input" class="input" required>
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>
@@ -702,6 +699,98 @@
         if (deleteForm) deleteForm.style.display = 'none';
       }
       document.getElementById('overlay').addEventListener('click', hideOverlay);
+    </script>
+    <script>
+      document.getElementById("add-obligation-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        const form = this;
+    
+        // Fetch to submit form data
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            // Show SweetAlert on successful submission
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Project Obligation has been added successfully.',
+              confirmButtonText: 'OK',
+              timer: 3000
+            }).then(() => {
+              // Optionally redirect or refresh the page after submission
+              window.location.href = "{% url 'continuing_projects' %}";
+            });
+          } else {
+            // Handle error response
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Failed to add project obligation. Please try again.',
+              confirmButtonText: 'OK'
+            });
+          }
+        })
+        .catch(error => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'An error occurred. Please try again later.',
+            confirmButtonText: 'OK'
+          });
+        });
+      });
+    </script>
+    <script>
+      document.getElementById("add-budget-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+        const form = this;
+    
+        // Use fetch to submit form data via AJAX
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            // Display SweetAlert success message
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Project Budget has been added successfully.',
+              confirmButtonText: 'OK',
+              timer: 3000
+            }).then(() => {
+              // Redirect to the continuing projects page after submission
+              window.location.href = "{% url 'continuing_projects' %}";
+            });
+          } else {
+            // Display SweetAlert error message if submission fails
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Failed to add project budget. Please try again.',
+              confirmButtonText: 'OK'
+            });
+          }
+        })
+        .catch(error => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'An error occurred. Please try again later.',
+            confirmButtonText: 'OK'
+          });
+        });
+      });
     </script>
   </body>
 </html>

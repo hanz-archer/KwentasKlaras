@@ -278,29 +278,26 @@
     <!-- Disbursement-->
     <div class="details" id="disbursement">
       <div class="login-content">
-        <form id="add-obligation-form" action="{% url 'add_disbursement' 'disbursement' %}" method="post"> {% csrf_token %} <h2 class="title">Add Disbursement</h2>
-          <br>
-          <br>
+        <form id="add-disbursement-form" action="{% url 'add_disbursement' 'disbursement' %}" method="post">
+          {% csrf_token %}
+          <h2 class="title">Add Disbursement</h2>
           <input type="hidden" name="entry-code" id="disbursement-code">
           <div class="input-div-new">
             <div class="div">
               <p class="inputs-label" style="white-space: nowrap;">Disbursement Name</p>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="disbursement_name" class="input">
+              <input type="text" name="disbursement_name" class="input" required>
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
               <p class="inputs-label">Date</p>
-              <!-- Use label instead of h5 -->
-              <input type="date" name="disbursement_date" class="input">
+              <input type="date" name="disbursement_date" class="input" required>
             </div>
           </div>
           <div class="input-div-new">
             <div class="div">
               <p class="inputs-label" style="white-space: nowrap;">Disbursement Amount</p>
-              <!-- Use label instead of h5 -->
-              <input type="text" name="disbursement_input" class="input">
+              <input type="text" name="disbursement_input" class="input" required>
             </div>
           </div>
           <button type="submit" class="btn-add" value="Submit">Submit</button>
@@ -311,6 +308,54 @@
     <!------------------------------------------------------ JAVASCRIPT-------------------------------------------------->
     <!-- PIE CHART JS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      document.getElementById("add-disbursement-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        const form = this;
+    
+        // Fetch to submit form data via AJAX
+        fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            // Display SweetAlert success message
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Disbursement has been added successfully.',
+              confirmButtonText: 'OK',
+              timer: 3000
+            }).then(() => {
+              // Redirect to the disbursements page after submission
+              window.location.href = "{% url 'disbursements' %}";
+            });
+          } else {
+            // Display SweetAlert error message if submission fails
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Failed to add disbursement. Please try again.',
+              confirmButtonText: 'OK'
+            });
+          }
+        })
+        .catch(error => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'An error occurred. Please try again later.',
+            confirmButtonText: 'OK'
+          });
+        });
+      });
+    </script>
+    
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         var chartContainers = document.querySelectorAll('.chart-container');

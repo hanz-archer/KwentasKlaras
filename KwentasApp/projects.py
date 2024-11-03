@@ -242,12 +242,6 @@ def current_projects(request):
         'all_entries': all_entries  # Pass all_entries to the template
     })
 
-
-
-
-
-
-
 def add_obligation(request, project_type):
     if request.method == 'POST':
         entry_key = request.POST.get('entry-code')
