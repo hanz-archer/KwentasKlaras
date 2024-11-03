@@ -700,97 +700,93 @@
       }
       document.getElementById('overlay').addEventListener('click', hideOverlay);
     </script>
-    <script>
-      document.getElementById("add-obligation-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent the default form submission
-        const form = this;
-    
-        // Fetch to submit form data
-        fetch(form.action, {
-          method: form.method,
-          body: new FormData(form),
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          }
-        })
-        .then(response => {
-          if (response.ok) {
-            // Show SweetAlert on successful submission
-            Swal.fire({
-              icon: 'success',
-              title: 'Success!',
-              text: 'Project Obligation has been added successfully.',
-              confirmButtonText: 'OK',
-              timer: 3000
-            }).then(() => {
-              // Optionally redirect or refresh the page after submission
-              window.location.href = "{% url 'continuing_projects' %}";
-            });
-          } else {
-            // Handle error response
-            Swal.fire({
-              icon: 'error',
-              title: 'Error!',
-              text: 'Failed to add project obligation. Please try again.',
-              confirmButtonText: 'OK'
-            });
-          }
-        })
-        .catch(error => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'An error occurred. Please try again later.',
-            confirmButtonText: 'OK'
-          });
+<script>
+  document.getElementById("add-obligation-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent the default form submission
+    const form = this;
+
+    // Fetch to submit form data
+    fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        // Show SweetAlert on successful submission
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Project Obligation has been added successfully.',
+          confirmButtonText: 'OK',
+          timer: 3000
         });
-      });
-    </script>
-    <script>
-      document.getElementById("add-budget-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
-        const form = this;
-    
-        // Use fetch to submit form data via AJAX
-        fetch(form.action, {
-          method: form.method,
-          body: new FormData(form),
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-          }
-        })
-        .then(response => {
-          if (response.ok) {
-            // Display SweetAlert success message
-            Swal.fire({
-              icon: 'success',
-              title: 'Success!',
-              text: 'Project Budget has been added successfully.',
-              confirmButtonText: 'OK',
-              timer: 3000
-            }).then(() => {
-              // Redirect to the continuing projects page after submission
-              window.location.href = "{% url 'continuing_projects' %}";
-            });
-          } else {
-            // Display SweetAlert error message if submission fails
-            Swal.fire({
-              icon: 'error',
-              title: 'Error!',
-              text: 'Failed to add project budget. Please try again.',
-              confirmButtonText: 'OK'
-            });
-          }
-        })
-        .catch(error => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'An error occurred. Please try again later.',
-            confirmButtonText: 'OK'
-          });
+      } else {
+        // Handle error response
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Failed to add project obligation. Please try again.',
+          confirmButtonText: 'OK'
         });
+      }
+    })
+    .catch(error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An error occurred. Please try again later.',
+        confirmButtonText: 'OK'
       });
-    </script>
+    });
+  });
+</script>
+
+<script>
+  document.getElementById("add-budget-form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default form submission
+    const form = this;
+
+    // Use fetch to submit form data via AJAX
+    fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        // Display SweetAlert success message
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Project Budget has been added successfully.',
+          confirmButtonText: 'OK',
+          timer: 3000
+        });
+      } else {
+        // Display SweetAlert error message if submission fails
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Failed to add project budget. Please try again.',
+          confirmButtonText: 'OK'
+        });
+      }
+    })
+    .catch(error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'An error occurred. Please try again later.',
+        confirmButtonText: 'OK'
+      });
+    });
+  });
+</script>
+
   </body>
 </html>

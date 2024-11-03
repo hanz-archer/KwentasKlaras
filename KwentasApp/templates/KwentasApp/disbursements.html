@@ -329,11 +329,10 @@
               icon: 'success',
               title: 'Success!',
               text: 'Disbursement has been added successfully.',
-              confirmButtonText: 'OK',
-              timer: 3000
+              confirmButtonText: 'OK'
             }).then(() => {
-              // Redirect to the disbursements page after submission
-              window.location.href = "{% url 'disbursements' %}";
+              // Reset the form after showing the success message
+              form.reset(); // Reset the form fields
             });
           } else {
             // Display SweetAlert error message if submission fails
@@ -355,6 +354,7 @@
         });
       });
     </script>
+    
     
     <script>
       document.addEventListener('DOMContentLoaded', function() {

@@ -490,12 +490,7 @@
               title: 'Success!',
               text: 'Obligation has been added successfully.',
               confirmButtonText: 'OK',
-              timer: 3000
-            }).then(() => {
-              // Add a 1-second delay before redirecting
-              setTimeout(() => {
-                window.location.href = "{% url 'current_projects' %}";
-              }, 1000);
+              // Removed timer to keep alert open until user clicks 'OK'
             });
           } else {
             // Display error SweetAlert notification
@@ -539,12 +534,7 @@
               title: 'Success!',
               text: 'Budget has been added successfully.',
               confirmButtonText: 'OK',
-              timer: 3000
-            }).then(() => {
-              // Add a 1-second delay before redirecting
-              setTimeout(() => {
-                window.location.href = "{% url 'current_projects' %}";
-              }, 1000);
+              // Removed timer to keep alert open until user clicks 'OK'
             });
           } else {
             // Show SweetAlert error if submission fails
@@ -566,6 +556,7 @@
         });
       });
     </script>
+    
     
     <script>
       document.addEventListener('DOMContentLoaded', function() {
