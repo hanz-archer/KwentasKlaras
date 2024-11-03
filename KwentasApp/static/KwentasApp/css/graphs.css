@@ -106,22 +106,11 @@ body {
   color: rgba(255, 255, 255, 0.95);
 }
 
-.charts {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns for larger screens */
-  gap: 30px; /* Increase the gap between charts */
-  max-height: 500px; /* Increase max height to make charts longer */
-  align-items: center; /* Center items vertically in the grid */
-}
-
-.charts .charts-card:only-child {
-  grid-column: 1 / -1; /* Span the entire width */
-}
 
 .charts-card {
   background-color: white;
-  margin-bottom: 10px; /* Space between cards */
-  padding: 30px; /* Add padding for more space inside */
+
+
   box-sizing: border-box;
   -webkit-column-break-inside: avoid;
   border-radius: 10px; /* Round borders */
@@ -152,10 +141,7 @@ body {
   background-color: skyblue;
 }
 
-.back-button-container {
-  display: flex;
-  justify-content: flex-end;
-}
+
 
 /* ---------- MEDIA QUERIES ---------- */
 

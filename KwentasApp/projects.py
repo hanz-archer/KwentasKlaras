@@ -130,6 +130,120 @@ def create_entry(request):
 
 
 
+def get_project_entries():
+    # Check if data is cached
+    cached_data = cache.get('project_entries')
+    if cached_data:
+        return cached_data
+
+    result = database.child('Data').get()
+
+    entries_below_2024 = []
+    entries_2024_and_above = []
+    all_entries = []
+
+    if result.val():
+        for key, value in result.val().items():
+            if key == 'placeholder':
+                continue  # Skip the placeholder entry
+
+            remarks = value.get('remarks')  # Extract remarks
+            is_awarded = remarks == "Awarded Already"  # Determine if awarded
+
+            entry = {
+                'ppa': value.get('ppa'),
+                'implementing_unit': value.get('implementing_unit'),
+                'location': value.get('location'),
+                'appropriation': value.get('appropriation'),
+                'remarks': remarks,
+                'start_date': value.get('start_date'),
+                'end_date': value.get('end_date'),
+                'code': value.get('code'),
+                'services': value.get('services'),
+                'year': value.get('year'),
+                'remaining_total_balance': value.get('remaining_total_balance'),
+                'total_disbursements': value.get('total_disbursements'),
+                'added_budget': value.get('added_budget'),
+                'overall_budget': value.get('overall_budget'),
+                'utilization_rate': value.get('utilization_rate'),
+                'total_obligations': value.get('total_obligations'),
+                'remaining_obligations': value.get('remaining_obligations'),
+                'disbursement': [],
+                'obligation': [],  # Initialize obligation list
+                'budget_data': [],  # Initialize budget data list
+                'is_awarded': is_awarded  # Include awarded status
+            }
+
+            # Check if obligation node exists
+            if 'obligation' in value:
+                for obligation_key, obligation_value in value['obligation'].items():
+                    entry['obligation'].append({
+                        'name': obligation_value.get('name'),
+                        'obligation': obligation_value.get('obligation'),
+                        'date': obligation_value.get('date')
+                    })
+
+            # Check if disbursement node exists
+            if 'disbursement' in value:
+                for disbursement_key, disbursement_value in value['disbursement'].items():
+                    entry['disbursement'].append({
+                        'name': disbursement_value.get('name'),
+                        'disbursement': disbursement_value.get('disbursement'),
+                        'date': disbursement_value.get('date')
+                    })
+
+            # Fetch budget data for the current entry
+            budget_data = database.child('Data').child(key).child('budget').get().val()
+            if budget_data:
+                for budget_key, budget_value in budget_data.items():
+                    entry['budget_data'].append({
+                        'name': budget_value.get('name'),
+                        'added_budget': budget_value.get('added_budget'),
+                        'date': budget_value.get('date')
+                    })
+
+            all_entries.append(entry)
+
+            # Check the year and add to the appropriate list
+            if entry.get('year') is not None:
+                if int(entry['year']) < 2024:
+                    entries_below_2024.append(entry)
+                else:
+                    entries_2024_and_above.append(entry)
+
+    # Cache the data for future use (e.g., 1 hour)
+    cache.set('project_entries', (entries_below_2024, entries_2024_and_above, all_entries), 3600)
+
+    return entries_below_2024, entries_2024_and_above, all_entries
+
+
+def continuing_projects(request):
+    entries_below_2024, _, all_entries = get_project_entries()
+   
+
+    paginator = Paginator(entries_below_2024, 10)  # Show 10 projects per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'KwentasApp/continuing.html', {
+        'page_obj': page_obj,
+        'all_entries': all_entries  # Pass all_entries to the template
+    })
+
+def current_projects(request):
+    _, entries_2024_and_above, all_entries = get_project_entries()
+
+    paginator = Paginator(entries_2024_and_above, 10)  # Show 10 projects per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'KwentasApp/current.html', {
+        'page_obj': page_obj,
+        'all_entries': all_entries  # Pass all_entries to the template
+    })
+
+
+
 
 
 
@@ -323,72 +437,6 @@ def add_disbursement(request, project_type):
         return HttpResponse("Method not allowed", status=405)
 
 
-
-
-
-
-
-def disbursements(request):
-    _, _, all_entries = get_project_entries()
-    query = request.GET.get('query', '')  # Default to empty string if query is None
-    paginator = Paginator(all_entries, 10)  # Show 10 projects per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    result = database.child('Data').get()
-
-    matched_entries = []
-
-    if result.val():
-        for key, value in result.val().items():
-            if key == 'placeholder':
-                continue  # Skip the placeholder entry
-
-            remarks = value.get('remarks')
-            is_awarded = remarks == "Awarded Already"  # Determine if awarded
-            entry = {
-                'ppa': value.get('ppa'),
-                'implementing_unit': value.get('implementing_unit'),
-                'location': value.get('location'),
-                'appropriation': value.get('appropriation'),
-                'remarks': value.get('remarks'),
-                'start_date': value.get('start_date'),
-                'end_date': value.get('end_date'),
-                'code': value.get('code'),
-                'services': value.get('services'),
-                'year': value.get('year'),
-                'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_disbursements': value.get('total_disbursements'),
-                'total_obligations': value.get('total_obligations'),
-                'remaining_obligations': value.get('remaining_obligations'),
-                'is_awarded': is_awarded,  # Include awarded status
-                'obligation': []  # Initialize obligation list
-               
-            }
-
-        
-            # Perform a case-insensitive search only if the fields are not None
-            if (query.lower() in str(entry['ppa']).lower() if entry['ppa'] else False or
-                query.lower() in str(entry['implementing_unit']).lower() if entry['implementing_unit'] else False or
-                query.lower() in str(entry['location']).lower() if entry['location'] else False or
-                query.lower() in str(entry['appropriation']).lower() if entry['appropriation'] else False or
-                query.lower() in str(entry['remarks']).lower() if entry['remarks'] else False or
-                query.lower() in str(entry['start_date']).lower() if entry['start_date'] else False or
-                query.lower() in str(entry['end_date']).lower() if entry['end_date'] else False or
-                query.lower() in str(entry['code']).lower() if entry['code'] else False or
-                query.lower() in str(entry['services']).lower() if entry['services'] else False):
-                
-                
-                    matched_entries.append(entry)
-
-    return render(request, 'KwentasApp/disbursements.html', {
-        'page_obj': page_obj,
-        'all_entries': all_entries,  # Pass all_entries to the template
-        'matched_entries': matched_entries,
-        'query': query
-    })
-
-
-
 def add_budget(request, project_type):
     if request.method == 'POST':
         entry_key = request.POST.get('entry_code')
@@ -489,117 +537,6 @@ def add_budget(request, project_type):
 
 
 
-def get_project_entries():
-    # Check if data is cached
-    cached_data = cache.get('project_entries')
-    if cached_data:
-        return cached_data
-
-    result = database.child('Data').get()
-
-    entries_below_2024 = []
-    entries_2024_and_above = []
-    all_entries = []
-
-    if result.val():
-        for key, value in result.val().items():
-            if key == 'placeholder':
-                continue  # Skip the placeholder entry
-
-            remarks = value.get('remarks')  # Extract remarks
-            is_awarded = remarks == "Awarded Already"  # Determine if awarded
-
-            entry = {
-                'ppa': value.get('ppa'),
-                'implementing_unit': value.get('implementing_unit'),
-                'location': value.get('location'),
-                'appropriation': value.get('appropriation'),
-                'remarks': remarks,
-                'start_date': value.get('start_date'),
-                'end_date': value.get('end_date'),
-                'code': value.get('code'),
-                'services': value.get('services'),
-                'year': value.get('year'),
-                'remaining_total_balance': value.get('remaining_total_balance'),
-                'total_disbursements': value.get('total_disbursements'),
-                'added_budget': value.get('added_budget'),
-                'overall_budget': value.get('overall_budget'),
-                'utilization_rate': value.get('utilization_rate'),
-                'total_obligations': value.get('total_obligations'),
-                'remaining_obligations': value.get('remaining_obligations'),
-                'disbursement': [],
-                'obligation': [],  # Initialize obligation list
-                'budget_data': [],  # Initialize budget data list
-                'is_awarded': is_awarded  # Include awarded status
-            }
-
-            # Check if obligation node exists
-            if 'obligation' in value:
-                for obligation_key, obligation_value in value['obligation'].items():
-                    entry['obligation'].append({
-                        'name': obligation_value.get('name'),
-                        'obligation': obligation_value.get('obligation'),
-                        'date': obligation_value.get('date')
-                    })
-
-            # Check if disbursement node exists
-            if 'disbursement' in value:
-                for disbursement_key, disbursement_value in value['disbursement'].items():
-                    entry['disbursement'].append({
-                        'name': disbursement_value.get('name'),
-                        'disbursement': disbursement_value.get('disbursement'),
-                        'date': disbursement_value.get('date')
-                    })
-
-            # Fetch budget data for the current entry
-            budget_data = database.child('Data').child(key).child('budget').get().val()
-            if budget_data:
-                for budget_key, budget_value in budget_data.items():
-                    entry['budget_data'].append({
-                        'name': budget_value.get('name'),
-                        'added_budget': budget_value.get('added_budget'),
-                        'date': budget_value.get('date')
-                    })
-
-            all_entries.append(entry)
-
-            # Check the year and add to the appropriate list
-            if entry.get('year') is not None:
-                if int(entry['year']) < 2024:
-                    entries_below_2024.append(entry)
-                else:
-                    entries_2024_and_above.append(entry)
-
-    # Cache the data for future use (e.g., 1 hour)
-    cache.set('project_entries', (entries_below_2024, entries_2024_and_above, all_entries), 3600)
-
-    return entries_below_2024, entries_2024_and_above, all_entries
-
-
-def continuing_projects(request):
-    entries_below_2024, _, all_entries = get_project_entries()
-   
-
-    paginator = Paginator(entries_below_2024, 10)  # Show 10 projects per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'KwentasApp/continuing.html', {
-        'page_obj': page_obj,
-        'all_entries': all_entries  # Pass all_entries to the template
-    })
-
-def current_projects(request):
-    _, entries_2024_and_above, all_entries = get_project_entries()
-
-    paginator = Paginator(entries_2024_and_above, 10)  # Show 10 projects per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'KwentasApp/current.html', {
-        'page_obj': page_obj,
-        'all_entries': all_entries  # Pass all_entries to the template
-    })
 
 
 def obligations(request):
@@ -657,6 +594,64 @@ def obligations(request):
         'query': query
     })
 
+def disbursements(request):
+    _, _, all_entries = get_project_entries()
+    query = request.GET.get('query', '')  # Default to empty string if query is None
+    paginator = Paginator(all_entries, 10)  # Show 10 projects per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    result = database.child('Data').get()
+
+    matched_entries = []
+
+    if result.val():
+        for key, value in result.val().items():
+            if key == 'placeholder':
+                continue  # Skip the placeholder entry
+
+            remarks = value.get('remarks')
+            is_awarded = remarks == "Awarded Already"  # Determine if awarded
+            entry = {
+                'ppa': value.get('ppa'),
+                'implementing_unit': value.get('implementing_unit'),
+                'location': value.get('location'),
+                'appropriation': value.get('appropriation'),
+                'remarks': value.get('remarks'),
+                'start_date': value.get('start_date'),
+                'end_date': value.get('end_date'),
+                'code': value.get('code'),
+                'services': value.get('services'),
+                'year': value.get('year'),
+                'remaining_total_balance': value.get('remaining_total_balance'),
+                'total_disbursements': value.get('total_disbursements'),
+                'total_obligations': value.get('total_obligations'),
+                'remaining_obligations': value.get('remaining_obligations'),
+                'is_awarded': is_awarded,  # Include awarded status
+                'obligation': []  # Initialize obligation list
+               
+            }
+
+        
+            # Perform a case-insensitive search only if the fields are not None
+            if (query.lower() in str(entry['ppa']).lower() if entry['ppa'] else False or
+                query.lower() in str(entry['implementing_unit']).lower() if entry['implementing_unit'] else False or
+                query.lower() in str(entry['location']).lower() if entry['location'] else False or
+                query.lower() in str(entry['appropriation']).lower() if entry['appropriation'] else False or
+                query.lower() in str(entry['remarks']).lower() if entry['remarks'] else False or
+                query.lower() in str(entry['start_date']).lower() if entry['start_date'] else False or
+                query.lower() in str(entry['end_date']).lower() if entry['end_date'] else False or
+                query.lower() in str(entry['code']).lower() if entry['code'] else False or
+                query.lower() in str(entry['services']).lower() if entry['services'] else False):
+                
+                
+                    matched_entries.append(entry)
+
+    return render(request, 'KwentasApp/disbursements.html', {
+        'page_obj': page_obj,
+        'all_entries': all_entries,  # Pass all_entries to the template
+        'matched_entries': matched_entries,
+        'query': query
+    })
 
 def search_continuing_projects(request):
     query = request.GET.get('query')
@@ -1237,10 +1232,6 @@ def get_monthly_expenses_view(request):
 
 
 
-
-from django.http import JsonResponse
-from datetime import datetime
-
 def get_daily_expenses():
     result = database.child('Data').get()
 
@@ -1270,9 +1261,6 @@ def get_daily_expenses():
     return daily_expenses
 
 
-def get_daily_expenses_view(request):
-    daily_expenses = get_daily_expenses()
-    return JsonResponse(daily_expenses)
 
 
 def get_monthly_comparison():
