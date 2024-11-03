@@ -842,8 +842,8 @@ def update_entry(request, project_type):
 
             # Convert dates to datetime objects for further validation
             try:
-                start_date = datetime.datetime.strptime(start_date_str, '%Y-%m-%d')
-                end_date = datetime.datetime.strptime(end_date_str, '%Y-%m-%d')
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+                end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
             except ValueError:
                 return HttpResponse(f'<script>alert("Invalid date."); window.location.href = "{redirect_url}";</script>', status=400)
 
